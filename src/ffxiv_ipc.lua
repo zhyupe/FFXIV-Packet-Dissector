@@ -34,7 +34,7 @@ local ipc_type = {
   ActorMove = 0x0178,
   ItemInit = 0x0196,
   ItemSimple = 0x019B,
-  ItemChange = 0x019E,
+  ItemChange = 0x01A8, -- 5.0
 }
 
 local ipc_type_valstr = makeValString(ipc_type)
