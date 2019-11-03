@@ -49,6 +49,7 @@ function ffxiv_proto.dissector(tvbuf, pktinfo, root)
   while bytes_consumed < pktlen do
       local result = dissectBundle(tvbuf, pktinfo, root, bytes_consumed)
 
+      print('ffxiv_bundle', bytes_consumed, result, pktlen)
       if result > 0 then
           -- we successfully processed an FPM message, of 'result' length
           bytes_consumed = bytes_consumed + result
@@ -167,21 +168,17 @@ dissectBundle = function (tvbuf, pktinfo, root, offset)
   tree:add_le(bundle_hdr_fields.unknown5, unknown5_tvbr)
 
   local data_tvbr = tvbuf:range(offset + FFXIV_BUNDLE_HDR_LEN, length_val - FFXIV_BUNDLE_HDR_LEN)
+  if compressed_val == 1 then
+    data_tvbr = data_tvbr:uncompress('SegementData')
+  end
   tree:add(bundle_hdr_fields.data, data_tvbr)
   
   pktinfo.cols.protocol:set("FFXIV")
   if string.find(tostring(pktinfo.cols.info), "^FFXIV") == nil then
-      pktinfo.cols.info:set("FFXIV")
+    pktinfo.cols.info:set("FFXIV")
   end
 
-  local tvb
-  if compressed_val == 1 then
-    tvb = data_tvbr:uncompress('SegementData'):tvb()
-  else
-    tvb = data_tvbr:tvb()
-  end
-
-  Dissector.get('ffxiv_segment'):call(tvb, pktinfo, root)
+  Dissector.get('ffxiv_segment'):call(data_tvbr:tvb(), pktinfo, root)
   return bundle_len_val
 end
 
@@ -217,8 +214,6 @@ checkBundleLength = function (tvbuf, offset)
 
   -- get the TvbRange of bytes 3+4
   local length_tvbr = tvbuf:range(offset + 24, 2)
-
-  -- get the length as an unsigned integer, in network-order (big endian)
   local length_val  = length_tvbr:le_uint()
 
   if length_val > MAX_PACKET_LENGTH then
