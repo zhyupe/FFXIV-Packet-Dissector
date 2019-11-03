@@ -1,0 +1,92 @@
+{
+  "name": "Match Event",
+  "type": 120,
+  "enums": [
+    {
+      "name": "MatchEventType",
+      "type": "uint",
+      "values": [
+        {
+          "key": "Cancel",
+          "value": 3
+        },
+        {
+          "key": "Matched",
+          "value": 4
+        },
+        {
+          "key": "Enter",
+          "value": 6
+        }
+      ]
+    }
+  ],
+  "structs": [
+    {
+      "name": "MatchEventBody",
+      "fields": [
+        {
+          "offset": 0,
+          "name": "Type",
+          "type": "uint",
+          "length": 4,
+          "enum": "MatchEventType"
+        },
+        {
+          "offset": 4,
+          "name": "Reason",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 8,
+          "name": "Unknown1",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 12,
+          "name": "Unknown2",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 16,
+          "name": "Unknown3",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 20,
+          "name": "RouletteID",
+          "type": "uint8",
+          "length": 1
+        },
+        {
+          "offset": 21,
+          "name": "Unknown4",
+          "type": "uint8",
+          "length": 1
+        },
+        {
+          "offset": 22,
+          "name": "InstanceID",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 24,
+          "name": "Unknown5",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 28,
+          "name": "Unknown6",
+          "type": "uint",
+          "length": 4
+        }
+      ]
+    }
+  ]
+}

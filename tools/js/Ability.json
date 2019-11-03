@@ -1,0 +1,111 @@
+{
+  "enums": [
+    {
+      "name": "AbilityTargetArgumentType",
+      "type": "byte",
+      "values": [
+        {
+          "key": "None",
+          "value": 0
+        },
+        {
+          "key": "Buff1",
+          "value": 15
+        },
+        {
+          "key": "Buff2",
+          "value": 16
+        },
+        {
+          "key": "Buff3",
+          "value": 17
+        }
+      ]
+    }
+  ],
+  "structs": [
+    {
+      "name": "AbilityHeader",
+      "fields": [
+        {
+          "offset": 0,
+          "name": "Actor",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 4,
+          "name": "Unknown0",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 8,
+          "name": "ActionID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 12,
+          "name": "Index",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 16,
+          "name": "Unknown1",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 20,
+          "name": "Unknown2",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 24,
+          "name": "Unknown3",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 28,
+          "name": "Unknown4",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 32,
+          "name": "Unknown5",
+          "type": "uint8",
+          "length": 1
+        },
+        {
+          "offset": 33,
+          "name": "Count",
+          "type": "uint8",
+          "length": 1
+        },
+        {
+          "offset": 34,
+          "name": "Unknown6",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 36,
+          "name": "Unknown7",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 40,
+          "name": "Unknown8",
+          "type": "uint16",
+          "length": 2
+        }
+      ]
+    }
+  ]
+}

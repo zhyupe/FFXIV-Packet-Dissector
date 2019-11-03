@@ -1,0 +1,73 @@
+{
+  "name": "ItemSimple",
+  "type": 411,
+  "enums": [],
+  "structs": [
+    {
+      "name": "ItemSimpleBody",
+      "fields": [
+        {
+          "offset": 0,
+          "name": "Index",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 4,
+          "name": "Location",
+          "type": "uint16",
+          "length": 2,
+          "enum": "ItemLocation"
+        },
+        {
+          "offset": 5,
+          "name": "Position",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 8,
+          "name": "Amount",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 12,
+          "name": "Unknown0",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 16,
+          "name": "ItemID",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 18,
+          "name": "Unknown1",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 20,
+          "name": "Unknown2",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 24,
+          "name": "Unknown3",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 28,
+          "name": "Unknown4",
+          "type": "uint",
+          "length": 4
+        }
+      ]
+    }
+  ]
+}

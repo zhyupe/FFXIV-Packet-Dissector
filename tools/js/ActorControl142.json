@@ -1,0 +1,86 @@
+{
+  "name": "ActorControl142",
+  "type": 322,
+  "enums": [
+    {
+      "name": "ActorControl142Type",
+      "type": "ushort",
+      "values": [
+        {
+          "key": "DoT",
+          "value": 23
+        },
+        {
+          "key": "CancelAbility",
+          "value": 15
+        },
+        {
+          "key": "Death",
+          "value": 6
+        },
+        {
+          "key": "TargetIcon",
+          "value": 34
+        },
+        {
+          "key": "BuffRemove",
+          "value": 21
+        },
+        {
+          "key": "NameToggle",
+          "value": 54
+        }
+      ]
+    }
+  ],
+  "structs": [
+    {
+      "name": "ActorControl142",
+      "fields": [
+        {
+          "offset": 0,
+          "name": "Type",
+          "type": "uint16",
+          "length": 2,
+          "enum": "ActorControl142Type"
+        },
+        {
+          "offset": 2,
+          "name": "Reserved0",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 4,
+          "name": "Target",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 8,
+          "name": "Mode",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 12,
+          "name": "SkillID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 16,
+          "name": "Param1",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 20,
+          "name": "Param2",
+          "type": "uint",
+          "length": 4
+        }
+      ]
+    }
+  ]
+}

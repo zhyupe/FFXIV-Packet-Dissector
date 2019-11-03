@@ -1,0 +1,233 @@
+{
+  "name": "AddStatusEffect",
+  "type": 321,
+  "enums": [],
+  "structs": [
+    {
+      "name": "AddStatusEffectHeader",
+      "fields": [
+        {
+          "offset": 0,
+          "name": "LastBuffPacketID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 4,
+          "name": "UserID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 8,
+          "name": "Unknown1",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 10,
+          "name": "Unknown2",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 12,
+          "name": "CurrentHP",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 16,
+          "name": "CurrentMP",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 18,
+          "name": "CurrentTP",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 20,
+          "name": "MaxHP",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 24,
+          "name": "MaxMP",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 25,
+          "name": "Count",
+          "type": "uint8",
+          "length": 1
+        },
+        {
+          "offset": 26,
+          "name": "Unknown3",
+          "type": "uint8",
+          "length": 1
+        },
+        {
+          "offset": 28,
+          "name": "Unknown4",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 0,
+          "name": "StatusID",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 2,
+          "name": "StatusExtra",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 4,
+          "name": "Unknown1",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 6,
+          "name": "Duration",
+          "type": "float",
+          "length": 4
+        },
+        {
+          "offset": 10,
+          "name": "ActorID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 14,
+          "name": "Unknown2",
+          "type": "uint16",
+          "length": 2
+        }
+      ]
+    },
+    {
+      "name": "AddStatusEffectItem",
+      "fields": [
+        {
+          "offset": 0,
+          "name": "LastBuffPacketID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 4,
+          "name": "UserID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 8,
+          "name": "Unknown1",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 10,
+          "name": "Unknown2",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 12,
+          "name": "CurrentHP",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 16,
+          "name": "CurrentMP",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 18,
+          "name": "CurrentTP",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 20,
+          "name": "MaxHP",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 24,
+          "name": "MaxMP",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 25,
+          "name": "Count",
+          "type": "uint8",
+          "length": 1
+        },
+        {
+          "offset": 26,
+          "name": "Unknown3",
+          "type": "uint8",
+          "length": 1
+        },
+        {
+          "offset": 28,
+          "name": "Unknown4",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 0,
+          "name": "StatusID",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 2,
+          "name": "StatusExtra",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 4,
+          "name": "Unknown1",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 6,
+          "name": "Duration",
+          "type": "float",
+          "length": 4
+        },
+        {
+          "offset": 10,
+          "name": "ActorID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 14,
+          "name": "Unknown2",
+          "type": "uint16",
+          "length": 2
+        }
+      ]
+    }
+  ]
+}

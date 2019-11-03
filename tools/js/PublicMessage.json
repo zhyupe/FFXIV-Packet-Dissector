@@ -1,0 +1,68 @@
+{
+  "name": "Public Message",
+  "type": 247,
+  "enums": [
+    {
+      "name": "PublicMessageType",
+      "type": "byte",
+      "values": [
+        {
+          "key": "Shout",
+          "value": 11
+        },
+        {
+          "key": "Yell",
+          "value": 30
+        },
+        {
+          "key": "Say",
+          "value": 10
+        }
+      ]
+    }
+  ],
+  "structs": [
+    {
+      "name": "PublicMessageHeader",
+      "fields": [
+        {
+          "offset": 0,
+          "name": "UID0",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 4,
+          "name": "UID1",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 8,
+          "name": "CharacterID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 12,
+          "name": "UserServer",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 14,
+          "name": "Type",
+          "type": "uint8",
+          "length": 1,
+          "enum": "PublicMessageType"
+        },
+        {
+          "offset": 15,
+          "name": "Reserved0",
+          "type": "uint8",
+          "length": 1
+        }
+      ]
+    }
+  ]
+}

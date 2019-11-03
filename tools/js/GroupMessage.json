@@ -1,0 +1,94 @@
+{
+  "name": "Group Message",
+  "type": 101,
+  "enums": [
+    {
+      "name": "GroupMessageType",
+      "type": "ushort",
+      "values": [
+        {
+          "key": "Linkshell",
+          "value": 2
+        },
+        {
+          "key": "FreeCompany",
+          "value": 3
+        },
+        {
+          "key": "NoviceNetwork",
+          "value": 4
+        },
+        {
+          "key": "Not",
+          "value": 5
+        },
+        {
+          "key": "sure",
+          "value": 6
+        },
+        {
+          "key": "Time",
+          "value": 333
+        }
+      ]
+    }
+  ],
+  "structs": [
+    {
+      "name": "GroupMessageHeader",
+      "fields": [
+        {
+          "offset": 0,
+          "name": "GroupID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 4,
+          "name": "Type",
+          "type": "uint16",
+          "length": 2,
+          "enum": "GroupMessageType"
+        },
+        {
+          "offset": 6,
+          "name": "Server",
+          "type": "uint16",
+          "length": 2,
+          "enum": "$server"
+        },
+        {
+          "offset": 8,
+          "name": "UID0",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 12,
+          "name": "UID1",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 16,
+          "name": "CharacterID",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 20,
+          "name": "UserServer",
+          "type": "uint16",
+          "length": 2,
+          "enum": "$server"
+        },
+        {
+          "offset": 22,
+          "name": "Reserved0",
+          "type": "uint8",
+          "length": 1
+        }
+      ]
+    }
+  ]
+}

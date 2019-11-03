@@ -1,0 +1,30 @@
+{
+  "name": "Ping",
+  "type": 101,
+  "enums": [],
+  "structs": [
+    {
+      "name": "PingBody",
+      "fields": [
+        {
+          "offset": 0,
+          "name": "Timestamp",
+          "type": "uint64",
+          "length": 8
+        },
+        {
+          "offset": 8,
+          "name": "Unknown1",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 12,
+          "name": "Unknown2",
+          "type": "uint",
+          "length": 4
+        }
+      ]
+    }
+  ]
+}

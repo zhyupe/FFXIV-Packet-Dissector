@@ -1,0 +1,98 @@
+{
+  "name": "ActorControl143",
+  "type": 323,
+  "enums": [
+    {
+      "name": "ActorControl143Type",
+      "type": "ushort",
+      "values": [
+        {
+          "key": "ServerTime",
+          "value": 24
+        },
+        {
+          "key": "FateStart",
+          "value": 116
+        },
+        {
+          "key": "FateEnd",
+          "value": 121
+        },
+        {
+          "key": "FateProgress",
+          "value": 155
+        },
+        {
+          "key": "FateNpc",
+          "value": 178
+        },
+        {
+          "key": "PlayerCurrency",
+          "value": 378
+        }
+      ]
+    }
+  ],
+  "structs": [
+    {
+      "name": "ActorControl143Body",
+      "fields": [
+        {
+          "offset": 0,
+          "name": "Type",
+          "type": "uint16",
+          "length": 2,
+          "enum": "ActorControl143Type"
+        },
+        {
+          "offset": 2,
+          "name": "Unknown0",
+          "type": "uint16",
+          "length": 2
+        },
+        {
+          "offset": 4,
+          "name": "Data0",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 8,
+          "name": "Data1",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 12,
+          "name": "Data2",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 16,
+          "name": "Data3",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 20,
+          "name": "Data4",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 24,
+          "name": "Data5",
+          "type": "uint",
+          "length": 4
+        },
+        {
+          "offset": 28,
+          "name": "Data6",
+          "type": "uint",
+          "length": 4
+        }
+      ]
+    }
+  ]
+}
