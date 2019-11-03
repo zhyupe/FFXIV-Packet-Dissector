@@ -1,0 +1,1 @@
+return require('ffxiv_db_chs')
