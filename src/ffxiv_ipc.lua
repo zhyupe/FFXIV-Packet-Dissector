@@ -101,16 +101,39 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
   end
 
   local tvb = data_tvbr:tvb()
-  -- if type_val == segment_type.IPC then
-  --   Dissector.get('ffxiv_ipc'):call(tvb, pktinfo, root)
-  -- elseif type_val == segment_type.ClientKeepAlive then
-  --   Dissector.get('ffxiv_client_keep_alive'):call(tvb, pktinfo, root)
-  -- elseif type_val == segment_type.ServerKeepAlive then
-  --   Dissector.get('ffxiv_server_keep_alive'):call(tvb, pktinfo, root)
-  -- else
-    pktinfo.cols.info:append(": Unknown")
+  
+  if type_val == ipc_type.ActorControl142 then
+    Dissector.get('ffxiv_ipc_actor_control142'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.ActorControl143 then
+    Dissector.get('ffxiv_ipc_actor_control143'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.AddStatusEffect then
+    Dissector.get('ffxiv_ipc_add_status_effect'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.Announcement then
+    Dissector.get('ffxiv_ipc_announcement'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.CompanyBoard then
+    Dissector.get('ffxiv_ipc_company_board'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.GroupMessage then
+    Dissector.get('ffxiv_ipc_group_message'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.ItemChange then
+    Dissector.get('ffxiv_ipc_item_change'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.ItemCount then
+    Dissector.get('ffxiv_ipc_item_count'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.ItemInit then
+    Dissector.get('ffxiv_ipc_item_init'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.ItemSimple then
+    Dissector.get('ffxiv_ipc_item_simple'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.MatchEvent then
+    Dissector.get('ffxiv_ipc_match_event'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.Ping then
+    Dissector.get('ffxiv_ipc_ping'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.PublicMessage then
+    Dissector.get('ffxiv_ipc_public_message'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.StatusEffectList then
+    Dissector.get('ffxiv_ipc_status_effect_list'):call(tvb, pktinfo, root)
+  else
+    pktinfo.cols.info:append(": Unknown (" .. string.format('%04x', type_val) .. ")")
     data:call(tvb, pktinfo, root)
-  -- end
+  end
 
-  return 0
+  return tvbuf:len()
 end
