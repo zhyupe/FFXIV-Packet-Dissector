@@ -1,32 +1,3 @@
-----------------------------------------
--- do not modify this table
-local debug_level = {
-  DISABLED = 0,
-  LEVEL_1  = 1,
-  LEVEL_2  = 2
-}
-
-local DEBUG = debug_level.LEVEL_2
-
-local dprint = function() end
-local dprint2 = function() end
-local function resetDebugLevel()
-  if DEBUG > debug_level.DISABLED then
-      dprint = function(...)
-          print(table.concat({"Lua: ", ...}," "))
-      end
-
-      if DEBUG > debug_level.LEVEL_1 then
-          dprint2 = dprint
-      end
-  else
-      dprint = function() end
-      dprint2 = dprint
-  end
-end
--- call it now
-resetDebugLevel()
-
 local ffxiv_segment = Proto("ffxiv_segment", "FFXIV Segment")
 
 local function makeValString(enumTable)
@@ -72,8 +43,6 @@ local data = Dissector.get("data")
 -- Whenever Wireshark dissects a packet that our Proto is hooked into, it will call
 -- this function and pass it these arguments for the packet it's dissecting.
 function ffxiv_segment.dissector(tvbuf, pktinfo, root)
-  dprint2("ffxiv_segment.dissector called")
-
   -- get the length of the packet buffer (Tvb).
   local pktlen = tvbuf:len()
   local bytes_consumed = 0
@@ -92,8 +61,6 @@ function ffxiv_segment.dissector(tvbuf, pktinfo, root)
 end
 
 dissectSegment = function (tvbuf, pktinfo, root, offset)
-  dprint2("FFXIV_Segment dissect function called")
-
   -- length_val is the total length of the bundle
   local tree = root:add(ffxiv_segment, tvbuf:range(offset, FFXIV_SEGMENT_HDR_LEN))
 
@@ -152,11 +119,3 @@ dissectSegment = function (tvbuf, pktinfo, root, offset)
 
   return size_val
 end
-
-----------------------------------------
--- the function for handling preferences being changed
-function ffxiv_segment.prefs_changed()
-  dprint2("prefs_changed called")
-end
-
-dprint2("pcapfile Prefs registered")
