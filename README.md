@@ -9,7 +9,7 @@ Copy all the files under `src/` to [the plugin folder](https://www.wireshark.org
 
 ![image](https://user-images.githubusercontent.com/2197479/68070741-31e87c00-fdad-11e9-9ced-86f2fce3d17e.png)
 
-Please be noticed that the plugin checks **all tcp packets** and determines packet types only by magic (`0x41a05252` or 16 bytes of `0`). So its highly
+Please notice that the plugin checks **all tcp packets** and determines packet types only by magic (`0x41a05252` or 16 bytes of `0`). So its highly
 recommended to set capture filters properly to reduce packets to be processed.
 
 ## Supported Packets
