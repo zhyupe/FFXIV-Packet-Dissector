@@ -40,7 +40,7 @@
         {
           "offset": 0,
           "name": "GroupID",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
@@ -60,19 +60,19 @@
         {
           "offset": 8,
           "name": "UID0",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 12,
           "name": "UID1",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 16,
           "name": "CharacterID",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {

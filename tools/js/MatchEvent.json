@@ -4,7 +4,7 @@
   "enums": [
     {
       "name": "MatchEventType",
-      "type": "uint",
+      "type": "uint32",
       "values": [
         {
           "key": "Cancel",
@@ -28,32 +28,32 @@
         {
           "offset": 0,
           "name": "Type",
-          "type": "uint",
+          "type": "uint32",
           "length": 4,
           "enum": "MatchEventType"
         },
         {
           "offset": 4,
           "name": "Reason",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 8,
           "name": "Unknown1",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 12,
           "name": "Unknown2",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 16,
           "name": "Unknown3",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
@@ -77,13 +77,13 @@
         {
           "offset": 24,
           "name": "Unknown5",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 28,
           "name": "Unknown6",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         }
       ]

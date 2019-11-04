@@ -53,43 +53,43 @@
         {
           "offset": 4,
           "name": "Data0",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 8,
           "name": "Data1",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 12,
           "name": "Data2",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 16,
           "name": "Data3",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 20,
           "name": "Data4",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 24,
           "name": "Data5",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 28,
           "name": "Data6",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         }
       ]

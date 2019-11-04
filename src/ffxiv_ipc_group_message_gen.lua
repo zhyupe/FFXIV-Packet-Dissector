@@ -24,13 +24,13 @@ local group_message_type_valstr = makeValString(group_message_type)
 
 local group_message_fields = {
   group_id     = ProtoField.uint32("ffxiv_ipc_group_message.group_id", "GroupID", base.DEC),
-  type         = ProtoField.uint32("ffxiv_ipc_group_message.type", "Type", base.DEC, group_message_type_valstr),
-  server       = ProtoField.uint32("ffxiv_ipc_group_message.server", "Server", base.DEC, db.server),
+  type         = ProtoField.uint16("ffxiv_ipc_group_message.type", "Type", base.DEC, group_message_type_valstr),
+  server       = ProtoField.uint16("ffxiv_ipc_group_message.server", "Server", base.DEC, db.server),
   uid0         = ProtoField.uint32("ffxiv_ipc_group_message.uid0", "UID0", base.DEC),
   uid1         = ProtoField.uint32("ffxiv_ipc_group_message.uid1", "UID1", base.DEC),
   character_id = ProtoField.uint32("ffxiv_ipc_group_message.character_id", "CharacterID", base.DEC),
-  user_server  = ProtoField.uint32("ffxiv_ipc_group_message.user_server", "UserServer", base.DEC, db.server),
-  reserved0    = ProtoField.uint32("ffxiv_ipc_group_message.reserved0", "Reserved0", base.DEC),
+  user_server  = ProtoField.uint16("ffxiv_ipc_group_message.user_server", "UserServer", base.DEC, db.server),
+  reserved0    = ProtoField.uint8("ffxiv_ipc_group_message.reserved0", "Reserved0", base.DEC),
 }
 
 ffxiv_ipc_group_message.fields = group_message_fields

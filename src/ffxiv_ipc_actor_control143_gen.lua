@@ -22,8 +22,8 @@ local actor_control143_type = {
 local actor_control143_type_valstr = makeValString(actor_control143_type)
 
 local actor_control143_fields = {
-  type     = ProtoField.uint32("ffxiv_ipc_actor_control143.type", "Type", base.DEC, actor_control143_type_valstr),
-  unknown0 = ProtoField.uint32("ffxiv_ipc_actor_control143.unknown0", "Unknown0", base.DEC),
+  type     = ProtoField.uint16("ffxiv_ipc_actor_control143.type", "Type", base.DEC, actor_control143_type_valstr),
+  unknown0 = ProtoField.uint16("ffxiv_ipc_actor_control143.unknown0", "Unknown0", base.DEC),
   data0    = ProtoField.uint32("ffxiv_ipc_actor_control143.data0", "Data0", base.DEC),
   data1    = ProtoField.uint32("ffxiv_ipc_actor_control143.data1", "Data1", base.DEC),
   data2    = ProtoField.uint32("ffxiv_ipc_actor_control143.data2", "Data2", base.DEC),

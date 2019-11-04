@@ -9,7 +9,7 @@
         {
           "offset": 0,
           "name": "Index",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
@@ -28,13 +28,13 @@
         {
           "offset": 8,
           "name": "Amount",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 12,
           "name": "Unknown0",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
@@ -52,19 +52,19 @@
         {
           "offset": 20,
           "name": "Unknown2",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 24,
           "name": "Unknown3",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 28,
           "name": "Unknown4",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         }
       ]

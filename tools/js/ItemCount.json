@@ -9,25 +9,25 @@
         {
           "offset": 0,
           "name": "Index",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 4,
           "name": "Amount",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 8,
           "name": "Unknown1",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 12,
           "name": "Unknown2",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         }
       ]

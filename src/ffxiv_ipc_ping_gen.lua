@@ -3,7 +3,7 @@
 local ffxiv_ipc_ping = Proto("ffxiv_ipc_ping", "FFXIV-IPC Ping")
 
 local ping_fields = {
-  timestamp = ProtoField.uint32("ffxiv_ipc_ping.timestamp", "Timestamp", base.DEC),
+  timestamp = ProtoField.uint64("ffxiv_ipc_ping.timestamp", "Timestamp", base.DEC),
   unknown1  = ProtoField.uint32("ffxiv_ipc_ping.unknown1", "Unknown1", base.DEC),
   unknown2  = ProtoField.uint32("ffxiv_ipc_ping.unknown2", "Unknown2", base.DEC),
 }

@@ -24,9 +24,9 @@ local match_event_fields = {
   unknown1    = ProtoField.uint32("ffxiv_ipc_match_event.unknown1", "Unknown1", base.DEC),
   unknown2    = ProtoField.uint32("ffxiv_ipc_match_event.unknown2", "Unknown2", base.DEC),
   unknown3    = ProtoField.uint32("ffxiv_ipc_match_event.unknown3", "Unknown3", base.DEC),
-  roulette_id = ProtoField.uint32("ffxiv_ipc_match_event.roulette_id", "RouletteID", base.DEC),
-  unknown4    = ProtoField.uint32("ffxiv_ipc_match_event.unknown4", "Unknown4", base.DEC),
-  instance_id = ProtoField.uint32("ffxiv_ipc_match_event.instance_id", "InstanceID", base.DEC),
+  roulette_id = ProtoField.uint8("ffxiv_ipc_match_event.roulette_id", "RouletteID", base.DEC),
+  unknown4    = ProtoField.uint8("ffxiv_ipc_match_event.unknown4", "Unknown4", base.DEC),
+  instance_id = ProtoField.uint16("ffxiv_ipc_match_event.instance_id", "InstanceID", base.DEC),
   unknown5    = ProtoField.uint32("ffxiv_ipc_match_event.unknown5", "Unknown5", base.DEC),
   unknown6    = ProtoField.uint32("ffxiv_ipc_match_event.unknown6", "Unknown6", base.DEC),
 }

@@ -4,12 +4,12 @@ local ffxiv_ipc_item_simple = Proto("ffxiv_ipc_item_simple", "FFXIV-IPC ItemSimp
 
 local item_simple_fields = {
   index    = ProtoField.uint32("ffxiv_ipc_item_simple.index", "Index", base.DEC),
-  location = ProtoField.uint32("ffxiv_ipc_item_simple.location", "Location", base.DEC, item_location_valstr),
-  position = ProtoField.uint32("ffxiv_ipc_item_simple.position", "Position", base.DEC),
+  location = ProtoField.uint16("ffxiv_ipc_item_simple.location", "Location", base.DEC, item_location_valstr),
+  position = ProtoField.uint16("ffxiv_ipc_item_simple.position", "Position", base.DEC),
   amount   = ProtoField.uint32("ffxiv_ipc_item_simple.amount", "Amount", base.DEC),
   unknown0 = ProtoField.uint32("ffxiv_ipc_item_simple.unknown0", "Unknown0", base.DEC),
-  item_id  = ProtoField.uint32("ffxiv_ipc_item_simple.item_id", "ItemID", base.DEC),
-  unknown1 = ProtoField.uint32("ffxiv_ipc_item_simple.unknown1", "Unknown1", base.DEC),
+  item_id  = ProtoField.uint16("ffxiv_ipc_item_simple.item_id", "ItemID", base.DEC),
+  unknown1 = ProtoField.uint16("ffxiv_ipc_item_simple.unknown1", "Unknown1", base.DEC),
   unknown2 = ProtoField.uint32("ffxiv_ipc_item_simple.unknown2", "Unknown2", base.DEC),
   unknown3 = ProtoField.uint32("ffxiv_ipc_item_simple.unknown3", "Unknown3", base.DEC),
   unknown4 = ProtoField.uint32("ffxiv_ipc_item_simple.unknown4", "Unknown4", base.DEC),

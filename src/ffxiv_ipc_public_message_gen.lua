@@ -19,12 +19,12 @@ local public_message_type = {
 local public_message_type_valstr = makeValString(public_message_type)
 
 local public_message_fields = {
-  uid0         = ProtoField.uint32("ffxiv_ipc_public_message.uid0", "UID0", base.DEC),
-  uid1         = ProtoField.uint32("ffxiv_ipc_public_message.uid1", "UID1", base.DEC),
-  character_id = ProtoField.uint32("ffxiv_ipc_public_message.character_id", "CharacterID", base.DEC),
-  user_server  = ProtoField.uint32("ffxiv_ipc_public_message.user_server", "UserServer", base.DEC),
-  type         = ProtoField.uint32("ffxiv_ipc_public_message.type", "Type", base.DEC, public_message_type_valstr),
-  reserved0    = ProtoField.uint32("ffxiv_ipc_public_message.reserved0", "Reserved0", base.DEC),
+  uid0         = ProtoField.uint32("ffxiv_ipc_public_message.uid0", "UID0", base.HEX),
+  uid1         = ProtoField.uint32("ffxiv_ipc_public_message.uid1", "UID1", base.HEX),
+  character_id = ProtoField.uint32("ffxiv_ipc_public_message.character_id", "CharacterID", base.HEX),
+  user_server  = ProtoField.uint16("ffxiv_ipc_public_message.user_server", "UserServer", base.DEC, db.World),
+  type         = ProtoField.uint8("ffxiv_ipc_public_message.type", "Type", base.DEC, public_message_type_valstr),
+  reserved0    = ProtoField.uint8("ffxiv_ipc_public_message.reserved0", "Reserved0", base.DEC),
 }
 
 ffxiv_ipc_public_message.fields = public_message_fields

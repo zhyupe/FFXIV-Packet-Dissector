@@ -9,19 +9,19 @@
         {
           "offset": 0,
           "name": "Unknown0",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 4,
           "name": "CurrentHP",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 8,
           "name": "MaxHP",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
@@ -69,7 +69,7 @@
         {
           "offset": 8,
           "name": "ActorID",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         }
       ]
@@ -80,19 +80,19 @@
         {
           "offset": 0,
           "name": "Unknown0",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 4,
           "name": "CurrentHP",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
           "offset": 8,
           "name": "MaxHP",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         },
         {
@@ -140,7 +140,7 @@
         {
           "offset": 8,
           "name": "ActorID",
-          "type": "uint",
+          "type": "uint32",
           "length": 4
         }
       ]

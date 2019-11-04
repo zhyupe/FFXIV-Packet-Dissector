@@ -28,11 +28,11 @@ local ability_fields = {
   unknown2  = ProtoField.uint32("ffxiv_ipc_ability.unknown2", "Unknown2", base.DEC),
   unknown3  = ProtoField.uint32("ffxiv_ipc_ability.unknown3", "Unknown3", base.DEC),
   unknown4  = ProtoField.uint32("ffxiv_ipc_ability.unknown4", "Unknown4", base.DEC),
-  unknown5  = ProtoField.uint32("ffxiv_ipc_ability.unknown5", "Unknown5", base.DEC),
-  count     = ProtoField.uint32("ffxiv_ipc_ability.count", "Count", base.DEC),
-  unknown6  = ProtoField.uint32("ffxiv_ipc_ability.unknown6", "Unknown6", base.DEC),
+  unknown5  = ProtoField.uint8("ffxiv_ipc_ability.unknown5", "Unknown5", base.DEC),
+  count     = ProtoField.uint8("ffxiv_ipc_ability.count", "Count", base.DEC),
+  unknown6  = ProtoField.uint16("ffxiv_ipc_ability.unknown6", "Unknown6", base.DEC),
   unknown7  = ProtoField.uint32("ffxiv_ipc_ability.unknown7", "Unknown7", base.DEC),
-  unknown8  = ProtoField.uint32("ffxiv_ipc_ability.unknown8", "Unknown8", base.DEC),
+  unknown8  = ProtoField.uint16("ffxiv_ipc_ability.unknown8", "Unknown8", base.DEC),
 }
 
 ffxiv_ipc_ability.fields = ability_fields
