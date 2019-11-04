@@ -4,17 +4,19 @@ let files = fs.readdirSync('./js')
 
 const snakeCase = name => name.replace(/\s*([A-Z]+)/g, (m0, m1, index) => `${index ? '_' : ''}${m1.toLowerCase()}`)
 const tvbMethod = function (type) {
-  if (type.startsWith('uint') && type !== 'uint64') {
-    return 'uint'
+  if (type.startsWith('uint')) {
+    return type === 'uint64' ? 'le_uint64' : 'le_uint'
+  } else if (type === 'float') {
+    return 'le_float'
   }
 
   return type
 }
 
 const generateLuaDissector = function (name, obj) {
-  if (!obj.structs.length) return ''
+  let fields = obj.fields || (obj.structs && obj.structs[0] && obj.structs[0].fields)
+  if (!fields || !fields.length) return ''
   let requireDB = false
-  let fields = obj.structs[0].fields
   fields.forEach(item => {
     item.key = snakeCase(item.name)
     if (item.enum) {
@@ -48,7 +50,7 @@ ${obj.enums.map(item => `
 local ${snakeCase(item.name)}_valstr = makeValString(${snakeCase(item.name)})`).join('')}
 ` : ''}
 local ${name}_fields = {${fields.map(item => `
-  ${item.key}${' '.repeat(maxLength - item.key.length)} = ProtoField.uint32("ffxiv_ipc_${name}.${
+  ${item.key}${' '.repeat(maxLength - item.key.length)} = ProtoField.${item.type}("ffxiv_ipc_${name}.${
   item.key}", "${item.name}", base.${item.base || 'DEC'}${item.enum ? `, ${item.enum}` : ''}),`).join('')}
 }
 
@@ -56,11 +58,11 @@ ffxiv_ipc_${name}.fields = ${name}_fields
 
 function ffxiv_ipc_${name}.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_${name}, tvbuf)
-${obj.structs[0].fields.map(item => `
+${fields.map(item => `
   -- dissect the ${item.key} field
-  local ${item.key}_tvbr = tvbuf:range(${item.offset}, ${item.length})
-  local ${item.key}_val  = ${item.key}_tvbr:le_${tvbMethod(item.type)}()
-  tree:add_le(${name}_fields.${item.key}, ${item.key}_tvbr)
+  local ${item.key}_tvbr = tvbuf:range(${item.offset}${item.length ? `, ${item.length}` : ''})
+  local ${item.key}_val  = ${item.key}_tvbr:${item.tvbMethod || `${tvbMethod(item.type)}()`}
+  tree:${item.add_le === false ? 'add' : 'add_le'}(${name}_fields.${item.key}, ${item.key}_${item.add_val === true ? 'val' : 'tvbr'})
 `).join('')}
 
   pktinfo.cols.info:set("${obj.name}")
@@ -68,19 +70,44 @@ ${obj.structs[0].fields.map(item => `
 end`
 }
 
-const names = []
+const ipcTypes = []
 
 for (let file of files) {
   const obj = JSON.parse(fs.readFileSync('./js/' + file))
   const name = snakeCase(obj.name || file.replace('.json', ''))
 
   if (obj.name) {
-    names.push(obj.name)
+    ipcTypes.push({
+      name: obj.name.replace(/ /g, ''),
+      type: obj.type,
+      version: obj.version
+    })
   }
 
   fs.writeFileSync(`../src/ffxiv_ipc_${name}_gen.lua`, generateLuaDissector(name, obj))
 }
 
-console.log(names.map(name => `if type_val == ipc_type.${name} then
-  Dissector.get('ffxiv_ipc_${snakeCase(name)}'):call(tvb, pktinfo, root)
-else`).join(''))
+let ipcContent = fs.readFileSync('../src/ffxiv_ipc.lua', 'utf-8')
+let replaceContent = function (startTag, endTag, replaceWith) {
+  ipcContent = ipcContent.replace(new RegExp(`-- ${startTag}[\\s\\S]+-- ${endTag}`, 'g'), () => {
+    return `-- ${startTag}\n${replaceWith}\n-- ${endTag}`
+  })
+}
+
+replaceContent(
+  '#ipc enum starts#',
+  '#ipc enum ends#',
+  ipcTypes.map(item => `  ${item.name} = ${
+    typeof item.type === 'number' ? `0x${('000' + item.type.toString(16)).substr(-4)}` : item.type
+  },${item.version ? ` -- ${item.version}` : ''}`).join('\n')
+)
+
+replaceContent(
+  '#ipc condition starts#',
+  '#ipc condition ends#',
+  '  ' + ipcTypes.map(({ name }) => `if type_val == ipc_type.${name} then
+    Dissector.get('ffxiv_ipc_${snakeCase(name)}'):call(tvb, pktinfo, root)
+  else`).join('')
+)
+
+fs.writeFileSync('../src/ffxiv_ipc.lua', ipcContent)
