@@ -58,12 +58,13 @@ ffxiv_ipc_${name}.fields = ${name}_fields
 
 function ffxiv_ipc_${name}.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_${name}, tvbuf)
-${fields.map(item => `
+${fields.map(item => `${item.check_length ? `
+if tvbuf:len() > ${item.offset} then` : ''}
   -- dissect the ${item.key} field
   local ${item.key}_tvbr = tvbuf:range(${item.offset}${item.length ? `, ${item.length}` : ''})
   local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvb_method(item.type)}()`}
   tree:${item.add_le === false ? 'add' : 'add_le'}(${name}_fields.${item.key}, ${item.key}_${item.add_val === true ? 'val' : 'tvbr'})
-`).join('')}
+${item.check_length ? 'end\n' : ''}`).join('')}
 
   pktinfo.cols.info:set("${obj.name}")
   return tvbuf:len()
