@@ -20,8 +20,7 @@ local public_message_type = {
 local public_message_type_valstr = makeValString(public_message_type)
 
 local public_message_fields = {
-  uid0         = ProtoField.uint32("ffxiv_ipc_public_message.uid0", "UID0", base.HEX),
-  uid1         = ProtoField.uint32("ffxiv_ipc_public_message.uid1", "UID1", base.HEX),
+  unique_id    = ProtoField.uint64("ffxiv_ipc_public_message.unique_id", "UniqueID", base.HEX),
   character_id = ProtoField.uint32("ffxiv_ipc_public_message.character_id", "CharacterID", base.HEX),
   user_server  = ProtoField.uint16("ffxiv_ipc_public_message.user_server", "UserServer", base.DEC, db.World),
   type         = ProtoField.uint8("ffxiv_ipc_public_message.type", "Type", base.DEC, public_message_type_valstr),
@@ -35,15 +34,10 @@ ffxiv_ipc_public_message.fields = public_message_fields
 function ffxiv_ipc_public_message.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_public_message, tvbuf)
 
-  -- dissect the uid0 field
-  local uid0_tvbr = tvbuf:range(0, 4)
-  local uid0_val  = uid0_tvbr:le_uint()
-  tree:add_le(public_message_fields.uid0, uid0_tvbr)
-
-  -- dissect the uid1 field
-  local uid1_tvbr = tvbuf:range(4, 4)
-  local uid1_val  = uid1_tvbr:le_uint()
-  tree:add_le(public_message_fields.uid1, uid1_tvbr)
+  -- dissect the unique_id field
+  local unique_id_tvbr = tvbuf:range(0, 8)
+  local unique_id_val  = unique_id_tvbr:le_uint64()
+  tree:add_le(public_message_fields.unique_id, unique_id_tvbr)
 
   -- dissect the character_id field
   local character_id_tvbr = tvbuf:range(8, 4)

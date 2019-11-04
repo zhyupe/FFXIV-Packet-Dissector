@@ -1,6 +1,7 @@
 {
   "name": "Group Message",
   "type": 101,
+  "version": "5.0",
   "enums": [
     {
       "name": "GroupMessageType",
@@ -33,62 +34,73 @@
       ]
     }
   ],
-  "structs": [
+  "fields": [
     {
-      "name": "GroupMessageHeader",
-      "fields": [
-        {
-          "offset": 0,
-          "name": "GroupID",
-          "type": "uint32",
-          "length": 4
-        },
-        {
-          "offset": 4,
-          "name": "Type",
-          "type": "uint16",
-          "length": 2,
-          "enum": "GroupMessageType"
-        },
-        {
-          "offset": 6,
-          "name": "Server",
-          "type": "uint16",
-          "length": 2,
-          "enum": "$server"
-        },
-        {
-          "offset": 8,
-          "name": "UID0",
-          "type": "uint32",
-          "length": 4
-        },
-        {
-          "offset": 12,
-          "name": "UID1",
-          "type": "uint32",
-          "length": 4
-        },
-        {
-          "offset": 16,
-          "name": "CharacterID",
-          "type": "uint32",
-          "length": 4
-        },
-        {
-          "offset": 20,
-          "name": "UserServer",
-          "type": "uint16",
-          "length": 2,
-          "enum": "$server"
-        },
-        {
-          "offset": 22,
-          "name": "Reserved0",
-          "type": "uint8",
-          "length": 1
-        }
-      ]
+      "offset": 0,
+      "name": "GroupID",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 4,
+      "name": "Type",
+      "type": "uint16",
+      "length": 2,
+      "enum": "GroupMessageType"
+    },
+    {
+      "offset": 6,
+      "name": "Server",
+      "type": "uint16",
+      "length": 2,
+      "enum": "$server"
+    },
+    {
+      "offset": 8,
+      "name": "UniqueID",
+      "type": "uint64",
+      "length": 8,
+      "base": "HEX"
+    },
+    {
+      "offset": 16,
+      "name": "CharacterID",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 20,
+      "name": "UserServer",
+      "type": "uint16",
+      "length": 2,
+      "enum": "$server"
+    },
+    {
+      "offset": 22,
+      "name": "Reserved0",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 23,
+      "name": "Nickname",
+      "type": "string",
+      "base": "UNICODE",
+      "tvb_method": "string(ENC_UTF_8)",
+      "add_le": false,
+      "add_val": true,
+      "check_length": true,
+      "length": 32
+    },
+    {
+      "offset": 55,
+      "name": "Content",
+      "type": "string",
+      "base": "UNICODE",
+      "tvb_method": "string(ENC_UTF_8)",
+      "add_le": false,
+      "add_val": true,
+      "check_length": true
     }
   ]
 }

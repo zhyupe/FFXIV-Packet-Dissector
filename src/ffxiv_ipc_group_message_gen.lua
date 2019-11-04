@@ -26,11 +26,12 @@ local group_message_fields = {
   group_id     = ProtoField.uint32("ffxiv_ipc_group_message.group_id", "GroupID", base.DEC),
   type         = ProtoField.uint16("ffxiv_ipc_group_message.type", "Type", base.DEC, group_message_type_valstr),
   server       = ProtoField.uint16("ffxiv_ipc_group_message.server", "Server", base.DEC, db.server),
-  uid0         = ProtoField.uint32("ffxiv_ipc_group_message.uid0", "UID0", base.DEC),
-  uid1         = ProtoField.uint32("ffxiv_ipc_group_message.uid1", "UID1", base.DEC),
+  unique_id    = ProtoField.uint64("ffxiv_ipc_group_message.unique_id", "UniqueID", base.HEX),
   character_id = ProtoField.uint32("ffxiv_ipc_group_message.character_id", "CharacterID", base.DEC),
   user_server  = ProtoField.uint16("ffxiv_ipc_group_message.user_server", "UserServer", base.DEC, db.server),
   reserved0    = ProtoField.uint8("ffxiv_ipc_group_message.reserved0", "Reserved0", base.DEC),
+  nickname     = ProtoField.string("ffxiv_ipc_group_message.nickname", "Nickname", base.UNICODE),
+  content      = ProtoField.string("ffxiv_ipc_group_message.content", "Content", base.UNICODE),
 }
 
 ffxiv_ipc_group_message.fields = group_message_fields
@@ -53,15 +54,10 @@ function ffxiv_ipc_group_message.dissector(tvbuf, pktinfo, root)
   local server_val  = server_tvbr:le_uint()
   tree:add_le(group_message_fields.server, server_tvbr)
 
-  -- dissect the uid0 field
-  local uid0_tvbr = tvbuf:range(8, 4)
-  local uid0_val  = uid0_tvbr:le_uint()
-  tree:add_le(group_message_fields.uid0, uid0_tvbr)
-
-  -- dissect the uid1 field
-  local uid1_tvbr = tvbuf:range(12, 4)
-  local uid1_val  = uid1_tvbr:le_uint()
-  tree:add_le(group_message_fields.uid1, uid1_tvbr)
+  -- dissect the unique_id field
+  local unique_id_tvbr = tvbuf:range(8, 8)
+  local unique_id_val  = unique_id_tvbr:le_uint64()
+  tree:add_le(group_message_fields.unique_id, unique_id_tvbr)
 
   -- dissect the character_id field
   local character_id_tvbr = tvbuf:range(16, 4)
@@ -77,6 +73,20 @@ function ffxiv_ipc_group_message.dissector(tvbuf, pktinfo, root)
   local reserved0_tvbr = tvbuf:range(22, 1)
   local reserved0_val  = reserved0_tvbr:le_uint()
   tree:add_le(group_message_fields.reserved0, reserved0_tvbr)
+
+if tvbuf:len() > 23 then
+  -- dissect the nickname field
+  local nickname_tvbr = tvbuf:range(23, 32)
+  local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
+  tree:add(group_message_fields.nickname, nickname_val)
+end
+
+if tvbuf:len() > 55 then
+  -- dissect the content field
+  local content_tvbr = tvbuf:range(55)
+  local content_val  = content_tvbr:string(ENC_UTF_8)
+  tree:add(group_message_fields.content, content_val)
+end
 
 
   pktinfo.cols.info:set("Group Message")

@@ -28,16 +28,9 @@
       "fields": [
         {
           "offset": 0,
-          "name": "UID0",
-          "type": "uint32",
-          "length": 4,
-          "base": "HEX"
-        },
-        {
-          "offset": 4,
-          "name": "UID1",
-          "type": "uint32",
-          "length": 4,
+          "name": "UniqueID",
+          "type": "uint64",
+          "length": 8,
           "base": "HEX"
         },
         {
