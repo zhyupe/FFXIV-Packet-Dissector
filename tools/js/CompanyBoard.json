@@ -1,6 +1,20 @@
 {
   "name": "Company Board",
-  "type": 319,
+  "type": "0x0150",
+  "version": "5.0",
   "enums": [],
-  "structs": []
+  "fields": [{
+    "offset": 0,
+    "name": "Unknown",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 1,
+    "name": "Content",
+    "type": "string",
+    "base": "UNICODE",
+    "tvbMethod": "string(ENC_UTF_8)",
+    "add_le": false,
+    "add_val": true
+  }]
 }
