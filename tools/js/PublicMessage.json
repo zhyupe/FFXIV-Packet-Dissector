@@ -1,6 +1,7 @@
 {
   "name": "Public Message",
-  "type": 247,
+  "type": "0x0104",
+  "version": "5.0",
   "enums": [
     {
       "name": "PublicMessageType",
@@ -28,26 +29,30 @@
         {
           "offset": 0,
           "name": "UID0",
-          "type": "uint",
-          "length": 4
+          "type": "uint32",
+          "length": 4,
+          "base": "HEX"
         },
         {
           "offset": 4,
           "name": "UID1",
-          "type": "uint",
-          "length": 4
+          "type": "uint32",
+          "length": 4,
+          "base": "HEX"
         },
         {
           "offset": 8,
           "name": "CharacterID",
-          "type": "uint",
-          "length": 4
+          "type": "uint32",
+          "length": 4,
+          "base": "HEX"
         },
         {
           "offset": 12,
           "name": "UserServer",
           "type": "uint16",
-          "length": 2
+          "length": 2,
+          "enum": "$World"
         },
         {
           "offset": 14,
@@ -61,6 +66,24 @@
           "name": "Reserved0",
           "type": "uint8",
           "length": 1
+        },
+        {
+          "offset": 16,
+          "name": "Nickname",
+          "type": "string",
+          "base": "UNICODE",
+          "tvbMethod": "string(ENC_UTF_8)",
+          "add_le": false,
+          "add_val": true,
+          "length": 32
+        }, {
+          "offset": 48,
+          "name": "Content",
+          "type": "string",
+          "base": "UNICODE",
+          "tvbMethod": "string(ENC_UTF_8)",
+          "add_le": false,
+          "add_val": true
         }
       ]
     }
