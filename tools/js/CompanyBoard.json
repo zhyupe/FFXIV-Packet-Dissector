@@ -13,7 +13,7 @@
     "name": "Content",
     "type": "string",
     "base": "UNICODE",
-    "tvbMethod": "string(ENC_UTF_8)",
+    "tvb_method": "string(ENC_UTF_8)",
     "add_le": false,
     "add_val": true
   }]

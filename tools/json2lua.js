@@ -3,7 +3,7 @@ const fs = require('fs')
 let files = fs.readdirSync('./js')
 
 const snakeCase = name => name.replace(/\s*([A-Z]+)/g, (m0, m1, index) => `${index ? '_' : ''}${m1.toLowerCase()}`)
-const tvbMethod = function (type) {
+const tvb_method = function (type) {
   if (type.startsWith('uint')) {
     return type === 'uint64' ? 'le_uint64' : 'le_uint'
   } else if (type === 'float') {
@@ -61,7 +61,7 @@ function ffxiv_ipc_${name}.dissector(tvbuf, pktinfo, root)
 ${fields.map(item => `
   -- dissect the ${item.key} field
   local ${item.key}_tvbr = tvbuf:range(${item.offset}${item.length ? `, ${item.length}` : ''})
-  local ${item.key}_val  = ${item.key}_tvbr:${item.tvbMethod || `${tvbMethod(item.type)}()`}
+  local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvb_method(item.type)}()`}
   tree:${item.add_le === false ? 'add' : 'add_le'}(${name}_fields.${item.key}, ${item.key}_${item.add_val === true ? 'val' : 'tvbr'})
 `).join('')}
 
