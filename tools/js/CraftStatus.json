@@ -1,0 +1,74 @@
+{
+  "name": "CraftStatus",
+  "type": "0x01b9",
+  "enums": [],
+  "fields": [
+    {
+      "offset": 0,
+      "name": "CharacterID",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 4,
+      "name": "Unknown1",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 8,
+      "name": "Unknown2",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 10,
+      "name": "Unknown3",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 12,
+      "name": "Unknown4",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 16,
+      "name": "Unknown5",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 18,
+      "name": "Unknown6",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 20,
+      "name": "Unknown7",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 12,
+      "name": "Action",
+      "type": "uint32",
+      "enum": "$Action",
+      "length": 4
+    },
+    {
+      "offset": 16,
+      "name": "Unknown8",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 20,
+      "name": "Unknown9",
+      "type": "uint32",
+      "length": 4
+    }
+  ]
+}

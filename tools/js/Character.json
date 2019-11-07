@@ -1,0 +1,75 @@
+{
+  "name": "Character",
+  "type": "0x0180",
+  "version": "5.0",
+  "enums": [],
+  "fields": [{
+    "offset": 0,
+    "name": "Title",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "Current Server",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$World"
+  }, {
+    "offset": 6,
+    "name": "Original Server",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$World"
+  }, {
+    "offset": 8,
+    "name": "Unknown1",
+    "type": "uint32",
+    "base": "HEX",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Unknown2",
+    "type": "uint32",
+    "base": "HEX",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "Target ID",
+    "type": "uint32",
+    "base": "HEX",
+    "length": 4
+  }, {
+    "offset": 64,
+    "name": "NPC Base",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 68,
+    "name": "NPC ID",
+    "type": "uint16",
+    "enum": "$BNpcName",
+    "print": true,
+    "length": 2
+  }, {
+    "offset": 70,
+    "name": "Type",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 84,
+    "name": "Owner ID",
+    "type": "uint32",
+    "base": "HEX",
+    "length": 4
+  }, {
+    "offset": 560,
+    "name": "Nickname",
+    "type": "string",
+    "base": "UNICODE",
+    "tvb_method": "string(ENC_UTF_8)",
+    "print": true,
+    "add_le": false,
+    "add_val": true,
+    "length": 32
+  }]
+}

@@ -1,0 +1,64 @@
+{
+  "name": "ClientAction",
+  "type": "0x015b",
+  "enums": [{
+    "name": "ClientActionType",
+    "type": "ushort",
+    "values": [{
+      "key": "Action",
+      "value": 8
+    }, {
+      "key": "CraftAction",
+      "value": 9
+    }, {
+      "key": "InvalidAction",
+      "value": 10
+    }]
+  }],
+  "fields": [
+    {
+      "offset": 0,
+      "name": "Unknown1",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 4,
+      "name": "Unknown2",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 8,
+      "name": "Type",
+      "type": "uint16",
+      "enum": "ClientActionType",
+      "length": 2
+    },
+    {
+      "offset": 10,
+      "name": "Unknown3",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 12,
+      "name": "Action",
+      "type": "uint32",
+      "enum": "$Action",
+      "length": 4
+    },
+    {
+      "offset": 16,
+      "name": "Unknown4",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 20,
+      "name": "Unknown5",
+      "type": "uint32",
+      "length": 4
+    }
+  ]
+}
