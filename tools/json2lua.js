@@ -64,11 +64,11 @@ local function makeValString(enumTable)
   return t
 end
 ${obj.enums.map(item => `
-local ${snakeCase(item.name)} = {${item.values.map(({ key, value }) => `
+local ${item.key} = {${item.values.map(({ key, value }) => `
   ${key} = ${value},`).join('')}
 }`).join('\n')}
 ${obj.enums.map(item => `
-local ${snakeCase(item.name)}_valstr = makeValString(${snakeCase(item.name)})`).join('')}
+local ${item.key}_valstr = makeValString(${item.key})`).join('')}
 ` : ''}
 local ${snakeName}_fields = {${fields.map(item => `
   ${item.key}${' '.repeat(maxLength - item.key.length)} = ProtoField.${item.type}("ffxiv_ipc_${snakeName}.${
