@@ -1,6 +1,10 @@
 {
   "name": "ItemChange",
   "type": "0x01A8",
+  "aliases": [{
+    "name": "ItemInit",
+    "type": "0x01a1"
+  }],
   "version": "5.0",
   "enums": [{
     "name": "ItemQuality",
@@ -216,7 +220,8 @@
           "name": "Item",
           "type": "uint16",
           "length": 2,
-          "enum": "$Item"
+          "enum": "$Item",
+          "append": "enum"
         },
         {
           "offset": 18,
