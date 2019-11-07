@@ -123,6 +123,7 @@ function ffxiv_ipc_item_change.dissector(tvbuf, pktinfo, root)
   local item_tvbr = tvbuf:range(16, 2)
   local item_val  = item_tvbr:le_uint()
   tree:add_le(item_change_fields.item, item_tvbr)
+  tree:append_text(", Item: " .. db.Item[item_val])
 
   -- dissect the unknown1 field
   local unknown1_tvbr = tvbuf:range(18, 2)
