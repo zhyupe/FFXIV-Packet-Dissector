@@ -13,8 +13,8 @@ const db = function (name) {
     dbStore[name].findById = function (id) {
       return this.find(item => item['#'] == id)
     }
-    dbStore[name].kvmap = function () {
-      return this.map(item => ({ key: item['#'], value: item.Name }))
+    dbStore[name].kvmap = function (nKey = 'Name') {
+      return this.map(item => ({ key: item['#'], value: item[nKey] }))
     }
   }
 
@@ -34,6 +34,11 @@ return {${Object.keys(output).map(key => `
 langs.forEach(lang => {
   const obj = {}
 
+  obj.Action = [].concat(
+    db(`Action.${lang}`).kvmap(),
+    db(`CraftAction.${lang}`).kvmap()
+  )
+  obj.BNpcName = db(`BNpcName.${lang}`).kvmap('Singular')
   obj.ContentType = db(`ContentType.${lang}`).kvmap()
   obj.ContentRoulette = db(`ContentRoulette.${lang}`).kvmap()
   obj.Fate = db(`Fate.${lang}`).kvmap()
@@ -45,6 +50,8 @@ langs.forEach(lang => {
       value: db(`PlaceName.${lang}`).findById(item.PlaceName).Name
     }
   })
+  obj.TitleMasculine = db(`Title.${lang}`).kvmap('Masculine')
+  obj.TitleFeminine = db(`Title.${lang}`).kvmap('Feminine')
   obj.World = db('World').kvmap()
 
   fs.writeFileSync(`${output}ffxiv_db_${lang}.lua`, generateLuaTable(obj))
