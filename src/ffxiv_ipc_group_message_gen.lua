@@ -15,8 +15,6 @@ local group_message_type = {
   Linkshell = 2,
   FreeCompany = 3,
   NoviceNetwork = 4,
-  Not = 5,
-  sure = 6,
   Time = 333,
 }
 
@@ -74,7 +72,7 @@ function ffxiv_ipc_group_message.dissector(tvbuf, pktinfo, root)
   local reserved0_val  = reserved0_tvbr:le_uint()
   tree:add_le(group_message_fields.reserved0, reserved0_tvbr)
 
-if tvbuf:len() > 23 then
+if tvbuf:len() > 55 then
   -- dissect the nickname field
   local nickname_tvbr = tvbuf:range(23, 32)
   local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
