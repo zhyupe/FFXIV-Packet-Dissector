@@ -29,6 +29,7 @@ local ipc_type = {
   ActorControl143 = 0x0143,
   AddStatusEffect = 0x0141,
   Announcement = 0x010c,
+  Character = 0x0180, -- 5.0
   ClientAction = 0x015b,
   CompanyBoard = 0x0150, -- 5.0
   CompanyInfo = 0x0151, -- 5.0
@@ -39,7 +40,6 @@ local ipc_type = {
   ItemCount = 0x0197,
   ItemSimple = 0x019b,
   MatchEvent = 0x0078,
-  Character = 0x0180, -- 5.0
   PublicMessage = 0x0104, -- 5.0
   StatusEffectList = 0x0151,
 -- #ipc enum ends#
@@ -119,6 +119,8 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
     Dissector.get('ffxiv_ipc_add_status_effect'):call(tvb, pktinfo, root)
   elseif type_val == ipc_type.Announcement then
     Dissector.get('ffxiv_ipc_announcement'):call(tvb, pktinfo, root)
+  elseif type_val == ipc_type.Character then
+    Dissector.get('ffxiv_ipc_character'):call(tvb, pktinfo, root)
   elseif type_val == ipc_type.ClientAction then
     Dissector.get('ffxiv_ipc_client_action'):call(tvb, pktinfo, root)
   elseif type_val == ipc_type.CompanyBoard then
@@ -139,8 +141,6 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
     Dissector.get('ffxiv_ipc_item_simple'):call(tvb, pktinfo, root)
   elseif type_val == ipc_type.MatchEvent then
     Dissector.get('ffxiv_ipc_match_event'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.Character then
-    Dissector.get('ffxiv_ipc_character'):call(tvb, pktinfo, root)
   elseif type_val == ipc_type.PublicMessage then
     Dissector.get('ffxiv_ipc_public_message'):call(tvb, pktinfo, root)
   elseif type_val == ipc_type.StatusEffectList then

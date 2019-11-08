@@ -13,8 +13,8 @@ local craft_status_fields = {
   unknown6     = ProtoField.uint16("ffxiv_ipc_craft_status.unknown6", "Unknown6", base.DEC),
   unknown7     = ProtoField.uint32("ffxiv_ipc_craft_status.unknown7", "Unknown7", base.DEC),
   action       = ProtoField.uint32("ffxiv_ipc_craft_status.action", "Action", base.DEC, db.Action),
-  unknown4     = ProtoField.uint32("ffxiv_ipc_craft_status.unknown4", "Unknown4", base.DEC),
-  unknown5     = ProtoField.uint32("ffxiv_ipc_craft_status.unknown5", "Unknown5", base.DEC),
+  unknown8     = ProtoField.uint32("ffxiv_ipc_craft_status.unknown8", "Unknown8", base.DEC),
+  unknown9     = ProtoField.uint32("ffxiv_ipc_craft_status.unknown9", "Unknown9", base.DEC),
 }
 
 ffxiv_ipc_craft_status.fields = craft_status_fields
@@ -67,15 +67,15 @@ function ffxiv_ipc_craft_status.dissector(tvbuf, pktinfo, root)
   local action_val  = action_tvbr:le_uint()
   tree:add_le(craft_status_fields.action, action_tvbr)
 
-  -- dissect the unknown4 field
-  local unknown4_tvbr = tvbuf:range(16, 4)
-  local unknown4_val  = unknown4_tvbr:le_uint()
-  tree:add_le(craft_status_fields.unknown4, unknown4_tvbr)
+  -- dissect the unknown8 field
+  local unknown8_tvbr = tvbuf:range(16, 4)
+  local unknown8_val  = unknown8_tvbr:le_uint()
+  tree:add_le(craft_status_fields.unknown8, unknown8_tvbr)
 
-  -- dissect the unknown5 field
-  local unknown5_tvbr = tvbuf:range(20, 4)
-  local unknown5_val  = unknown5_tvbr:le_uint()
-  tree:add_le(craft_status_fields.unknown5, unknown5_tvbr)
+  -- dissect the unknown9 field
+  local unknown9_tvbr = tvbuf:range(20, 4)
+  local unknown9_val  = unknown9_tvbr:le_uint()
+  tree:add_le(craft_status_fields.unknown9, unknown9_tvbr)
 
 
   pktinfo.cols.info:set("CraftStatus")
