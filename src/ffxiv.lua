@@ -249,3 +249,4 @@ local function heur_dissect_ffxiv(tvbuf, pktinfo, root)
 end
 
 ffxiv_proto:register_heuristic("tcp", heur_dissect_ffxiv)
+ffxiv_proto:register_heuristic("udp", heur_dissect_ffxiv)
