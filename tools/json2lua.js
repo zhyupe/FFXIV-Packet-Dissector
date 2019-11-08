@@ -1,3 +1,6 @@
+/*
+ * This tool is used to convert JSON IPC schemas to Lua dissectors.
+ */
 
 const fs = require('fs')
 let files = fs.readdirSync('./js')
@@ -25,6 +28,9 @@ const itemAppend = function (item) {
     case 'hex':
       output = `string.format('%0${item.length / 4}x', ${output}))`
       break
+    case 'val':
+    default:
+      break
   }
 
   return `  tree:append_text(", ${item.append_name === false ? '' : `${item.name}: `}" .. ${output})\n`
@@ -48,6 +54,13 @@ const generateLuaDissector = function (name, obj) {
     return item
   })
 
+  const enums = obj.enums.map(enumItem => {
+    return {
+      key: snakeCase(enumItem.name),
+      ...enumItem
+    }
+  })
+
   let snakeName = snakeCase(name)
   let maxLength = fields.reduce((max, item) => Math.max(max, item.key.length), 0)
 
@@ -55,7 +68,7 @@ const generateLuaDissector = function (name, obj) {
 ${requireDB ? `
 local db = require('ffxiv_db')` : ''}
 local ffxiv_ipc_${snakeName} = Proto("ffxiv_ipc_${snakeName}", "FFXIV-IPC ${name}")
-${obj.enums.length ? `
+${enums.length ? `
 local function makeValString(enumTable)
   local t = {}
   for name,num in pairs(enumTable) do
@@ -63,11 +76,11 @@ local function makeValString(enumTable)
   end
   return t
 end
-${obj.enums.map(item => `
+${enums.map(item => `
 local ${item.key} = {${item.values.map(({ key, value }) => `
   ${key} = ${value},`).join('')}
 }`).join('\n')}
-${obj.enums.map(item => `
+${enums.map(item => `
 local ${item.key}_valstr = makeValString(${item.key})`).join('')}
 ` : ''}
 local ${snakeName}_fields = {${fields.map(item => `
