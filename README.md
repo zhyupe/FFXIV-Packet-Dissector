@@ -121,6 +121,19 @@ interface IPCField {
    * Default: `false`
    */
   check_length: boolean;
+  /**
+   * Whether to append the parsed value to tree title.
+   * If a falsy value (like empty string, `false`, `null` or nothing) is passed, it would append nothing
+   * which is the default behavior.
+   * If an unlisted truthy value is passed, the appended value would depend on the to-string implementation 
+   * of Lua. It's recommended to use `"val"` for this behavior.
+   */
+  append?: 'enum' | 'hex' | any;
+  /**
+   * Whether to append field name before the value.
+   * Default: `false`
+   */
+  append_name: boolean;
 }
 
 interface IPCSchema {
