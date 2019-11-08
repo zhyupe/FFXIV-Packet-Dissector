@@ -118,6 +118,7 @@ function ffxiv_ipc_item_change.dissector(tvbuf, pktinfo, root)
   local amount_tvbr = tvbuf:range(12, 4)
   local amount_val  = amount_tvbr:le_uint()
   tree:add_le(item_change_fields.amount, amount_tvbr)
+  tree:append_text(", Amount: " .. amount_val)
 
   -- dissect the item field
   local item_tvbr = tvbuf:range(16, 2)
@@ -149,6 +150,7 @@ function ffxiv_ipc_item_change.dissector(tvbuf, pktinfo, root)
   local quality_tvbr = tvbuf:range(32, 1)
   local quality_val  = quality_tvbr:le_uint()
   tree:add_le(item_change_fields.quality, quality_tvbr)
+  tree:append_text(", Quality: " .. item_quality_valstr[quality_val])
 
   -- dissect the attribute2 field
   local attribute2_tvbr = tvbuf:range(33, 1)

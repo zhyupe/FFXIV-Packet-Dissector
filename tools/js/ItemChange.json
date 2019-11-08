@@ -213,7 +213,8 @@
           "offset": 12,
           "name": "Amount",
           "type": "uint32",
-          "length": 4
+          "length": 4,
+          "append": "val"
         },
         {
           "offset": 16,
@@ -252,7 +253,8 @@
           "name": "Quality",
           "type": "uint8",
           "length": 1,
-          "enum": "ItemQuality"
+          "enum": "ItemQuality",
+          "append": "enum"
         },
         {
           "offset": 33,
