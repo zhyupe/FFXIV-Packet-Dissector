@@ -124,7 +124,7 @@ function ffxiv_ipc_item_init.dissector(tvbuf, pktinfo, root)
   local item_tvbr = tvbuf:range(16, 2)
   local item_val  = item_tvbr:le_uint()
   tree:add_le(item_init_fields.item, item_tvbr)
-  tree:append_text(", Item: " .. db.Item[item_val])
+  tree:append_text(", Item: " .. (db.Item[item_val] or "(unknown)"))
 
   -- dissect the unknown1 field
   local unknown1_tvbr = tvbuf:range(18, 2)
@@ -150,7 +150,7 @@ function ffxiv_ipc_item_init.dissector(tvbuf, pktinfo, root)
   local quality_tvbr = tvbuf:range(32, 1)
   local quality_val  = quality_tvbr:le_uint()
   tree:add_le(item_init_fields.quality, quality_tvbr)
-  tree:append_text(", Quality: " .. item_quality_valstr[quality_val])
+  tree:append_text(", Quality: " .. (item_quality_valstr[quality_val] or "(unknown)"))
 
   -- dissect the attribute2 field
   local attribute2_tvbr = tvbuf:range(33, 1)

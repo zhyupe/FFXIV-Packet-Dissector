@@ -6,16 +6,19 @@ const dbRoot = '../../library/5.0_all/'
 const output = '../src/'
 const langs = ['chs', 'en', 'ja', 'de', 'fr']
 
+/* eslint no-extend-native: 0 */
+Array.prototype.findById = function (id) {
+  return this.find(item => item['#'] == id)
+}
+
+Array.prototype.kvmap = function (nKey = 'Name', valueFunc = (val) => val) {
+  return this.map(item => ({ key: item['#'], value: valueFunc(item[nKey]) }))
+}
+
 const dbStore = {}
 const db = function (name) {
   if (!dbStore[name]) {
     dbStore[name] = readCsv(fs.readFileSync(path.join(dbRoot, name + '.csv'), 'utf-8'))
-    dbStore[name].findById = function (id) {
-      return this.find(item => item['#'] == id)
-    }
-    dbStore[name].kvmap = function (nKey = 'Name') {
-      return this.map(item => ({ key: item['#'], value: item[nKey] }))
-    }
   }
 
   return dbStore[name]
@@ -44,12 +47,9 @@ langs.forEach(lang => {
   obj.Fate = db(`Fate.${lang}`).kvmap()
   obj.InstanceContent = db(`InstanceContent.${lang}`).kvmap()
   obj.Item = db(`Item.${lang}`).kvmap()
-  obj.TerritoryType = db('TerritoryType').filter(({ PlaceName }) => +PlaceName).map(item => {
-    return {
-      key: item['#'],
-      value: db(`PlaceName.${lang}`).findById(item.PlaceName).Name
-    }
-  })
+  obj.TerritoryType = db('TerritoryType')
+    .filter(({ PlaceName }) => +PlaceName)
+    .kvmap('PlaceName', placeName => db(`PlaceName.${lang}`).findById(placeName).Name)
   obj.TitleMasculine = db(`Title.${lang}`).kvmap('Masculine')
   obj.TitleFeminine = db(`Title.${lang}`).kvmap('Feminine')
   obj.World = db('World').kvmap()

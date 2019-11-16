@@ -22,7 +22,7 @@ const itemAppend = function (item) {
   switch (item.append) {
     case 'enum':
       if (item.enum) {
-        output = `${item.enum}[${output}]`
+        output = `(${item.enum}[${output}] or "(unknown)")`
       }
       break
     case 'hex':
