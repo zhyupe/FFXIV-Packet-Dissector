@@ -4,6 +4,11 @@
 
 const fs = require('fs')
 let files = fs.readdirSync('./js')
+fs.readdirSync('../src').forEach(file => {
+  if (file.startsWith('ffxiv_ipc_') && file.endsWith('_gen.lua')) {
+    fs.unlinkSync(`../src/${file}`)
+  }
+})
 
 const snakeCase = name => name.replace(/\s*([A-Z]+)/g, (m0, m1, index) => `${index ? '_' : ''}${m1.toLowerCase()}`)
 const tvbMethod = function (type) {
@@ -15,6 +20,7 @@ const tvbMethod = function (type) {
 
   return type
 }
+
 const itemAppend = function (item) {
   if (!item.append) return ''
 
@@ -33,7 +39,37 @@ const itemAppend = function (item) {
       break
   }
 
-  return `  tree:append_text(", ${item.append_name === false ? '' : `${item.name}: `}" .. ${output})\n`
+  let outputName = `${item.name}: `
+  if (item.append_name === false) {
+    outputName = ''
+  } else if (item.label) {
+    outputName = `" .. (${Object.keys(item.label)
+      .map(key => `label_${item.key}_${snakeCase(key)}[${snakeCase(key)}_val]`).join(' or ')}) .. "`
+  }
+
+  return `
+  local ${item.key}_display = ", ${outputName}" .. ${output}
+  pktinfo.cols.info:append(${item.key}_display)
+  tree:append_text(${item.key}_display)\n`
+}
+
+const itemLabel = function (item) {
+  return `(${Object.keys(item.label)
+    .map(key => `label_${item.key}_${snakeCase(key)}[${snakeCase(key)}_val]`).join(' or ')} or "${item.name}") .. ": " .. ${item.key}_val`
+}
+
+const table = function (name, array, rawValue = false) {
+  return `${name} = {
+${array.map(({ key, value }) => `  ${tableKey(key)} = ${tableValue(value, rawValue)},`).join('\n')}
+}`
+}
+
+const tableKey = function (key) {
+  return typeof key === 'number' ? `[${key}]` : `${key}`
+}
+
+const tableValue = function (val, raw = false) {
+  return (raw || typeof val === 'number') ? `${val}` : `"${val}"`
 }
 
 let globalEnums = []
@@ -95,15 +131,16 @@ ffxiv_ipc_${snakeName}.fields = ${snakeName}_fields
 
 function ffxiv_ipc_${snakeName}.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_${snakeName}, tvbuf)
+  pktinfo.cols.info:set("${name}")
+
 ${fields.map(item => `${item.check_length ? `
 if tvbuf:len() > ${item.offset + (item.length || 0)} then` : ''}
   -- dissect the ${item.key} field
   local ${item.key}_tvbr = tvbuf:range(${item.offset}${item.length ? `, ${item.length}` : ''})
   local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvbMethod(item.type)}()`}
-  tree:${item.add_le === false ? 'add' : 'add_le'}(${snakeName}_fields.${item.key}, ${item.key}_${item.add_val === true ? 'val' : 'tvbr'})
+  tree:${item.add_le === false ? 'add' : 'add_le'}(${snakeName}_fields.${item.key}, ${item.key}_tvbr, ${item.key}_val${item.label ? `, ${itemLabel(item)}` : ''})
 ${itemAppend(item)}${item.check_length ? 'end\n' : ''}`).join('')}
 
-  pktinfo.cols.info:set("${name}")
   return tvbuf:len()
 end`
 }
@@ -151,7 +188,7 @@ local M = {}
 ${table('M.types', ipcTypes[version].map(({ name, type }) => ({
     key: name,
     value: typeof type === 'number' ? `0x${('000' + type.toString(16)).substr(-4)}` : type
-  })))}
+  })), true)}
 
 function M.getDissector(type)
 ${'  ' + ipcTypes[version].map(({ name }) => `if type == M.types.${name} then
