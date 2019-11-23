@@ -1,4 +1,5 @@
 local ffxiv_ipc = Proto("ffxiv_ipc", "FFXIV IPC")
+local ipc_type = require("ffxiv_ipc_type_5_0")
 
 local function makeValString(enumTable)
   local t = {}
@@ -8,44 +9,7 @@ local function makeValString(enumTable)
   return t
 end
 
-local ipc_type = {
-  -- From Machina
-  Ability1 = 0x0154,
-  Ability8 = 0x0157,
-  Ability16 = 0x0158,
-  Ability24 = 0x0159,
-  Ability32 = 0x015a,
-
-  ActorCast = 0x017c,
-  ActorControl144 = 0x0144,
-  ActorGauge = 0x029a,
-
-  -- Analyzed
-  StartCasting = 0x017C,
-  ActorMove = 0x0178,
-
--- #ipc enum starts#
-  ActorControl142 = 0x0142,
-  ActorControl143 = 0x0143,
-  AddStatusEffect = 0x0141,
-  Announcement = 0x010c,
-  Character = 0x0180, -- 5.0
-  ClientAction = 0x015b,
-  CompanyBoard = 0x0150, -- 5.0
-  CompanyInfo = 0x0151, -- 5.0
-  CraftStatus = 0x01b9,
-  GroupMessage = 0x0065, -- 5.0
-  ItemChange = 0x01A8, -- 5.0
-  ItemInit = 0x01a1, -- 5.0
-  ItemCount = 0x0197,
-  ItemSimple = 0x019b,
-  MatchEvent = 0x0078,
-  PublicMessage = 0x0104, -- 5.0
-  StatusEffectList = 0x0151,
--- #ipc enum ends#
-}
-
-local ipc_type_valstr = makeValString(ipc_type)
+local ipc_type_valstr = makeValString(ipc_type.types)
 local ipc_hdr_fields =
 {
     magic     = ProtoField.uint16("ffxiv_ipc.magic", "Magic", base.HEX),
@@ -110,43 +74,10 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
 
   local tvb = data_tvbr:tvb()
   
--- #ipc condition starts#
-  if type_val == ipc_type.ActorControl142 then
-    Dissector.get('ffxiv_ipc_actor_control142'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.ActorControl143 then
-    Dissector.get('ffxiv_ipc_actor_control143'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.AddStatusEffect then
-    Dissector.get('ffxiv_ipc_add_status_effect'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.Announcement then
-    Dissector.get('ffxiv_ipc_announcement'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.Character then
-    Dissector.get('ffxiv_ipc_character'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.ClientAction then
-    Dissector.get('ffxiv_ipc_client_action'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.CompanyBoard then
-    Dissector.get('ffxiv_ipc_company_board'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.CompanyInfo then
-    Dissector.get('ffxiv_ipc_company_info'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.CraftStatus then
-    Dissector.get('ffxiv_ipc_craft_status'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.GroupMessage then
-    Dissector.get('ffxiv_ipc_group_message'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.ItemChange then
-    Dissector.get('ffxiv_ipc_item_change'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.ItemInit then
-    Dissector.get('ffxiv_ipc_item_init'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.ItemCount then
-    Dissector.get('ffxiv_ipc_item_count'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.ItemSimple then
-    Dissector.get('ffxiv_ipc_item_simple'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.MatchEvent then
-    Dissector.get('ffxiv_ipc_match_event'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.PublicMessage then
-    Dissector.get('ffxiv_ipc_public_message'):call(tvb, pktinfo, root)
-  elseif type_val == ipc_type.StatusEffectList then
-    Dissector.get('ffxiv_ipc_status_effect_list'):call(tvb, pktinfo, root)
+  local dissector = ipc_type.getDissector(type_val)
+  if dissector ~= nil then
+    dissector:call(tvb, pktinfo, root)
   else
--- #ipc condition ends#
     pktinfo.cols.info:append(": Unknown (" .. string.format('%04x', type_val) .. ")")
     data:call(tvb, pktinfo, root)
   end
