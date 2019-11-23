@@ -1,11 +1,14 @@
 {
-  "name": "ItemChange",
-  "type": "0x01A8",
+  "name": "Update Inventory Slot",
+  "type": {
+    "5.0": "0x01A8"
+  },
   "aliases": [{
-    "name": "ItemInit",
-    "type": "0x01a1"
+    "name": "ItemInfo",
+    "type": {
+      "5.0": "0x01A1"
+    }
   }],
-  "version": "5.0",
   "enums": [{
     "name": "ItemQuality",
     "type": "byte",
@@ -15,6 +18,9 @@
     }, {
       "key": "HighQuality",
       "value": 1
+    }, {
+      "key": "Collectables",
+      "value": 8
     }]
   }, {
     "name": "ItemLocation",
@@ -198,55 +204,43 @@
         },
         {
           "offset": 8,
-          "name": "Location",
+          "name": "ContainerId",
           "type": "uint16",
           "length": 2,
           "enum": "ItemLocation"
         },
         {
           "offset": 10,
-          "name": "Position",
+          "name": "Slot",
           "type": "uint16",
           "length": 2
         },
         {
           "offset": 12,
-          "name": "Amount",
+          "name": "Quantity",
           "type": "uint32",
           "length": 4,
           "append": "val"
         },
         {
           "offset": 16,
-          "name": "Item",
-          "type": "uint16",
-          "length": 2,
+          "name": "CatalogId",
+          "type": "uint32",
+          "length": 4,
           "enum": "$Item",
           "append": "enum"
         },
         {
-          "offset": 18,
-          "name": "Unknown1",
-          "type": "uint16",
-          "length": 2
-        },
-        {
           "offset": 20,
-          "name": "Unknown2",
+          "name": "ReservedFlag",
           "type": "uint32",
           "length": 4
         },
         {
           "offset": 24,
-          "name": "Unknown3",
-          "type": "uint32",
-          "length": 4
-        },
-        {
-          "offset": 28,
-          "name": "Unknown4",
-          "type": "uint32",
-          "length": 4
+          "name": "SignatureId",
+          "type": "uint64",
+          "length": 8
         },
         {
           "offset": 32,
@@ -276,14 +270,15 @@
         },
         {
           "offset": 38,
-          "name": "Unknown5",
+          "name": "Stain",
           "type": "uint16",
           "length": 2
         },
         {
           "offset": 40,
-          "name": "GlamourID",
+          "name": "GlamourCatalogId",
           "type": "uint16",
+          "enum": "$Item",
           "length": 2
         },
         {

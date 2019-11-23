@@ -1,0 +1,57 @@
+{
+  "name": "Actor Move",
+  "type": {
+    "5.0": "0x0182"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "headRotation",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 1,
+    "name": "rotation",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 2,
+    "name": "animationType",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 3,
+    "name": "animationState",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 4,
+    "name": "animationSpeed",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 5,
+    "name": "unknownRotation",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 6,
+    "name": "X",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 8,
+    "name": "Y",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 10,
+    "name": "Z",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 12,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }]
+}

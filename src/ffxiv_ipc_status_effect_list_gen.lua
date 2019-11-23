@@ -20,63 +20,64 @@ ffxiv_ipc_status_effect_list.fields = status_effect_list_fields
 
 function ffxiv_ipc_status_effect_list.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_status_effect_list, tvbuf)
+  pktinfo.cols.info:set("StatusEffectList")
+
 
   -- dissect the unknown0 field
   local unknown0_tvbr = tvbuf:range(0, 4)
   local unknown0_val  = unknown0_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.unknown0, unknown0_tvbr)
+  tree:add_le(status_effect_list_fields.unknown0, unknown0_tvbr, unknown0_val)
 
   -- dissect the current_hp field
   local current_hp_tvbr = tvbuf:range(4, 4)
   local current_hp_val  = current_hp_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.current_hp, current_hp_tvbr)
+  tree:add_le(status_effect_list_fields.current_hp, current_hp_tvbr, current_hp_val)
 
   -- dissect the max_hp field
   local max_hp_tvbr = tvbuf:range(8, 4)
   local max_hp_val  = max_hp_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.max_hp, max_hp_tvbr)
+  tree:add_le(status_effect_list_fields.max_hp, max_hp_tvbr, max_hp_val)
 
   -- dissect the max_mp field
   local max_mp_tvbr = tvbuf:range(12, 2)
   local max_mp_val  = max_mp_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.max_mp, max_mp_tvbr)
+  tree:add_le(status_effect_list_fields.max_mp, max_mp_tvbr, max_mp_val)
 
   -- dissect the current_mp field
   local current_mp_tvbr = tvbuf:range(14, 2)
   local current_mp_val  = current_mp_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.current_mp, current_mp_tvbr)
+  tree:add_le(status_effect_list_fields.current_mp, current_mp_tvbr, current_mp_val)
 
   -- dissect the current_tp field
   local current_tp_tvbr = tvbuf:range(16, 2)
   local current_tp_val  = current_tp_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.current_tp, current_tp_tvbr)
+  tree:add_le(status_effect_list_fields.current_tp, current_tp_tvbr, current_tp_val)
 
   -- dissect the unknown1 field
   local unknown1_tvbr = tvbuf:range(18, 2)
   local unknown1_val  = unknown1_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.unknown1, unknown1_tvbr)
+  tree:add_le(status_effect_list_fields.unknown1, unknown1_tvbr, unknown1_val)
 
   -- dissect the status_id field
   local status_id_tvbr = tvbuf:range(0, 2)
   local status_id_val  = status_id_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.status_id, status_id_tvbr)
+  tree:add_le(status_effect_list_fields.status_id, status_id_tvbr, status_id_val)
 
   -- dissect the status_extra field
   local status_extra_tvbr = tvbuf:range(2, 2)
   local status_extra_val  = status_extra_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.status_extra, status_extra_tvbr)
+  tree:add_le(status_effect_list_fields.status_extra, status_extra_tvbr, status_extra_val)
 
   -- dissect the duration field
   local duration_tvbr = tvbuf:range(4, 4)
   local duration_val  = duration_tvbr:le_float()
-  tree:add_le(status_effect_list_fields.duration, duration_tvbr)
+  tree:add_le(status_effect_list_fields.duration, duration_tvbr, duration_val)
 
   -- dissect the actor_id field
   local actor_id_tvbr = tvbuf:range(8, 4)
   local actor_id_val  = actor_id_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.actor_id, actor_id_tvbr)
+  tree:add_le(status_effect_list_fields.actor_id, actor_id_tvbr, actor_id_val)
 
 
-  pktinfo.cols.info:set("StatusEffectList")
   return tvbuf:len()
 end

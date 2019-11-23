@@ -1,0 +1,28 @@
+{
+  "name": "Inventory Transaction Finish",
+  "type": {
+    "5.0": "0x01A3"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "SequenceId0",
+    "type": "uint32",
+    "append": "val",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "SequenceId1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Unknown2",
+    "type": "uint32",
+    "length": 4
+  }]
+}

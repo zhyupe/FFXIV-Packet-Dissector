@@ -1,6 +1,8 @@
 {
   "name": "Match Event",
-  "type": 120,
+  "type": {
+    "5.0": "0x0078"
+  },
   "enums": [
     {
       "name": "MatchEventType",

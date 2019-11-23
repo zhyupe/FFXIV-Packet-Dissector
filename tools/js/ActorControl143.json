@@ -1,11 +1,17 @@
 {
   "name": "ActorControl143",
-  "type": 323,
+  "type": {
+    "5.0": "0x0143"
+  },
   "enums": [
     {
       "name": "ActorControl143Type",
       "type": "ushort",
       "values": [
+        {
+          "key": "ExpGain",
+          "value": 7
+        },
         {
           "key": "ServerTime",
           "value": 24
@@ -42,7 +48,8 @@
           "name": "Type",
           "type": "uint16",
           "length": 2,
-          "enum": "ActorControl143Type"
+          "enum": "ActorControl143Type",
+          "append": "enum"
         },
         {
           "offset": 2,
@@ -60,12 +67,24 @@
           "offset": 8,
           "name": "Data1",
           "type": "uint32",
+          "label": {
+            "Type": [{
+              "key": 7,
+              "value": "Exp"
+            }]
+          },
           "length": 4
         },
         {
           "offset": 12,
           "name": "Data2",
           "type": "uint32",
+          "label": {
+            "Type": [{
+              "key": 7,
+              "value": "Bouns(%)"
+            }]
+          },
           "length": 4
         },
         {

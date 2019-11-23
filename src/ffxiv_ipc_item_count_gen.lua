@@ -13,28 +13,29 @@ ffxiv_ipc_item_count.fields = item_count_fields
 
 function ffxiv_ipc_item_count.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_item_count, tvbuf)
+  pktinfo.cols.info:set("ItemCount")
+
 
   -- dissect the index field
   local index_tvbr = tvbuf:range(0, 4)
   local index_val  = index_tvbr:le_uint()
-  tree:add_le(item_count_fields.index, index_tvbr)
+  tree:add_le(item_count_fields.index, index_tvbr, index_val)
 
   -- dissect the amount field
   local amount_tvbr = tvbuf:range(4, 4)
   local amount_val  = amount_tvbr:le_uint()
-  tree:add_le(item_count_fields.amount, amount_tvbr)
+  tree:add_le(item_count_fields.amount, amount_tvbr, amount_val)
 
   -- dissect the unknown1 field
   local unknown1_tvbr = tvbuf:range(8, 4)
   local unknown1_val  = unknown1_tvbr:le_uint()
-  tree:add_le(item_count_fields.unknown1, unknown1_tvbr)
+  tree:add_le(item_count_fields.unknown1, unknown1_tvbr, unknown1_val)
 
   -- dissect the unknown2 field
   local unknown2_tvbr = tvbuf:range(12, 4)
   local unknown2_val  = unknown2_tvbr:le_uint()
-  tree:add_le(item_count_fields.unknown2, unknown2_tvbr)
+  tree:add_le(item_count_fields.unknown2, unknown2_tvbr, unknown2_val)
 
 
-  pktinfo.cols.info:set("ItemCount")
   return tvbuf:len()
 end

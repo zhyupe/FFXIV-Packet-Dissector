@@ -11,18 +11,19 @@ ffxiv_ipc_company_board.fields = company_board_fields
 
 function ffxiv_ipc_company_board.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_board, tvbuf)
+  pktinfo.cols.info:set("Company Board")
+
 
   -- dissect the unknown field
   local unknown_tvbr = tvbuf:range(0, 1)
   local unknown_val  = unknown_tvbr:le_uint()
-  tree:add_le(company_board_fields.unknown, unknown_tvbr)
+  tree:add_le(company_board_fields.unknown, unknown_tvbr, unknown_val)
 
   -- dissect the content field
   local content_tvbr = tvbuf:range(1)
   local content_val  = content_tvbr:string(ENC_UTF_8)
-  tree:add(company_board_fields.content, content_val)
+  tree:add(company_board_fields.content, content_tvbr, content_val)
 
 
-  pktinfo.cols.info:set("Company Board")
   return tvbuf:len()
 end

@@ -21,63 +21,64 @@ ffxiv_ipc_character.fields = character_fields
 
 function ffxiv_ipc_character.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_character, tvbuf)
+  pktinfo.cols.info:set("Character")
+
 
   -- dissect the title field
   local title_tvbr = tvbuf:range(0, 4)
   local title_val  = title_tvbr:le_uint()
-  tree:add_le(character_fields.title, title_tvbr)
+  tree:add_le(character_fields.title, title_tvbr, title_val)
 
   -- dissect the current_server field
   local current_server_tvbr = tvbuf:range(4, 2)
   local current_server_val  = current_server_tvbr:le_uint()
-  tree:add_le(character_fields.current_server, current_server_tvbr)
+  tree:add_le(character_fields.current_server, current_server_tvbr, current_server_val)
 
   -- dissect the original_server field
   local original_server_tvbr = tvbuf:range(6, 2)
   local original_server_val  = original_server_tvbr:le_uint()
-  tree:add_le(character_fields.original_server, original_server_tvbr)
+  tree:add_le(character_fields.original_server, original_server_tvbr, original_server_val)
 
   -- dissect the unknown1 field
   local unknown1_tvbr = tvbuf:range(8, 4)
   local unknown1_val  = unknown1_tvbr:le_uint()
-  tree:add_le(character_fields.unknown1, unknown1_tvbr)
+  tree:add_le(character_fields.unknown1, unknown1_tvbr, unknown1_val)
 
   -- dissect the unknown2 field
   local unknown2_tvbr = tvbuf:range(12, 4)
   local unknown2_val  = unknown2_tvbr:le_uint()
-  tree:add_le(character_fields.unknown2, unknown2_tvbr)
+  tree:add_le(character_fields.unknown2, unknown2_tvbr, unknown2_val)
 
   -- dissect the target_id field
   local target_id_tvbr = tvbuf:range(16, 4)
   local target_id_val  = target_id_tvbr:le_uint()
-  tree:add_le(character_fields.target_id, target_id_tvbr)
+  tree:add_le(character_fields.target_id, target_id_tvbr, target_id_val)
 
   -- dissect the npc_base field
   local npc_base_tvbr = tvbuf:range(64, 4)
   local npc_base_val  = npc_base_tvbr:le_uint()
-  tree:add_le(character_fields.npc_base, npc_base_tvbr)
+  tree:add_le(character_fields.npc_base, npc_base_tvbr, npc_base_val)
 
   -- dissect the npc_id field
   local npc_id_tvbr = tvbuf:range(68, 2)
   local npc_id_val  = npc_id_tvbr:le_uint()
-  tree:add_le(character_fields.npc_id, npc_id_tvbr)
+  tree:add_le(character_fields.npc_id, npc_id_tvbr, npc_id_val)
 
   -- dissect the type field
   local type_tvbr = tvbuf:range(70, 2)
   local type_val  = type_tvbr:le_uint()
-  tree:add_le(character_fields.type, type_tvbr)
+  tree:add_le(character_fields.type, type_tvbr, type_val)
 
   -- dissect the owner_id field
   local owner_id_tvbr = tvbuf:range(84, 4)
   local owner_id_val  = owner_id_tvbr:le_uint()
-  tree:add_le(character_fields.owner_id, owner_id_tvbr)
+  tree:add_le(character_fields.owner_id, owner_id_tvbr, owner_id_val)
 
   -- dissect the nickname field
   local nickname_tvbr = tvbuf:range(560, 32)
   local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
-  tree:add(character_fields.nickname, nickname_val)
+  tree:add(character_fields.nickname, nickname_tvbr, nickname_val)
 
 
-  pktinfo.cols.info:set("Character")
   return tvbuf:len()
 end

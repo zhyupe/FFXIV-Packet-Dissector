@@ -1,0 +1,60 @@
+{
+  "name": "Inventory Transaction",
+  "type": {
+    "5.0": "0x01A4"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "Sequence",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "Type",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "OwnerId",
+    "type": "uint32",
+    "base": "HEX",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "StorageId",
+    "type": "uint32",
+    "enum": "ItemLocation",
+    "append": "enum",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "SlotId",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "StackSize",
+    "type": "uint32",
+    "append": "val",
+    "length": 4
+  }, {
+    "offset": 24,
+    "name": "CatalogId",
+    "type": "uint32",
+    "enum": "$Item",
+    "append": "enum",
+    "length": 4
+  }, {
+    "offset": 28,
+    "name": "SomeActorId",
+    "type": "uint32",
+    "base": "HEX",
+    "length": 4
+  }, {
+    "offset": 32,
+    "name": "TargetStorageId",
+    "type": "uint32",
+    "base": "HEX",
+    "length": 4
+  }]
+}

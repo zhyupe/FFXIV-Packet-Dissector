@@ -1,0 +1,27 @@
+{
+  "name": "Inventory Action Ack",
+  "type": {
+    "5.0": "0x01A7"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "Sequence",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "Type",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Unknown2",
+    "type": "uint32",
+    "length": 4
+  }]
+}
