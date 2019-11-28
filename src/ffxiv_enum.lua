@@ -206,6 +206,14 @@ M.forward.cfnotify_type = {
 }
 M.reverse.cfnotify_type = makeValString(M.forward.cfnotify_type)
 
+M.forward.fish_event_type = {
+  Cast = 1,
+  Hook = 2,
+  Finish = 3,
+  Bite = 5,
+}
+M.reverse.fish_event_type = makeValString(M.forward.fish_event_type)
+
 M.forward.group_message_type = {
   Linkshell = 2,
   FreeCompany = 3,

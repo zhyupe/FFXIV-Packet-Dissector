@@ -8,6 +8,7 @@ M.types = {
   CompanyBoard = 0x0150,
   CompanyInfo = 0x0151,
   ContentFinderNotify = 0x0078,
+  FishEvent = 0x01b5,
   GroupMessage = 0x0065,
   InventoryActionAck = 0x01A7,
   InventoryTransaction = 0x01A4,
@@ -32,6 +33,8 @@ function M.getDissector(type)
     return Dissector.get('ffxiv_ipc_company_info')
   elseif type == M.types.ContentFinderNotify then
     return Dissector.get('ffxiv_ipc_content_finder_notify')
+  elseif type == M.types.FishEvent then
+    return Dissector.get('ffxiv_ipc_fish_event')
   elseif type == M.types.GroupMessage then
     return Dissector.get('ffxiv_ipc_group_message')
   elseif type == M.types.InventoryActionAck then
