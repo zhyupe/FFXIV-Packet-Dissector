@@ -76,6 +76,7 @@ const renderField = function (snakeName, item) {
 ${indent}local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvbMethod(item.type)}()`}`
 
   let labelKeyVar = null
+  let labelValVar = null
   if (item.label) {
     labelKeyVar = `${item.key}_label_key`
     let labelExp = Object.keys(item.label)
@@ -84,7 +85,9 @@ ${indent}local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvbMe
     content += `\n${indent}local ${labelKeyVar} = (${labelExp} or "${item.name}")`
   } else if (item.condition) {
     labelKeyVar = `${item.key}_label_key`
+    labelValVar = `${item.key}_label_val`
     content += `\n${indent}local ${labelKeyVar} = "${item.name}"`
+    content += `\n${indent}local ${labelValVar} = ${item.key}_val`
 
     let isFirst = true
     Object.entries(item.condition).forEach(([conditionKey, arr]) => arr.forEach(modifier => {
@@ -96,7 +99,7 @@ ${indent}local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvbMe
       }
 
       if (modifier.enum) {
-        content += `\n${indent}  ${item.key}_val = (${resolveEnum.call(this, modifier.enum)}[${item.key}_val] or "Unknown") .. "(" .. ${item.key}_val .. ")"`
+        content += `\n${indent}  ${labelValVar} = (${resolveEnum.call(this, modifier.enum)}[${item.key}_val] or "Unknown") .. " (" .. ${item.key}_val .. ")"`
       }
       isFirst = false
     }))
@@ -109,7 +112,7 @@ ${indent}local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvbMe
   let addMethod = item.add_le === false ? 'add' : 'add_le'
   let labelArg = ''
   if (labelKeyVar) {
-    labelArg = `, ${labelKeyVar} .. ": " .. ${item.key}_val`
+    labelArg = `, ${labelKeyVar} .. ": " .. ${labelValVar || `${item.key}_val`}`
   }
 
   content += `\n${indent}tree:${addMethod}(${snakeName}_fields.${item.key}, ${item.key}_tvbr, ${item.key}_val${labelArg})`
