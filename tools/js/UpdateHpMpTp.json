@@ -1,0 +1,37 @@
+{
+  "name": "UpdateHpMpTp",
+  "type": {
+    "5.0": "0x0145"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "HP",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "MP",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 6,
+    "name": "TP",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 8,
+    "name": "GP",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 10,
+    "name": "Unknown1",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 12,
+    "name": "Unknown2",
+    "type": "uint16",
+    "length": 2
+  }]
+}

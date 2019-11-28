@@ -14,6 +14,7 @@ M.types = {
   InventoryTransactionFinish = 0x01A3,
   MatchEvent = 0x0078,
   PublicMessage = 0x0104,
+  UpdateHpMpTp = 0x0145,
   UpdateInventorySlot = 0x01A8,
   ItemInfo = 0x01A1,
 }
@@ -43,6 +44,8 @@ function M.getDissector(type)
     return Dissector.get('ffxiv_ipc_match_event')
   elseif type == M.types.PublicMessage then
     return Dissector.get('ffxiv_ipc_public_message')
+  elseif type == M.types.UpdateHpMpTp then
+    return Dissector.get('ffxiv_ipc_update_hp_mp_tp')
   elseif type == M.types.UpdateInventorySlot then
     return Dissector.get('ffxiv_ipc_update_inventory_slot')
   elseif type == M.types.ItemInfo then
