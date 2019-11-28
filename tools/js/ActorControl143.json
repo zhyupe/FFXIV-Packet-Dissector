@@ -524,10 +524,15 @@
           "offset": 4,
           "name": "Data0",
           "type": "uint32",
-          "label": {
+          "condition": {
             "Type": [{
-              "key": 320,
-              "value": "Item"
+              "value": 320,
+              "label": "Item",
+              "enum": "$Item"
+            }, {
+              "value": 325,
+              "label": "Bait",
+              "enum": "$Item"
             }]
           },
           "length": 4
