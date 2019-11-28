@@ -23,7 +23,6 @@ function ffxiv_ipc_craft_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_craft_status, tvbuf)
   pktinfo.cols.info:set("CraftStatus")
 
-
   -- dissect the character_id field
   local character_id_tvbr = tvbuf:range(0, 4)
   local character_id_val  = character_id_tvbr:le_uint()
@@ -78,7 +77,6 @@ function ffxiv_ipc_craft_status.dissector(tvbuf, pktinfo, root)
   local unknown9_tvbr = tvbuf:range(20, 4)
   local unknown9_val  = unknown9_tvbr:le_uint()
   tree:add_le(craft_status_fields.unknown9, unknown9_tvbr, unknown9_val)
-
 
   return tvbuf:len()
 end

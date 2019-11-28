@@ -22,7 +22,6 @@ function ffxiv_ipc_status_effect_list.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_status_effect_list, tvbuf)
   pktinfo.cols.info:set("StatusEffectList")
 
-
   -- dissect the unknown0 field
   local unknown0_tvbr = tvbuf:range(0, 4)
   local unknown0_val  = unknown0_tvbr:le_uint()
@@ -77,7 +76,6 @@ function ffxiv_ipc_status_effect_list.dissector(tvbuf, pktinfo, root)
   local actor_id_tvbr = tvbuf:range(8, 4)
   local actor_id_val  = actor_id_tvbr:le_uint()
   tree:add_le(status_effect_list_fields.actor_id, actor_id_tvbr, actor_id_val)
-
 
   return tvbuf:len()
 end

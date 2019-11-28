@@ -3,6 +3,7 @@
  */
 
 const fs = require('fs')
+const common = require('./common')
 let files = fs.readdirSync('./js')
 fs.readdirSync('../src').forEach(file => {
   if (file.startsWith('ffxiv_ipc_') && file.endsWith('_gen.lua')) {
@@ -10,7 +11,6 @@ fs.readdirSync('../src').forEach(file => {
   }
 })
 
-const snakeCase = name => name.replace(/\s*([A-Z]+)/g, (m0, m1, index) => `${index ? '_' : ''}${m1.toLowerCase()}`)
 const tvbMethod = function (type) {
   if (type.startsWith('uint')) {
     return type === 'uint64' ? 'le_uint64' : 'le_uint'
@@ -21,10 +21,8 @@ const tvbMethod = function (type) {
   return type
 }
 
-const itemAppend = function (item) {
-  if (!item.append) return ''
-
-  let output = `${snakeCase(item.name)}_val`
+const itemAppend = function (item, indent = '  ') {
+  let output = `${common.snakeCase(item.name)}_val`
   switch (item.append) {
     case 'enum':
       if (item.enum) {
@@ -44,52 +42,98 @@ const itemAppend = function (item) {
     outputName = ''
   } else if (item.label) {
     outputName = `" .. (${Object.keys(item.label)
-      .map(key => `label_${item.key}_${snakeCase(key)}[${snakeCase(key)}_val]`).join(' or ')}) .. "`
+      .map(key => `label_${item.key}_${common.snakeCase(key)}[${common.snakeCase(key)}_val]`).join(' or ')}) .. "`
   }
 
   return `
-  local ${item.key}_display = ", ${outputName}" .. ${output}
-  pktinfo.cols.info:append(${item.key}_display)
-  tree:append_text(${item.key}_display)\n`
+${indent}local ${item.key}_display = ", ${outputName}" .. ${output}
+${indent}pktinfo.cols.info:append(${item.key}_display)
+${indent}tree:append_text(${item.key}_display)`
 }
 
-const itemLabel = function (item) {
-  return `(${Object.keys(item.label)
-    .map(key => `label_${item.key}_${snakeCase(key)}[${snakeCase(key)}_val]`).join(' or ')} or "${item.name}") .. ": " .. ${item.key}_val`
+const resolveEnum = function (value) {
+  if (value.startsWith('$')) {
+    this.db = true
+    return value.replace('$', 'db.')
+  } else {
+    this.enum = true
+    return `enum.reverse.${common.snakeCase(value)}`
+  }
 }
 
-const table = function (name, array, rawValue = false) {
-  return `${name} = {
-${array.map(({ key, value }) => `  ${tableKey(key)} = ${tableValue(value, rawValue)},`).join('\n')}
-}`
-}
+const renderField = function (snakeName, item) {
+  let indent = '  '
+  let prefix = `${indent}-- dissect the ${item.key} field\n`
+  let suffix = ''
 
-const tableKey = function (key) {
-  return typeof key === 'number' ? `[${key}]` : `${key}`
-}
+  if (item.check_length) {
+    prefix += `${indent}if tvbuf:len() > ${item.offset + (item.length || 0)} then\n`
+    suffix = `\n${indent}end` + suffix
+    indent += '  '
+  }
 
-const tableValue = function (val, raw = false) {
-  return (raw || typeof val === 'number') ? `${val}` : `"${val}"`
+  let content = `${indent}local ${item.key}_tvbr = tvbuf:range(${item.offset}${item.length ? `, ${item.length}` : ''})
+${indent}local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvbMethod(item.type)}()`}`
+
+  let labelKeyVar = null
+  if (item.label) {
+    labelKeyVar = `${item.key}_label_key`
+    let labelExp = Object.keys(item.label)
+      .map(key => `label_${item.key}_${common.snakeCase(key)}[${common.snakeCase(key)}_val]`)
+      .join(' or ')
+    content += `\n${indent}local ${labelKeyVar} = (${labelExp} or "${item.name}")`
+  } else if (item.condition) {
+    labelKeyVar = `${item.key}_label_key`
+    content += `\n${indent}local ${labelKeyVar} = "${item.name}"`
+
+    let isFirst = true
+    Object.entries(item.condition).forEach(([conditionKey, arr]) => arr.forEach(modifier => {
+      if (typeof modifier.value === 'undefined') return
+
+      content += `\n${indent}${isFirst ? 'if' : 'elseif'} ${common.snakeCase(conditionKey)}_val == ${common.tableValue(modifier.value)} then`
+      if (modifier.label) {
+        content += `\n${indent}  ${labelKeyVar} = ${common.tableValue(modifier.label)}`
+      }
+
+      if (modifier.enum) {
+        content += `\n${indent}  ${item.key}_val = (${resolveEnum.call(this, modifier.enum)}[${item.key}_val] or "Unknown") .. "(" .. ${item.key}_val .. ")"`
+      }
+      isFirst = false
+    }))
+
+    if (!isFirst) {
+      content += `\n${indent}end`
+    }
+  }
+
+  let addMethod = item.add_le === false ? 'add' : 'add_le'
+  let labelArg = ''
+  if (labelKeyVar) {
+    labelArg = `, ${labelKeyVar} .. ": " .. ${item.key}_val`
+  }
+
+  content += `\n${indent}tree:${addMethod}(${snakeName}_fields.${item.key}, ${item.key}_tvbr, ${item.key}_val${labelArg})`
+  if (item.append) {
+    content += '\n' + itemAppend(item, indent)
+  }
+  return prefix + content + suffix
 }
 
 let globalEnums = []
 const generateLuaDissector = function (name, obj) {
   let fields = obj.fields || (obj.structs && obj.structs[0] && obj.structs[0].fields)
   if (!fields || !fields.length) return ''
-  let requireDB = false
-  let requireEnum = false
+
+  let context = {
+    db: false,
+    enum: false
+  }
 
   fields = fields.map(oldItem => {
     const item = { ...oldItem }
-    item.key = snakeCase(item.name)
+    item.key = common.snakeCase(item.name)
     if (item.enum) {
-      if (item.enum.startsWith('$')) {
-        item.enum = item.enum.replace('$', 'db.')
-        requireDB = true
-      } else {
-        item.enum = `enum.reverse.${snakeCase(item.enum)}`
-        requireEnum = true
-      }
+      item.enum = resolveEnum.call(context, item.enum)
     }
     return item
   })
@@ -97,26 +141,28 @@ const generateLuaDissector = function (name, obj) {
   if (obj.enums) {
     globalEnums = globalEnums.concat(obj.enums.map(enumItem => {
       return {
-        key: snakeCase(enumItem.name),
+        key: common.snakeCase(enumItem.name),
         ...enumItem
       }
     }))
   }
 
-  let snakeName = snakeCase(name)
+  let snakeName = common.snakeCase(name)
   let maxLength = fields.reduce((max, item) => Math.max(max, item.key.length), 0)
 
+  let fieldContent = fields.map(item => renderField.call(context, snakeName, item)).join('\n\n')
+
   return `-- This file is generated by tools/json2lua.js
-${requireDB ? `
+${context.db ? `
 local db = require('ffxiv_db')` : ''
-}${requireEnum ? `
+}${context.enum ? `
 local enum = require('ffxiv_enum')` : ''
 }${
   fields.map(item => {
     if (!item.label) return ''
 
     return Object.keys(item.label)
-      .map(key => '\n' + table(`local label_${item.key}_${snakeCase(key)}`, item.label[key]))
+      .map(key => '\n' + common.table(`local label_${item.key}_${common.snakeCase(key)}`, item.label[key]))
       .join('')
   }).filter(a => a).join('')
 }
@@ -133,13 +179,7 @@ function ffxiv_ipc_${snakeName}.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_${snakeName}, tvbuf)
   pktinfo.cols.info:set("${name}")
 
-${fields.map(item => `${item.check_length ? `
-if tvbuf:len() > ${item.offset + (item.length || 0)} then` : ''}
-  -- dissect the ${item.key} field
-  local ${item.key}_tvbr = tvbuf:range(${item.offset}${item.length ? `, ${item.length}` : ''})
-  local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvbMethod(item.type)}()`}
-  tree:${item.add_le === false ? 'add' : 'add_le'}(${snakeName}_fields.${item.key}, ${item.key}_tvbr, ${item.key}_val${item.label ? `, ${itemLabel(item)}` : ''})
-${itemAppend(item)}${item.check_length ? 'end\n' : ''}`).join('')}
+${fieldContent}
 
   return tvbuf:len()
 end`
@@ -169,14 +209,14 @@ for (let file of files) {
 
   if (obj.name) {
     addTypes(obj)
-    fs.writeFileSync(`../src/ffxiv_ipc_${snakeCase(name)}_gen.lua`, generateLuaDissector(name, obj))
+    fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(name)}_gen.lua`, generateLuaDissector(name, obj))
   }
 
   if (obj.aliases && obj.aliases.length) {
     for (let alias of obj.aliases) {
       addTypes(alias)
 
-      fs.writeFileSync(`../src/ffxiv_ipc_${snakeCase(alias.name)}_gen.lua`, generateLuaDissector(alias.name, obj))
+      fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(alias.name)}_gen.lua`, generateLuaDissector(alias.name, obj))
     }
   }
 }
@@ -185,14 +225,14 @@ Object.keys(ipcTypes).forEach(version => {
   const ipcTypeContent = `-- This file is generated by tools/json2lua.js
 
 local M = {}
-${table('M.types', ipcTypes[version].map(({ name, type }) => ({
+${common.table('M.types', ipcTypes[version].map(({ name, type }) => ({
     key: name,
     value: typeof type === 'number' ? `0x${('000' + type.toString(16)).substr(-4)}` : type
   })), true)}
 
 function M.getDissector(type)
 ${'  ' + ipcTypes[version].map(({ name }) => `if type == M.types.${name} then
-    return Dissector.get('ffxiv_ipc_${snakeCase(name)}')
+    return Dissector.get('ffxiv_ipc_${common.snakeCase(name)}')
   else`).join('')}
     return nil
   end
@@ -220,7 +260,7 @@ local function makeValString(enumTable)
 end
 
 ${globalEnums.map(item => `
-${table(`M.forward.${item.key}`, item.values)}
+${common.table(`M.forward.${item.key}`, item.values)}
 M.reverse.${item.key} = makeValString(M.forward.${item.key})`).join('\n')}
 
 return M

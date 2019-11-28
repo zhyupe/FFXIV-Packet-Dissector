@@ -22,7 +22,6 @@ function ffxiv_ipc_match_event.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_match_event, tvbuf)
   pktinfo.cols.info:set("Match Event")
 
-
   -- dissect the type field
   local type_tvbr = tvbuf:range(0, 4)
   local type_val  = type_tvbr:le_uint()
@@ -72,7 +71,6 @@ function ffxiv_ipc_match_event.dissector(tvbuf, pktinfo, root)
   local unknown6_tvbr = tvbuf:range(28, 4)
   local unknown6_val  = unknown6_tvbr:le_uint()
   tree:add_le(match_event_fields.unknown6, unknown6_tvbr, unknown6_val)
-
 
   return tvbuf:len()
 end

@@ -18,7 +18,6 @@ function ffxiv_ipc_actor_control142.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_control142, tvbuf)
   pktinfo.cols.info:set("ActorControl142")
 
-
   -- dissect the category field
   local category_tvbr = tvbuf:range(0, 4)
   local category_val  = category_tvbr:le_uint()
@@ -48,7 +47,6 @@ function ffxiv_ipc_actor_control142.dissector(tvbuf, pktinfo, root)
   local param2_tvbr = tvbuf:range(20, 4)
   local param2_val  = param2_tvbr:le_uint()
   tree:add_le(actor_control142_fields.param2, param2_tvbr, param2_val)
-
 
   return tvbuf:len()
 end

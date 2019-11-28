@@ -20,7 +20,6 @@ function ffxiv_ipc_public_message.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_public_message, tvbuf)
   pktinfo.cols.info:set("Public Message")
 
-
   -- dissect the unique_id field
   local unique_id_tvbr = tvbuf:range(0, 8)
   local unique_id_val  = unique_id_tvbr:le_uint64()
@@ -55,7 +54,6 @@ function ffxiv_ipc_public_message.dissector(tvbuf, pktinfo, root)
   local content_tvbr = tvbuf:range(48)
   local content_val  = content_tvbr:string(ENC_UTF_8)
   tree:add(public_message_fields.content, content_tvbr, content_val)
-
 
   return tvbuf:len()
 end

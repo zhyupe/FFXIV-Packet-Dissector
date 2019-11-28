@@ -22,7 +22,6 @@ function ffxiv_ipc_group_message.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_group_message, tvbuf)
   pktinfo.cols.info:set("Group Message")
 
-
   -- dissect the group_id field
   local group_id_tvbr = tvbuf:range(0, 4)
   local group_id_val  = group_id_tvbr:le_uint()
@@ -58,20 +57,19 @@ function ffxiv_ipc_group_message.dissector(tvbuf, pktinfo, root)
   local reserved0_val  = reserved0_tvbr:le_uint()
   tree:add_le(group_message_fields.reserved0, reserved0_tvbr, reserved0_val)
 
-if tvbuf:len() > 55 then
   -- dissect the nickname field
-  local nickname_tvbr = tvbuf:range(23, 32)
-  local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
-  tree:add(group_message_fields.nickname, nickname_tvbr, nickname_val)
-end
+  if tvbuf:len() > 55 then
+    local nickname_tvbr = tvbuf:range(23, 32)
+    local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
+    tree:add(group_message_fields.nickname, nickname_tvbr, nickname_val)
+  end
 
-if tvbuf:len() > 55 then
   -- dissect the content field
-  local content_tvbr = tvbuf:range(55)
-  local content_val  = content_tvbr:string(ENC_UTF_8)
-  tree:add(group_message_fields.content, content_tvbr, content_val)
-end
-
+  if tvbuf:len() > 55 then
+    local content_tvbr = tvbuf:range(55)
+    local content_val  = content_tvbr:string(ENC_UTF_8)
+    tree:add(group_message_fields.content, content_tvbr, content_val)
+  end
 
   return tvbuf:len()
 end

@@ -30,7 +30,6 @@ function ffxiv_ipc_actor_control143.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_control143, tvbuf)
   pktinfo.cols.info:set("ActorControl143")
 
-
   -- dissect the type field
   local type_tvbr = tvbuf:range(0, 2)
   local type_val  = type_tvbr:le_uint()
@@ -48,17 +47,20 @@ function ffxiv_ipc_actor_control143.dissector(tvbuf, pktinfo, root)
   -- dissect the data0 field
   local data0_tvbr = tvbuf:range(4, 4)
   local data0_val  = data0_tvbr:le_uint()
-  tree:add_le(actor_control143_fields.data0, data0_tvbr, data0_val, (label_data0_type[type_val] or "Data0") .. ": " .. data0_val)
+  local data0_label_key = (label_data0_type[type_val] or "Data0")
+  tree:add_le(actor_control143_fields.data0, data0_tvbr, data0_val, data0_label_key .. ": " .. data0_val)
 
   -- dissect the data1 field
   local data1_tvbr = tvbuf:range(8, 4)
   local data1_val  = data1_tvbr:le_uint()
-  tree:add_le(actor_control143_fields.data1, data1_tvbr, data1_val, (label_data1_type[type_val] or "Data1") .. ": " .. data1_val)
+  local data1_label_key = (label_data1_type[type_val] or "Data1")
+  tree:add_le(actor_control143_fields.data1, data1_tvbr, data1_val, data1_label_key .. ": " .. data1_val)
 
   -- dissect the data2 field
   local data2_tvbr = tvbuf:range(12, 4)
   local data2_val  = data2_tvbr:le_uint()
-  tree:add_le(actor_control143_fields.data2, data2_tvbr, data2_val, (label_data2_type[type_val] or "Data2") .. ": " .. data2_val)
+  local data2_label_key = (label_data2_type[type_val] or "Data2")
+  tree:add_le(actor_control143_fields.data2, data2_tvbr, data2_val, data2_label_key .. ": " .. data2_val)
 
   -- dissect the data3 field
   local data3_tvbr = tvbuf:range(16, 4)
@@ -79,7 +81,6 @@ function ffxiv_ipc_actor_control143.dissector(tvbuf, pktinfo, root)
   local data6_tvbr = tvbuf:range(28, 4)
   local data6_val  = data6_tvbr:le_uint()
   tree:add_le(actor_control143_fields.data6, data6_tvbr, data6_val)
-
 
   return tvbuf:len()
 end

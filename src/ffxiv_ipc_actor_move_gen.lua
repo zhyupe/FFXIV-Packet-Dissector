@@ -21,7 +21,6 @@ function ffxiv_ipc_actor_move.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_move, tvbuf)
   pktinfo.cols.info:set("Actor Move")
 
-
   -- dissect the head_rotation field
   local head_rotation_tvbr = tvbuf:range(0, 1)
   local head_rotation_val  = head_rotation_tvbr:le_uint()
@@ -71,7 +70,6 @@ function ffxiv_ipc_actor_move.dissector(tvbuf, pktinfo, root)
   local unknown1_tvbr = tvbuf:range(12, 4)
   local unknown1_val  = unknown1_tvbr:le_uint()
   tree:add_le(actor_move_fields.unknown1, unknown1_tvbr, unknown1_val)
-
 
   return tvbuf:len()
 end

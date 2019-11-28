@@ -29,7 +29,6 @@ function ffxiv_ipc_add_status_effect.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_add_status_effect, tvbuf)
   pktinfo.cols.info:set("AddStatusEffect")
 
-
   -- dissect the last_buff_packet_id field
   local last_buff_packet_id_tvbr = tvbuf:range(0, 4)
   local last_buff_packet_id_val  = last_buff_packet_id_tvbr:le_uint()
@@ -119,7 +118,6 @@ function ffxiv_ipc_add_status_effect.dissector(tvbuf, pktinfo, root)
   local unknown2_tvbr = tvbuf:range(14, 2)
   local unknown2_val  = unknown2_tvbr:le_uint()
   tree:add_le(add_status_effect_fields.unknown2, unknown2_tvbr, unknown2_val)
-
 
   return tvbuf:len()
 end

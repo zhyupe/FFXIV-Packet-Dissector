@@ -13,7 +13,6 @@ function ffxiv_ipc_company_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_info, tvbuf)
   pktinfo.cols.info:set("Company Info")
 
-
   -- dissect the captain field
   local captain_tvbr = tvbuf:range(0, 32)
   local captain_val  = captain_tvbr:string(ENC_UTF_8)
@@ -23,7 +22,6 @@ function ffxiv_ipc_company_info.dissector(tvbuf, pktinfo, root)
   local content_tvbr = tvbuf:range(1)
   local content_val  = content_tvbr:string(ENC_UTF_8)
   tree:add(company_info_fields.content, content_tvbr, content_val)
-
 
   return tvbuf:len()
 end

@@ -33,7 +33,6 @@ function ffxiv_ipc_update_inventory_slot.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_inventory_slot, tvbuf)
   pktinfo.cols.info:set("Update Inventory Slot")
 
-
   -- dissect the index field
   local index_tvbr = tvbuf:range(0, 4)
   local index_val  = index_tvbr:le_uint()
@@ -145,7 +144,6 @@ function ffxiv_ipc_update_inventory_slot.dissector(tvbuf, pktinfo, root)
   local unknown11_tvbr = tvbuf:range(60, 4)
   local unknown11_val  = unknown11_tvbr:le_uint()
   tree:add_le(update_inventory_slot_fields.unknown11, unknown11_tvbr, unknown11_val)
-
 
   return tvbuf:len()
 end
