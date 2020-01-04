@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const readCsv = require('./read-csv')
 
-const dbRoot = '../../library/5.0_all/'
+const dbRoot = '../../library/5.05_all/'
 const output = '../src/'
 const langs = ['chs', 'en', 'ja', 'de', 'fr']
 
@@ -42,6 +42,8 @@ langs.forEach(lang => {
     db(`CraftAction.${lang}`).kvmap()
   )
   obj.BNpcName = db(`BNpcName.${lang}`).kvmap('Singular')
+  obj.ClassJob = db(`ClassJob.${lang}`).kvmap()
+  obj.ContentFinderCondition = db(`ContentFinderCondition.${lang}`).kvmap()
   obj.ContentType = db(`ContentType.${lang}`).kvmap()
   obj.ContentRoulette = db(`ContentRoulette.${lang}`).kvmap()
   obj.Fate = db(`Fate.${lang}`).kvmap()
