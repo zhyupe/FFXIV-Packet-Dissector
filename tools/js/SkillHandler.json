@@ -1,0 +1,112 @@
+{
+  "name": "Skill Handler",
+  "type": {
+    "5.0": "0x013d"
+  },
+  "fields": [
+    {
+      "offset": 0,
+      "name": "pad_0000",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 1,
+      "name": "type",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 2,
+      "name": "pad_00020",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 3,
+      "name": "pad_00021",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 4,
+      "name": "Action",
+      "type": "uint32",
+      "enum": "$Action",
+      "length": 4
+    },
+    {
+      "offset": 8,
+      "name": "sequence",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 10,
+      "name": "pad_000C0",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 11,
+      "name": "pad_000C1",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 12,
+      "name": "pad_000C2",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 13,
+      "name": "pad_000C3",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 14,
+      "name": "pad_000C4",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 15,
+      "name": "pad_000C5",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 16,
+      "name": "targetId",
+      "type": "uint32",
+      "base": "HEX",
+      "length": 4
+    },
+    {
+      "offset": 20,
+      "name": "unknown1",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 24,
+      "name": "itemSourceSlot",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 26,
+      "name": "itemSourceContainer",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 28,
+      "name": "unknown",
+      "type": "uint32",
+      "length": 4
+    }
+  ]
+}

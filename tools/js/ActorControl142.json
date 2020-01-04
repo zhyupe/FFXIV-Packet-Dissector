@@ -1,6 +1,8 @@
 {
   "name": "ActorControl142",
-  "type": 322,
+  "type": {
+    "5.0": "0x0142"
+  },
   "enums": [
     {
       "name": "ActorControl142Type",

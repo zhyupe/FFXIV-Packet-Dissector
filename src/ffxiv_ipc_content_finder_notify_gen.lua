@@ -5,17 +5,17 @@ local enum = require('ffxiv_enum')
 local ffxiv_ipc_content_finder_notify = Proto("ffxiv_ipc_content_finder_notify", "FFXIV-IPC Content Finder Notify")
 
 local content_finder_notify_fields = {
-  type         = ProtoField.uint32("ffxiv_ipc_content_finder_notify.type", "Type", base.DEC, enum.reverse.match_event_type),
-  reason       = ProtoField.uint32("ffxiv_ipc_content_finder_notify.reason", "Reason", base.DEC),
-  class_job_id = ProtoField.uint32("ffxiv_ipc_content_finder_notify.class_job_id", "ClassJobId", base.DEC),
-  flag         = ProtoField.uint32("ffxiv_ipc_content_finder_notify.flag", "Flag", base.DEC),
-  languages    = ProtoField.uint32("ffxiv_ipc_content_finder_notify.languages", "Languages", base.DEC),
-  roulette_id  = ProtoField.uint16("ffxiv_ipc_content_finder_notify.roulette_id", "RouletteId", base.DEC, db.ContentRoulette),
-  content1     = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content1", "Content1", base.DEC, db.InstanceContent),
-  content2     = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content2", "Content2", base.DEC, db.InstanceContent),
-  content3     = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content3", "Content3", base.DEC, db.InstanceContent),
-  content4     = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content4", "Content4", base.DEC, db.InstanceContent),
-  content5     = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content5", "Content5", base.DEC, db.InstanceContent),
+  type        = ProtoField.uint32("ffxiv_ipc_content_finder_notify.type", "Type", base.DEC, enum.reverse.match_event_type),
+  reason      = ProtoField.uint32("ffxiv_ipc_content_finder_notify.reason", "Reason", base.DEC),
+  class_job   = ProtoField.uint32("ffxiv_ipc_content_finder_notify.class_job", "ClassJob", base.DEC, db.ClassJob),
+  flag        = ProtoField.uint32("ffxiv_ipc_content_finder_notify.flag", "Flag", base.DEC),
+  languages   = ProtoField.uint32("ffxiv_ipc_content_finder_notify.languages", "Languages", base.DEC),
+  roulette_id = ProtoField.uint16("ffxiv_ipc_content_finder_notify.roulette_id", "RouletteId", base.DEC, db.ContentRoulette),
+  content1    = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content1", "Content1", base.DEC),
+  content2    = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content2", "Content2", base.DEC, db.InstanceContent),
+  content3    = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content3", "Content3", base.DEC, db.InstanceContent),
+  content4    = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content4", "Content4", base.DEC, db.InstanceContent),
+  content5    = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content5", "Content5", base.DEC, db.InstanceContent),
 }
 
 ffxiv_ipc_content_finder_notify.fields = content_finder_notify_fields
@@ -34,10 +34,10 @@ function ffxiv_ipc_content_finder_notify.dissector(tvbuf, pktinfo, root)
   local reason_val  = reason_tvbr:le_uint()
   tree:add_le(content_finder_notify_fields.reason, reason_tvbr, reason_val)
 
-  -- dissect the class_job_id field
-  local class_job_id_tvbr = tvbuf:range(8, 4)
-  local class_job_id_val  = class_job_id_tvbr:le_uint()
-  tree:add_le(content_finder_notify_fields.class_job_id, class_job_id_tvbr, class_job_id_val)
+  -- dissect the class_job field
+  local class_job_tvbr = tvbuf:range(8, 4)
+  local class_job_val  = class_job_tvbr:le_uint()
+  tree:add_le(content_finder_notify_fields.class_job, class_job_tvbr, class_job_val)
 
   -- dissect the flag field
   local flag_tvbr = tvbuf:range(12, 4)
@@ -57,7 +57,16 @@ function ffxiv_ipc_content_finder_notify.dissector(tvbuf, pktinfo, root)
   -- dissect the content1 field
   local content1_tvbr = tvbuf:range(22, 2)
   local content1_val  = content1_tvbr:le_uint()
-  tree:add_le(content_finder_notify_fields.content1, content1_tvbr, content1_val)
+  local content1_label_key = "Content1"
+  local content1_label_val = content1_val
+  if type_val == 4 then
+    content1_label_key = "Content"
+    content1_label_val = (db.ContentFinderCondition[content1_val] or "Unknown") .. " (" .. content1_val .. ")"
+  elseif type_val == 6 then
+    content1_label_key = "Content"
+    content1_label_val = (db.ContentFinderCondition[content1_val] or "Unknown") .. " (" .. content1_val .. ")"
+  end
+  tree:add_le(content_finder_notify_fields.content1, content1_tvbr, content1_val, content1_label_key .. ": " .. content1_label_val)
 
   -- dissect the content2 field
   local content2_tvbr = tvbuf:range(24, 2)

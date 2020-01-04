@@ -526,6 +526,10 @@
           "type": "uint32",
           "condition": {
             "Type": [{
+              "value": 155,
+              "label": "Fate",
+              "enum": "$Fate"
+            }, {
               "value": 320,
               "label": "Item",
               "enum": "$Item"
@@ -545,6 +549,9 @@
             "Type": [{
               "key": 7,
               "value": "Exp"
+            }, {
+              "key": 155,
+              "value": "Progress(%)"
             }]
           },
           "length": 4

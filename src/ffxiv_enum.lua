@@ -222,13 +222,6 @@ M.forward.group_message_type = {
 }
 M.reverse.group_message_type = makeValString(M.forward.group_message_type)
 
-M.forward.match_event_type = {
-  Cancel = 3,
-  Matched = 4,
-  Enter = 6,
-}
-M.reverse.match_event_type = makeValString(M.forward.match_event_type)
-
 M.forward.public_message_type = {
   Shout = 11,
   Yell = 30,

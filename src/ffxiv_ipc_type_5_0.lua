@@ -2,60 +2,161 @@
 
 local M = {}
 M.types = {
-  ActorControl143 = 0x0143,
-  ActorMove = 0x0182,
-  Character = 0x0180,
-  CompanyBoard = 0x0150,
-  CompanyInfo = 0x0151,
-  ContentFinderNotify = 0x0078,
-  FishEvent = 0x01b5,
-  GroupMessage = 0x0065,
-  InventoryActionAck = 0x01A7,
-  InventoryTransaction = 0x01A4,
-  InventoryTransactionFinish = 0x01A3,
-  MatchEvent = 0x0078,
-  PublicMessage = 0x0104,
-  UpdateHpMpTp = 0x0145,
-  UpdateInventorySlot = 0x01A8,
-  ItemInfo = 0x01A1,
+  [0x0142] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_control142",
+      length = 24,
+    },
+  },
+  [0x0143] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_control143",
+      length = 32,
+    },
+  },
+  [0x0182] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_move",
+      length = 16,
+    },
+  },
+  [0x0180] = {
+    [0] = {
+      name = "ffxiv_ipc_character",
+      length = 592,
+    },
+    [1] = {
+      name = "ffxiv_ipc_update_position_instance",
+      length = 40,
+    },
+  },
+  [0x0150] = {
+    [0] = {
+      name = "ffxiv_ipc_company_board",
+      length = 1,
+    },
+  },
+  [0x0151] = {
+    [0] = {
+      name = "ffxiv_ipc_company_info",
+      length = 32,
+    },
+  },
+  [0x007A] = {
+    [0] = {
+      name = "ffxiv_ipc_content_finder_duty_info",
+      length = 8,
+    },
+  },
+  [0x0079] = {
+    [0] = {
+      name = "ffxiv_ipc_content_finder_member_status",
+      length = 16,
+    },
+  },
+  [0x0078] = {
+    [0] = {
+      name = "ffxiv_ipc_content_finder_notify",
+      length = 32,
+    },
+  },
+  [0x01b5] = {
+    [0] = {
+      name = "ffxiv_ipc_fish_event",
+      length = 36,
+    },
+  },
+  [0x0065] = {
+    [0] = {
+      name = "ffxiv_ipc_group_message",
+      length = 55,
+    },
+    [1] = {
+      name = "ffxiv_ipc_ping",
+      length = 8,
+    },
+  },
+  [0x01A7] = {
+    [0] = {
+      name = "ffxiv_ipc_inventory_action_ack",
+      length = 16,
+    },
+  },
+  [0x01A4] = {
+    [0] = {
+      name = "ffxiv_ipc_inventory_transaction",
+      length = 36,
+    },
+  },
+  [0x01A3] = {
+    [0] = {
+      name = "ffxiv_ipc_inventory_transaction_finish",
+      length = 16,
+    },
+  },
+  [0x013A] = {
+    [0] = {
+      name = "ffxiv_ipc_mail_letter_notification",
+      length = 12,
+    },
+  },
+  [0x0104] = {
+    [0] = {
+      name = "ffxiv_ipc_public_message",
+      length = 48,
+    },
+  },
+  [0x0117] = {
+    [0] = {
+      name = "ffxiv_ipc_set_online_status",
+      length = 8,
+    },
+  },
+  [0x013d] = {
+    [0] = {
+      name = "ffxiv_ipc_skill_handler",
+      length = 32,
+    },
+  },
+  [0x0145] = {
+    [0] = {
+      name = "ffxiv_ipc_update_hp_mp_tp",
+      length = 14,
+    },
+  },
+  [0x01A8] = {
+    [0] = {
+      name = "ffxiv_ipc_update_inventory_slot",
+      length = 64,
+    },
+  },
+  [0x01A1] = {
+    [0] = {
+      name = "ffxiv_ipc_item_info",
+      length = 0,
+    },
+  },
 }
 
-function M.getDissector(type)
-  if type == M.types.ActorControl143 then
-    return Dissector.get('ffxiv_ipc_actor_control143')
-  elseif type == M.types.ActorMove then
-    return Dissector.get('ffxiv_ipc_actor_move')
-  elseif type == M.types.Character then
-    return Dissector.get('ffxiv_ipc_character')
-  elseif type == M.types.CompanyBoard then
-    return Dissector.get('ffxiv_ipc_company_board')
-  elseif type == M.types.CompanyInfo then
-    return Dissector.get('ffxiv_ipc_company_info')
-  elseif type == M.types.ContentFinderNotify then
-    return Dissector.get('ffxiv_ipc_content_finder_notify')
-  elseif type == M.types.FishEvent then
-    return Dissector.get('ffxiv_ipc_fish_event')
-  elseif type == M.types.GroupMessage then
-    return Dissector.get('ffxiv_ipc_group_message')
-  elseif type == M.types.InventoryActionAck then
-    return Dissector.get('ffxiv_ipc_inventory_action_ack')
-  elseif type == M.types.InventoryTransaction then
-    return Dissector.get('ffxiv_ipc_inventory_transaction')
-  elseif type == M.types.InventoryTransactionFinish then
-    return Dissector.get('ffxiv_ipc_inventory_transaction_finish')
-  elseif type == M.types.MatchEvent then
-    return Dissector.get('ffxiv_ipc_match_event')
-  elseif type == M.types.PublicMessage then
-    return Dissector.get('ffxiv_ipc_public_message')
-  elseif type == M.types.UpdateHpMpTp then
-    return Dissector.get('ffxiv_ipc_update_hp_mp_tp')
-  elseif type == M.types.UpdateInventorySlot then
-    return Dissector.get('ffxiv_ipc_update_inventory_slot')
-  elseif type == M.types.ItemInfo then
-    return Dissector.get('ffxiv_ipc_item_info')
-  else
+function M.getDissector(typeNum, length)
+  local types = M.types[typeNum]
+  if type(types) ~= "table" then
     return nil
   end
+
+  for k, v in pairs(types) do
+    if v.length == length then
+      return Dissector.get(v.name)
+    end
+  end
+
+  for k, v in pairs(types) do
+    if v.length < length then
+      return Dissector.get(v.name)
+    end
+  end
+
+  return nil
 end
 
 return M

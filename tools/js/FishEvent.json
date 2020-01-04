@@ -90,7 +90,7 @@
     "length": 2
   }, {
     "offset": 28,
-    "name": "Unknown13",
+    "name": "BiteType",
     "type": "uint16",
     "length": 2
   }, {

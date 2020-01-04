@@ -4,6 +4,7 @@ local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
 local label_data1_type = {
   [7] = "Exp",
+  [155] = "Progress(%)",
 }
 local label_data2_type = {
   [7] = "Bouns(%)",
@@ -47,7 +48,10 @@ function ffxiv_ipc_actor_control143.dissector(tvbuf, pktinfo, root)
   local data0_val  = data0_tvbr:le_uint()
   local data0_label_key = "Data0"
   local data0_label_val = data0_val
-  if type_val == 320 then
+  if type_val == 155 then
+    data0_label_key = "Fate"
+    data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 320 then
     data0_label_key = "Item"
     data0_label_val = (db.Item[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
   elseif type_val == 325 then

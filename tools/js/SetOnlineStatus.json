@@ -1,0 +1,14 @@
+{
+  "name": "Set Online Status",
+  "type": {
+    "5.0": "0x0117"
+  },
+  "fields": [
+    {
+      "offset": 0,
+      "name": "onlineStatusFlags",
+      "type": "uint64",
+      "length": 8
+    }
+  ]
+}

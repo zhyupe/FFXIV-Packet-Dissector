@@ -1,0 +1,14 @@
+{
+  "name": "Ping",
+  "type": {
+    "5.0": "0x0065"
+  },
+  "fields": [
+    {
+      "offset": 0,
+      "name": "timeInMilliseconds",
+      "type": "uint64",
+      "length": 8
+    }
+  ]
+}

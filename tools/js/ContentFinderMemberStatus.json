@@ -1,0 +1,74 @@
+{
+  "name": "Content Finder Member Status",
+  "type": {
+    "5.0": "0x0079"
+  },
+  "fields": [
+    {
+      "offset": 0,
+      "name": "contentId",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 2,
+      "name": "unknown1",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 4,
+      "name": "status",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 5,
+      "name": "currentTank",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 6,
+      "name": "currentDps",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 7,
+      "name": "currentHealer",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 8,
+      "name": "estimatedTime",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 9,
+      "name": "unknown20",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 9,
+      "name": "unknown21",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 9,
+      "name": "unknown22",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 12,
+      "name": "unknown3",
+      "type": "uint32",
+      "length": 4
+    }
+  ]
+}

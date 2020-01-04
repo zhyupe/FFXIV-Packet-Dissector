@@ -36,8 +36,9 @@
     "length": 4
   }, {
     "offset": 8,
-    "name": "ClassJobId",
+    "name": "ClassJob",
     "type": "uint32",
+    "enum": "$ClassJob",
     "length": 4
   }, {
     "offset": 12,
@@ -59,7 +60,17 @@
     "offset": 22,
     "name": "Content1",
     "type": "uint16",
-    "enum": "$InstanceContent",
+    "condition": {
+      "Type": [{
+        "value": 4,
+        "label": "Content",
+        "enum": "$ContentFinderCondition"
+      }, {
+        "value": 6,
+        "label": "Content",
+        "enum": "$ContentFinderCondition"
+      }]
+    },
     "length": 2
   }, {
     "offset": 24,

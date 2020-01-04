@@ -17,7 +17,7 @@ local fish_event_fields = {
   unknown10 = ProtoField.uint16("ffxiv_ipc_fish_event.unknown10", "Unknown10", base.DEC),
   unknown11 = ProtoField.uint16("ffxiv_ipc_fish_event.unknown11", "Unknown11", base.DEC),
   unknown12 = ProtoField.uint16("ffxiv_ipc_fish_event.unknown12", "Unknown12", base.DEC),
-  unknown13 = ProtoField.uint16("ffxiv_ipc_fish_event.unknown13", "Unknown13", base.DEC),
+  bite_type = ProtoField.uint16("ffxiv_ipc_fish_event.bite_type", "BiteType", base.DEC),
   unknown14 = ProtoField.uint16("ffxiv_ipc_fish_event.unknown14", "Unknown14", base.DEC),
   unknown15 = ProtoField.uint16("ffxiv_ipc_fish_event.unknown15", "Unknown15", base.DEC),
   unknown16 = ProtoField.uint16("ffxiv_ipc_fish_event.unknown16", "Unknown16", base.DEC),
@@ -98,10 +98,10 @@ function ffxiv_ipc_fish_event.dissector(tvbuf, pktinfo, root)
   local unknown12_val  = unknown12_tvbr:le_uint()
   tree:add_le(fish_event_fields.unknown12, unknown12_tvbr, unknown12_val)
 
-  -- dissect the unknown13 field
-  local unknown13_tvbr = tvbuf:range(28, 2)
-  local unknown13_val  = unknown13_tvbr:le_uint()
-  tree:add_le(fish_event_fields.unknown13, unknown13_tvbr, unknown13_val)
+  -- dissect the bite_type field
+  local bite_type_tvbr = tvbuf:range(28, 2)
+  local bite_type_val  = bite_type_tvbr:le_uint()
+  tree:add_le(fish_event_fields.bite_type, bite_type_tvbr, bite_type_val)
 
   -- dissect the unknown14 field
   local unknown14_tvbr = tvbuf:range(30, 2)

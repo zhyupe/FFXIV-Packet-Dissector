@@ -1,0 +1,44 @@
+{
+  "name": "Mail Letter Notification",
+  "type": {
+    "5.0": "0x013A"
+  },
+  "fields": [
+    {
+      "offset": 0,
+      "name": "sendbackCount",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 4,
+      "name": "friendLetters",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 6,
+      "name": "unreadCount",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 8,
+      "name": "rewardLetters",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 10,
+      "name": "isGmLetter",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 11,
+      "name": "isSupportDesk",
+      "type": "uint8",
+      "length": 1
+    }
+  ]
+}

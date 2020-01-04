@@ -1,0 +1,27 @@
+{
+  "name": "Content Finder Duty Info",
+  "type": {
+    "5.0": "0x007A"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "PenaltyTime",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 1,
+    "name": "Unknown1",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 2,
+    "name": "Unknown2",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 4,
+    "name": "Unknown3",
+    "type": "uint32",
+    "length": 4
+  }]
+}

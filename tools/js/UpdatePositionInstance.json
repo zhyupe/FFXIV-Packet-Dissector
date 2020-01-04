@@ -1,0 +1,57 @@
+{
+  "name": "UpdatePositionInstance",
+  "type": {
+    "5.0": "0x0180"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "unknown0",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "unknown2",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "unknown3",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "unknown4",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "unknown5",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 24,
+    "name": "unknown6",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 28,
+    "name": "unknown7",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 32,
+    "name": "unknown8",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 36,
+    "name": "unknown9",
+    "type": "uint32",
+    "length": 4
+  }]
+}
