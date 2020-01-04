@@ -13,7 +13,7 @@ local ipc_type_valstr = makeValString(ipc_type.types)
 local ipc_hdr_fields =
 {
     magic     = ProtoField.uint16("ffxiv_ipc.magic", "Magic", base.HEX),
-    type      = ProtoField.uint16("ffxiv_ipc.type", "Type", base.HEX, ipc_type_valstr),
+    type      = ProtoField.uint16("ffxiv_ipc.type", "Type", base.HEX),
     unknown1  = ProtoField.uint16("ffxiv_ipc.unknown1", "Unknown1", base.HEX),
     server_id = ProtoField.uint16("ffxiv_ipc.server_id", "Server ID", base.HEX),
     epoch     = ProtoField.uint32("ffxiv_ipc.epoch", "Epoch", base.DEC),
@@ -74,7 +74,7 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
 
   local tvb = data_tvbr:tvb()
   
-  local dissector = ipc_type.getDissector(type_val)
+  local dissector = ipc_type.getDissector(type_val, tvb:len())
   if dissector ~= nil then
     dissector:call(tvb, pktinfo, root)
   else
