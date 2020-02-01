@@ -299,9 +299,17 @@ local function makeValString(enumTable)
   return t
 end
 
-${globalEnums.map(item => `
+${globalEnums.map(item => {
+  item.values.forEach(row => {
+    if (typeof row.value === 'string' && row.value.startsWith('0x')) {
+      row.value = parseInt(row.value, 16)
+    }
+  })
+
+  return `
 ${common.table(`M.forward.${item.key}`, item.values)}
-M.reverse.${item.key} = makeValString(M.forward.${item.key})`).join('\n')}
+M.reverse.${item.key} = makeValString(M.forward.${item.key})`
+}).join('\n')}
 
 return M
 `
