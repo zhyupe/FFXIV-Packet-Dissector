@@ -40,8 +40,8 @@ const itemAppend = function (item, indent = '  ') {
   let outputName = `${item.name}: `
   if (item.append_name === false) {
     outputName = ''
-  } else if (item.label) {
-    outputName = `" .. (${Object.keys(item.label)
+  } else if (item.condition) {
+    outputName = `" .. (${Object.keys(item.condition)
       .map(key => `label_${item.key}_${common.snakeCase(key)}[${common.snakeCase(key)}_val]`).join(' or ')}) .. "`
   }
 
@@ -107,13 +107,7 @@ ${indent}local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvbMe
 
   let labelKeyVar = null
   let labelValVar = null
-  if (item.label) {
-    labelKeyVar = `${item.key}_label_key`
-    let labelExp = Object.keys(item.label)
-      .map(key => `label_${item.key}_${common.snakeCase(key)}[${common.snakeCase(key)}_val]`)
-      .join(' or ')
-    content += `\n${indent}local ${labelKeyVar} = (${labelExp} or "${item.name}")`
-  } else if (item.condition) {
+  if (item.condition) {
     labelKeyVar = `${item.key}_label_key`
     labelValVar = `${item.key}_label_val`
     content += `\n${indent}local ${labelKeyVar} = "${item.name}"`
@@ -153,15 +147,14 @@ ${indent}local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvbMe
 }
 
 let globalEnums = []
-const getPacketLength = function (obj) {
-  let fields = obj.fields || (obj.structs && obj.structs[0] && obj.structs[0].fields)
+const getPacketLength = function ({ fields }) {
   if (!fields || !fields.length) return 0
 
   return fields.reduce((length, item) => Math.max(length, item.offset + (item.length || 0)), 0)
 }
 
 const generateLuaDissector = function (obj) {
-  let fields = obj.fields || (obj.structs && obj.structs[0] && obj.structs[0].fields)
+  let fields = obj.fields
   if (!fields || !fields.length) return ''
 
   let context = {
@@ -199,10 +192,13 @@ local db = require('ffxiv_db')` : ''
 local enum = require('ffxiv_enum')` : ''
 }${
   fields.filter(item => item.type !== 'children').map(item => {
-    if (!item.label) return ''
+    if (!item.condition) return ''
 
-    return Object.keys(item.label)
-      .map(key => '\n' + common.table(`local label_${item.key}_${common.snakeCase(key)}`, item.label[key]))
+    return Object.keys(item.condition)
+      .map(key => '\n' + common.table(
+        `local label_${item.key}_${common.snakeCase(key)}`, 
+        item.condition[key].filter(row => row.label).map(row => ({ key: row.value, value: row.label }))
+      ))
       .join('')
   }).filter(a => a).join('')
 }
