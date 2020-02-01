@@ -2,83 +2,67 @@
   "name": "Public Message",
   "type": "0x0104",
   "version": "5.0",
-  "enums": [
-    {
-      "name": "PublicMessageType",
-      "type": "byte",
-      "values": [
-        {
-          "key": "Shout",
-          "value": 11
-        },
-        {
-          "key": "Yell",
-          "value": 30
-        },
-        {
-          "key": "Say",
-          "value": 10
-        }
-      ]
-    }
-  ],
-  "structs": [
-    {
-      "name": "PublicMessageHeader",
-      "fields": [
-        {
-          "offset": 0,
-          "name": "UniqueID",
-          "type": "uint64",
-          "length": 8,
-          "base": "HEX"
-        },
-        {
-          "offset": 8,
-          "name": "CharacterID",
-          "type": "uint32",
-          "length": 4,
-          "base": "HEX"
-        },
-        {
-          "offset": 12,
-          "name": "UserServer",
-          "type": "uint16",
-          "length": 2,
-          "enum": "$World"
-        },
-        {
-          "offset": 14,
-          "name": "Type",
-          "type": "uint8",
-          "length": 1,
-          "enum": "PublicMessageType"
-        },
-        {
-          "offset": 15,
-          "name": "Reserved0",
-          "type": "uint8",
-          "length": 1
-        },
-        {
-          "offset": 16,
-          "name": "Nickname",
-          "type": "string",
-          "base": "UNICODE",
-          "tvb_method": "string(ENC_UTF_8)",
-          "add_le": false,
-          "add_val": true,
-          "length": 32
-        }, {
-          "offset": 48,
-          "name": "Content",
-          "type": "string",
-          "base": "UNICODE",
-          "tvb_method": "string(ENC_UTF_8)",
-          "add_le": false,
-          "add_val": true
-        }
-      ]
-    }
-  ]
+  "enums": [{
+    "name": "PublicMessageType",
+    "type": "byte",
+    "values": [
+      {
+        "key": "Shout",
+        "value": 11
+      }, {
+        "key": "Yell",
+        "value": 30
+      }, {
+        "key": "Say",
+        "value": 10
+      }
+    ]
+  }],
+  "fields": [{
+    "offset": 0,
+    "name": "UniqueID",
+    "type": "uint64",
+    "length": 8,
+    "base": "HEX"
+  }, {
+    "offset": 8,
+    "name": "CharacterID",
+    "type": "uint32",
+    "length": 4,
+    "base": "HEX"
+  }, {
+    "offset": 12,
+    "name": "UserServer",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$World"
+  }, {
+    "offset": 14,
+    "name": "Type",
+    "type": "uint8",
+    "length": 1,
+    "enum": "PublicMessageType"
+  }, {
+    "offset": 15,
+    "name": "Reserved0",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 16,
+    "name": "Nickname",
+    "type": "string",
+    "base": "UNICODE",
+    "tvb_method": "string(ENC_UTF_8)",
+    "add_le": false,
+    "add_val": true,
+    "length": 32
+  }, {
+    "offset": 48,
+    "name": "Content",
+    "type": "string",
+    "base": "UNICODE",
+    "tvb_method": "string(ENC_UTF_8)",
+    "add_le": false,
+    "add_val": true
+  }]
 }

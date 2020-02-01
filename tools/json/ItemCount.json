@@ -2,35 +2,25 @@
   "name": "ItemCount",
   "type": 407,
   "enums": [],
-  "structs": [
-    {
-      "name": "ItemCountBody",
-      "fields": [
-        {
-          "offset": 0,
-          "name": "Index",
-          "type": "uint32",
-          "length": 4
-        },
-        {
-          "offset": 4,
-          "name": "Amount",
-          "type": "uint32",
-          "length": 4
-        },
-        {
-          "offset": 8,
-          "name": "Unknown1",
-          "type": "uint32",
-          "length": 4
-        },
-        {
-          "offset": 12,
-          "name": "Unknown2",
-          "type": "uint32",
-          "length": 4
-        }
-      ]
-    }
-  ]
+  "fields": [{
+    "offset": 0,
+    "name": "Index",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "Amount",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Unknown2",
+    "type": "uint32",
+    "length": 4
+  }]
 }
