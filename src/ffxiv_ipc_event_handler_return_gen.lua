@@ -21,6 +21,8 @@ function ffxiv_ipc_event_handler_return.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_event_handler_return, tvbuf)
   pktinfo.cols.info:set("Event Handler Return")
 
+  local len = tvbuf:len()
+
   -- dissect the event_id field
   local event_id_tvbr = tvbuf:range(0, 4)
   local event_id_val  = event_id_tvbr:le_uint()
@@ -71,5 +73,5 @@ function ffxiv_ipc_event_handler_return.dissector(tvbuf, pktinfo, root)
   local param4_val  = param4_tvbr:le_uint()
   tree:add_le(event_handler_return_fields.param4, param4_tvbr, param4_val)
 
-  return tvbuf:len()
+  return len
 end

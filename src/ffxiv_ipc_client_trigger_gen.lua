@@ -2,6 +2,13 @@
 
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
+local label_param11_command_id = {
+  [701] = "Type",
+}
+local label_param12_command_id = {
+  [701] = "Bait",
+  [104] = "Action",
+}
 local ffxiv_ipc_client_trigger = Proto("ffxiv_ipc_client_trigger", "FFXIV-IPC Client Trigger")
 
 local client_trigger_fields = {
@@ -21,6 +28,8 @@ ffxiv_ipc_client_trigger.fields = client_trigger_fields
 function ffxiv_ipc_client_trigger.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_client_trigger, tvbuf)
   pktinfo.cols.info:set("Client Trigger")
+
+  local len = tvbuf:len()
 
   -- dissect the command_id field
   local command_id_tvbr = tvbuf:range(0, 2)
@@ -86,5 +95,5 @@ function ffxiv_ipc_client_trigger.dissector(tvbuf, pktinfo, root)
   local param3_val  = param3_tvbr:le_uint64()
   tree:add_le(client_trigger_fields.param3, param3_tvbr, param3_val)
 
-  return tvbuf:len()
+  return len
 end

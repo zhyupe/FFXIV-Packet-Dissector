@@ -2,6 +2,10 @@
 
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
+local label_content1_type = {
+  [4] = "Content",
+  [6] = "Content",
+}
 local ffxiv_ipc_content_finder_notify = Proto("ffxiv_ipc_content_finder_notify", "FFXIV-IPC Content Finder Notify")
 
 local content_finder_notify_fields = {

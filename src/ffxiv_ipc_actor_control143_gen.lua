@@ -2,6 +2,11 @@
 
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
+local label_data0_type = {
+  [155] = "Fate",
+  [320] = "Item",
+  [325] = "Bait",
+}
 local label_data1_type = {
   [7] = "Exp",
   [155] = "Progress(%)",
@@ -65,14 +70,24 @@ function ffxiv_ipc_actor_control143.dissector(tvbuf, pktinfo, root)
   -- dissect the data1 field
   local data1_tvbr = tvbuf:range(8, 4)
   local data1_val  = data1_tvbr:le_uint()
-  local data1_label_key = (label_data1_type[type_val] or "Data1")
-  tree:add_le(actor_control143_fields.data1, data1_tvbr, data1_val, data1_label_key .. ": " .. data1_val)
+  local data1_label_key = "Data1"
+  local data1_label_val = data1_val
+  if type_val == 7 then
+    data1_label_key = "Exp"
+  elseif type_val == 155 then
+    data1_label_key = "Progress(%)"
+  end
+  tree:add_le(actor_control143_fields.data1, data1_tvbr, data1_val, data1_label_key .. ": " .. data1_label_val)
 
   -- dissect the data2 field
   local data2_tvbr = tvbuf:range(12, 4)
   local data2_val  = data2_tvbr:le_uint()
-  local data2_label_key = (label_data2_type[type_val] or "Data2")
-  tree:add_le(actor_control143_fields.data2, data2_tvbr, data2_val, data2_label_key .. ": " .. data2_val)
+  local data2_label_key = "Data2"
+  local data2_label_val = data2_val
+  if type_val == 7 then
+    data2_label_key = "Bouns(%)"
+  end
+  tree:add_le(actor_control143_fields.data2, data2_tvbr, data2_val, data2_label_key .. ": " .. data2_label_val)
 
   -- dissect the data3 field
   local data3_tvbr = tvbuf:range(16, 4)

@@ -24,6 +24,8 @@ function ffxiv_ipc_player_state_flags.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_player_state_flags, tvbuf)
   pktinfo.cols.info:set("Player State Flags")
 
+  local len = tvbuf:len()
+
   -- dissect the flags0 field
   local flags0_tvbr = tvbuf:range(0, 1)
   local flags0_val  = flags0_tvbr:le_uint()
@@ -89,5 +91,5 @@ function ffxiv_ipc_player_state_flags.dissector(tvbuf, pktinfo, root)
   local padding_val  = padding_tvbr:le_uint()
   tree:add_le(player_state_flags_fields.padding, padding_tvbr, padding_val)
 
-  return tvbuf:len()
+  return len
 end

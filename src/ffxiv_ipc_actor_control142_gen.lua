@@ -2,6 +2,12 @@
 
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
+local label_target_category = {
+  [21] = "Status",
+}
+local label_mode_category = {
+  [300] = "Enabled",
+}
 local ffxiv_ipc_actor_control142 = Proto("ffxiv_ipc_actor_control142", "FFXIV-IPC ActorControl142")
 
 local actor_control142_fields = {
