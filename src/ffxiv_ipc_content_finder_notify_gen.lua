@@ -24,6 +24,8 @@ function ffxiv_ipc_content_finder_notify.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_notify, tvbuf)
   pktinfo.cols.info:set("Content Finder Notify")
 
+  local len = tvbuf:len()
+
   -- dissect the type field
   local type_tvbr = tvbuf:range(0, 4)
   local type_val  = type_tvbr:le_uint()
@@ -88,5 +90,5 @@ function ffxiv_ipc_content_finder_notify.dissector(tvbuf, pktinfo, root)
   local content5_val  = content5_tvbr:le_uint()
   tree:add_le(content_finder_notify_fields.content5, content5_tvbr, content5_val)
 
-  return tvbuf:len()
+  return len
 end

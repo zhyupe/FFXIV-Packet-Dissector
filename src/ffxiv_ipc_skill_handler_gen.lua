@@ -29,6 +29,8 @@ function ffxiv_ipc_skill_handler.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_skill_handler, tvbuf)
   pktinfo.cols.info:set("Skill Handler")
 
+  local len = tvbuf:len()
+
   -- dissect the pad_0000 field
   local pad_0000_tvbr = tvbuf:range(0, 1)
   local pad_0000_val  = pad_0000_tvbr:le_uint()
@@ -114,5 +116,5 @@ function ffxiv_ipc_skill_handler.dissector(tvbuf, pktinfo, root)
   local unknown_val  = unknown_tvbr:le_uint()
   tree:add_le(skill_handler_fields.unknown, unknown_tvbr, unknown_val)
 
-  return tvbuf:len()
+  return len
 end

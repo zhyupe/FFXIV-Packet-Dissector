@@ -29,6 +29,8 @@ function ffxiv_ipc_fish_event.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fish_event, tvbuf)
   pktinfo.cols.info:set("Fish Event")
 
+  local len = tvbuf:len()
+
   -- dissect the user_id field
   local user_id_tvbr = tvbuf:range(0, 4)
   local user_id_val  = user_id_tvbr:le_uint()
@@ -118,5 +120,5 @@ function ffxiv_ipc_fish_event.dissector(tvbuf, pktinfo, root)
   local unknown16_val  = unknown16_tvbr:le_uint()
   tree:add_le(fish_event_fields.unknown16, unknown16_tvbr, unknown16_val)
 
-  return tvbuf:len()
+  return len
 end

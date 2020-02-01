@@ -12,10 +12,12 @@ function ffxiv_ipc_set_online_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_set_online_status, tvbuf)
   pktinfo.cols.info:set("Set Online Status")
 
+  local len = tvbuf:len()
+
   -- dissect the online_status_flags field
   local online_status_flags_tvbr = tvbuf:range(0, 8)
   local online_status_flags_val  = online_status_flags_tvbr:le_uint64()
   tree:add_le(set_online_status_fields.online_status_flags, online_status_flags_tvbr, online_status_flags_val)
 
-  return tvbuf:len()
+  return len
 end

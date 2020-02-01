@@ -3,24 +3,18 @@
 local ffxiv_ipc_add_status_effect = Proto("ffxiv_ipc_add_status_effect", "FFXIV-IPC AddStatusEffect")
 
 local add_status_effect_fields = {
-  last_buff_packet_id = ProtoField.uint32("ffxiv_ipc_add_status_effect.last_buff_packet_id", "LastBuffPacketID", base.DEC),
-  user_id             = ProtoField.uint32("ffxiv_ipc_add_status_effect.user_id", "UserID", base.DEC),
-  unknown1            = ProtoField.uint16("ffxiv_ipc_add_status_effect.unknown1", "Unknown1", base.DEC),
-  unknown2            = ProtoField.uint16("ffxiv_ipc_add_status_effect.unknown2", "Unknown2", base.DEC),
-  current_hp          = ProtoField.uint32("ffxiv_ipc_add_status_effect.current_hp", "CurrentHP", base.DEC),
-  current_mp          = ProtoField.uint16("ffxiv_ipc_add_status_effect.current_mp", "CurrentMP", base.DEC),
-  current_tp          = ProtoField.uint16("ffxiv_ipc_add_status_effect.current_tp", "CurrentTP", base.DEC),
-  max_hp              = ProtoField.uint32("ffxiv_ipc_add_status_effect.max_hp", "MaxHP", base.DEC),
-  max_mp              = ProtoField.uint16("ffxiv_ipc_add_status_effect.max_mp", "MaxMP", base.DEC),
-  count               = ProtoField.uint8("ffxiv_ipc_add_status_effect.count", "Count", base.DEC),
-  unknown3            = ProtoField.uint8("ffxiv_ipc_add_status_effect.unknown3", "Unknown3", base.DEC),
-  unknown4            = ProtoField.uint16("ffxiv_ipc_add_status_effect.unknown4", "Unknown4", base.DEC),
-  status_id           = ProtoField.uint16("ffxiv_ipc_add_status_effect.status_id", "StatusID", base.DEC),
-  status_extra        = ProtoField.uint16("ffxiv_ipc_add_status_effect.status_extra", "StatusExtra", base.DEC),
-  unknown1            = ProtoField.uint16("ffxiv_ipc_add_status_effect.unknown1", "Unknown1", base.DEC),
-  duration            = ProtoField.float("ffxiv_ipc_add_status_effect.duration", "Duration", base.DEC),
-  actor_id            = ProtoField.uint32("ffxiv_ipc_add_status_effect.actor_id", "ActorID", base.DEC),
-  unknown2            = ProtoField.uint16("ffxiv_ipc_add_status_effect.unknown2", "Unknown2", base.DEC),
+  last_buff_packet_id    = ProtoField.uint32("ffxiv_ipc_add_status_effect.last_buff_packet_id", "LastBuffPacketID", base.DEC),
+  user_id                = ProtoField.uint32("ffxiv_ipc_add_status_effect.user_id", "UserID", base.DEC),
+  unknown1               = ProtoField.uint16("ffxiv_ipc_add_status_effect.unknown1", "Unknown1", base.DEC),
+  unknown2               = ProtoField.uint16("ffxiv_ipc_add_status_effect.unknown2", "Unknown2", base.DEC),
+  current_hp             = ProtoField.uint32("ffxiv_ipc_add_status_effect.current_hp", "CurrentHP", base.DEC),
+  current_mp             = ProtoField.uint16("ffxiv_ipc_add_status_effect.current_mp", "CurrentMP", base.DEC),
+  current_tp             = ProtoField.uint16("ffxiv_ipc_add_status_effect.current_tp", "CurrentTP", base.DEC),
+  max_hp                 = ProtoField.uint32("ffxiv_ipc_add_status_effect.max_hp", "MaxHP", base.DEC),
+  max_mp                 = ProtoField.uint16("ffxiv_ipc_add_status_effect.max_mp", "MaxMP", base.DEC),
+  count                  = ProtoField.uint8("ffxiv_ipc_add_status_effect.count", "Count", base.DEC),
+  unknown3               = ProtoField.uint8("ffxiv_ipc_add_status_effect.unknown3", "Unknown3", base.DEC),
+  unknown4               = ProtoField.uint16("ffxiv_ipc_add_status_effect.unknown4", "Unknown4", base.DEC),
 }
 
 ffxiv_ipc_add_status_effect.fields = add_status_effect_fields
@@ -28,6 +22,8 @@ ffxiv_ipc_add_status_effect.fields = add_status_effect_fields
 function ffxiv_ipc_add_status_effect.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_add_status_effect, tvbuf)
   pktinfo.cols.info:set("AddStatusEffect")
+
+  local len = tvbuf:len()
 
   -- dissect the last_buff_packet_id field
   local last_buff_packet_id_tvbr = tvbuf:range(0, 4)
@@ -89,35 +85,20 @@ function ffxiv_ipc_add_status_effect.dissector(tvbuf, pktinfo, root)
   local unknown4_val  = unknown4_tvbr:le_uint()
   tree:add_le(add_status_effect_fields.unknown4, unknown4_tvbr, unknown4_val)
 
-  -- dissect the status_id field
-  local status_id_tvbr = tvbuf:range(0, 2)
-  local status_id_val  = status_id_tvbr:le_uint()
-  tree:add_le(add_status_effect_fields.status_id, status_id_tvbr, status_id_val)
+  -- dissect add_status_effect_item
+  local add_status_effect_item_dissector = Dissector.get('ffxiv_ipc_add_status_effect_item')
+  local add_status_effect_item_pos = 30
+  local add_status_effect_item_len = 16
+  local add_status_effect_item_count = count_val
 
-  -- dissect the status_extra field
-  local status_extra_tvbr = tvbuf:range(2, 2)
-  local status_extra_val  = status_extra_tvbr:le_uint()
-  tree:add_le(add_status_effect_fields.status_extra, status_extra_tvbr, status_extra_val)
+  while add_status_effect_item_pos + add_status_effect_item_len < len do
+    local add_status_effect_item_tvbr = tvbuf:range(add_status_effect_item_pos, 16)
+    add_status_effect_item_dissector:call(add_status_effect_item_tvbr:tvb(), pktinfo, root)
+    add_status_effect_item_count = add_status_effect_item_count - 1
+    if add_status_effect_item_count <= 0 then
+      break
+    end
+  end
 
-  -- dissect the unknown1 field
-  local unknown1_tvbr = tvbuf:range(4, 2)
-  local unknown1_val  = unknown1_tvbr:le_uint()
-  tree:add_le(add_status_effect_fields.unknown1, unknown1_tvbr, unknown1_val)
-
-  -- dissect the duration field
-  local duration_tvbr = tvbuf:range(6, 4)
-  local duration_val  = duration_tvbr:le_float()
-  tree:add_le(add_status_effect_fields.duration, duration_tvbr, duration_val)
-
-  -- dissect the actor_id field
-  local actor_id_tvbr = tvbuf:range(10, 4)
-  local actor_id_val  = actor_id_tvbr:le_uint()
-  tree:add_le(add_status_effect_fields.actor_id, actor_id_tvbr, actor_id_val)
-
-  -- dissect the unknown2 field
-  local unknown2_tvbr = tvbuf:range(14, 2)
-  local unknown2_val  = unknown2_tvbr:le_uint()
-  tree:add_le(add_status_effect_fields.unknown2, unknown2_tvbr, unknown2_val)
-
-  return tvbuf:len()
+  return len
 end

@@ -15,6 +15,8 @@ function ffxiv_ipc_inventory_action_ack.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_inventory_action_ack, tvbuf)
   pktinfo.cols.info:set("Inventory Action Ack")
 
+  local len = tvbuf:len()
+
   -- dissect the sequence field
   local sequence_tvbr = tvbuf:range(0, 4)
   local sequence_val  = sequence_tvbr:le_uint()
@@ -35,5 +37,5 @@ function ffxiv_ipc_inventory_action_ack.dissector(tvbuf, pktinfo, root)
   local unknown2_val  = unknown2_tvbr:le_uint()
   tree:add_le(inventory_action_ack_fields.unknown2, unknown2_tvbr, unknown2_val)
 
-  return tvbuf:len()
+  return len
 end

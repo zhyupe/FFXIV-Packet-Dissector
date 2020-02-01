@@ -23,6 +23,8 @@ function ffxiv_ipc_character.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_character, tvbuf)
   pktinfo.cols.info:set("Character")
 
+  local len = tvbuf:len()
+
   -- dissect the title field
   local title_tvbr = tvbuf:range(0, 4)
   local title_val  = title_tvbr:le_uint()
@@ -78,5 +80,5 @@ function ffxiv_ipc_character.dissector(tvbuf, pktinfo, root)
   local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
   tree:add(character_fields.nickname, nickname_tvbr, nickname_val)
 
-  return tvbuf:len()
+  return len
 end

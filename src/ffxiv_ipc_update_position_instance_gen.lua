@@ -21,6 +21,8 @@ function ffxiv_ipc_update_position_instance.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_position_instance, tvbuf)
   pktinfo.cols.info:set("UpdatePositionInstance")
 
+  local len = tvbuf:len()
+
   -- dissect the unknown0 field
   local unknown0_tvbr = tvbuf:range(0, 4)
   local unknown0_val  = unknown0_tvbr:le_uint()
@@ -71,5 +73,5 @@ function ffxiv_ipc_update_position_instance.dissector(tvbuf, pktinfo, root)
   local unknown9_val  = unknown9_tvbr:le_uint()
   tree:add_le(update_position_instance_fields.unknown9, unknown9_tvbr, unknown9_val)
 
-  return tvbuf:len()
+  return len
 end

@@ -2,12 +2,6 @@
 
 local M = {}
 M.types = {
-  [0x0141] = {
-    [0] = {
-      name = "ffxiv_ipc_add_status_effect",
-      length = 30,
-    },
-  },
   [0x010c] = {
     [0] = {
       name = "ffxiv_ipc_announcement",

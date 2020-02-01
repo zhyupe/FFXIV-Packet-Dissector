@@ -22,6 +22,8 @@ function ffxiv_ipc_item_simple.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_item_simple, tvbuf)
   pktinfo.cols.info:set("ItemSimple")
 
+  local len = tvbuf:len()
+
   -- dissect the index field
   local index_tvbr = tvbuf:range(0, 4)
   local index_val  = index_tvbr:le_uint()
@@ -72,5 +74,5 @@ function ffxiv_ipc_item_simple.dissector(tvbuf, pktinfo, root)
   local unknown4_val  = unknown4_tvbr:le_uint()
   tree:add_le(item_simple_fields.unknown4, unknown4_tvbr, unknown4_val)
 
-  return tvbuf:len()
+  return len
 end

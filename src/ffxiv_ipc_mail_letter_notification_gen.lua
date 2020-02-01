@@ -17,6 +17,8 @@ function ffxiv_ipc_mail_letter_notification.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_mail_letter_notification, tvbuf)
   pktinfo.cols.info:set("Mail Letter Notification")
 
+  local len = tvbuf:len()
+
   -- dissect the sendback_count field
   local sendback_count_tvbr = tvbuf:range(0, 4)
   local sendback_count_val  = sendback_count_tvbr:le_uint()
@@ -47,5 +49,5 @@ function ffxiv_ipc_mail_letter_notification.dissector(tvbuf, pktinfo, root)
   local is_support_desk_val  = is_support_desk_tvbr:le_uint()
   tree:add_le(mail_letter_notification_fields.is_support_desk, is_support_desk_tvbr, is_support_desk_val)
 
-  return tvbuf:len()
+  return len
 end

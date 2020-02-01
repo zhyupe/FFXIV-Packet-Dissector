@@ -22,6 +22,8 @@ function ffxiv_ipc_content_finder_member_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_member_status, tvbuf)
   pktinfo.cols.info:set("Content Finder Member Status")
 
+  local len = tvbuf:len()
+
   -- dissect the content_id field
   local content_id_tvbr = tvbuf:range(0, 2)
   local content_id_val  = content_id_tvbr:le_uint()
@@ -77,5 +79,5 @@ function ffxiv_ipc_content_finder_member_status.dissector(tvbuf, pktinfo, root)
   local unknown3_val  = unknown3_tvbr:le_uint()
   tree:add_le(content_finder_member_status_fields.unknown3, unknown3_tvbr, unknown3_val)
 
-  return tvbuf:len()
+  return len
 end

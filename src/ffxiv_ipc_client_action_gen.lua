@@ -20,6 +20,8 @@ function ffxiv_ipc_client_action.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_client_action, tvbuf)
   pktinfo.cols.info:set("ClientAction")
 
+  local len = tvbuf:len()
+
   -- dissect the unknown1 field
   local unknown1_tvbr = tvbuf:range(0, 4)
   local unknown1_val  = unknown1_tvbr:le_uint()
@@ -55,5 +57,5 @@ function ffxiv_ipc_client_action.dissector(tvbuf, pktinfo, root)
   local unknown5_val  = unknown5_tvbr:le_uint()
   tree:add_le(client_action_fields.unknown5, unknown5_tvbr, unknown5_val)
 
-  return tvbuf:len()
+  return len
 end

@@ -22,6 +22,8 @@ function ffxiv_ipc_group_message.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_group_message, tvbuf)
   pktinfo.cols.info:set("Group Message")
 
+  local len = tvbuf:len()
+
   -- dissect the group_id field
   local group_id_tvbr = tvbuf:range(0, 4)
   local group_id_val  = group_id_tvbr:le_uint()
@@ -71,5 +73,5 @@ function ffxiv_ipc_group_message.dissector(tvbuf, pktinfo, root)
     tree:add(group_message_fields.content, content_tvbr, content_val)
   end
 
-  return tvbuf:len()
+  return len
 end

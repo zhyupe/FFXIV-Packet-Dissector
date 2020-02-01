@@ -15,6 +15,8 @@ function ffxiv_ipc_content_finder_duty_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_duty_info, tvbuf)
   pktinfo.cols.info:set("Content Finder Duty Info")
 
+  local len = tvbuf:len()
+
   -- dissect the penalty_time field
   local penalty_time_tvbr = tvbuf:range(0, 1)
   local penalty_time_val  = penalty_time_tvbr:le_uint()
@@ -35,5 +37,5 @@ function ffxiv_ipc_content_finder_duty_info.dissector(tvbuf, pktinfo, root)
   local unknown3_val  = unknown3_tvbr:le_uint()
   tree:add_le(content_finder_duty_info_fields.unknown3, unknown3_tvbr, unknown3_val)
 
-  return tvbuf:len()
+  return len
 end

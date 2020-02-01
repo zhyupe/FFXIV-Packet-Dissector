@@ -20,6 +20,12 @@ M.types = {
       length = 16,
     },
   },
+  [0x0141] = {
+    [0] = {
+      name = "ffxiv_ipc_add_status_effect",
+      length = 30,
+    },
+  },
   [0x0180] = {
     [0] = {
       name = "ffxiv_ipc_character",
@@ -28,6 +34,16 @@ M.types = {
     [1] = {
       name = "ffxiv_ipc_update_position_instance",
       length = 40,
+    },
+  },
+  [0x013A] = {
+    [0] = {
+      name = "ffxiv_ipc_client_trigger",
+      length = 32,
+    },
+    [1] = {
+      name = "ffxiv_ipc_mail_letter_notification",
+      length = 12,
     },
   },
   [0x0150] = {
@@ -58,6 +74,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_content_finder_notify",
       length = 32,
+    },
+  },
+  [0x015A] = {
+    [0] = {
+      name = "ffxiv_ipc_event_handler_return",
+      length = 18,
     },
   },
   [0x01b5] = {
@@ -94,10 +116,10 @@ M.types = {
       length = 16,
     },
   },
-  [0x013A] = {
+  [0x0193] = {
     [0] = {
-      name = "ffxiv_ipc_mail_letter_notification",
-      length = 12,
+      name = "ffxiv_ipc_player_state_flags",
+      length = 16,
     },
   },
   [0x0104] = {
@@ -133,7 +155,7 @@ M.types = {
   [0x01A1] = {
     [0] = {
       name = "ffxiv_ipc_item_info",
-      length = 0,
+      length = 64,
     },
   },
 }

@@ -22,6 +22,8 @@ function ffxiv_ipc_inventory_transaction.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_inventory_transaction, tvbuf)
   pktinfo.cols.info:set("Inventory Transaction")
 
+  local len = tvbuf:len()
+
   -- dissect the sequence field
   local sequence_tvbr = tvbuf:range(0, 4)
   local sequence_val  = sequence_tvbr:le_uint()
@@ -79,5 +81,5 @@ function ffxiv_ipc_inventory_transaction.dissector(tvbuf, pktinfo, root)
   local target_storage_id_val  = target_storage_id_tvbr:le_uint()
   tree:add_le(inventory_transaction_fields.target_storage_id, target_storage_id_tvbr, target_storage_id_val)
 
-  return tvbuf:len()
+  return len
 end

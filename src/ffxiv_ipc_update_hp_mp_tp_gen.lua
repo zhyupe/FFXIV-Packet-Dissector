@@ -17,6 +17,8 @@ function ffxiv_ipc_update_hp_mp_tp.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_hp_mp_tp, tvbuf)
   pktinfo.cols.info:set("UpdateHpMpTp")
 
+  local len = tvbuf:len()
+
   -- dissect the hp field
   local hp_tvbr = tvbuf:range(0, 4)
   local hp_val  = hp_tvbr:le_uint()
@@ -47,5 +49,5 @@ function ffxiv_ipc_update_hp_mp_tp.dissector(tvbuf, pktinfo, root)
   local unknown2_val  = unknown2_tvbr:le_uint()
   tree:add_le(update_hp_mp_tp_fields.unknown2, unknown2_tvbr, unknown2_val)
 
-  return tvbuf:len()
+  return len
 end
