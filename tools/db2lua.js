@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const readCsv = require('./read-csv')
 
-const dbRoot = '../../library/5.05_all/'
+const dbRoot = '../../library/5.05/'
 const output = '../src/'
 const langs = ['chs', 'en', 'ja', 'de', 'fr']
 
@@ -17,11 +17,8 @@ Array.prototype.kvmap = function (nKey = 'Name', valueFunc = (val) => val) {
 
 const dbStore = {}
 const db = function (name) {
-  if (!dbStore[name]) {
-    dbStore[name] = readCsv(fs.readFileSync(path.join(dbRoot, name + '.csv'), 'utf-8'))
-  }
-
-  return dbStore[name]
+  console.log(`Reading '${name}'`)
+  return readCsv(fs.readFileSync(path.join(dbRoot, name + '.csv'), 'utf-8'))
 }
 
 const generateLuaTable = function (output) {
@@ -49,11 +46,16 @@ langs.forEach(lang => {
   obj.Fate = db(`Fate.${lang}`).kvmap()
   obj.InstanceContent = db(`InstanceContent.${lang}`).kvmap()
   obj.Item = db(`Item.${lang}`).kvmap()
+  obj.Status = db(`Status.${lang}`).kvmap()
+
+  let dbPlaceName = db(`PlaceName.${lang}`)
   obj.TerritoryType = db('TerritoryType')
     .filter(({ PlaceName }) => +PlaceName)
-    .kvmap('PlaceName', placeName => db(`PlaceName.${lang}`).findById(placeName).Name)
-  obj.TitleMasculine = db(`Title.${lang}`).kvmap('Masculine')
-  obj.TitleFeminine = db(`Title.${lang}`).kvmap('Feminine')
+    .kvmap('PlaceName', placeName => dbPlaceName.findById(placeName).Name)
+
+  let dbTitle = db(`Title.${lang}`)
+  obj.TitleMasculine = dbTitle.kvmap('Masculine')
+  obj.TitleFeminine = dbTitle.kvmap('Feminine')
   obj.World = db('World').kvmap()
 
   fs.writeFileSync(`${output}ffxiv_db_${lang}.lua`, generateLuaTable(obj))
