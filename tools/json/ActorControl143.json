@@ -536,13 +536,13 @@
     "offset": 8,
     "name": "Data1",
     "type": "uint32",
-    "label": {
+    "condition": {
       "Type": [{
-        "key": 7,
-        "value": "Exp"
+        "value": 7,
+        "label": "Exp"
       }, {
-        "key": 155,
-        "value": "Progress(%)"
+        "value": 155,
+        "label": "Progress(%)"
       }]
     },
     "length": 4
@@ -550,10 +550,10 @@
     "offset": 12,
     "name": "Data2",
     "type": "uint32",
-    "label": {
+    "condition": {
       "Type": [{
-        "key": 7,
-        "value": "Bouns(%)"
+        "value": 7,
+        "label": "Bouns(%)"
       }]
     },
     "length": 4
