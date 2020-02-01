@@ -61,7 +61,37 @@ const resolveEnum = function (value) {
   }
 }
 
+const renderChildren = function (snakeName, item) {
+  const length = ipcLength[item.name.replace(/ /g, '')]
+  if (!length) {
+    throw new Error(`Dissector '${item.name}' cannot be found. Please make sure the structure is placed in 'children' property, or loaded before this file`)
+  }
+
+  let count = item.count ? `
+  local ${item.key}_count = ${typeof item.count === 'number' ? item.count : `${common.snakeCase(item.count)}_val`}` : ''
+
+  return `  -- dissect ${item.key}
+  local ${item.key}_dissector = Dissector.get('ffxiv_ipc_${common.snakeCase(item.name)}')
+  local ${item.key}_pos = ${item.offset}
+  local ${item.key}_len = ${length}${count}
+
+  while ${item.key}_pos + ${item.key}_len < len do
+    local ${item.key}_tvbr = tvbuf:range(${item.key}_pos, ${length})
+    ${item.key}_dissector:call(${item.key}_tvbr:tvb(), pktinfo, root)${
+      count ? `
+    ${item.key}_count = ${item.key}_count - 1
+    if ${item.key}_count <= 0 then
+      break
+    end` : ''
+    }
+  end`
+}
+
 const renderField = function (snakeName, item) {
+  if (item.type === 'children') {
+    return renderChildren.call(this, snakeName, item)
+  }
+
   let indent = '  '
   let prefix = `${indent}-- dissect the ${item.key} field\n`
   let suffix = ''
@@ -130,7 +160,7 @@ const getPacketLength = function (obj) {
   return fields.reduce((length, item) => Math.max(length, item.offset + (item.length || 0)), 0)
 }
 
-const generateLuaDissector = function (name, obj) {
+const generateLuaDissector = function (obj) {
   let fields = obj.fields || (obj.structs && obj.structs[0] && obj.structs[0].fields)
   if (!fields || !fields.length) return ''
 
@@ -157,7 +187,7 @@ const generateLuaDissector = function (name, obj) {
     }))
   }
 
-  let snakeName = common.snakeCase(name)
+  let snakeName = common.snakeCase(obj.name)
   let maxLength = fields.reduce((max, item) => Math.max(max, item.key.length), 0)
 
   let fieldContent = fields.map(item => renderField.call(context, snakeName, item)).join('\n\n')
@@ -168,7 +198,7 @@ local db = require('ffxiv_db')` : ''
 }${context.enum ? `
 local enum = require('ffxiv_enum')` : ''
 }${
-  fields.map(item => {
+  fields.filter(item => item.type !== 'children').map(item => {
     if (!item.label) return ''
 
     return Object.keys(item.label)
@@ -176,9 +206,9 @@ local enum = require('ffxiv_enum')` : ''
       .join('')
   }).filter(a => a).join('')
 }
-local ffxiv_ipc_${snakeName} = Proto("ffxiv_ipc_${snakeName}", "FFXIV-IPC ${name}")
+local ffxiv_ipc_${snakeName} = Proto("ffxiv_ipc_${snakeName}", "FFXIV-IPC ${obj.name}")
 
-local ${snakeName}_fields = {${fields.map(item => `
+local ${snakeName}_fields = {${fields.filter(item => item.type !== 'children').map(item => `
   ${item.key}${' '.repeat(maxLength - item.key.length)} = ProtoField.${item.type}("ffxiv_ipc_${snakeName}.${
   item.key}", "${item.name}", base.${item.base || 'DEC'}${item.enum ? `, ${item.enum}` : ''}),`).join('')}
 }
@@ -187,15 +217,18 @@ ffxiv_ipc_${snakeName}.fields = ${snakeName}_fields
 
 function ffxiv_ipc_${snakeName}.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_${snakeName}, tvbuf)
-  pktinfo.cols.info:set("${name}")
+  pktinfo.cols.info:set("${obj.name}")
+
+  local len = tvbuf:len()
 
 ${fieldContent}
 
-  return tvbuf:len()
+  return len
 end`
 }
 
 const ipcTypes = {}
+const ipcLength = {}
 const addTypes = (obj) => {
   let { name, type, version = 'unknown', length } = obj
   if (!length) {
@@ -218,21 +251,39 @@ const addTypes = (obj) => {
     length
   })
 }
+const recordLength = (obj) => {
+  let { name, length } = obj
+  if (!length) {
+    length = getPacketLength(obj)
+  }
+
+  ipcLength[name.replace(/ /g, '')] = length
+}
 
 for (let file of files) {
-  const obj = JSON.parse(fs.readFileSync('./json/' + file))
+  const obj = Object.freeze(JSON.parse(fs.readFileSync('./json/' + file)))
   const name = obj.name || file.replace('.json', '')
+
+  if (obj.children) {
+    for (let child of obj.children) {
+      recordLength(child)
+      fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(child.name)}_gen.lua`, generateLuaDissector(child))
+    }
+  }
 
   if (obj.name) {
     addTypes(obj)
-    fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(name)}_gen.lua`, generateLuaDissector(name, obj))
+    recordLength(obj)
+    fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(name)}_gen.lua`, generateLuaDissector(obj))
   }
 
   if (obj.aliases && obj.aliases.length) {
     for (let alias of obj.aliases) {
-      addTypes(alias)
+      const aliasObj = Object.freeze({ ...obj, ...alias })
+      addTypes(aliasObj)
+      recordLength(aliasObj)
 
-      fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(alias.name)}_gen.lua`, generateLuaDissector(alias.name, obj))
+      fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(alias.name)}_gen.lua`, generateLuaDissector(aliasObj))
     }
   }
 }
