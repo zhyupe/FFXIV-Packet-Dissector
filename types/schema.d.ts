@@ -80,14 +80,14 @@ interface IPCField {
    * buffer correctly (like UTF-8 string)
    * Default: `false`
    */
-  add_val: boolean;
+  add_val?: boolean;
   /**
    * Check packet length before parsing field. Useful when the packet length varys. (Sometimes different 
    * packets can use same the IPC type and cannot be recognized, like `0x0065`, used for both GroupMessage 
    * and Ping)
    * Default: `false`
    */
-  check_length: boolean;
+  check_length?: boolean;
   /**
    * Whether to append the parsed value to tree title.
    * If a falsy value (like empty string, `false`, `null` or nothing) is passed, it would append nothing
@@ -100,8 +100,25 @@ interface IPCField {
    * Whether to append field name before the value.
    * Default: `false`
    */
-  append_name: boolean;
+  append_name?: boolean;
+  /**
+   * Modify some of the field properties under certain condition 
+   * fieldName: name of the field that conditions are compared to.
+   * Please notice that only the fields declared before current field are valid 
+   * (as others are not dissected yet)
+   */
+  condition?: {
+    [fieldName: string]: IPCFieldCondition[]
+  }
 }
+
+/**
+ * Conditions. At this time, only `equal (==)` condition is supported.
+ * `equal (==)`: `fieldVal == value`
+ */
+type IPCFieldCondition = {
+  value: any;
+} & Pick<IPCField, "label" | "enum">;
 
 interface IPCSchema {
   /**
@@ -109,16 +126,22 @@ interface IPCSchema {
    * The name should be in CamelCase, though it would be converted to snake_case when used in Lua variables.
    */
   name: string;
+
   /**
-   * IPC type, a 16-bit unsigned integer. 
-   * Can be a decimal number (since JSON does not support hexadecimal numbers) or string (should be a valid format of number in Lua)
+   * IPC types. 
+   * Version is the major and minor version (e.g. 5.0, 5.1), as the type can be changed in minor version.
+   * Value is a 16-bit unsigned integer and can be declared in decimal number or or string (should be a valid format of number in Lua)
    */
-  type: string | number;
+  type: {
+    [version: string]: string | number
+  };
+
   /**
    * Packet version, just for noting when the packet is analyzed.
    * It would be generated as comment in ipc types' enum in `ffxiv_ipc.lua`
    */
   version: string;
+
   /**
    * Enums used by IPC Packet
    */
@@ -130,15 +153,7 @@ interface IPCSchema {
   fields?: IPCField[];
 
   /**
-   * Packet structs. This property exists since there can be multiple structs in the original C# file.
-   * However, as a packet name usually has just one struct, the generator only takes the first struct in the array.
-   * And it's deprecated in favor of `IPCSchema.fields`
-   * @deprecated
+   * Children, used to generate sub-dissectors
    */
-  structs?: Array<{
-    /**
-     * Same as IPCSchema.fields
-     */
-    fields?: IPCField[];
-  }>;
+  children?: IPCSchema[];
 }
