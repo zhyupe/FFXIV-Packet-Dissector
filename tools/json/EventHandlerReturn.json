@@ -1,0 +1,68 @@
+{
+  "name": "Event Handler Return",
+  "type": {
+    "5.0": "0x015A"
+  },
+  "fields": [
+    {
+      "offset": 0,
+      "name": "eventId",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 4,
+      "name": "scene",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 6,
+      "name": "param1",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 8,
+      "name": "param2",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 10,
+      "name": "pad_000A0",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 11,
+      "name": "pad_000A1",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 12,
+      "name": "param3",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 14,
+      "name": "pad_000E0",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 15,
+      "name": "pad_000E1",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 16,
+      "name": "param4",
+      "type": "uint16",
+      "length": 2
+    }
+  ]
+}

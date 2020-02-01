@@ -1,0 +1,86 @@
+{
+  "name": "Player State Flags",
+  "type": {
+    "5.0": "0x0193"
+  },
+  "fields": [
+    {
+      "offset": 0,
+      "name": "flags0",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 1,
+      "name": "flags1",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 2,
+      "name": "flags2",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 3,
+      "name": "flags3",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 4,
+      "name": "flags4",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 5,
+      "name": "flags5",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 6,
+      "name": "flags6",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 7,
+      "name": "flags7",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 8,
+      "name": "flags8",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 9,
+      "name": "flags9",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 10,
+      "name": "flags10",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 11,
+      "name": "flags11",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 12,
+      "name": "padding",
+      "type": "uint32",
+      "length": 4
+    }
+  ]
+}
