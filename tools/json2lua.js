@@ -4,7 +4,7 @@
 
 const fs = require('fs')
 const common = require('./common')
-let files = fs.readdirSync('./js')
+let files = fs.readdirSync('./json')
 fs.readdirSync('../src').forEach(file => {
   if (file.startsWith('ffxiv_ipc_') && file.endsWith('_gen.lua')) {
     fs.unlinkSync(`../src/${file}`)
@@ -220,7 +220,7 @@ const addTypes = (obj) => {
 }
 
 for (let file of files) {
-  const obj = JSON.parse(fs.readFileSync('./js/' + file))
+  const obj = JSON.parse(fs.readFileSync('./json/' + file))
   const name = obj.name || file.replace('.json', '')
 
   if (obj.name) {

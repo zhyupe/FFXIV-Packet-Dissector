@@ -116,5 +116,5 @@ for (let file of files) {
     console.warn(`${file} has no struct`)
   }
 
-  fs.writeFileSync('./js/' + file.replace('.cs', '.json'), JSON.stringify(output, null, 2))
+  fs.writeFileSync('./json/' + file.replace('.cs', '.json'), JSON.stringify(output, null, 2))
 }
