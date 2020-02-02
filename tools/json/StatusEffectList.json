@@ -1,60 +1,62 @@
 {
-  "name": "StatusEffectList",
-  "type": "0x0151",
-  "enums": [],
+  "name": "Status Effect List",
+  "type": {
+    "5.0": "0x015B"
+  },
   "fields": [{
     "offset": 0,
-    "name": "Unknown0",
-    "type": "uint32",
-    "length": 4
+    "name": "classId",
+    "type": "uint8",
+    "enum": "$ClassJob",
+    "length": 1
+  }, {
+    "offset": 1,
+    "name": "level1",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 2,
+    "name": "level",
+    "type": "uint16",
+    "length": 2
   }, {
     "offset": 4,
-    "name": "CurrentHP",
+    "name": "current_hp",
     "type": "uint32",
     "length": 4
   }, {
     "offset": 8,
-    "name": "MaxHP",
+    "name": "max_hp",
     "type": "uint32",
     "length": 4
   }, {
     "offset": 12,
-    "name": "MaxMP",
+    "name": "current_mp",
     "type": "uint16",
     "length": 2
   }, {
     "offset": 14,
-    "name": "CurrentMP",
+    "name": "max_mp",
     "type": "uint16",
     "length": 2
   }, {
     "offset": 16,
-    "name": "CurrentTP",
+    "name": "currentTp",
     "type": "uint16",
     "length": 2
   }, {
     "offset": 18,
-    "name": "Unknown1",
+    "name": "unknown1",
     "type": "uint16",
     "length": 2
   }, {
-    "offset": 0,
-    "name": "StatusID",
-    "type": "uint16",
-    "length": 2
+    "offset": 20,
+    "name": "StatusEffectListItem",
+    "type": "children",
+    "count": 30
   }, {
-    "offset": 2,
-    "name": "StatusExtra",
-    "type": "uint16",
-    "length": 2
-  }, {
-    "offset": 4,
-    "name": "Duration",
-    "type": "float",
-    "length": 4
-  }, {
-    "offset": 8,
-    "name": "ActorID",
+    "offset": 380,
+    "name": "padding",
     "type": "uint32",
     "length": 4
   }],
@@ -62,58 +64,26 @@
     "name": "StatusEffectListItem",
     "fields": [{
       "offset": 0,
-      "name": "Unknown0",
-      "type": "uint32",
-      "length": 4
-    }, {
-      "offset": 4,
-      "name": "CurrentHP",
-      "type": "uint32",
-      "length": 4
-    }, {
-      "offset": 8,
-      "name": "MaxHP",
-      "type": "uint32",
-      "length": 4
-    }, {
-      "offset": 12,
-      "name": "MaxMP",
+      "name": "effectId",
       "type": "uint16",
-      "length": 2
-    }, {
-      "offset": 14,
-      "name": "CurrentMP",
-      "type": "uint16",
-      "length": 2
-    }, {
-      "offset": 16,
-      "name": "CurrentTP",
-      "type": "uint16",
-      "length": 2
-    }, {
-      "offset": 18,
-      "name": "Unknown1",
-      "type": "uint16",
-      "length": 2
-    }, {
-      "offset": 0,
-      "name": "StatusID",
-      "type": "uint16",
-      "length": 2
+      "length": 2,
+      "enum": "$Status",
+      "append": "enum"
     }, {
       "offset": 2,
-      "name": "StatusExtra",
+      "name": "unknown1",
       "type": "uint16",
       "length": 2
     }, {
       "offset": 4,
-      "name": "Duration",
+      "name": "duration",
       "type": "float",
       "length": 4
     }, {
       "offset": 8,
-      "name": "ActorID",
+      "name": "sourceActorId",
       "type": "uint32",
+      "base": "HEX",
       "length": 4
     }]
   }]
