@@ -1,24 +1,42 @@
 {
   "name": "Company Info",
-  "type": "0x0151",
+  "type": {
+    "5.0": "0x014f"
+  },
   "version": "5.0",
   "enums": [],
   "fields": [{
-    "offset": 0,
-    "name": "Captain",
+    "offset": 24,
+    "name": "Credits",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 44,
+    "name": "Members",
+    "type": "uint32",
+    "length": 2
+  }, {
+    "offset": 46,
+    "name": "OnlineMembers",
+    "type": "uint32",
+    "length": 2
+  }, {
+    "offset": 50,
+    "name": "Name",
     "type": "string",
     "base": "UNICODE",
     "tvb_method": "string(ENC_UTF_8)",
     "add_le": false,
     "add_val": true,
-    "length": 32
+    "length": 22
   }, {
-    "offset": 1,
-    "name": "Content",
+    "offset": 72,
+    "name": "Tag",
     "type": "string",
     "base": "UNICODE",
     "tvb_method": "string(ENC_UTF_8)",
     "add_le": false,
-    "add_val": true
+    "add_val": true,
+    "length": 8
   }]
 }
