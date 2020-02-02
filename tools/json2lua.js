@@ -77,7 +77,8 @@ const renderChildren = function (snakeName, item) {
 
   while ${item.key}_pos + ${item.key}_len < len do
     local ${item.key}_tvbr = tvbuf:range(${item.key}_pos, ${length})
-    ${item.key}_dissector:call(${item.key}_tvbr:tvb(), pktinfo, root)${
+    ${item.key}_dissector:call(${item.key}_tvbr:tvb(), pktinfo, root)
+    ${item.key}_pos = ${item.key}_pos + ${item.key}_len${
       count ? `
     ${item.key}_count = ${item.key}_count - 1
     if ${item.key}_count <= 0 then
