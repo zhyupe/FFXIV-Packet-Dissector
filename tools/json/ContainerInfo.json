@@ -1,0 +1,30 @@
+{
+  "name": "Container Info",
+  "type": {
+    "5.0": "0x01A2"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "containerSequence",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "containerId",
+    "type": "uint32",
+    "length": 4,
+    "enum": "ItemLocation",
+    "append": "enum"
+  }, {
+    "offset": 4,
+    "name": "numItems",
+    "type": "uint32",
+    "length": 4,
+    "append": "val"
+  }, {
+    "offset": 12,
+    "name": "unknown",
+    "type": "uint32",
+    "length": 4
+  }]
+}

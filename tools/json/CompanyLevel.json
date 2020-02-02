@@ -1,0 +1,46 @@
+{
+  "name": "Company Level",
+  "type": "0x0151",
+  "version": "5.0",
+  "enums": [],
+  "fields": [{
+    "offset": 0,
+    "name": "Captain",
+    "type": "string",
+    "base": "UNICODE",
+    "tvb_method": "string(ENC_UTF_8)",
+    "add_le": false,
+    "add_val": true,
+    "length": 32
+  }, {
+    "offset": 32,
+    "name": "Company Level Item",
+    "type": "children",
+    "count": 15
+  }],
+  "children": [{
+    "name": "Company Level Item",
+    "length": 88,
+    "fields": [{
+      "offset": 0,
+      "name": "Members",
+      "type": "uint16",
+      "length": 2
+    }, {
+      "offset": 2,
+      "name": "Index",
+      "type": "uint8",
+      "length": 1
+    }, {
+      "offset": 3,
+      "name": "Name",
+      "type": "string",
+      "base": "UNICODE",
+      "tvb_method": "string(ENC_UTF_8)",
+      "add_le": false,
+      "add_val": true,
+      "append": "val",
+      "length": 32
+    }]
+  }]
+}

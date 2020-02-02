@@ -1,0 +1,57 @@
+{
+  "name": "CurrencyCrystalInfo",
+  "type": {
+    "5.0": "0x01A5"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "containerSequence",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "containerId",
+    "type": "uint16",
+    "length": 2,
+    "enum": "ItemLocation",
+    "append": "enum"
+  }, {
+    "offset": 6,
+    "name": "slot",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 8,
+    "name": "quantity",
+    "type": "uint32",
+    "length": 4,
+    "append": "val"
+  }, {
+    "offset": 12,
+    "name": "unknown",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "catalogId",
+    "type": "uint32",
+    "length": 4,
+    "enum": "$Item",
+    "append": "enum"
+  }, {
+    "offset": 20,
+    "name": "unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 24,
+    "name": "unknown2",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 28,
+    "name": "unknown3",
+    "type": "uint32",
+    "length": 4
+  }]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "Update ClassInfo",
+  "type": {
+    "5.0": "0x018D"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "classId",
+    "type": "uint8",
+    "length": 1,
+    "enum": "$ClassJob",
+    "append": "enum"
+  }, {
+    "offset": 1,
+    "name": "level1",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 2,
+    "name": "level",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 4,
+    "name": "nextLevelIndex",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "currentExp",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "restedExp",
+    "type": "uint32",
+    "length": 4
+  }]
+}

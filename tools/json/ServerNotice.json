@@ -1,0 +1,27 @@
+{
+  "name": "Server Notice",
+  "type": {
+    "5.0": "0x0116"
+  },
+  "aliases": [{
+    "name": "Server Notice Short",
+    "type": {
+      "5.0": "0x0115"
+    }
+  }],
+  "fields": [{
+    "offset": 0,
+    "name": "padding",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 1,
+    "name": "Content",
+    "type": "string",
+    "base": "UNICODE",
+    "tvb_method": "string(ENC_UTF_8)",
+    "add_le": false,
+    "add_val": true,
+    "check_length": true
+  }]
+}

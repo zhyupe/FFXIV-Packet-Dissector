@@ -1,0 +1,22 @@
+{
+  "name": "Init",
+  "type": {
+    "5.0": "0x0066"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "unknown",
+    "type": "uint64",
+    "length": 8
+  }, {
+    "offset": 8,
+    "name": "charId",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "unknown1",
+    "type": "uint32",
+    "length": 4
+  }]
+}
