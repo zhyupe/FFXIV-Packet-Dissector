@@ -52,10 +52,22 @@ M.types = {
       length = 1,
     },
   },
-  [0x0151] = {
+  [0x014f] = {
     [0] = {
       name = "ffxiv_ipc_company_info",
+      length = 80,
+    },
+  },
+  [0x0151] = {
+    [0] = {
+      name = "ffxiv_ipc_company_level",
       length = 32,
+    },
+  },
+  [0x01A2] = {
+    [0] = {
+      name = "ffxiv_ipc_container_info",
+      length = 16,
     },
   },
   [0x007A] = {
@@ -74,6 +86,18 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_content_finder_notify",
       length = 32,
+    },
+  },
+  [0x01A5] = {
+    [0] = {
+      name = "ffxiv_ipc_currency_crystal_info",
+      length = 32,
+    },
+  },
+  [0x015E] = {
+    [0] = {
+      name = "ffxiv_ipc_effect",
+      length = 124,
     },
   },
   [0x015A] = {
@@ -96,6 +120,12 @@ M.types = {
     [1] = {
       name = "ffxiv_ipc_ping",
       length = 8,
+    },
+  },
+  [0x0066] = {
+    [0] = {
+      name = "ffxiv_ipc_init",
+      length = 16,
     },
   },
   [0x01A7] = {
@@ -128,6 +158,18 @@ M.types = {
       length = 48,
     },
   },
+  [0x0116] = {
+    [0] = {
+      name = "ffxiv_ipc_server_notice",
+      length = 1,
+    },
+  },
+  [0x0115] = {
+    [0] = {
+      name = "ffxiv_ipc_server_notice_short",
+      length = 1,
+    },
+  },
   [0x0117] = {
     [0] = {
       name = "ffxiv_ipc_set_online_status",
@@ -138,6 +180,18 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_skill_handler",
       length = 32,
+    },
+  },
+  [0x015B] = {
+    [0] = {
+      name = "ffxiv_ipc_status_effect_list",
+      length = 384,
+    },
+  },
+  [0x018D] = {
+    [0] = {
+      name = "ffxiv_ipc_update_class_info",
+      length = 16,
     },
   },
   [0x0145] = {

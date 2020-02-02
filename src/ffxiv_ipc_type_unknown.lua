@@ -2,12 +2,6 @@
 
 local M = {}
 M.types = {
-  [0x010c] = {
-    [0] = {
-      name = "ffxiv_ipc_announcement",
-      length = 0,
-    },
-  },
   [0x015b] = {
     [0] = {
       name = "ffxiv_ipc_client_action",
@@ -30,12 +24,6 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_item_simple",
       length = 32,
-    },
-  },
-  [0x0151] = {
-    [0] = {
-      name = "ffxiv_ipc_status_effect_list",
-      length = 20,
     },
   },
 }

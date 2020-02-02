@@ -3,8 +3,11 @@
 local ffxiv_ipc_company_info = Proto("ffxiv_ipc_company_info", "FFXIV-IPC Company Info")
 
 local company_info_fields = {
-  captain = ProtoField.string("ffxiv_ipc_company_info.captain", "Captain", base.UNICODE),
-  content = ProtoField.string("ffxiv_ipc_company_info.content", "Content", base.UNICODE),
+  credits        = ProtoField.uint32("ffxiv_ipc_company_info.credits", "Credits", base.DEC),
+  members        = ProtoField.uint32("ffxiv_ipc_company_info.members", "Members", base.DEC),
+  online_members = ProtoField.uint32("ffxiv_ipc_company_info.online_members", "OnlineMembers", base.DEC),
+  name           = ProtoField.string("ffxiv_ipc_company_info.name", "Name", base.UNICODE),
+  tag            = ProtoField.string("ffxiv_ipc_company_info.tag", "Tag", base.UNICODE),
 }
 
 ffxiv_ipc_company_info.fields = company_info_fields
@@ -15,15 +18,30 @@ function ffxiv_ipc_company_info.dissector(tvbuf, pktinfo, root)
 
   local len = tvbuf:len()
 
-  -- dissect the captain field
-  local captain_tvbr = tvbuf:range(0, 32)
-  local captain_val  = captain_tvbr:string(ENC_UTF_8)
-  tree:add(company_info_fields.captain, captain_tvbr, captain_val)
+  -- dissect the credits field
+  local credits_tvbr = tvbuf:range(24, 4)
+  local credits_val  = credits_tvbr:le_uint()
+  tree:add_le(company_info_fields.credits, credits_tvbr, credits_val)
 
-  -- dissect the content field
-  local content_tvbr = tvbuf:range(1)
-  local content_val  = content_tvbr:string(ENC_UTF_8)
-  tree:add(company_info_fields.content, content_tvbr, content_val)
+  -- dissect the members field
+  local members_tvbr = tvbuf:range(44, 2)
+  local members_val  = members_tvbr:le_uint()
+  tree:add_le(company_info_fields.members, members_tvbr, members_val)
+
+  -- dissect the online_members field
+  local online_members_tvbr = tvbuf:range(46, 2)
+  local online_members_val  = online_members_tvbr:le_uint()
+  tree:add_le(company_info_fields.online_members, online_members_tvbr, online_members_val)
+
+  -- dissect the name field
+  local name_tvbr = tvbuf:range(50, 22)
+  local name_val  = name_tvbr:string(ENC_UTF_8)
+  tree:add(company_info_fields.name, name_tvbr, name_val)
+
+  -- dissect the tag field
+  local tag_tvbr = tvbuf:range(72, 8)
+  local tag_val  = tag_tvbr:string(ENC_UTF_8)
+  tree:add(company_info_fields.tag, tag_tvbr, tag_val)
 
   return len
 end
