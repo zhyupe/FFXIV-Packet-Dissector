@@ -1,7 +1,8 @@
 {
   "name": "Status Effect List",
   "type": {
-    "5.0": "0x015B"
+    "5.0": "0x015B",
+    "5.1_cn": "0x037c"
   },
   "fields": [{
     "offset": 0,
@@ -59,32 +60,5 @@
     "name": "padding",
     "type": "uint32",
     "length": 4
-  }],
-  "children": [{
-    "name": "StatusEffectListItem",
-    "fields": [{
-      "offset": 0,
-      "name": "effectId",
-      "type": "uint16",
-      "length": 2,
-      "enum": "$Status",
-      "append": "enum"
-    }, {
-      "offset": 2,
-      "name": "unknown1",
-      "type": "uint16",
-      "length": 2
-    }, {
-      "offset": 4,
-      "name": "duration",
-      "type": "float",
-      "length": 4
-    }, {
-      "offset": 8,
-      "name": "sourceActorId",
-      "type": "uint32",
-      "base": "HEX",
-      "length": 4
-    }]
   }]
 }

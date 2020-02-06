@@ -1,7 +1,8 @@
 {
   "name": "UpdateHpMpTp",
   "type": {
-    "5.0": "0x0145"
+    "5.0": "0x0145",
+    "5.1_cn": "0x03d4"
   },
   "fields": [{
     "offset": 0,

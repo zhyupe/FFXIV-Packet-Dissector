@@ -1,7 +1,8 @@
 {
   "name": "Server Notice",
   "type": {
-    "5.0": "0x0116"
+    "5.0": "0x0116",
+    "5.1_cn": "0x013c"
   },
   "aliases": [{
     "name": "Server Notice Short",

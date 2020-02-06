@@ -1,7 +1,8 @@
 {
   "name": "Skill Handler",
   "type": {
-    "5.0": "0x013d"
+    "5.0": "0x013d",
+    "5.1_cn": "0x0260"
   },
   "fields": [
     {

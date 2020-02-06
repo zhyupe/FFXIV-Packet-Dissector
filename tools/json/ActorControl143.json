@@ -1,7 +1,8 @@
 {
   "name": "ActorControl143",
   "type": {
-    "5.0": "0x0143"
+    "5.0": "0x0143",
+    "5.1_cn": "0x01c3"
   },
   "enums": [{
     "name": "ActorControl143Type",

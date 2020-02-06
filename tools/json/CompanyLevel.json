@@ -1,7 +1,9 @@
 {
   "name": "Company Level",
-  "type": "0x0151",
-  "version": "5.0",
+  "type": {
+    "5.0": "0x0151",
+    "5.1_cn": "0x031b"
+  },
   "enums": [],
   "fields": [{
     "offset": 0,

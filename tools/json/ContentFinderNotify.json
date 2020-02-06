@@ -1,7 +1,8 @@
 {
   "name": "Content Finder Notify",
   "type": {
-    "5.0": "0x0078"
+    "5.0": "0x0078",
+    "5.1_cn": "0x0121"
   },
   "enums": [
     {

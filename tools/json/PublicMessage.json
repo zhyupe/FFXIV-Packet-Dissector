@@ -1,7 +1,9 @@
 {
   "name": "Public Message",
-  "type": "0x0104",
-  "version": "5.0",
+  "type": {
+    "5.0": "0x0104",
+    "5.1_cn": "0x03c0"
+  },
   "enums": [{
     "name": "PublicMessageType",
     "type": "byte",
