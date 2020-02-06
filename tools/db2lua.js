@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const readCsv = require('./read-csv')
 
-const dbRoot = '../../library/5.05/'
+const dbRoot = '../../library/5.1/'
 const output = '../src/'
 const langs = ['chs', 'en', 'ja', 'de', 'fr']
 
