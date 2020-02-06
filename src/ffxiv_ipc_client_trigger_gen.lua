@@ -57,7 +57,7 @@ function ffxiv_ipc_client_trigger.dissector(tvbuf, pktinfo, root)
   local param11_label_val = param11_val
   if command_id_val == 701 then
     param11_label_key = "Type"
-    param11_label_val = (db.ClientTriggerFishBaitType[param11_val] or "Unknown") .. " (" .. param11_val .. ")"
+    param11_label_val = (enum.reverse.client_trigger_fish_bait_type[param11_val] or "Unknown") .. " (" .. param11_val .. ")"
   end
   tree:add_le(client_trigger_fields.param11, param11_tvbr, param11_val, param11_label_key .. ": " .. param11_label_val)
 

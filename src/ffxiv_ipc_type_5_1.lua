@@ -2,21 +2,9 @@
 
 local M = {}
 M.types = {
-  [0x01b9] = {
+  [0x012e] = {
     [0] = {
-      name = "ffxiv_ipc_craft_status",
-      length = 24,
-    },
-  },
-  [0x0197] = {
-    [0] = {
-      name = "ffxiv_ipc_item_count",
-      length = 16,
-    },
-  },
-  [0x019b] = {
-    [0] = {
-      name = "ffxiv_ipc_item_simple",
+      name = "ffxiv_ipc_actor_cast",
       length = 32,
     },
   },

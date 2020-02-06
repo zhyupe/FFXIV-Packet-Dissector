@@ -38,10 +38,18 @@ function ffxiv_ipc_company_info.dissector(tvbuf, pktinfo, root)
   local name_val  = name_tvbr:string(ENC_UTF_8)
   tree:add(company_info_fields.name, name_tvbr, name_val)
 
+  local name_display = ", Name: " .. name_val
+  pktinfo.cols.info:append(name_display)
+  tree:append_text(name_display)
+
   -- dissect the tag field
   local tag_tvbr = tvbuf:range(72, 8)
   local tag_val  = tag_tvbr:string(ENC_UTF_8)
   tree:add(company_info_fields.tag, tag_tvbr, tag_val)
+
+  local tag_display = ", Tag: " .. tag_val
+  pktinfo.cols.info:append(tag_display)
+  tree:append_text(tag_display)
 
   return len
 end

@@ -14,6 +14,13 @@ local function makeValString(enumTable)
 end
 
 
+M.forward.actor_cast_skill_type = {
+  Normal = 1,
+  ItemAction = 2,
+  MountSkill = 13,
+}
+M.reverse.actor_cast_skill_type = makeValString(M.forward.actor_cast_skill_type)
+
 M.forward.actor_control142_type = {
   DoT = 23,
   CancelAbility = 15,
@@ -193,6 +200,21 @@ M.forward.actor_control143_type = {
 }
 M.reverse.actor_control143_type = makeValString(M.forward.actor_control143_type)
 
+M.forward.actor_control144_category = {
+  Marker = 310,
+}
+M.reverse.actor_control144_category = makeValString(M.forward.actor_control144_category)
+
+M.forward.actor_control144_marker = {
+  Marker_A = 0,
+  Marker_B = 1,
+  Marker_C = 2,
+  Marker_D = 3,
+  Marker_1 = 4,
+  Marker_2 = 5,
+}
+M.reverse.actor_control144_marker = makeValString(M.forward.actor_control144_marker)
+
 M.forward.client_action_type = {
   Action = 8,
   CraftAction = 9,
@@ -288,6 +310,46 @@ M.forward.cfnotify_type = {
   Enter = 6,
 }
 M.reverse.cfnotify_type = makeValString(M.forward.cfnotify_type)
+
+M.forward.action_effect_type = {
+  Nothing = 0,
+  Miss = 1,
+  FullResist = 2,
+  Damage = 3,
+  Heal = 4,
+  BlockedDamage = 5,
+  ParriedDamage = 6,
+  Invulnerable = 7,
+  NoEffectText = 8,
+  Unknown_0 = 9,
+  MpLoss = 10,
+  MpGain = 11,
+  TpLoss = 12,
+  TpGain = 13,
+  GpGain = 14,
+  StartActionCombo = 28,
+  Knockback = 33,
+  Mount = 38,
+  VFX = 59,
+}
+M.reverse.action_effect_type = makeValString(M.forward.action_effect_type)
+
+M.forward.action_hit_severity_type = {
+  NormalDamage = 0,
+  CritHeal = 0,
+  CritDamage = 1,
+  NormalHeal = 1,
+  DirectHitDamage = 2,
+  CritDirectHitDamage = 3,
+}
+M.reverse.action_hit_severity_type = makeValString(M.forward.action_hit_severity_type)
+
+M.forward.action_effect_display_type = {
+  HideActionName = 0,
+  ShowActionName = 1,
+  ShowItemName = 2,
+}
+M.reverse.action_effect_display_type = makeValString(M.forward.action_effect_display_type)
 
 M.forward.fish_event_type = {
   Cast = 1,

@@ -11,10 +11,11 @@ local label_mode_category = {
 local ffxiv_ipc_actor_control142 = Proto("ffxiv_ipc_actor_control142", "FFXIV-IPC ActorControl142")
 
 local actor_control142_fields = {
-  category = ProtoField.uint32("ffxiv_ipc_actor_control142.category", "Category", base.DEC, enum.reverse.actor_control142_type),
+  category = ProtoField.uint16("ffxiv_ipc_actor_control142.category", "Category", base.DEC, enum.reverse.actor_control142_type),
+  unknown  = ProtoField.uint16("ffxiv_ipc_actor_control142.unknown", "Unknown", base.DEC),
   target   = ProtoField.uint32("ffxiv_ipc_actor_control142.target", "Target", base.DEC),
   mode     = ProtoField.uint32("ffxiv_ipc_actor_control142.mode", "Mode", base.DEC),
-  skill_id = ProtoField.uint32("ffxiv_ipc_actor_control142.skill_id", "SkillID", base.DEC),
+  skill_id = ProtoField.uint32("ffxiv_ipc_actor_control142.skill_id", "SkillID", base.DEC, db.Action),
   param1   = ProtoField.uint32("ffxiv_ipc_actor_control142.param1", "Param1", base.DEC),
   param2   = ProtoField.uint32("ffxiv_ipc_actor_control142.param2", "Param2", base.DEC),
 }
@@ -28,13 +29,18 @@ function ffxiv_ipc_actor_control142.dissector(tvbuf, pktinfo, root)
   local len = tvbuf:len()
 
   -- dissect the category field
-  local category_tvbr = tvbuf:range(0, 4)
+  local category_tvbr = tvbuf:range(0, 2)
   local category_val  = category_tvbr:le_uint()
   tree:add_le(actor_control142_fields.category, category_tvbr, category_val)
 
   local category_display = ", Category: " .. (enum.reverse.actor_control142_type[category_val] or "(unknown)")
   pktinfo.cols.info:append(category_display)
   tree:append_text(category_display)
+
+  -- dissect the unknown field
+  local unknown_tvbr = tvbuf:range(2, 2)
+  local unknown_val  = unknown_tvbr:le_uint()
+  tree:add_le(actor_control142_fields.unknown, unknown_tvbr, unknown_val)
 
   -- dissect the target field
   local target_tvbr = tvbuf:range(4, 4)
