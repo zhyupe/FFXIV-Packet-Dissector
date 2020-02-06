@@ -1,5 +1,5 @@
 local ffxiv_ipc = Proto("ffxiv_ipc", "FFXIV IPC")
-local ipc_type = require("ffxiv_ipc_type_5_0")
+local ipc_type = require("ffxiv_ipc_type_5_1_cn")
 
 local function makeValString(enumTable)
   local t = {}
@@ -12,13 +12,14 @@ end
 local ipc_type_valstr = makeValString(ipc_type.types)
 local ipc_hdr_fields =
 {
-    magic     = ProtoField.uint16("ffxiv_ipc.magic", "Magic", base.HEX),
-    type      = ProtoField.uint16("ffxiv_ipc.type", "Type", base.HEX),
-    unknown1  = ProtoField.uint16("ffxiv_ipc.unknown1", "Unknown1", base.HEX),
-    server_id = ProtoField.uint16("ffxiv_ipc.server_id", "Server ID", base.HEX),
-    epoch     = ProtoField.uint32("ffxiv_ipc.epoch", "Epoch", base.DEC),
-    unknown2  = ProtoField.uint32("ffxiv_ipc.unknown2", "Unknown2", base.HEX),
-    data      = ProtoField.bytes("ffxiv_ipc.data", "IPC Data", base.None),
+    magic      = ProtoField.uint16("ffxiv_ipc.magic", "Magic", base.HEX),
+    type       = ProtoField.uint16("ffxiv_ipc.type", "Type", base.HEX),
+    unknown1   = ProtoField.uint16("ffxiv_ipc.unknown1", "Unknown1", base.HEX),
+    server_id  = ProtoField.uint16("ffxiv_ipc.server_id", "Server ID", base.HEX),
+    epoch      = ProtoField.uint32("ffxiv_ipc.epoch", "Epoch", base.DEC),
+    unknown2   = ProtoField.uint32("ffxiv_ipc.unknown2", "Unknown2", base.HEX),
+    data       = ProtoField.bytes("ffxiv_ipc.data", "IPC Data", base.None),
+    is_unknown = ProtoField.bool("ffxiv_ipc.is_unknown", "Is Unknown Type", base.None),
 }
 
 ffxiv_ipc.fields = ipc_hdr_fields
@@ -76,8 +77,11 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
   
   local dissector = ipc_type.getDissector(type_val, tvb:len())
   if dissector ~= nil then
+    tree:add(ipc_hdr_fields.is_unknown, false)
     dissector:call(tvb, pktinfo, root)
   else
+    tree:add(ipc_hdr_fields.is_unknown, true)
+    tree:append_text(", Unknown")
     pktinfo.cols.info:append(": Unknown (" .. string.format('%04x', type_val) .. ")")
     data:call(tvb, pktinfo, root)
   end
