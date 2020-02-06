@@ -1,0 +1,85 @@
+{
+  "name": "Actor Cast",
+  "type": {
+    "5.0": "0x0186",
+    "5.1_cn": "0x012e"
+  },
+  "enums": [{
+    "name": "ActorCastSkillType",
+    "type": "uint8",
+    "values": [{
+      "key": "Normal",
+      "value": 1
+    }, {
+      "key": "ItemAction",
+      "value": 2
+    }, {
+      "key": "MountSkill",
+      "value": 13
+    }]
+  }],
+  "fields": [{
+    "offset": 0,
+    "name": "Action",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$Action"
+  }, {
+    "offset": 2,
+    "name": "skillType",
+    "type": "uint8",
+    "length": 1,
+    "enum": "ActorCastSkillType"
+  }, {
+    "offset": 3,
+    "name": "unknown",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 4,
+    "name": "unknown_1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "cast_time",
+    "type": "float",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "target_id",
+    "type": "uint32",
+    "base": "HEX",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "rotation",
+    "type": "float",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "unknown_2",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 24,
+    "name": "posX",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 26,
+    "name": "posY",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 28,
+    "name": "posZ",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 30,
+    "name": "unknown_3",
+    "type": "uint16",
+    "length": 2
+  }]
+}

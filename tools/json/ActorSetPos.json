@@ -1,0 +1,48 @@
+{
+  "name": "Actor Set Pos",
+  "type": {
+    "5.0": "0x0068",
+    "5.1_cn": "0x02f2"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "r16",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 2,
+    "name": "waitForLoad",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 3,
+    "name": "unknown1",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 4,
+    "name": "unknown2",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "x",
+    "type": "float",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "y",
+    "type": "float",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "z",
+    "type": "float",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "unknown3",
+    "type": "uint32",
+    "length": 4
+  }]
+}
