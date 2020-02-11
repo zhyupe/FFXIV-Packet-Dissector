@@ -1,0 +1,179 @@
+{
+  "name": "Init Zone",
+  "type": {
+    "5.0": "0x007C",
+    "5.1_cn": "0x015B"
+  },
+  "fields": [
+    {
+      "offset": 0,
+      "name": "serverId",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 2,
+      "name": "zoneId",
+      "type": "uint16",
+      "length": 2,
+      "enum": "$TerritoryType"
+    },
+    {
+      "offset": 4,
+      "name": "unknown1",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 6,
+      "name": "Content",
+      "type": "uint16",
+      "length": 2,
+      "enum": "$ContentFinderCondition"
+    },
+    {
+      "offset": 8,
+      "name": "unknown3",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 12,
+      "name": "unknown4",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 16,
+      "name": "weatherId",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 17,
+      "name": "bitmask",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 18,
+      "name": "bitmask1",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 19,
+      "name": "unknown5",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 20,
+      "name": "unknown8",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 24,
+      "name": "festivalId",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 26,
+      "name": "additionalFestivalId",
+      "type": "uint16",
+      "length": 2
+    },
+    {
+      "offset": 28,
+      "name": "unknown9",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 32,
+      "name": "unknown10",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 36,
+      "name": "unknown11",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 40,
+      "name": "unknown120",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 44,
+      "name": "unknown121",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 48,
+      "name": "unknown122",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 52,
+      "name": "unknown123",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 56,
+      "name": "unknown130",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 60,
+      "name": "unknown131",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 64,
+      "name": "unknown132",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 68,
+      "name": "POSITION3",
+      "type": "children",
+      "count": 1
+    },
+    {
+      "offset": 80,
+      "name": "unknown140",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 84,
+      "name": "unknown141",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 88,
+      "name": "unknown142",
+      "type": "uint32",
+      "length": 4
+    },
+    {
+      "offset": 92,
+      "name": "unknown15",
+      "type": "uint32",
+      "length": 4
+    }
+  ]
+}

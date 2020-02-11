@@ -4,98 +4,83 @@
     "5.0": "0x0078",
     "5.1_cn": "0x0121"
   },
-  "enums": [
-    {
-      "name": "CFNotifyType",
-      "type": "uint32",
-      "values": [
-        {
-          "key": "Cancelled",
-          "value": 3
-        },
-        {
-          "key": "Matched",
-          "value": 4
-        },
-        {
-          "key": "Enter",
-          "value": 6
-        }
-      ]
-    }
-  ],
+  "enums": [{
+    "name": "CFNotifyType",
+    "type": "uint32",
+    "values": [
+      {
+        "key": "Cancelled",
+        "value": 3
+      },
+      {
+        "key": "Matched",
+        "value": 4
+      },
+      {
+        "key": "Enter",
+        "value": 6
+      }
+    ]
+  }],
   "fields": [{
     "offset": 0,
     "name": "Type",
-    "type": "uint32",
-    "length": 4,
+    "type": "uint8",
+    "length": 1,
     "enum": "MatchEventType"
   }, {
+    "offset": 1,
+    "name": "ClassJob",
+    "type": "uint8",
+    "enum": "$ClassJob",
+    "length": 1
+  }, {
+    "offset": 2,
+    "name": "Unknown1",
+    "type": "uint16",
+    "length": 2
+  }, {
     "offset": 4,
-    "name": "Reason",
-    "type": "uint32",
-    "length": 4
+    "name": "Unknown2",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 6,
+    "name": "Unknown3",
+    "type": "uint16",
+    "length": 2
   }, {
     "offset": 8,
-    "name": "ClassJob",
-    "type": "uint32",
-    "enum": "$ClassJob",
-    "length": 4
+    "name": "Roulette",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$ContentRoulette"
+  }, {
+    "offset": 10,
+    "name": "Unknown5",
+    "type": "uint16",
+    "length": 2
   }, {
     "offset": 12,
-    "name": "Flag",
-    "type": "uint32",
-    "length": 4
-  }, {
-    "offset": 16,
-    "name": "Languages",
-    "type": "uint32",
-    "length": 4
-  }, {
-    "offset": 20,
-    "name": "RouletteId",
-    "type": "uint16",
-    "enum": "$ContentRoulette",
-    "length": 2
-  }, {
-    "offset": 22,
-    "name": "Content1",
-    "type": "uint16",
-    "condition": {
-      "Type": [{
-        "value": 4,
-        "label": "Content",
-        "enum": "$ContentFinderCondition"
-      }, {
-        "value": 6,
-        "label": "Content",
-        "enum": "$ContentFinderCondition"
-      }]
-    },
-    "length": 2
-  }, {
-    "offset": 24,
-    "name": "Content2",
-    "type": "uint16",
-    "enum": "$InstanceContent",
-    "length": 2
-  }, {
-    "offset": 26,
-    "name": "Content3",
-    "type": "uint16",
-    "enum": "$InstanceContent",
-    "length": 2
-  }, {
-    "offset": 28,
-    "name": "Content4",
-    "type": "uint16",
-    "enum": "$InstanceContent",
-    "length": 2
-  }, {
-    "offset": 30,
-    "name": "Content5",
-    "type": "uint16",
-    "enum": "$InstanceContent",
-    "length": 2
+    "name": "ContentFinderNotifyInstance",
+    "type": "children",
+    "count": 5
+  }], 
+  "children": [{
+    "name": "ContentFinderNotifyInstance",
+    "if": "Content",
+    "fields": [{
+      "offset": 0,
+      "name": "Content",
+      "type": "uint16",
+      "enum": "$ContentFinderCondition",
+      "length": 2,
+      "append": "enum"
+    }, {
+      "offset": 2,
+      "name": "Unknown",
+      "type": "uint16",
+      "length": 2
+    }]
   }]
 }

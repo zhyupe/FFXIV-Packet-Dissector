@@ -1,0 +1,62 @@
+{
+  "name": "Content Finder Progress",
+  "type": {
+    "5.1_cn": "0x0101"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "Unknown2",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 6,
+    "name": "WaitOrder",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 7,
+    "name": "WaitTime",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 8,
+    "name": "CurrentTank",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 9,
+    "name": "RequireTank",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 10,
+    "name": "CurrentHealth",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 11,
+    "name": "RequireHealth",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 12,
+    "name": "CurrentDPS",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 13,
+    "name": "RequireDPS",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 14,
+    "name": "Unknown4",
+    "type": "uint16",
+    "length": 2
+  }]
+}
