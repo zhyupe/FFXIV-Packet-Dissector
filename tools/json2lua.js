@@ -78,7 +78,7 @@ const renderChildren = function (snakeName, item) {
   local ${item.key}_pos = ${item.offset}
   local ${item.key}_len = ${length}${count}
 
-  while ${item.key}_pos + ${item.key}_len < len do
+  while ${item.key}_pos + ${item.key}_len <= len do
     local ${item.key}_tvbr = tvbuf:range(${item.key}_pos, ${length})
     ${item.key}_dissector:call(${item.key}_tvbr:tvb(), pktinfo, root)
     ${item.key}_pos = ${item.key}_pos + ${item.key}_len${
