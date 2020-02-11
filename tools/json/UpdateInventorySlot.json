@@ -7,7 +7,8 @@
   "aliases": [{
     "name": "ItemInfo",
     "type": {
-      "5.0": "0x01A1"
+      "5.0": "0x01A1",
+      "5.1_cn": "0x030B"
     }
   }],
   "enums": [{

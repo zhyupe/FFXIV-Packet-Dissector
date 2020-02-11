@@ -2,7 +2,7 @@
   "name": "Actor Gauge",
   "type": {
     "5.0": "0x016D",
-    "5.1_cn": "0x02b6"
+    "5.1_cn": "0x0382"
   },
   "fields": [{
     "offset": 0,
