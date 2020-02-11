@@ -42,7 +42,7 @@ function ffxiv_ipc_effect16.dissector(tvbuf, pktinfo, root)
   local effect_header_len = 42
   local effect_header_count = 1
 
-  while effect_header_pos + effect_header_len < len do
+  while effect_header_pos + effect_header_len <= len do
     local effect_header_tvbr = tvbuf:range(effect_header_pos, 42)
     effect_header_dissector:call(effect_header_tvbr:tvb(), pktinfo, root)
     effect_header_pos = effect_header_pos + effect_header_len
@@ -58,7 +58,7 @@ function ffxiv_ipc_effect16.dissector(tvbuf, pktinfo, root)
   local effect_entry_len = 8
   local effect_entry_count = 128
 
-  while effect_entry_pos + effect_entry_len < len do
+  while effect_entry_pos + effect_entry_len <= len do
     local effect_entry_tvbr = tvbuf:range(effect_entry_pos, 8)
     effect_entry_dissector:call(effect_entry_tvbr:tvb(), pktinfo, root)
     effect_entry_pos = effect_entry_pos + effect_entry_len

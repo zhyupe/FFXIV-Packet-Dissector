@@ -125,7 +125,7 @@ M.types = {
   [0x0078] = {
     [0] = {
       name = "ffxiv_ipc_content_finder_notify",
-      length = 32,
+      length = 12,
     },
   },
   [0x01A5] = {
@@ -166,6 +166,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_init",
       length = 16,
+    },
+  },
+  [0x007C] = {
+    [0] = {
+      name = "ffxiv_ipc_init_zone",
+      length = 96,
     },
   },
   [0x01A7] = {

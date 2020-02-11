@@ -2,24 +2,16 @@
 
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
-local label_content1_type = {
-  [4] = "Content",
-  [6] = "Content",
-}
 local ffxiv_ipc_content_finder_notify = Proto("ffxiv_ipc_content_finder_notify", "FFXIV-IPC Content Finder Notify")
 
 local content_finder_notify_fields = {
-  type        = ProtoField.uint32("ffxiv_ipc_content_finder_notify.type", "Type", base.DEC, enum.reverse.match_event_type),
-  reason      = ProtoField.uint32("ffxiv_ipc_content_finder_notify.reason", "Reason", base.DEC),
-  class_job   = ProtoField.uint32("ffxiv_ipc_content_finder_notify.class_job", "ClassJob", base.DEC, db.ClassJob),
-  flag        = ProtoField.uint32("ffxiv_ipc_content_finder_notify.flag", "Flag", base.DEC),
-  languages   = ProtoField.uint32("ffxiv_ipc_content_finder_notify.languages", "Languages", base.DEC),
-  roulette_id = ProtoField.uint16("ffxiv_ipc_content_finder_notify.roulette_id", "RouletteId", base.DEC, db.ContentRoulette),
-  content1    = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content1", "Content1", base.DEC),
-  content2    = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content2", "Content2", base.DEC, db.InstanceContent),
-  content3    = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content3", "Content3", base.DEC, db.InstanceContent),
-  content4    = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content4", "Content4", base.DEC, db.InstanceContent),
-  content5    = ProtoField.uint16("ffxiv_ipc_content_finder_notify.content5", "Content5", base.DEC, db.InstanceContent),
+  type                           = ProtoField.uint8("ffxiv_ipc_content_finder_notify.type", "Type", base.DEC, enum.reverse.match_event_type),
+  class_job                      = ProtoField.uint8("ffxiv_ipc_content_finder_notify.class_job", "ClassJob", base.DEC, db.ClassJob),
+  unknown1                       = ProtoField.uint16("ffxiv_ipc_content_finder_notify.unknown1", "Unknown1", base.DEC),
+  unknown2                       = ProtoField.uint16("ffxiv_ipc_content_finder_notify.unknown2", "Unknown2", base.DEC),
+  unknown3                       = ProtoField.uint16("ffxiv_ipc_content_finder_notify.unknown3", "Unknown3", base.DEC),
+  roulette                       = ProtoField.uint16("ffxiv_ipc_content_finder_notify.roulette", "Roulette", base.DEC, db.ContentRoulette),
+  unknown5                       = ProtoField.uint16("ffxiv_ipc_content_finder_notify.unknown5", "Unknown5", base.DEC),
 }
 
 ffxiv_ipc_content_finder_notify.fields = content_finder_notify_fields
@@ -31,68 +23,55 @@ function ffxiv_ipc_content_finder_notify.dissector(tvbuf, pktinfo, root)
   local len = tvbuf:len()
 
   -- dissect the type field
-  local type_tvbr = tvbuf:range(0, 4)
+  local type_tvbr = tvbuf:range(0, 1)
   local type_val  = type_tvbr:le_uint()
   tree:add_le(content_finder_notify_fields.type, type_tvbr, type_val)
 
-  -- dissect the reason field
-  local reason_tvbr = tvbuf:range(4, 4)
-  local reason_val  = reason_tvbr:le_uint()
-  tree:add_le(content_finder_notify_fields.reason, reason_tvbr, reason_val)
-
   -- dissect the class_job field
-  local class_job_tvbr = tvbuf:range(8, 4)
+  local class_job_tvbr = tvbuf:range(1, 1)
   local class_job_val  = class_job_tvbr:le_uint()
   tree:add_le(content_finder_notify_fields.class_job, class_job_tvbr, class_job_val)
 
-  -- dissect the flag field
-  local flag_tvbr = tvbuf:range(12, 4)
-  local flag_val  = flag_tvbr:le_uint()
-  tree:add_le(content_finder_notify_fields.flag, flag_tvbr, flag_val)
+  -- dissect the unknown1 field
+  local unknown1_tvbr = tvbuf:range(2, 2)
+  local unknown1_val  = unknown1_tvbr:le_uint()
+  tree:add_le(content_finder_notify_fields.unknown1, unknown1_tvbr, unknown1_val)
 
-  -- dissect the languages field
-  local languages_tvbr = tvbuf:range(16, 4)
-  local languages_val  = languages_tvbr:le_uint()
-  tree:add_le(content_finder_notify_fields.languages, languages_tvbr, languages_val)
+  -- dissect the unknown2 field
+  local unknown2_tvbr = tvbuf:range(4, 2)
+  local unknown2_val  = unknown2_tvbr:le_uint()
+  tree:add_le(content_finder_notify_fields.unknown2, unknown2_tvbr, unknown2_val)
 
-  -- dissect the roulette_id field
-  local roulette_id_tvbr = tvbuf:range(20, 2)
-  local roulette_id_val  = roulette_id_tvbr:le_uint()
-  tree:add_le(content_finder_notify_fields.roulette_id, roulette_id_tvbr, roulette_id_val)
+  -- dissect the unknown3 field
+  local unknown3_tvbr = tvbuf:range(6, 2)
+  local unknown3_val  = unknown3_tvbr:le_uint()
+  tree:add_le(content_finder_notify_fields.unknown3, unknown3_tvbr, unknown3_val)
 
-  -- dissect the content1 field
-  local content1_tvbr = tvbuf:range(22, 2)
-  local content1_val  = content1_tvbr:le_uint()
-  local content1_label_key = "Content1"
-  local content1_label_val = content1_val
-  if type_val == 4 then
-    content1_label_key = "Content"
-    content1_label_val = (db.ContentFinderCondition[content1_val] or "Unknown") .. " (" .. content1_val .. ")"
-  elseif type_val == 6 then
-    content1_label_key = "Content"
-    content1_label_val = (db.ContentFinderCondition[content1_val] or "Unknown") .. " (" .. content1_val .. ")"
+  -- dissect the roulette field
+  local roulette_tvbr = tvbuf:range(8, 2)
+  local roulette_val  = roulette_tvbr:le_uint()
+  tree:add_le(content_finder_notify_fields.roulette, roulette_tvbr, roulette_val)
+
+  -- dissect the unknown5 field
+  local unknown5_tvbr = tvbuf:range(10, 2)
+  local unknown5_val  = unknown5_tvbr:le_uint()
+  tree:add_le(content_finder_notify_fields.unknown5, unknown5_tvbr, unknown5_val)
+
+  -- dissect content_finder_notify_instance
+  local content_finder_notify_instance_dissector = Dissector.get('ffxiv_ipc_content_finder_notify_instance')
+  local content_finder_notify_instance_pos = 12
+  local content_finder_notify_instance_len = 4
+  local content_finder_notify_instance_count = 5
+
+  while content_finder_notify_instance_pos + content_finder_notify_instance_len <= len do
+    local content_finder_notify_instance_tvbr = tvbuf:range(content_finder_notify_instance_pos, 4)
+    content_finder_notify_instance_dissector:call(content_finder_notify_instance_tvbr:tvb(), pktinfo, root)
+    content_finder_notify_instance_pos = content_finder_notify_instance_pos + content_finder_notify_instance_len
+    content_finder_notify_instance_count = content_finder_notify_instance_count - 1
+    if content_finder_notify_instance_count <= 0 then
+      break
+    end
   end
-  tree:add_le(content_finder_notify_fields.content1, content1_tvbr, content1_val, content1_label_key .. ": " .. content1_label_val)
-
-  -- dissect the content2 field
-  local content2_tvbr = tvbuf:range(24, 2)
-  local content2_val  = content2_tvbr:le_uint()
-  tree:add_le(content_finder_notify_fields.content2, content2_tvbr, content2_val)
-
-  -- dissect the content3 field
-  local content3_tvbr = tvbuf:range(26, 2)
-  local content3_val  = content3_tvbr:le_uint()
-  tree:add_le(content_finder_notify_fields.content3, content3_tvbr, content3_val)
-
-  -- dissect the content4 field
-  local content4_tvbr = tvbuf:range(28, 2)
-  local content4_val  = content4_tvbr:le_uint()
-  tree:add_le(content_finder_notify_fields.content4, content4_tvbr, content4_val)
-
-  -- dissect the content5 field
-  local content5_tvbr = tvbuf:range(30, 2)
-  local content5_val  = content5_tvbr:le_uint()
-  tree:add_le(content_finder_notify_fields.content5, content5_tvbr, content5_val)
 
   return len
 end

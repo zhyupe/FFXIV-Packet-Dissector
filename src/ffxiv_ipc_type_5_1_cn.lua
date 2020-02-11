@@ -26,7 +26,7 @@ M.types = {
       length = 32,
     },
   },
-  [0x02b6] = {
+  [0x0382] = {
     [0] = {
       name = "ffxiv_ipc_actor_gauge",
       length = 16,
@@ -74,10 +74,40 @@ M.types = {
       length = 32,
     },
   },
+  [0x00FD] = {
+    [0] = {
+      name = "ffxiv_ipc_container_info",
+      length = 16,
+    },
+  },
   [0x0121] = {
     [0] = {
       name = "ffxiv_ipc_content_finder_notify",
+      length = 12,
+    },
+  },
+  [0x0265] = {
+    [0] = {
+      name = "ffxiv_ipc_content_finder_notify_pop",
       length = 32,
+    },
+  },
+  [0x0101] = {
+    [0] = {
+      name = "ffxiv_ipc_content_finder_progress",
+      length = 16,
+    },
+  },
+  [0x0259] = {
+    [0] = {
+      name = "ffxiv_ipc_content_finder_trigger",
+      length = 24,
+    },
+  },
+  [0x03db] = {
+    [0] = {
+      name = "ffxiv_ipc_content_finder_trigger_routtle",
+      length = 16,
     },
   },
   [0x0250] = {
@@ -114,6 +144,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_group_message",
       length = 55,
+    },
+  },
+  [0x015B] = {
+    [0] = {
+      name = "ffxiv_ipc_init_zone",
+      length = 96,
     },
   },
   [0x0293] = {
@@ -185,6 +221,12 @@ M.types = {
   [0x01ad] = {
     [0] = {
       name = "ffxiv_ipc_update_inventory_slot",
+      length = 64,
+    },
+  },
+  [0x030B] = {
+    [0] = {
+      name = "ffxiv_ipc_item_info",
       length = 64,
     },
   },

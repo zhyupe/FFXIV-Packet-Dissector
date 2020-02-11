@@ -311,6 +311,13 @@ M.forward.cfnotify_type = {
 }
 M.reverse.cfnotify_type = makeValString(M.forward.cfnotify_type)
 
+M.forward.content_finder_flags = {
+  None = 0,
+  InProgress = 2,
+  Enter = 8192,
+}
+M.reverse.content_finder_flags = makeValString(M.forward.content_finder_flags)
+
 M.forward.action_effect_type = {
   Nothing = 0,
   Miss = 1,
