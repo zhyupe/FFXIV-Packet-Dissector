@@ -1,0 +1,43 @@
+{
+  "name": "Ensemble Start Send",
+  "type": {
+    "5.1_cn": "0x0348"
+  },
+  "enums": [
+    {
+      "name": "EnsembleAssistant",
+      "type": "uint8",
+      "values": [
+        {
+          "key": "On",
+          "value": 1
+        },
+        {
+          "key": "Off",
+          "value": 0
+        }
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "offset": 6,
+      "name": "BPM",
+      "type": "uint16",
+      "length": 1
+    },
+    {
+      "offset": 7,
+      "name": "meter",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 8,
+      "name": "Ensemble Assistant",
+      "type": "uint8",
+      "length": 1,
+      "enum": "EnsembleAssistant"
+    }
+  ]
+}

@@ -358,6 +358,30 @@ M.forward.action_effect_display_type = {
 }
 M.reverse.action_effect_display_type = makeValString(M.forward.action_effect_display_type)
 
+M.forward.ensemble_assistant = {
+  On = 1,
+  Off = 0,
+}
+M.reverse.ensemble_assistant = makeValString(M.forward.ensemble_assistant)
+
+M.forward.ensemble_assistant = {
+  On = 1,
+  Off = 0,
+}
+M.reverse.ensemble_assistant = makeValString(M.forward.ensemble_assistant)
+
+M.forward.ensemble_assistant = {
+  On = 1,
+  Off = 0,
+}
+M.reverse.ensemble_assistant = makeValString(M.forward.ensemble_assistant)
+
+M.forward.ensemble_assistant = {
+  On = 1,
+  Off = 0,
+}
+M.reverse.ensemble_assistant = makeValString(M.forward.ensemble_assistant)
+
 M.forward.fish_event_type = {
   Cast = 1,
   Hook = 2,

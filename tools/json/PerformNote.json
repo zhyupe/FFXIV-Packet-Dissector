@@ -1,0 +1,14 @@
+{
+  "name": "PerformNote",
+  "type": {
+    "5.1_cn": "0x0287"
+  },
+  "fields": [
+    {
+      "offset": 0,
+      "name": "Length",
+      "type": "int8",
+      "length": 1
+    }
+  ]
+}
