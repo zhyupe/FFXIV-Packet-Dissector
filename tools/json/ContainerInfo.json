@@ -1,7 +1,8 @@
 {
   "name": "Container Info",
   "type": {
-    "5.0": "0x01A2"
+    "5.0": "0x01A2",
+    "5.1_cn": "0x00FD"
   },
   "fields": [{
     "offset": 0,

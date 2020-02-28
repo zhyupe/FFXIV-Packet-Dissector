@@ -75,7 +75,7 @@ function ffxiv_ipc_status_effect_list.dissector(tvbuf, pktinfo, root)
   local status_effect_list_item_len = 12
   local status_effect_list_item_count = 30
 
-  while status_effect_list_item_pos + status_effect_list_item_len < len do
+  while status_effect_list_item_pos + status_effect_list_item_len <= len do
     local status_effect_list_item_tvbr = tvbuf:range(status_effect_list_item_pos, 12)
     status_effect_list_item_dissector:call(status_effect_list_item_tvbr:tvb(), pktinfo, root)
     status_effect_list_item_pos = status_effect_list_item_pos + status_effect_list_item_len

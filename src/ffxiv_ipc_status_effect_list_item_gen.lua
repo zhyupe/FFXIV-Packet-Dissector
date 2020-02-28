@@ -42,5 +42,9 @@ function ffxiv_ipc_status_effect_list_item.dissector(tvbuf, pktinfo, root)
   local source_actor_id_val  = source_actor_id_tvbr:le_uint()
   tree:add_le(status_effect_list_item_fields.source_actor_id, source_actor_id_tvbr, source_actor_id_val)
 
+  if effect_id_val == 0 then
+    tree:set_hidden(true)
+  end
+
   return len
 end

@@ -1,0 +1,86 @@
+{
+  "name": "Actor Control Target",
+  "type": {
+    "5.0": "0x24d",
+    "5.1_cn": "0x03ac" 
+  },
+  "enums": [{
+    "name": "ActorControl144Category",
+    "type": "ushort",
+    "values": [{
+      "key": "Marker",
+      "value": 310
+    }]
+  }, {
+    "name": "ActorControl144Marker",
+    "type": "ushort",
+    "values": [{
+      "key": "Marker_A",
+      "value": 0
+    }, {
+      "key": "Marker_B",
+      "value": 1
+    }, {
+      "key": "Marker_C",
+      "value": 2
+    }, {
+      "key": "Marker_D",
+      "value": 3
+    }, {
+      "key": "Marker_1",
+      "value": 4
+    }, {
+      "key": "Marker_2",
+      "value": 5
+    }]
+  }],
+  "fields": [{
+    "offset": 0,
+    "name": "Category",
+    "type": "uint16",
+    "enum": "ActorControl144Category",
+    "length": 2
+  }, {
+    "offset": 2,
+    "name": "padding",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 4,
+    "name": "param1",
+    "type": "uint32",
+    "length": 4,
+    "condition": {
+      "Category": [{
+        "value": 310,
+        "label": "Marker",
+        "enum": "ActorControl144Marker"
+      }]
+    }
+  }, {
+    "offset": 8,
+    "name": "param2",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "param3",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "param4",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "padding1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 24,
+    "name": "targetId",
+    "type": "uint64",
+    "length": 8
+  }]
+}

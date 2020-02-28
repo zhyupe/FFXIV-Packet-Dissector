@@ -1,7 +1,8 @@
 {
   "name": "AddStatusEffect",
   "type": {
-    "5.0": "0x0141"
+    "5.0": "0x0141",
+    "5.1_cn": "0x01e2"
   },
   "enums": [],
   "fields": [{

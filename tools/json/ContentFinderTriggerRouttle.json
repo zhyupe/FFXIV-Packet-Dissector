@@ -1,0 +1,38 @@
+{
+  "name": "Content Finder Trigger Routtle",
+  "type": {
+    "5.1_cn": "0x03db"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "Roulette",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$ContentRoulette"
+  }, {
+    "offset": 2,
+    "name": "Unknown1",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 4,
+    "name": "Flags",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 6,
+    "name": "Unknown2",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 8,
+    "name": "Unknown3",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Unknown4",
+    "type": "uint32",
+    "length": 4
+  }]
+}

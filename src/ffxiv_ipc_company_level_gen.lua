@@ -25,7 +25,7 @@ function ffxiv_ipc_company_level.dissector(tvbuf, pktinfo, root)
   local company_level_item_len = 88
   local company_level_item_count = 15
 
-  while company_level_item_pos + company_level_item_len < len do
+  while company_level_item_pos + company_level_item_len <= len do
     local company_level_item_tvbr = tvbuf:range(company_level_item_pos, 88)
     company_level_item_dissector:call(company_level_item_tvbr:tvb(), pktinfo, root)
     company_level_item_pos = company_level_item_pos + company_level_item_len

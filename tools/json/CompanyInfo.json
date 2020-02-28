@@ -1,7 +1,8 @@
 {
   "name": "Company Info",
   "type": {
-    "5.0": "0x014f"
+    "5.0": "0x014f",
+    "5.1_cn": "0x03a4"
   },
   "version": "5.0",
   "enums": [],
@@ -28,7 +29,8 @@
     "tvb_method": "string(ENC_UTF_8)",
     "add_le": false,
     "add_val": true,
-    "length": 22
+    "length": 22,
+    "append": "val"
   }, {
     "offset": 72,
     "name": "Tag",
@@ -37,6 +39,7 @@
     "tvb_method": "string(ENC_UTF_8)",
     "add_le": false,
     "add_val": true,
-    "length": 8
+    "length": 8,
+    "append": "val"
   }]
 }

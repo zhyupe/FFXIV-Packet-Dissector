@@ -22,7 +22,6 @@ local segment_hdr_fields =
     target  = ProtoField.uint32("ffxiv_segment.target", "Target", base.HEX),
     type    = ProtoField.uint16("ffxiv_segment.type", "Type", base.DEC, segment_type_valstr),
     unknown = ProtoField.uint16("ffxiv_segment.unknown", "Unknown", base.HEX),
-    data    = ProtoField.bytes("ffxiv_segment.data", "Segment Data", base.NONE),
 }
 
 ffxiv_segment.fields = segment_hdr_fields
@@ -93,7 +92,6 @@ dissectSegment = function (tvbuf, pktinfo, root, offset)
   tree:add_le(segment_hdr_fields.unknown, unknown_tvbr)
 
   local data_tvbr = tvbuf:range(offset + FFXIV_SEGMENT_HDR_LEN, size_val - FFXIV_SEGMENT_HDR_LEN)
-  tree:add(segment_hdr_fields.data, data_tvbr)
 
   local header_length = 16;
 

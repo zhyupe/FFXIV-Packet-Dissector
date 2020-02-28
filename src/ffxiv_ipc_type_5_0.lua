@@ -2,6 +2,16 @@
 
 local M = {}
 M.types = {
+  [0x0186] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_cast",
+      length = 32,
+    },
+    [1] = {
+      name = "ffxiv_ipc_npc_spawn",
+      length = 640,
+    },
+  },
   [0x0142] = {
     [0] = {
       name = "ffxiv_ipc_actor_control142",
@@ -14,16 +24,40 @@ M.types = {
       length = 32,
     },
   },
+  [0x24d] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_control_target",
+      length = 32,
+    },
+  },
+  [0x016D] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_gauge",
+      length = 16,
+    },
+  },
   [0x0182] = {
     [0] = {
       name = "ffxiv_ipc_actor_move",
       length = 16,
     },
   },
+  [0x0068] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_set_pos",
+      length = 24,
+    },
+  },
   [0x0141] = {
     [0] = {
       name = "ffxiv_ipc_add_status_effect",
       length = 30,
+    },
+  },
+  [0x0312] = {
+    [0] = {
+      name = "ffxiv_ipc_boss_status_effect_list",
+      length = 744,
     },
   },
   [0x0180] = {
@@ -34,6 +68,12 @@ M.types = {
     [1] = {
       name = "ffxiv_ipc_update_position_instance",
       length = 40,
+    },
+  },
+  [0x015b] = {
+    [0] = {
+      name = "ffxiv_ipc_client_action",
+      length = 24,
     },
   },
   [0x013A] = {
@@ -85,7 +125,7 @@ M.types = {
   [0x0078] = {
     [0] = {
       name = "ffxiv_ipc_content_finder_notify",
-      length = 32,
+      length = 12,
     },
   },
   [0x01A5] = {
@@ -128,6 +168,12 @@ M.types = {
       length = 16,
     },
   },
+  [0x007C] = {
+    [0] = {
+      name = "ffxiv_ipc_init_zone",
+      length = 96,
+    },
+  },
   [0x01A7] = {
     [0] = {
       name = "ffxiv_ipc_inventory_action_ack",
@@ -144,6 +190,18 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction_finish",
       length = 16,
+    },
+  },
+  [0x010c] = {
+    [0] = {
+      name = "ffxiv_ipc_boss_npc_spawn",
+      length = 640,
+    },
+  },
+  [0x017F] = {
+    [0] = {
+      name = "ffxiv_ipc_player_spawn",
+      length = 632,
     },
   },
   [0x0193] = {

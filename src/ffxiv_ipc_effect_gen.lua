@@ -3,28 +3,12 @@
 local ffxiv_ipc_effect = Proto("ffxiv_ipc_effect", "FFXIV-IPC Effect")
 
 local effect_fields = {
-  animation_target_id = ProtoField.uint64("ffxiv_ipc_effect.animation_target_id", "animationTargetId", base.DEC),
-  action_id           = ProtoField.uint32("ffxiv_ipc_effect.action_id", "actionId", base.DEC),
-  sequence            = ProtoField.uint32("ffxiv_ipc_effect.sequence", "sequence", base.DEC),
-  animation_lock_time = ProtoField.float("ffxiv_ipc_effect.animation_lock_time", "animationLockTime", base.DEC),
-  some_target_id      = ProtoField.uint32("ffxiv_ipc_effect.some_target_id", "someTargetId", base.HEX),
-  source_sequence     = ProtoField.uint16("ffxiv_ipc_effect.source_sequence", "sourceSequence", base.DEC),
-  rotation            = ProtoField.uint16("ffxiv_ipc_effect.rotation", "rotation", base.DEC),
-  action_animation_id = ProtoField.uint16("ffxiv_ipc_effect.action_animation_id", "actionAnimationId", base.DEC),
-  variation           = ProtoField.uint8("ffxiv_ipc_effect.variation", "variation", base.DEC),
-  effect_display_type = ProtoField.uint8("ffxiv_ipc_effect.effect_display_type", "effectDisplayType", base.DEC),
-  unknown20           = ProtoField.uint8("ffxiv_ipc_effect.unknown20", "unknown20", base.DEC),
-  effect_count        = ProtoField.uint8("ffxiv_ipc_effect.effect_count", "effectCount", base.DEC),
-  padding_21          = ProtoField.uint16("ffxiv_ipc_effect.padding_21", "padding_21", base.DEC),
-  padding_220         = ProtoField.uint16("ffxiv_ipc_effect.padding_220", "padding_220", base.DEC),
-  padding_221         = ProtoField.uint16("ffxiv_ipc_effect.padding_221", "padding_221", base.DEC),
-  padding_222         = ProtoField.uint16("ffxiv_ipc_effect.padding_222", "padding_222", base.DEC),
-  padding_6_a0        = ProtoField.uint16("ffxiv_ipc_effect.padding_6_a0", "padding_6A0", base.DEC),
-  padding_6_a1        = ProtoField.uint16("ffxiv_ipc_effect.padding_6_a1", "padding_6A1", base.DEC),
-  padding_6_a2        = ProtoField.uint16("ffxiv_ipc_effect.padding_6_a2", "padding_6A2", base.DEC),
-  effect_target_id    = ProtoField.uint32("ffxiv_ipc_effect.effect_target_id", "effectTargetId", base.HEX),
-  effect_flags        = ProtoField.uint32("ffxiv_ipc_effect.effect_flags", "effectFlags", base.DEC),
-  padding_78          = ProtoField.uint32("ffxiv_ipc_effect.padding_78", "padding_78", base.DEC),
+  padding_6_a0     = ProtoField.uint16("ffxiv_ipc_effect.padding_6_a0", "padding_6A0", base.DEC),
+  padding_6_a1     = ProtoField.uint16("ffxiv_ipc_effect.padding_6_a1", "padding_6A1", base.DEC),
+  padding_6_a2     = ProtoField.uint16("ffxiv_ipc_effect.padding_6_a2", "padding_6A2", base.DEC),
+  effect_target_id = ProtoField.uint32("ffxiv_ipc_effect.effect_target_id", "effectTargetId", base.HEX),
+  effect_flags     = ProtoField.uint32("ffxiv_ipc_effect.effect_flags", "effectFlags", base.DEC),
+  padding_78       = ProtoField.uint32("ffxiv_ipc_effect.padding_78", "padding_78", base.DEC),
 }
 
 ffxiv_ipc_effect.fields = effect_fields
@@ -35,85 +19,37 @@ function ffxiv_ipc_effect.dissector(tvbuf, pktinfo, root)
 
   local len = tvbuf:len()
 
-  -- dissect the animation_target_id field
-  local animation_target_id_tvbr = tvbuf:range(0, 8)
-  local animation_target_id_val  = animation_target_id_tvbr:le_uint64()
-  tree:add_le(effect_fields.animation_target_id, animation_target_id_tvbr, animation_target_id_val)
+  -- dissect effect_header
+  local effect_header_dissector = Dissector.get('ffxiv_ipc_effect_header')
+  local effect_header_pos = 0
+  local effect_header_len = 42
+  local effect_header_count = 1
 
-  -- dissect the action_id field
-  local action_id_tvbr = tvbuf:range(8, 4)
-  local action_id_val  = action_id_tvbr:le_uint()
-  tree:add_le(effect_fields.action_id, action_id_tvbr, action_id_val)
+  while effect_header_pos + effect_header_len <= len do
+    local effect_header_tvbr = tvbuf:range(effect_header_pos, 42)
+    effect_header_dissector:call(effect_header_tvbr:tvb(), pktinfo, root)
+    effect_header_pos = effect_header_pos + effect_header_len
+    effect_header_count = effect_header_count - 1
+    if effect_header_count <= 0 then
+      break
+    end
+  end
 
-  -- dissect the sequence field
-  local sequence_tvbr = tvbuf:range(12, 4)
-  local sequence_val  = sequence_tvbr:le_uint()
-  tree:add_le(effect_fields.sequence, sequence_tvbr, sequence_val)
+  -- dissect effect_entry
+  local effect_entry_dissector = Dissector.get('ffxiv_ipc_effect_entry')
+  local effect_entry_pos = 42
+  local effect_entry_len = 8
+  local effect_entry_count = 8
 
-  -- dissect the animation_lock_time field
-  local animation_lock_time_tvbr = tvbuf:range(16, 4)
-  local animation_lock_time_val  = animation_lock_time_tvbr:le_float()
-  tree:add_le(effect_fields.animation_lock_time, animation_lock_time_tvbr, animation_lock_time_val)
-
-  -- dissect the some_target_id field
-  local some_target_id_tvbr = tvbuf:range(20, 4)
-  local some_target_id_val  = some_target_id_tvbr:le_uint()
-  tree:add_le(effect_fields.some_target_id, some_target_id_tvbr, some_target_id_val)
-
-  -- dissect the source_sequence field
-  local source_sequence_tvbr = tvbuf:range(24, 2)
-  local source_sequence_val  = source_sequence_tvbr:le_uint()
-  tree:add_le(effect_fields.source_sequence, source_sequence_tvbr, source_sequence_val)
-
-  -- dissect the rotation field
-  local rotation_tvbr = tvbuf:range(26, 2)
-  local rotation_val  = rotation_tvbr:le_uint()
-  tree:add_le(effect_fields.rotation, rotation_tvbr, rotation_val)
-
-  -- dissect the action_animation_id field
-  local action_animation_id_tvbr = tvbuf:range(28, 2)
-  local action_animation_id_val  = action_animation_id_tvbr:le_uint()
-  tree:add_le(effect_fields.action_animation_id, action_animation_id_tvbr, action_animation_id_val)
-
-  -- dissect the variation field
-  local variation_tvbr = tvbuf:range(30, 1)
-  local variation_val  = variation_tvbr:le_uint()
-  tree:add_le(effect_fields.variation, variation_tvbr, variation_val)
-
-  -- dissect the effect_display_type field
-  local effect_display_type_tvbr = tvbuf:range(31, 1)
-  local effect_display_type_val  = effect_display_type_tvbr:le_uint()
-  tree:add_le(effect_fields.effect_display_type, effect_display_type_tvbr, effect_display_type_val)
-
-  -- dissect the unknown20 field
-  local unknown20_tvbr = tvbuf:range(32, 1)
-  local unknown20_val  = unknown20_tvbr:le_uint()
-  tree:add_le(effect_fields.unknown20, unknown20_tvbr, unknown20_val)
-
-  -- dissect the effect_count field
-  local effect_count_tvbr = tvbuf:range(33, 1)
-  local effect_count_val  = effect_count_tvbr:le_uint()
-  tree:add_le(effect_fields.effect_count, effect_count_tvbr, effect_count_val)
-
-  -- dissect the padding_21 field
-  local padding_21_tvbr = tvbuf:range(34, 2)
-  local padding_21_val  = padding_21_tvbr:le_uint()
-  tree:add_le(effect_fields.padding_21, padding_21_tvbr, padding_21_val)
-
-  -- dissect the padding_220 field
-  local padding_220_tvbr = tvbuf:range(36, 2)
-  local padding_220_val  = padding_220_tvbr:le_uint()
-  tree:add_le(effect_fields.padding_220, padding_220_tvbr, padding_220_val)
-
-  -- dissect the padding_221 field
-  local padding_221_tvbr = tvbuf:range(38, 2)
-  local padding_221_val  = padding_221_tvbr:le_uint()
-  tree:add_le(effect_fields.padding_221, padding_221_tvbr, padding_221_val)
-
-  -- dissect the padding_222 field
-  local padding_222_tvbr = tvbuf:range(40, 2)
-  local padding_222_val  = padding_222_tvbr:le_uint()
-  tree:add_le(effect_fields.padding_222, padding_222_tvbr, padding_222_val)
+  while effect_entry_pos + effect_entry_len <= len do
+    local effect_entry_tvbr = tvbuf:range(effect_entry_pos, 8)
+    effect_entry_dissector:call(effect_entry_tvbr:tvb(), pktinfo, root)
+    effect_entry_pos = effect_entry_pos + effect_entry_len
+    effect_entry_count = effect_entry_count - 1
+    if effect_entry_count <= 0 then
+      break
+    end
+  end
 
   -- dissect the padding_6_a0 field
   local padding_6_a0_tvbr = tvbuf:range(106, 2)

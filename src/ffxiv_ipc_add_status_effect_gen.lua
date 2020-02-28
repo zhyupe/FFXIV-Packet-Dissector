@@ -91,7 +91,7 @@ function ffxiv_ipc_add_status_effect.dissector(tvbuf, pktinfo, root)
   local add_status_effect_item_len = 16
   local add_status_effect_item_count = count_val
 
-  while add_status_effect_item_pos + add_status_effect_item_len < len do
+  while add_status_effect_item_pos + add_status_effect_item_len <= len do
     local add_status_effect_item_tvbr = tvbuf:range(add_status_effect_item_pos, 16)
     add_status_effect_item_dissector:call(add_status_effect_item_tvbr:tvb(), pktinfo, root)
     add_status_effect_item_pos = add_status_effect_item_pos + add_status_effect_item_len

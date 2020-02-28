@@ -1,12 +1,14 @@
 {
   "name": "Update Inventory Slot",
   "type": {
-    "5.0": "0x01A8"
+    "5.0": "0x01A8",
+    "5.1_cn": "0x01ad"
   },
   "aliases": [{
     "name": "ItemInfo",
     "type": {
-      "5.0": "0x01A1"
+      "5.0": "0x01A1",
+      "5.1_cn": "0x030B"
     }
   }],
   "enums": [{

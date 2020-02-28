@@ -2,12 +2,6 @@
 
 local M = {}
 M.types = {
-  [0x015b] = {
-    [0] = {
-      name = "ffxiv_ipc_client_action",
-      length = 24,
-    },
-  },
   [0x01b9] = {
     [0] = {
       name = "ffxiv_ipc_craft_status",

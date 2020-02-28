@@ -1,6 +1,8 @@
 {
   "name": "ClientAction",
-  "type": "0x015b",
+  "type": {
+    "5.0": "0x015b"
+  },
   "enums": [{
     "name": "ClientActionType",
     "type": "ushort",

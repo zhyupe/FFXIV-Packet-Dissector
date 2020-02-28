@@ -1,7 +1,8 @@
 {
   "name": "Actor Move",
   "type": {
-    "5.0": "0x0182"
+    "5.0": "0x0182",
+    "5.1_cn": "0x02a9"
   },
   "fields": [{
     "offset": 0,
