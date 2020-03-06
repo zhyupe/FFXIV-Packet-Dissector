@@ -1,7 +1,8 @@
 {
   "name": "ClientAction",
   "type": {
-    "5.0": "0x015b"
+    "5.0": "0x015b",
+    "5.11_cn": "0x00da"
   },
   "enums": [{
     "name": "ClientActionType",

@@ -2,7 +2,8 @@
   "name": "Status Effect List",
   "type": {
     "5.0": "0x015B",
-    "5.1_cn": "0x037c"
+    "5.1_cn": "0x037c",
+    "5.11_cn": "0x018b"
   },
   "fields": [{
     "offset": 0,

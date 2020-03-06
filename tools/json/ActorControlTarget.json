@@ -2,7 +2,8 @@
   "name": "Actor Control Target",
   "type": {
     "5.0": "0x24d",
-    "5.1_cn": "0x03ac" 
+    "5.1_cn": "0x03ac",
+    "5.11_cn": "0x010b"
   },
   "enums": [{
     "name": "ActorControl144Category",

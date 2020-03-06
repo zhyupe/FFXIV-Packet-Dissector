@@ -8,7 +8,7 @@ const langs = ['chs', 'en', 'ja', 'de', 'fr']
 
 /* eslint no-extend-native: 0 */
 Array.prototype.findById = function (id) {
-  return this.find(item => item['#'] == id)
+  return this.find(item => item['#'] == id) // eslint-disable-line eqeqeq
 }
 
 Array.prototype.kvmap = function (nKey = 'Name', valueFunc = (val) => val) {

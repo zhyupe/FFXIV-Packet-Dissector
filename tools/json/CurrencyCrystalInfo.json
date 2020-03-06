@@ -1,7 +1,8 @@
 {
   "name": "CurrencyCrystalInfo",
   "type": {
-    "5.0": "0x01A5"
+    "5.0": "0x01A5",
+    "5.11_cn": "0x0207"
   },
   "fields": [{
     "offset": 0,

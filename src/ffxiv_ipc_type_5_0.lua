@@ -210,6 +210,12 @@ M.types = {
       length = 16,
     },
   },
+  [0x0190] = {
+    [0] = {
+      name = "ffxiv_ipc_player_stats",
+      length = 224,
+    },
+  },
   [0x0104] = {
     [0] = {
       name = "ffxiv_ipc_public_message",
