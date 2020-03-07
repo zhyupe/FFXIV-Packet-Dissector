@@ -140,6 +140,30 @@ M.types = {
       length = 636,
     },
   },
+  [0x0117] = {
+    [0] = {
+      name = "ffxiv_ipc_ensemble_ready_receive",
+      length = 21,
+    },
+  },
+  [0x020b] = {
+    [0] = {
+      name = "ffxiv_ipc_ensemble_ready_send",
+      length = 9,
+    },
+  },
+  [0x02eb] = {
+    [0] = {
+      name = "ffxiv_ipc_ensemble_start_receive",
+      length = 9,
+    },
+  },
+  [0x0348] = {
+    [0] = {
+      name = "ffxiv_ipc_ensemble_start_send",
+      length = 9,
+    },
+  },
   [0x0065] = {
     [0] = {
       name = "ffxiv_ipc_group_message",
@@ -174,6 +198,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_boss_npc_spawn",
       length = 640,
+    },
+  },
+  [0x0287] = {
+    [0] = {
+      name = "ffxiv_ipc_perform_note",
+      length = 1,
     },
   },
   [0x0358] = {

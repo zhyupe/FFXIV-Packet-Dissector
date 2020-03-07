@@ -1,0 +1,44 @@
+{
+  "name": "Ensemble Ready Receive",
+  "type": {
+    "5.1_cn": "0x0117",
+    "5.11_cn": "0x01ce"
+  },
+  "enums": [
+    {
+      "name": "EnsembleAssistant",
+      "type": "uint8",
+      "values": [
+        {
+          "key": "On",
+          "value": 1
+        },
+        {
+          "key": "Off",
+          "value": 0
+        }
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "offset": 18,
+      "name": "BPM",
+      "type": "uint16",
+      "length": 1
+    },
+    {
+      "offset": 19,
+      "name": "meter",
+      "type": "uint8",
+      "length": 1
+    },
+    {
+      "offset": 20,
+      "name": "Ensemble Assistant",
+      "type": "uint8",
+      "length": 1,
+      "enum": "EnsembleAssistant"
+    }
+  ]
+}
