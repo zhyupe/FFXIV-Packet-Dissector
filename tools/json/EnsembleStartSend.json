@@ -1,7 +1,8 @@
 {
   "name": "Ensemble Start Send",
   "type": {
-    "5.1_cn": "0x0348"
+    "5.1_cn": "0x0348",
+    "5.11_cn": "0x039b"
   },
   "enums": [
     {
