@@ -46,6 +46,7 @@ module.exports = function (content, fields) {
   }
 
   return lines.slice(3).map(line => fields.reduce((obj, field, i) => {
+    obj[`$${i}`] = line[i]
     if (field) {
       obj[field] = line[i]
     }

@@ -2,7 +2,8 @@
   "name": "Actor Set Pos",
   "type": {
     "5.0": "0x0068",
-    "5.1_cn": "0x02f2"
+    "5.1_cn": "0x02f2",
+    "5.11_cn": "0x00e5"
   },
   "fields": [{
     "offset": 0,

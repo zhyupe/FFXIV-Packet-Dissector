@@ -248,7 +248,7 @@ M.types = {
       length = 14,
     },
   },
-  [0x01ad] = {
+  [0x01AD] = {
     [0] = {
       name = "ffxiv_ipc_update_inventory_slot",
       length = 64,

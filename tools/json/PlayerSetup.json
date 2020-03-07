@@ -2,7 +2,8 @@
   "name_omited": "Player Setup",
   "type_omited": {
     "5.0": "0x0295",
-    "5.1_cn": "0x014f"
+    "5.1_cn": "0x014f",
+    "5.11_cn": "0x0216"
   },
   "fields": [{
     "offset": 0,

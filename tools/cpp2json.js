@@ -30,6 +30,10 @@ const typeMap = {
     type: 'uint32',
     length: 4
   },
+  int32_t: {
+    type: 'int32',
+    length: 4
+  },
   int: {
     type: 'int32',
     length: 4
@@ -41,11 +45,45 @@ const typeMap = {
   float: {
     type: 'float',
     length: 4
+  },
+  StatusEffect: {
+    fields: [{
+      name: 'effect_id',
+      type: 'uint16',
+      length: 2
+    }, {
+      name: 'unknown1',
+      type: 'uint16',
+      length: 2
+    }, {
+      name: 'duration',
+      type: 'float',
+      length: 4
+    }, {
+      name: 'sourceActorId',
+      type: 'uint32',
+      length: 4
+    }]
+  },
+  FFXIVARR_POSITION3: {
+    fields: [{
+      name: 'x',
+      type: 'float',
+      length: 4
+    }, {
+      name: 'y',
+      type: 'float',
+      length: 4
+    }, {
+      name: 'z',
+      type: 'float',
+      length: 4
+    }]
   }
 }
 
 const structRegexp = /struct (\w+)\s*(?::\s*(\w+)\s*)?(?:<\s*(\w+)\s*>\s*)?\s*\{([\s\S]+?)\}/g
-const fieldRegexp = /\s*(\w+)\s+(\w+?)(?:\[([xa-fA-F0-9]+)\])?\s*;/g
+const fieldRegexp = /\s*(\w+)\s+(\w+?)(?:\[\s*([xa-fA-F0-9]+)\s*\])?\s*;/g
 const enumRegexp = /enum (\w+)(?:\s*:\s*(\w+))?\s+\{([\s\S]+?)\}/g
 const enumItemRegexp = /(\w+)(?: ?= ?([xa-fA-F0-9]+))?/g
 
@@ -79,13 +117,35 @@ execAll(enumContent, enumRegexp).forEach(match => {
   }
 })
 
+function appendField (array, meta) {
+  if (meta.fields) {
+    meta.fields.forEach(field => {
+      appendField(array, {
+        ...field,
+        name: `${meta.name}_${field.name}`
+      })
+    })
+    return
+  }
+
+  let offset = 0
+  if (array.length) {
+    let last = array[array.length - 1]
+    offset = last.offset + last.length
+  }
+
+  array.push({
+    ...meta,
+    offset
+  })
+}
+
 function extractStruct (content, typeScope) {
   execAll(content, structRegexp).forEach(match => {
     let structName = match[1]
     let ipcName = match[3]
     let content = match[4]
 
-    let offset = 0
     let result = {
       name: match[1],
       type: {
@@ -100,7 +160,6 @@ function extractStruct (content, typeScope) {
       let arrayLength = match[3]
 
       let field = {
-        offset,
         name,
         type
       }
@@ -114,16 +173,13 @@ function extractStruct (content, typeScope) {
       if (arrayLength) {
         arrayLength = parseInt(arrayLength)
         for (let i = 0; i < arrayLength; ++i) {
-          result.fields.push({
+          appendField(result.fields, {
             ...field,
-            offset,
             name: `${field.name}${i}`
           })
-          offset += field.length
         }
       } else {
-        result.fields.push(field)
-        offset += field.length
+        appendField(result.fields, field)
       }
     })
 
