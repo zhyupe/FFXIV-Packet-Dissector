@@ -1,0 +1,18 @@
+{
+  "name": "NpcRemove",
+  "type": {
+    "5.11_cn": "0x034e"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "Unknown",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "NpcId",
+    "type": "uint32",
+    "length": 4,
+    "base": "HEX"
+  }]
+}
