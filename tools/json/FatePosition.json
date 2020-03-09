@@ -1,0 +1,48 @@
+{
+  "name": "Fate Position",
+  "type": {
+    "5.11_cn": "0x0259"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "Fate",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$Fate",
+    "append": "enum"
+  }, {
+    "offset": 2,
+    "name": "Unknown0",
+    "type": "uint32",
+    "length": 2
+  }, {
+    "offset": 4,
+    "name": "NpcId",
+    "type": "uint32",
+    "base": "HEX",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "X",
+    "type": "int32",
+    "append": "val",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "Y",
+    "type": "int32",
+    "append": "val",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "Z",
+    "type": "int32",
+    "append": "val",
+    "length": 4
+  }]
+}

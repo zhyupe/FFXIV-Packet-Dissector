@@ -1,0 +1,44 @@
+{
+  "name": "Fate Info",
+  "type": {
+    "5.11_cn": "0x0074"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "Fate",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$Fate",
+    "append": "enum"
+  }, {
+    "offset": 2,
+    "name": "Unknown0",
+    "type": "uint32",
+    "length": 2
+  }, {
+    "offset": 4,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "StartTime",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Unknown3",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "Duration",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "Unknown5",
+    "type": "float",
+    "length": 4
+  }]
+}
