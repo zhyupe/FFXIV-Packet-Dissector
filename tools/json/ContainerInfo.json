@@ -2,7 +2,8 @@
   "name": "Container Info",
   "type": {
     "5.0": "0x01A2",
-    "5.1_cn": "0x00FD"
+    "5.1_cn": "0x00FD",
+    "5.11_cn": "0x038D"
   },
   "fields": [{
     "offset": 0,
@@ -10,18 +11,18 @@
     "type": "uint32",
     "length": 4
   }, {
+    "offset": 4,
+    "name": "numItems",
+    "type": "uint32",
+    "length": 4,
+    "append": "val"
+  }, {
     "offset": 8,
     "name": "containerId",
     "type": "uint32",
     "length": 4,
     "enum": "ItemLocation",
     "append": "enum"
-  }, {
-    "offset": 4,
-    "name": "numItems",
-    "type": "uint32",
-    "length": 4,
-    "append": "val"
   }, {
     "offset": 12,
     "name": "unknown",
