@@ -10,223 +10,232 @@
     "type": "ushort",
     "values": [{
       "key": "ToggleSheathe",
-      "value": "0x01"
+      "value": 1
     }, {
       "key": "ToggleAutoAttack",
-      "value": "0x02"
+      "value": 2
     }, {
       "key": "ChangeTarget",
-      "value": "0x03"
+      "value": 3
     }, {
       "key": "DismountReq",
-      "value": "0x65"
+      "value": 101
     }, {
       "key": "SpawnCompanionReq",
-      "value": "0x66"
+      "value": 102
     }, {
       "key": "RemoveStatusEffect",
-      "value": "0x68"
+      "value": 104
     }, {
       "key": "CastCancel",
-      "value": "0x69"
+      "value": 105
     }, {
       "key": "Return",
-      "value": "0xC8"
+      "value": 200
     }, {
       "key": "FinishZoning",
-      "value": "0xC9"
+      "value": 201
     }, {
       "key": "Teleport",
-      "value": "0xCA"
+      "value": 202
     }, {
       "key": "Examine",
-      "value": "0x12C"
+      "value": 300
     }, {
       "key": "MarkPlayer",
-      "value": "0x12D"
+      "value": 301
     }, {
       "key": "SetTitleReq",
-      "value": "0x12E"
+      "value": 302
     }, {
       "key": "TitleList",
-      "value": "0x12F"
+      "value": 303
     }, {
       "key": "UpdatedSeenHowTos",
-      "value": "0x133"
+      "value": 307
     }, {
       "key": "AllotAttribute",
-      "value": "0x135"
+      "value": 309
     }, {
       "key": "ClearFieldMarkers",
-      "value": "0x13A"
+      "value": 314
     }, {
       "key": "CameraMode",
-      "value": "0x13B"
+      "value": 315
     }, {
       "key": "CharaNameReq",
-      "value": "0x13D"
+      "value": 317
     }, {
       "key": "HuntingLogDetails",
-      "value": "0x194"
+      "value": 404
     }, {
       "key": "Timers",
-      "value": "0x1AB"
+      "value": 427
     }, {
       "key": "DyeItem",
-      "value": "0x1B5"
+      "value": 437
     }, {
       "key": "RequestChocoboInventory",
-      "value": "0x1C4"
+      "value": 452
     }, {
       "key": "EmoteReq",
-      "value": "0x1F4"
+      "value": 500
     }, {
       "key": "EmoteCancel",
-      "value": "0x1F6"
+      "value": 502
     }, {
       "key": "PersistentEmoteCancel",
-      "value": "0x1F7"
+      "value": 503
     }, {
       "key": "PoseChange",
-      "value": "0x1F9"
+      "value": 505
     }, {
       "key": "PoseReapply",
-      "value": "0x1FA"
+      "value": 506
     }, {
       "key": "PoseCancel",
-      "value": "0x1FB"
+      "value": 507
     }, {
       "key": "AchievementCrit",
-      "value": "0x202"
+      "value": 514
     }, {
       "key": "AchievementComp",
-      "value": "0x203"
+      "value": 515
     }, {
       "key": "AchievementCatChat",
-      "value": "0x206"
-    }, {
-      "key": "QuestJournalUpdateQuestVisibility",
-      "value": "0x2BE"
-    }, {
-      "key": "QuestJournalClosed",
-      "value": "0x2BF"
-    }, {
-      "key": "AbandonQuest",
-      "value": "0x320"
-    }, {
-      "key": "DirectorInitFinish",
-      "value": "0x321"
-    }, {
-      "key": "DirectorSync",
-      "value": "0x328"
-    }, {
-      "key": "EnterTerritoryEventFinished",
-      "value": "0x330"
-    }, {
-      "key": "RequestInstanceLeave",
-      "value": "0x333"
-    }, {
-      "key": "AchievementCritReq",
-      "value": "0x3E8"
-    }, {
-      "key": "AchievementList",
-      "value": "0x3E9"
-    }, {
-      "key": "SetEstateLightingLevel",
-      "value": "0x40B"
-    }, {
-      "key": "RequestHousingBuildPreset",
-      "value": "0x44C"
-    }, {
-      "key": "RequestEstateExteriorRemodel",
-      "value": "0x44D"
-    }, {
-      "key": "RequestEstateInteriorRemodel",
-      "value": "0x44E"
-    }, {
-      "key": "RequestEstateHallRemoval",
-      "value": "0x44F"
-    }, {
-      "key": "RequestBuildPreset",
-      "value": "0x450"
-    }, {
-      "key": "RequestLandSignFree",
-      "value": "0x451"
-    }, {
-      "key": "RequestLandSignOwned",
-      "value": "0x452"
-    }, {
-      "key": "RequestWardLandInfo",
-      "value": "0x453"
-    }, {
-      "key": "RequestLandRelinquish",
-      "value": "0x454"
-    }, {
-      "key": "RequestLandInventory",
-      "value": "0x0458"
-    }, {
-      "key": "RequestHousingItemRemove",
-      "value": "0x0459"
-    }, {
-      "key": "RequestEstateRename",
-      "value": "0x45A"
-    }, {
-      "key": "RequestEstateEditGreeting",
-      "value": "0x45B"
-    }, {
-      "key": "RequestEstateGreeting",
-      "value": "0x45C"
-    }, {
-      "key": "RequestEstateEditGuestAccessSettings",
-      "value": "0x45D"
-    }, {
-      "key": "UpdateEstateGuestAccess",
-      "value": "0x45E"
-    }, {
-      "key": "RequestEstateTagSettings",
-      "value": "0x45F"
-    }, {
-      "key": "RequestEstateInventory",
-      "value": "0x0461"
-    }, {
-      "key": "RequestHousingItemUI",
-      "value": "0x463"
-    }, {
-      "key": "RequestSharedEstateSettings",
-      "value": "0x46F"
-    }, {
-      "key": "UpdateEstateLightingLevel",
-      "value": "0x471"
-    }, {
-      "key": "HousingItemSelectedInUI",
-      "value": "0x47E"
-    }, {
-      "key": "CompanionAction",
-      "value": "0x6A4"
-    }, {
-      "key": "CompanionSetBarding",
-      "value": "0x6A5"
-    }, {
-      "key": "CompanionActionUnlock",
-      "value": "0x6A6"
-    }, {
-      "key": "OpenPerformInstrumentUI",
-      "value": "0x71C"
-    }, {
-      "key": "StartReplay",
-      "value": "0x7BC"
-    }, {
-      "key": "EndReplay",
-      "value": "0x7BD"
-    }, {
-      "key": "OpenDuelUI",
-      "value": "0x898"
-    }, {
-      "key": "DuelRequestResult",
-      "value": "0x899"
+      "value": 518
     }, {
       "key": "FishingBaitChange",
       "value": 701
+    }, {
+      "key": "QuestJournalUpdateQuestVisibility",
+      "value": 702
+    }, {
+      "key": "QuestJournalClosed",
+      "value": 703
+    }, {
+      "key": "AbandonQuest",
+      "value": 800
+    }, {
+      "key": "DirectorInitFinish",
+      "value": 801
+    }, {
+      "key": "DirectorSync",
+      "value": 808
+    }, {
+      "key": "StartFate",
+      "value": 809
+    }, {
+      "key": "QueryFate",
+      "value": 810
+    }, {
+      "key": "ToggleFateSync",
+      "value": 813
+    }, {
+      "key": "EnterTerritoryEventFinished",
+      "value": 816
+    }, {
+      "key": "RequestInstanceLeave",
+      "value": 819
+    }, {
+      "key": "AchievementCritReq",
+      "value": 1000
+    }, {
+      "key": "AchievementList",
+      "value": 1001
+    }, {
+      "key": "SetEstateLightingLevel",
+      "value": 1035
+    }, {
+      "key": "RequestHousingBuildPreset",
+      "value": 1100
+    }, {
+      "key": "RequestEstateExteriorRemodel",
+      "value": 1101
+    }, {
+      "key": "RequestEstateInteriorRemodel",
+      "value": 1102
+    }, {
+      "key": "RequestEstateHallRemoval",
+      "value": 1103
+    }, {
+      "key": "RequestBuildPreset",
+      "value": 1104
+    }, {
+      "key": "RequestLandSignFree",
+      "value": 1105
+    }, {
+      "key": "RequestLandSignOwned",
+      "value": 1106
+    }, {
+      "key": "RequestWardLandInfo",
+      "value": 1107
+    }, {
+      "key": "RequestLandRelinquish",
+      "value": 1108
+    }, {
+      "key": "RequestLandInventory",
+      "value": 1112
+    }, {
+      "key": "RequestHousingItemRemove",
+      "value": 1113
+    }, {
+      "key": "RequestEstateRename",
+      "value": 1114
+    }, {
+      "key": "RequestEstateEditGreeting",
+      "value": 1115
+    }, {
+      "key": "RequestEstateGreeting",
+      "value": 1116
+    }, {
+      "key": "RequestEstateEditGuestAccessSettings",
+      "value": 1117
+    }, {
+      "key": "UpdateEstateGuestAccess",
+      "value": 1118
+    }, {
+      "key": "RequestEstateTagSettings",
+      "value": 1119
+    }, {
+      "key": "RequestEstateInventory",
+      "value": 1121
+    }, {
+      "key": "RequestHousingItemUI",
+      "value": 1123
+    }, {
+      "key": "RequestSharedEstateSettings",
+      "value": 1135
+    }, {
+      "key": "UpdateEstateLightingLevel",
+      "value": 1137
+    }, {
+      "key": "HousingItemSelectedInUI",
+      "value": 1150
+    }, {
+      "key": "CompanionAction",
+      "value": 1700
+    }, {
+      "key": "CompanionSetBarding",
+      "value": 1701
+    }, {
+      "key": "CompanionActionUnlock",
+      "value": 1702
+    }, {
+      "key": "OpenPerformInstrumentUI",
+      "value": 1820
+    }, {
+      "key": "StartReplay",
+      "value": 1980
+    }, {
+      "key": "EndReplay",
+      "value": 1981
+    }, {
+      "key": "OpenDuelUI",
+      "value": 2200
+    }, {
+      "key": "DuelRequestResult",
+      "value": 2201
     }]
   }, {
     "name": "ClientTriggerFishBaitType",
@@ -236,81 +245,89 @@
       "value": 6
     }]
   }],
-  "fields": [
-    {
-      "offset": 0,
-      "name": "commandId",
-      "type": "uint16",
-      "base": "HEX",
-      "length": 2,
-      "enum": "ClientTriggerCommandId",
-      "append": "enum"
+  "fields": [{
+    "offset": 0,
+    "name": "commandId",
+    "type": "uint16",
+    "base": "HEX",
+    "length": 2,
+    "enum": "ClientTriggerCommandId",
+    "append": "enum"
+  }, {
+    "offset": 2,
+    "name": "unk_20",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 3,
+    "name": "unk_21",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 4,
+    "name": "param11",
+    "type": "uint32",
+    "condition": {
+      "commandId": [{
+        "value": 701,
+        "label": "Type",
+        "enum": "ClientTriggerFishBaitType"
+      }, {
+        "value": 809,
+        "label": "Fate",
+        "enum": "$Fate"
+      }, {
+        "value": 810,
+        "label": "Fate",
+        "enum": "$Fate"
+      }, {
+        "value": 813,
+        "label": "Fate",
+        "enum": "$Fate"
+      }]
     },
-    {
-      "offset": 2,
-      "name": "unk_20",
-      "type": "uint8",
-      "length": 1
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "param12",
+    "type": "uint32",
+    "condition": {
+      "commandId": [{
+        "value": 104,
+        "label": "Action",
+        "enum": "$Action"
+      }, {
+        "value": 701,
+        "label": "Bait",
+        "enum": "$Item"
+      }, {
+        "value": 809,
+        "label": "NpcId"
+      }, {
+        "value": 813,
+        "label": "Sync"
+      }]
     },
-    {
-      "offset": 3,
-      "name": "unk_21",
-      "type": "uint8",
-      "length": 1
-    },
-    {
-      "offset": 4,
-      "name": "param11",
-      "type": "uint32",
-      "condition": {
-        "commandId": [{
-          "value": 701,
-          "label": "Type",
-          "enum": "ClientTriggerFishBaitType"
-        }]
-      },
-      "length": 4
-    },
-    {
-      "offset": 8,
-      "name": "param12",
-      "type": "uint32",
-      "condition": {
-        "commandId": [{
-          "value": 701,
-          "label": "Bait",
-          "enum": "$Item"
-        }, {
-          "value": 104,
-          "label": "Action",
-          "enum": "$Action"
-        }]
-      },
-      "length": 4
-    },
-    {
-      "offset": 12,
-      "name": "param2",
-      "type": "uint32",
-      "length": 4
-    },
-    {
-      "offset": 16,
-      "name": "param4",
-      "type": "uint32",
-      "length": 4
-    },
-    {
-      "offset": 20,
-      "name": "param5",
-      "type": "uint32",
-      "length": 4
-    },
-    {
-      "offset": 24,
-      "name": "param3",
-      "type": "uint64",
-      "length": 8
-    }
-  ]
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "param2",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "param4",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "param5",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 24,
+    "name": "param3",
+    "type": "uint64",
+    "length": 8
+  }]
 }
