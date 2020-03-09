@@ -1,12 +1,12 @@
 {
-  "name": "ActorControl143",
+  "name": "Actor Control",
   "type": {
-    "5.0": "0x0143",
-    "5.1_cn": "0x01c3",
-    "5.11_cn": "0x011f"
+    "5.0": "0x0142",
+    "5.1_cn": "0x00de",
+    "5.11_cn": "0x00C1"
   },
   "enums": [{
-    "name": "ActorControl143Type",
+    "name": "ActorControlType",
     "type": "ushort",
     "values": [ {
       "key": "ToggleWeapon",
@@ -147,11 +147,17 @@
       "key": "ItemObtainMsg",
       "value": 117
     }, {
+      "key": "FateInit",
+      "value": 120
+    }, {
       "key": "FateEnd",
       "value": 121
     }, {
       "key": "DutyQuestScreenMsg",
       "value": 123
+    }, {
+      "key": "FatePosition",
+      "value": 125
     }, {
       "key": "ItemObtainIcon",
       "value": 132
@@ -167,6 +173,9 @@
     }, {
       "key": "FreeEventPos",
       "value": 138
+    }, {
+      "key": "FateSync",
+      "value": 139
     }, {
       "key": "DailyQuestSeed",
       "value": 144
@@ -264,7 +273,7 @@
       "key": "SetPose",
       "value": 295
     }, {
-      "key": "CraftingUnk",
+      "key": "FishingLightChange",
       "value": 300
     }, {
       "key": "GatheringSenseMsg",
@@ -507,11 +516,11 @@
     "name": "Type",
     "type": "uint16",
     "length": 2,
-    "enum": "ActorControl143Type",
+    "enum": "ActorControlType",
     "append": "enum"
   }, {
     "offset": 2,
-    "name": "Unknown0",
+    "name": "Unknown",
     "type": "uint16",
     "length": 2
   }, {
@@ -520,63 +529,41 @@
     "type": "uint32",
     "condition": {
       "Type": [{
-        "value": 155,
+        "value": 21,
+        "label": "Status",
+        "enum": "$Status"
+      }, {
+        "value": 116,
         "label": "Fate",
         "enum": "$Fate"
-      }, {
-        "value": 320,
-        "label": "Item",
-        "enum": "$Item"
-      }, {
-        "value": 325,
-        "label": "Bait",
-        "enum": "$Item"
       }]
     },
     "length": 4
   }, {
     "offset": 8,
-    "name": "Data1",
+    "name": "Mode",
     "type": "uint32",
     "condition": {
       "Type": [{
-        "value": 7,
-        "label": "Exp"
-      }, {
-        "value": 155,
-        "label": "Progress(%)"
+        "value": 300,
+        "label": "Enabled"
       }]
     },
     "length": 4
   }, {
     "offset": 12,
-    "name": "Data2",
+    "name": "SkillID",
     "type": "uint32",
-    "condition": {
-      "Type": [{
-        "value": 7,
-        "label": "Bouns(%)"
-      }]
-    },
-    "length": 4
+    "length": 4,
+    "enum": "$Action"
   }, {
     "offset": 16,
-    "name": "Data3",
+    "name": "Param1",
     "type": "uint32",
     "length": 4
   }, {
     "offset": 20,
-    "name": "Data4",
-    "type": "uint32",
-    "length": 4
-  }, {
-    "offset": 24,
-    "name": "Data5",
-    "type": "uint32",
-    "length": 4
-  }, {
-    "offset": 28,
-    "name": "Data6",
+    "name": "Param2",
     "type": "uint32",
     "length": 4
   }]

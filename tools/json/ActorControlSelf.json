@@ -1,0 +1,136 @@
+{
+  "name": "Actor Control Self",
+  "type": {
+    "5.0": "0x0143",
+    "5.1_cn": "0x01c3",
+    "5.11_cn": "0x011f"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "Type",
+    "type": "uint16",
+    "length": 2,
+    "enum": "ActorControlType",
+    "append": "enum"
+  }, {
+    "offset": 2,
+    "name": "Unknown0",
+    "type": "uint16",
+    "length": 2,
+    "condition": {
+      "Type": [{
+        "value": 521,
+        "label": "JobLevel"
+      }]
+    }
+  }, {
+    "offset": 4,
+    "name": "Data0",
+    "type": "uint32",
+    "condition": {
+      "Type": [{
+        "value": 116,
+        "label": "Fate",
+        "enum": "$Fate"
+      }, {
+        "value": 120,
+        "label": "Fate",
+        "enum": "$Fate"
+      }, {
+        "value": 125,
+        "label": "Fate",
+        "enum": "$Fate"
+      }, {
+        "value": 139,
+        "label": "Fate",
+        "enum": "$Fate"
+      }, {
+        "value": 155,
+        "label": "Fate",
+        "enum": "$Fate"
+      }, {
+        "value": 320,
+        "label": "Item",
+        "enum": "$Item"
+      }, {
+        "value": 325,
+        "label": "Bait",
+        "enum": "$Item"
+      }, {
+        "value": 521,
+        "label": "ItemLevel"
+      }]
+    },
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "Data1",
+    "type": "uint32",
+    "condition": {
+      "Type": [{
+        "value": 7,
+        "label": "Exp"
+      }, {
+        "value": 125,
+        "label": "NpcId",
+        "base": "HEX"
+      }, {
+        "value": 155,
+        "label": "Progress(%)"
+      }]
+    },
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Data2",
+    "type": "uint32",
+    "condition": {
+      "Type": [{
+        "value": 7,
+        "label": "Bouns(%)"
+      }, {
+        "value": 125,
+        "label": "Radius"
+      }]
+    },
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "Data3",
+    "type": "uint32",
+    "condition": {
+      "Type": [{
+        "value": 125,
+        "label": "X"
+      }]
+    },
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "Data4",
+    "type": "uint32",
+    "condition": {
+      "Type": [{
+        "value": 125,
+        "label": "Y"
+      }]
+    },
+    "length": 4
+  }, {
+    "offset": 24,
+    "name": "Data5",
+    "type": "uint32",
+    "condition": {
+      "Type": [{
+        "value": 125,
+        "label": "Z"
+      }]
+    },
+    "length": 4
+  }, {
+    "offset": 28,
+    "name": "Data6",
+    "type": "uint32",
+    "length": 4
+  }]
+}
