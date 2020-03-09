@@ -20,7 +20,7 @@ const zlib = require('zlib')
 
 const inFile = process.argv[2]
 if (!inFile) {
-  console.log('Usage: node simplify-pcapng in-file <out-file>')
+  // console.log('Usage: node simplify-pcapng in-file <out-file>')
 }
 
 const outFile = process.argv[3] || inFile.replace(/.pcapng$/, '-out.pcapng')
@@ -35,7 +35,7 @@ const outBuffers = []
 const readBlock = function (buf, offset) {
   const type = buf.readUInt32LE(offset)
   const length = buf.readUInt32LE(offset + 4)
-  console.log(`[block] Type=${type}, Len=${length}`)
+  // console.log(`[block] Type=${type}, Len=${length}`)
   return {
     type,
     length,
@@ -67,7 +67,7 @@ const readIPv4 = function (buf, offset) {
   let headerLength = (buf[offset] & 0x0F) * 32 / 8
   let totalLength = buf.readUInt16BE(offset + 2)
 
-  console.log(`[ipv4] Header=${headerLength}, Total=${totalLength}`)
+  // console.log(`[ipv4] Header=${headerLength}, Total=${totalLength}`)
   return {
     headerLength,
     totalLength,
@@ -204,7 +204,7 @@ while (pos < inFileData.length) {
 
   // socketName is client => server
   let socketName = `${ipToString(client.ip)}:${client.port} => ${ipToString(server.ip)}:${server.port}`
-  console.log(socketName, tcpPacket.body)
+  // console.log(socketName, tcpPacket.body)
   let socket = sockets[socketName]
   if (!socket) {
     socket = {
@@ -246,7 +246,7 @@ while (pos < inFileData.length) {
     let packet = packetArray[packetIndex]
     seq += packet.length
 
-    console.log(`[tcp] Received Seq=${packet.sequence}, Len=${packet.length}, Next=${seq}`)
+    // console.log(`[tcp] Received Seq=${packet.sequence}, Len=${packet.length}, Next=${seq}`)
     bufArray.push(packet.body)
     packetArray.splice(packetIndex, 1)
   }
@@ -327,7 +327,7 @@ while (pos < inFileData.length) {
       bundleHeader.copy(newBundleHeader)
 
       let segmentLength = bundleData.readUInt16LE(segmentPos)
-      console.log(`[${i}/${count}] ${segmentLength} ${segmentPos}`)
+      // console.log(`[${i}/${count}] ${segmentLength} ${segmentPos}`)
 
       newBundleHeader.writeUInt16LE(segmentLength + bundleHeaderLength, 24) // Override message count
       newBundleHeader.writeUInt16LE(0, 30) // Override length

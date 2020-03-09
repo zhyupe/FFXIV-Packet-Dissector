@@ -5,8 +5,8 @@ local ffxiv_ipc_container_info = Proto("ffxiv_ipc_container_info", "FFXIV-IPC Co
 
 local container_info_fields = {
   container_sequence = ProtoField.uint32("ffxiv_ipc_container_info.container_sequence", "containerSequence", base.DEC),
-  container_id       = ProtoField.uint32("ffxiv_ipc_container_info.container_id", "containerId", base.DEC, enum.reverse.item_location),
   num_items          = ProtoField.uint32("ffxiv_ipc_container_info.num_items", "numItems", base.DEC),
+  container_id       = ProtoField.uint32("ffxiv_ipc_container_info.container_id", "containerId", base.DEC, enum.reverse.item_location),
   unknown            = ProtoField.uint32("ffxiv_ipc_container_info.unknown", "unknown", base.DEC),
 }
 
@@ -23,15 +23,6 @@ function ffxiv_ipc_container_info.dissector(tvbuf, pktinfo, root)
   local container_sequence_val  = container_sequence_tvbr:le_uint()
   tree:add_le(container_info_fields.container_sequence, container_sequence_tvbr, container_sequence_val)
 
-  -- dissect the container_id field
-  local container_id_tvbr = tvbuf:range(8, 4)
-  local container_id_val  = container_id_tvbr:le_uint()
-  tree:add_le(container_info_fields.container_id, container_id_tvbr, container_id_val)
-
-  local container_id_display = ", containerId: " .. (enum.reverse.item_location[container_id_val] or "(unknown)")
-  pktinfo.cols.info:append(container_id_display)
-  tree:append_text(container_id_display)
-
   -- dissect the num_items field
   local num_items_tvbr = tvbuf:range(4, 4)
   local num_items_val  = num_items_tvbr:le_uint()
@@ -40,6 +31,15 @@ function ffxiv_ipc_container_info.dissector(tvbuf, pktinfo, root)
   local num_items_display = ", numItems: " .. num_items_val
   pktinfo.cols.info:append(num_items_display)
   tree:append_text(num_items_display)
+
+  -- dissect the container_id field
+  local container_id_tvbr = tvbuf:range(8, 4)
+  local container_id_val  = container_id_tvbr:le_uint()
+  tree:add_le(container_info_fields.container_id, container_id_tvbr, container_id_val)
+
+  local container_id_display = ", containerId: " .. (enum.reverse.item_location[container_id_val] or "(unknown)")
+  pktinfo.cols.info:append(container_id_display)
+  tree:append_text(container_id_display)
 
   -- dissect the unknown field
   local unknown_tvbr = tvbuf:range(12, 4)

@@ -14,13 +14,13 @@ M.types = {
   },
   [0x0142] = {
     [0] = {
-      name = "ffxiv_ipc_actor_control142",
+      name = "ffxiv_ipc_actor_control",
       length = 24,
     },
   },
   [0x0143] = {
     [0] = {
-      name = "ffxiv_ipc_actor_control143",
+      name = "ffxiv_ipc_actor_control_self",
       length = 32,
     },
   },
@@ -190,6 +190,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction_finish",
       length = 16,
+    },
+  },
+  [0x012A] = {
+    [0] = {
+      name = "ffxiv_ipc_linkshell_list",
+      length = 0,
     },
   },
   [0x010c] = {

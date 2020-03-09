@@ -21,18 +21,7 @@ M.forward.actor_cast_skill_type = {
 }
 M.reverse.actor_cast_skill_type = makeValString(M.forward.actor_cast_skill_type)
 
-M.forward.actor_control142_type = {
-  DoT = 23,
-  CancelAbility = 15,
-  Death = 6,
-  TargetIcon = 34,
-  BuffRemove = 21,
-  NameToggle = 54,
-  FishingLightChange = 300,
-}
-M.reverse.actor_control142_type = makeValString(M.forward.actor_control142_type)
-
-M.forward.actor_control143_type = {
+M.forward.actor_control_type = {
   ToggleWeapon = 0,
   AutoAttack = 1,
   SetStatus = 2,
@@ -79,13 +68,16 @@ M.forward.actor_control143_type = {
   DirectorUpdate = 109,
   FateStart = 116,
   ItemObtainMsg = 117,
+  FateInit = 120,
   FateEnd = 121,
   DutyQuestScreenMsg = 123,
+  FatePosition = 125,
   ItemObtainIcon = 132,
   FateItemFailMsg = 133,
   ItemFailMsg = 134,
   ActionLearnMsg1 = 135,
   FreeEventPos = 138,
+  FateSync = 139,
   DailyQuestSeed = 144,
   FateProgress = 155,
   SetBGM = 161,
@@ -118,7 +110,7 @@ M.forward.actor_control143_type = {
   Emote = 290,
   EmoteInterrupt = 291,
   SetPose = 295,
-  CraftingUnk = 300,
+  FishingLightChange = 300,
   GatheringSenseMsg = 304,
   PartyMsg = 305,
   GatheringSenseMsg1 = 306,
@@ -198,7 +190,7 @@ M.forward.actor_control143_type = {
   SetDutyActionRemaining = 1515,
   EurekaStep = 1850,
 }
-M.reverse.actor_control143_type = makeValString(M.forward.actor_control143_type)
+M.reverse.actor_control_type = makeValString(M.forward.actor_control_type)
 
 M.forward.actor_control144_category = {
   Marker = 310,
@@ -255,11 +247,15 @@ M.forward.client_trigger_command_id = {
   AchievementCrit = 514,
   AchievementComp = 515,
   AchievementCatChat = 518,
+  FishingBaitChange = 701,
   QuestJournalUpdateQuestVisibility = 702,
   QuestJournalClosed = 703,
   AbandonQuest = 800,
   DirectorInitFinish = 801,
   DirectorSync = 808,
+  StartFate = 809,
+  QueryFate = 810,
+  ToggleFateSync = 813,
   EnterTerritoryEventFinished = 816,
   RequestInstanceLeave = 819,
   AchievementCritReq = 1000,
@@ -295,7 +291,6 @@ M.forward.client_trigger_command_id = {
   EndReplay = 1981,
   OpenDuelUI = 2200,
   DuelRequestResult = 2201,
-  FishingBaitChange = 701,
 }
 M.reverse.client_trigger_command_id = makeValString(M.forward.client_trigger_command_id)
 

@@ -10,13 +10,13 @@ M.types = {
   },
   [0x00de] = {
     [0] = {
-      name = "ffxiv_ipc_actor_control142",
+      name = "ffxiv_ipc_actor_control",
       length = 24,
     },
   },
   [0x01c3] = {
     [0] = {
-      name = "ffxiv_ipc_actor_control143",
+      name = "ffxiv_ipc_actor_control_self",
       length = 32,
     },
   },

@@ -4,10 +4,15 @@ local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
 local label_param11_command_id = {
   [701] = "Type",
+  [809] = "Fate",
+  [810] = "Fate",
+  [813] = "Fate",
 }
 local label_param12_command_id = {
-  [701] = "Bait",
   [104] = "Action",
+  [701] = "Bait",
+  [809] = "NpcId",
+  [813] = "Sync",
 }
 local ffxiv_ipc_client_trigger = Proto("ffxiv_ipc_client_trigger", "FFXIV-IPC Client Trigger")
 
@@ -58,6 +63,15 @@ function ffxiv_ipc_client_trigger.dissector(tvbuf, pktinfo, root)
   if command_id_val == 701 then
     param11_label_key = "Type"
     param11_label_val = (enum.reverse.client_trigger_fish_bait_type[param11_val] or "Unknown") .. " (" .. param11_val .. ")"
+  elseif command_id_val == 809 then
+    param11_label_key = "Fate"
+    param11_label_val = (db.Fate[param11_val] or "Unknown") .. " (" .. param11_val .. ")"
+  elseif command_id_val == 810 then
+    param11_label_key = "Fate"
+    param11_label_val = (db.Fate[param11_val] or "Unknown") .. " (" .. param11_val .. ")"
+  elseif command_id_val == 813 then
+    param11_label_key = "Fate"
+    param11_label_val = (db.Fate[param11_val] or "Unknown") .. " (" .. param11_val .. ")"
   end
   tree:add_le(client_trigger_fields.param11, param11_tvbr, param11_val, param11_label_key .. ": " .. param11_label_val)
 
@@ -66,12 +80,16 @@ function ffxiv_ipc_client_trigger.dissector(tvbuf, pktinfo, root)
   local param12_val  = param12_tvbr:le_uint()
   local param12_label_key = "param12"
   local param12_label_val = param12_val
-  if command_id_val == 701 then
-    param12_label_key = "Bait"
-    param12_label_val = (db.Item[param12_val] or "Unknown") .. " (" .. param12_val .. ")"
-  elseif command_id_val == 104 then
+  if command_id_val == 104 then
     param12_label_key = "Action"
     param12_label_val = (db.Action[param12_val] or "Unknown") .. " (" .. param12_val .. ")"
+  elseif command_id_val == 701 then
+    param12_label_key = "Bait"
+    param12_label_val = (db.Item[param12_val] or "Unknown") .. " (" .. param12_val .. ")"
+  elseif command_id_val == 809 then
+    param12_label_key = "NpcId"
+  elseif command_id_val == 813 then
+    param12_label_key = "Sync"
   end
   tree:add_le(client_trigger_fields.param12, param12_tvbr, param12_val, param12_label_key .. ": " .. param12_label_val)
 

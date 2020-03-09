@@ -4,13 +4,13 @@ local M = {}
 M.types = {
   [0x00C1] = {
     [0] = {
-      name = "ffxiv_ipc_actor_control142",
+      name = "ffxiv_ipc_actor_control",
       length = 24,
     },
   },
   [0x011f] = {
     [0] = {
-      name = "ffxiv_ipc_actor_control143",
+      name = "ffxiv_ipc_actor_control_self",
       length = 32,
     },
   },
@@ -62,6 +62,12 @@ M.types = {
       length = 32,
     },
   },
+  [0x038D] = {
+    [0] = {
+      name = "ffxiv_ipc_container_info",
+      length = 16,
+    },
+  },
   [0x0377] = {
     [0] = {
       name = "ffxiv_ipc_content_finder_notify_pop",
@@ -110,6 +116,18 @@ M.types = {
       length = 9,
     },
   },
+  [0x0074] = {
+    [0] = {
+      name = "ffxiv_ipc_fate_info",
+      length = 24,
+    },
+  },
+  [0x0259] = {
+    [0] = {
+      name = "ffxiv_ipc_fate_position",
+      length = 24,
+    },
+  },
   [0x00fa] = {
     [0] = {
       name = "ffxiv_ipc_fish_event",
@@ -120,6 +138,18 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_init_zone",
       length = 96,
+    },
+  },
+  [0x023D] = {
+    [0] = {
+      name = "ffxiv_ipc_linkshell_list",
+      length = 0,
+    },
+  },
+  [0x034e] = {
+    [0] = {
+      name = "ffxiv_ipc_npc_remove",
+      length = 8,
     },
   },
   [0x0111] = {
@@ -150,6 +180,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_player_stats",
       length = 224,
+    },
+  },
+  [0x00bb] = {
+    [0] = {
+      name = "ffxiv_ipc_public_message",
+      length = 48,
     },
   },
   [0x018b] = {
