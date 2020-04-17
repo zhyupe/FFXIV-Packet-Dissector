@@ -2,7 +2,8 @@
   "name": "Fish Event",
   "type": {
     "5.0": "0x01b5",
-    "5.11_cn": "0x00fa"
+    "5.11_cn": "0x00fa",
+    "5.15_cn": "0x0216"
   },
   "enums": [{
     "name": "FishEventType",

@@ -1,7 +1,8 @@
 {
   "name": "Set Online Status",
   "type": {
-    "5.0": "0x0117"
+    "5.0": "0x0117",
+    "5.15_cn": "0x02bf"
   },
   "fields": [
     {

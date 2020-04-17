@@ -1,7 +1,8 @@
 {
   "name": "NpcRemove",
   "type": {
-    "5.11_cn": "0x034e"
+    "5.11_cn": "0x034e",
+    "5.15_cn": "0x025a"
   },
   "fields": [{
     "offset": 0,
