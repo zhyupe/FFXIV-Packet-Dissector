@@ -2,6 +2,12 @@
 
 local M = {}
 M.types = {
+  [0x0185] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_cast",
+      length = 32,
+    },
+  },
   [0x00C1] = {
     [0] = {
       name = "ffxiv_ipc_actor_control",
@@ -84,6 +90,24 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_effect",
       length = 124,
+    },
+  },
+  [0x0114] = {
+    [0] = {
+      name = "ffxiv_ipc_effect16",
+      length = 1212,
+    },
+  },
+  [0x02a7] = {
+    [0] = {
+      name = "ffxiv_ipc_effect24",
+      length = 1788,
+    },
+  },
+  [0x0362] = {
+    [0] = {
+      name = "ffxiv_ipc_effect32",
+      length = 2364,
     },
   },
   [0x0211] = {

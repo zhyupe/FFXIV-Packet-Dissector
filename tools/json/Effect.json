@@ -3,7 +3,8 @@
   "type": {
     "5.0": "0x015E",
     "5.1_cn": "0x0250",
-    "5.11_cn": "0x01c8"
+    "5.11_cn": "0x01c8",
+    "5.15_cn": "0x023e"
   },
   "enums": [{
     "name": "ActionEffectType",

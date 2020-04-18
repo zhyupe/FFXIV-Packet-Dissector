@@ -268,8 +268,8 @@ for (let file of files) {
   const obj = Object.freeze(JSON.parse(fs.readFileSync('./json/' + file)))
   const name = obj.name || file.replace('.json', '')
 
-  if (obj.type && obj.type['5.0'] && !obj.type['5.11_cn']) {
-    console.log(name, 'has type for 5.0 but not for 5.11_cn')
+  if (obj.type && obj.type['5.0'] && !obj.type['5.15_cn']) {
+    console.log(name, 'has type for 5.0 but not for 5.15_cn')
   }
 
   if (obj.children) {

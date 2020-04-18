@@ -2,7 +2,9 @@
   "name": "Actor Cast",
   "type": {
     "5.0": "0x0186",
-    "5.1_cn": "0x012e"
+    "5.1_cn": "0x012e",
+    "5.11_cn": "0x0185",
+    "5.15_cn": "0x032c"
   },
   "enums": [{
     "name": "ActorCastSkillType",
