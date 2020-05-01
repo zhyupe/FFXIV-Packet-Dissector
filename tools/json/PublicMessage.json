@@ -55,18 +55,10 @@
     "offset": 16,
     "name": "Nickname",
     "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
-    "add_le": false,
-    "add_val": true,
     "length": 32
   }, {
     "offset": 48,
     "name": "Content",
-    "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
-    "add_le": false,
-    "add_val": true
+    "type": "string"
   }]
 }

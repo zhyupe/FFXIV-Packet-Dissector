@@ -50,6 +50,30 @@ M.types = {
       length = 30,
     },
   },
+  [0x0114] = {
+    [0] = {
+      name = "ffxiv_ipc_effect16",
+      length = 1212,
+    },
+  },
+  [0x02a7] = {
+    [0] = {
+      name = "ffxiv_ipc_effect24",
+      length = 1788,
+    },
+  },
+  [0x0362] = {
+    [0] = {
+      name = "ffxiv_ipc_effect32",
+      length = 2364,
+    },
+  },
+  [0x0211] = {
+    [0] = {
+      name = "ffxiv_ipc_effect8",
+      length = 636,
+    },
+  },
   [0x029f] = {
     [0] = {
       name = "ffxiv_ipc_boss_status_effect_list",
@@ -90,30 +114,6 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_effect",
       length = 124,
-    },
-  },
-  [0x0114] = {
-    [0] = {
-      name = "ffxiv_ipc_effect16",
-      length = 1212,
-    },
-  },
-  [0x02a7] = {
-    [0] = {
-      name = "ffxiv_ipc_effect24",
-      length = 1788,
-    },
-  },
-  [0x0362] = {
-    [0] = {
-      name = "ffxiv_ipc_effect32",
-      length = 2364,
-    },
-  },
-  [0x0211] = {
-    [0] = {
-      name = "ffxiv_ipc_effect8",
-      length = 636,
     },
   },
   [0x01ce] = {
@@ -210,6 +210,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_public_message",
       length = 48,
+    },
+  },
+  [0x02f0] = {
+    [0] = {
+      name = "ffxiv_ipc_retainer_information",
+      length = 73,
     },
   },
   [0x018b] = {

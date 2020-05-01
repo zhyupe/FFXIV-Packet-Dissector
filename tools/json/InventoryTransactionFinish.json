@@ -2,7 +2,8 @@
   "name": "Inventory Transaction Finish",
   "type": {
     "5.0": "0x01A3",
-    "5.1_cn": "0x0318"
+    "5.1_cn": "0x0318",
+    "5.15_cn": "0x0378"
   },
   "fields": [{
     "offset": 0,

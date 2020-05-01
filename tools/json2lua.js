@@ -12,6 +12,19 @@ fs.readdirSync('../src').forEach(file => {
   }
 })
 
+const typeDefaults = {
+  bytes: {
+    base: 'NONE',
+    tvb_method: 'raw()',
+    add_le: false
+  },
+  string: {
+    base: 'UNICODE',
+    tvb_method: 'string(ENC_UTF_8)',
+    add_le: false
+  }
+}
+
 const tvbMethod = function (type) {
   if (type.startsWith('uint')) {
     return type === 'uint64' ? 'le_uint64' : 'le_uint'
@@ -172,6 +185,10 @@ const generateLuaDissector = function (obj) {
     if (item.enum) {
       item.enum = resolveEnum.call(context, item.enum)
     }
+
+    if (typeDefaults[item.type]) {
+      Object.assign(item, typeDefaults[item.type])
+    }
     return item
   })
 
@@ -265,34 +282,40 @@ const recordLength = (obj) => {
 }
 
 for (let file of files) {
-  const obj = Object.freeze(JSON.parse(fs.readFileSync('./json/' + file)))
-  const name = obj.name || file.replace('.json', '')
+  try {
+    const obj = Object.freeze(JSON.parse(fs.readFileSync('./json/' + file)))
+    const name = obj.name || file.replace('.json', '')
+    if (obj.skip) continue
 
-  if (obj.type && obj.type['5.0'] && !obj.type['5.15_cn']) {
-    console.log(name, 'has type for 5.0 but not for 5.15_cn')
-  }
-
-  if (obj.children) {
-    for (let child of obj.children) {
-      recordLength(child)
-      fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(child.name)}_gen.lua`, generateLuaDissector(child))
+    if (obj.type && obj.type['5.0'] && !obj.type['5.15_cn']) {
+      console.log(name, 'has type for 5.0 but not for 5.15_cn')
     }
-  }
 
-  if (obj.name) {
-    addTypes(obj)
-    recordLength(obj)
-    fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(name)}_gen.lua`, generateLuaDissector(obj))
-  }
-
-  if (obj.aliases && obj.aliases.length) {
-    for (let alias of obj.aliases) {
-      const aliasObj = Object.freeze({ ...obj, ...alias })
-      addTypes(aliasObj)
-      recordLength(aliasObj)
-
-      fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(alias.name)}_gen.lua`, generateLuaDissector(aliasObj))
+    if (obj.children) {
+      for (let child of obj.children) {
+        recordLength(child)
+        fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(child.name)}_gen.lua`, generateLuaDissector(child))
+      }
     }
+
+    if (obj.name) {
+      addTypes(obj)
+      recordLength(obj)
+      fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(name)}_gen.lua`, generateLuaDissector(obj))
+    }
+
+    if (obj.aliases && obj.aliases.length) {
+      for (let alias of obj.aliases) {
+        const aliasObj = Object.freeze({ ...obj, ...alias })
+        addTypes(aliasObj)
+        recordLength(aliasObj)
+
+        fs.writeFileSync(`../src/ffxiv_ipc_${common.snakeCase(alias.name)}_gen.lua`, generateLuaDissector(aliasObj))
+      }
+    }
+  } catch (e) {
+    e.message = `[${file}]: ${e.message}`
+    throw e
   }
 }
 

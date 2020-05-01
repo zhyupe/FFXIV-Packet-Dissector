@@ -76,12 +76,6 @@ interface IPCField {
    */
   add_le?: boolean;
   /**
-   * Set decoded varible to packet field instead of tvbr. It's useful when Wireshark cannot handle the 
-   * buffer correctly (like UTF-8 string)
-   * Default: `false`
-   */
-  add_val?: boolean;
-  /**
    * Check packet length before parsing field. Useful when the packet length varys. (Sometimes different 
    * packets can use same the IPC type and cannot be recognized, like `0x0065`, used for both GroupMessage 
    * and Ping)

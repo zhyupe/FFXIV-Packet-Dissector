@@ -4,7 +4,7 @@
     "5.0": "0x017F",
     "5.1_cn": "0x0147",
     "5.11_cn": "0x022f",
-    "5.15_cn": "0x029d"
+    "5.15_cn": "0x029D"
   },
   "fields": [{
     "offset": 0,
@@ -362,10 +362,6 @@
     "offset": 560,
     "name": "Nickname",
     "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
-    "add_le": false,
-    "add_val": true,
     "check_length": true,
     "length": 32,
     "append": "enum"
@@ -373,20 +369,12 @@
     "offset": 592,
     "name": "Look",
     "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
-    "add_le": false,
-    "add_val": true,
     "check_length": true,
     "length": 26
   }, {
     "offset": 618,
     "name": "fcTag",
     "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
-    "add_le": false,
-    "add_val": true,
     "length": 14,
     "append": "enum"
   }]

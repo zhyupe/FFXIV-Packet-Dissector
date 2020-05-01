@@ -25,20 +25,12 @@
     "offset": 50,
     "name": "Name",
     "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
-    "add_le": false,
-    "add_val": true,
     "length": 22,
     "append": "val"
   }, {
     "offset": 72,
     "name": "Tag",
     "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
-    "add_le": false,
-    "add_val": true,
     "length": 8,
     "append": "val"
   }]

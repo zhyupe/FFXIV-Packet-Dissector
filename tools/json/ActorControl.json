@@ -9,7 +9,7 @@
   "enums": [{
     "name": "ActorControlType",
     "type": "ushort",
-    "values": [ {
+    "values": [{
       "key": "ToggleWeapon",
       "value": 0
     }, {

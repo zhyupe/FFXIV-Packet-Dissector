@@ -472,10 +472,6 @@
     "offset": 358,
     "name": "companionName",
     "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
-    "add_le": false,
-    "add_val": true,
     "check_length": true,
     "length": 21
   }, {
@@ -509,10 +505,6 @@
     "offset": 412,
     "name": "name",
     "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
-    "add_le": false,
-    "add_val": true,
     "check_length": true,
     "length": 32
   }, {

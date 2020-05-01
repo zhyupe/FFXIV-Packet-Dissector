@@ -1,4 +1,4 @@
-module.exports = function (content, fields) {
+module.exports = function (content, fields, { header = 1, skip = 3 } = {}) {
   const lines = []
   let line = []
 
@@ -42,10 +42,10 @@ module.exports = function (content, fields) {
   }
 
   if (!Array.isArray(fields)) {
-    fields = lines[1]
+    fields = lines[header]
   }
 
-  return lines.slice(3).map(line => fields.reduce((obj, field, i) => {
+  return lines.slice(skip).map(line => fields.reduce((obj, field, i) => {
     obj[`$${i}`] = line[i]
     if (field) {
       obj[field] = line[i]

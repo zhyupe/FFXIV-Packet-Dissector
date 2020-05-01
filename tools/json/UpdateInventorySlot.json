@@ -4,7 +4,7 @@
     "5.0": "0x01A8",
     "5.1_cn": "0x01AD",
     "5.11_cn": "0x011E",
-    "5.15_cn": "0x013c"
+    "5.15_cn": "0x013C"
   },
   "aliases": [{
     "name": "ItemInfo",
@@ -31,129 +31,125 @@
   }, {
     "name": "ItemLocation",
     "type": "ushort",
-    "values": [
-      {
-        "key": "Inventory0",
-        "value": 0
-      }, {
-        "key": "Inventory1",
-        "value": 1
-      }, {
-        "key": "Inventory2",
-        "value": 2
-      }, {
-        "key": "Inventory3",
-        "value": 3
-      }, {
-        "key": "ArmouryEquipped",
-        "value": 1000
-      }, {
-        "key": "Currency",
-        "value": 2000
-      }, {
-        "key": "Crystal",
-        "value": 2001
-      }, {
-        "key": "ArmouryOffHand",
-        "value": 3200
-      }, {
-        "key": "ArmouryHead",
-        "value": 3201
-      }, {
-        "key": "ArmouryBody",
-        "value": 3202
-      }, {
-        "key": "ArmouryHands",
-        "value": 3203
-      }, {
-        "key": "ArmouryWaist",
-        "value": 3204
-      }, {
-        "key": "ArmouryLegs",
-        "value": 3205
-      }, {
-        "key": "ArmouryFeet",
-        "value": 3206
-      }, {
-        "key": "ArmouryEars",
-        "value": 3207
-      }, {
-        "key": "ArmouryNeck",
-        "value": 3208
-      }, {
-        "key": "ArmouryWrists",
-        "value": 3209
-      }, {
-        "key": "ArmouryRightRing",
-        "value": 3210
-      }, {
-        "key": "ArmouryLeftRing",
-        "value": 3211
-      }, {
-        "key": "ArmouryRing",
-        "value": 3300
-      }, {
-        "key": "SoulCrystal",
-        "value": 3400
-      }, {
-        "key": "ArmouryMainHand",
-        "value": 3500
-      }, {
-        "key": "Saddlebag0",
-        "value": 4000
-      }, {
-        "key": "Saddlebag1",
-        "value": 4001
-      }
-    ]
+    "values": [{
+      "key": "Inventory0",
+      "value": 0
+    }, {
+      "key": "Inventory1",
+      "value": 1
+    }, {
+      "key": "Inventory2",
+      "value": 2
+    }, {
+      "key": "Inventory3",
+      "value": 3
+    }, {
+      "key": "ArmouryEquipped",
+      "value": 1000
+    }, {
+      "key": "Currency",
+      "value": 2000
+    }, {
+      "key": "Crystal",
+      "value": 2001
+    }, {
+      "key": "ArmouryOffHand",
+      "value": 3200
+    }, {
+      "key": "ArmouryHead",
+      "value": 3201
+    }, {
+      "key": "ArmouryBody",
+      "value": 3202
+    }, {
+      "key": "ArmouryHands",
+      "value": 3203
+    }, {
+      "key": "ArmouryWaist",
+      "value": 3204
+    }, {
+      "key": "ArmouryLegs",
+      "value": 3205
+    }, {
+      "key": "ArmouryFeet",
+      "value": 3206
+    }, {
+      "key": "ArmouryEars",
+      "value": 3207
+    }, {
+      "key": "ArmouryNeck",
+      "value": 3208
+    }, {
+      "key": "ArmouryWrists",
+      "value": 3209
+    }, {
+      "key": "ArmouryRightRing",
+      "value": 3210
+    }, {
+      "key": "ArmouryLeftRing",
+      "value": 3211
+    }, {
+      "key": "ArmouryRing",
+      "value": 3300
+    }, {
+      "key": "SoulCrystal",
+      "value": 3400
+    }, {
+      "key": "ArmouryMainHand",
+      "value": 3500
+    }, {
+      "key": "Saddlebag0",
+      "value": 4000
+    }, {
+      "key": "Saddlebag1",
+      "value": 4001
+    }]
   }, {
     "name": "ItemArmouryPosition",
     "type": "ushort",
-    "values": [
-      {
-        "key": "MainHand",
-        "value": 0
-      }, {
-        "key": "OffHand",
-        "value": 1
-      }, {
-        "key": "Head",
-        "value": 2
-      }, {
-        "key": "Body",
-        "value": 3
-      }, {
-        "key": "Hands",
-        "value": 4
-      }, {
-        "key": "Waist",
-        "value": 5
-      }, {
-        "key": "Legs",
-        "value": 6
-      }, {
-        "key": "Feet",
-        "value": 7
-      }, {
-        "key": "Ears",
-        "value": 8
-      }, {
-        "key": "Neck",
-        "value": 9
-      }, {
-        "key": "Wrists",
-        "value": 10
-      }, {
-        "key": "RightRing",
-        "value": 11
-      }, {
-        "key": "LeftRing",
-        "value": 12
-      }, {
-        "key": "SoulCrystal",
-        "value": 13
-      }
-    ]
+    "values": [{
+      "key": "MainHand",
+      "value": 0
+    }, {
+      "key": "OffHand",
+      "value": 1
+    }, {
+      "key": "Head",
+      "value": 2
+    }, {
+      "key": "Body",
+      "value": 3
+    }, {
+      "key": "Hands",
+      "value": 4
+    }, {
+      "key": "Waist",
+      "value": 5
+    }, {
+      "key": "Legs",
+      "value": 6
+    }, {
+      "key": "Feet",
+      "value": 7
+    }, {
+      "key": "Ears",
+      "value": 8
+    }, {
+      "key": "Neck",
+      "value": 9
+    }, {
+      "key": "Wrists",
+      "value": 10
+    }, {
+      "key": "RightRing",
+      "value": 11
+    }, {
+      "key": "LeftRing",
+      "value": 12
+    }, {
+      "key": "SoulCrystal",
+      "value": 13
+    }]
   }],
   "fields": [{
     "offset": 0,

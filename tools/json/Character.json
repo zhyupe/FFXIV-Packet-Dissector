@@ -65,11 +65,7 @@
     "offset": 560,
     "name": "Nickname",
     "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
     "print": true,
-    "add_le": false,
-    "add_val": true,
     "length": 32
   }]
 }

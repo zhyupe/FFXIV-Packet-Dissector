@@ -9,10 +9,6 @@
     "offset": 0,
     "name": "Captain",
     "type": "string",
-    "base": "UNICODE",
-    "tvb_method": "string(ENC_UTF_8)",
-    "add_le": false,
-    "add_val": true,
     "length": 32
   }, {
     "offset": 32,
@@ -37,10 +33,6 @@
       "offset": 3,
       "name": "Name",
       "type": "string",
-      "base": "UNICODE",
-      "tvb_method": "string(ENC_UTF_8)",
-      "add_le": false,
-      "add_val": true,
       "append": "val",
       "length": 32
     }]
