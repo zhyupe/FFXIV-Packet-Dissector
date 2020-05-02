@@ -19,11 +19,18 @@ local item_info_fields = {
   spiritbond         = ProtoField.uint16("ffxiv_ipc_item_info.spiritbond", "Spiritbond", base.DEC),
   stain              = ProtoField.uint16("ffxiv_ipc_item_info.stain", "Stain", base.DEC),
   glamour_catalog_id = ProtoField.uint16("ffxiv_ipc_item_info.glamour_catalog_id", "GlamourCatalogId", base.DEC, db.Item),
-  unknown6           = ProtoField.uint32("ffxiv_ipc_item_info.unknown6", "Unknown6", base.DEC),
-  unknown7           = ProtoField.uint32("ffxiv_ipc_item_info.unknown7", "Unknown7", base.DEC),
-  unknown8           = ProtoField.uint32("ffxiv_ipc_item_info.unknown8", "Unknown8", base.DEC),
-  unknown9           = ProtoField.uint32("ffxiv_ipc_item_info.unknown9", "Unknown9", base.DEC),
-  unknown10          = ProtoField.uint32("ffxiv_ipc_item_info.unknown10", "Unknown10", base.DEC),
+  unknown6           = ProtoField.uint16("ffxiv_ipc_item_info.unknown6", "Unknown6", base.DEC),
+  materia1           = ProtoField.uint16("ffxiv_ipc_item_info.materia1", "Materia1", base.DEC),
+  materia2           = ProtoField.uint16("ffxiv_ipc_item_info.materia2", "Materia2", base.DEC),
+  materia3           = ProtoField.uint16("ffxiv_ipc_item_info.materia3", "Materia3", base.DEC),
+  materia4           = ProtoField.uint16("ffxiv_ipc_item_info.materia4", "Materia4", base.DEC),
+  materia5           = ProtoField.uint16("ffxiv_ipc_item_info.materia5", "Materia5", base.DEC),
+  materia1_tier      = ProtoField.uint8("ffxiv_ipc_item_info.materia1_tier", "Materia1Tier", base.DEC),
+  materia2_tier      = ProtoField.uint8("ffxiv_ipc_item_info.materia2_tier", "Materia2Tier", base.DEC),
+  materia3_tier      = ProtoField.uint8("ffxiv_ipc_item_info.materia3_tier", "Materia3Tier", base.DEC),
+  materia4_tier      = ProtoField.uint8("ffxiv_ipc_item_info.materia4_tier", "Materia4Tier", base.DEC),
+  materia5_tier      = ProtoField.uint8("ffxiv_ipc_item_info.materia5_tier", "Materia5Tier", base.DEC),
+  unknown10          = ProtoField.uint8("ffxiv_ipc_item_info.unknown10", "Unknown10", base.DEC),
   unknown11          = ProtoField.uint32("ffxiv_ipc_item_info.unknown11", "Unknown11", base.DEC),
 }
 
@@ -118,27 +125,62 @@ function ffxiv_ipc_item_info.dissector(tvbuf, pktinfo, root)
   tree:add_le(item_info_fields.glamour_catalog_id, glamour_catalog_id_tvbr, glamour_catalog_id_val)
 
   -- dissect the unknown6 field
-  local unknown6_tvbr = tvbuf:range(42, 4)
+  local unknown6_tvbr = tvbuf:range(42, 2)
   local unknown6_val  = unknown6_tvbr:le_uint()
   tree:add_le(item_info_fields.unknown6, unknown6_tvbr, unknown6_val)
 
-  -- dissect the unknown7 field
-  local unknown7_tvbr = tvbuf:range(44, 4)
-  local unknown7_val  = unknown7_tvbr:le_uint()
-  tree:add_le(item_info_fields.unknown7, unknown7_tvbr, unknown7_val)
+  -- dissect the materia1 field
+  local materia1_tvbr = tvbuf:range(44, 2)
+  local materia1_val  = materia1_tvbr:le_uint()
+  tree:add_le(item_info_fields.materia1, materia1_tvbr, materia1_val)
 
-  -- dissect the unknown8 field
-  local unknown8_tvbr = tvbuf:range(48, 4)
-  local unknown8_val  = unknown8_tvbr:le_uint()
-  tree:add_le(item_info_fields.unknown8, unknown8_tvbr, unknown8_val)
+  -- dissect the materia2 field
+  local materia2_tvbr = tvbuf:range(46, 2)
+  local materia2_val  = materia2_tvbr:le_uint()
+  tree:add_le(item_info_fields.materia2, materia2_tvbr, materia2_val)
 
-  -- dissect the unknown9 field
-  local unknown9_tvbr = tvbuf:range(52, 4)
-  local unknown9_val  = unknown9_tvbr:le_uint()
-  tree:add_le(item_info_fields.unknown9, unknown9_tvbr, unknown9_val)
+  -- dissect the materia3 field
+  local materia3_tvbr = tvbuf:range(48, 2)
+  local materia3_val  = materia3_tvbr:le_uint()
+  tree:add_le(item_info_fields.materia3, materia3_tvbr, materia3_val)
+
+  -- dissect the materia4 field
+  local materia4_tvbr = tvbuf:range(50, 2)
+  local materia4_val  = materia4_tvbr:le_uint()
+  tree:add_le(item_info_fields.materia4, materia4_tvbr, materia4_val)
+
+  -- dissect the materia5 field
+  local materia5_tvbr = tvbuf:range(52, 2)
+  local materia5_val  = materia5_tvbr:le_uint()
+  tree:add_le(item_info_fields.materia5, materia5_tvbr, materia5_val)
+
+  -- dissect the materia1_tier field
+  local materia1_tier_tvbr = tvbuf:range(54, 1)
+  local materia1_tier_val  = materia1_tier_tvbr:le_uint()
+  tree:add_le(item_info_fields.materia1_tier, materia1_tier_tvbr, materia1_tier_val)
+
+  -- dissect the materia2_tier field
+  local materia2_tier_tvbr = tvbuf:range(55, 1)
+  local materia2_tier_val  = materia2_tier_tvbr:le_uint()
+  tree:add_le(item_info_fields.materia2_tier, materia2_tier_tvbr, materia2_tier_val)
+
+  -- dissect the materia3_tier field
+  local materia3_tier_tvbr = tvbuf:range(56, 1)
+  local materia3_tier_val  = materia3_tier_tvbr:le_uint()
+  tree:add_le(item_info_fields.materia3_tier, materia3_tier_tvbr, materia3_tier_val)
+
+  -- dissect the materia4_tier field
+  local materia4_tier_tvbr = tvbuf:range(57, 1)
+  local materia4_tier_val  = materia4_tier_tvbr:le_uint()
+  tree:add_le(item_info_fields.materia4_tier, materia4_tier_tvbr, materia4_tier_val)
+
+  -- dissect the materia5_tier field
+  local materia5_tier_tvbr = tvbuf:range(58, 1)
+  local materia5_tier_val  = materia5_tier_tvbr:le_uint()
+  tree:add_le(item_info_fields.materia5_tier, materia5_tier_tvbr, materia5_tier_val)
 
   -- dissect the unknown10 field
-  local unknown10_tvbr = tvbuf:range(56, 4)
+  local unknown10_tvbr = tvbuf:range(59, 1)
   local unknown10_val  = unknown10_tvbr:le_uint()
   tree:add_le(item_info_fields.unknown10, unknown10_tvbr, unknown10_val)
 

@@ -231,28 +231,63 @@
   }, {
     "offset": 42,
     "name": "Unknown6",
-    "type": "uint32",
-    "length": 4
+    "type": "uint16",
+    "length": 2
   }, {
     "offset": 44,
-    "name": "Unknown7",
-    "type": "uint32",
-    "length": 4
+    "name": "Materia1",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 46,
+    "name": "Materia2",
+    "type": "uint16",
+    "length": 2
   }, {
     "offset": 48,
-    "name": "Unknown8",
-    "type": "uint32",
-    "length": 4
+    "name": "Materia3",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 50,
+    "name": "Materia4",
+    "type": "uint16",
+    "length": 2
   }, {
     "offset": 52,
-    "name": "Unknown9",
-    "type": "uint32",
-    "length": 4
+    "name": "Materia5",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 54,
+    "name": "Materia1Tier",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 55,
+    "name": "Materia2Tier",
+    "type": "uint8",
+    "length": 1
   }, {
     "offset": 56,
+    "name": "Materia3Tier",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 57,
+    "name": "Materia4Tier",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 58,
+    "name": "Materia5Tier",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 59,
     "name": "Unknown10",
-    "type": "uint32",
-    "length": 4
+    "type": "uint8",
+    "length": 1
   }, {
     "offset": 60,
     "name": "Unknown11",

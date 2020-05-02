@@ -146,6 +146,12 @@ M.types = {
       length = 18,
     },
   },
+  [0x0197] = {
+    [0] = {
+      name = "ffxiv_ipc_examine",
+      length = 656,
+    },
+  },
   [0x01b5] = {
     [0] = {
       name = "ffxiv_ipc_fish_event",

@@ -104,6 +104,12 @@ M.types = {
       length = 124,
     },
   },
+  [0x00BD] = {
+    [0] = {
+      name = "ffxiv_ipc_examine",
+      length = 656,
+    },
+  },
   [0x00f7] = {
     [0] = {
       name = "ffxiv_ipc_fate_info",
