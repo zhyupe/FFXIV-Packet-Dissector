@@ -15,26 +15,28 @@ fs.readdirSync('../src').forEach(file => {
 const typeDefaults = {
   bytes: {
     base: 'NONE',
-    tvb_method: 'raw()',
     add_le: false
   },
   string: {
     base: 'UNICODE',
-    tvb_method: 'string(ENC_UTF_8)',
     add_le: false
   }
 }
 
-const tvbMethod = function (type) {
-  if (type.startsWith('uint')) {
-    return type === 'uint64' ? 'le_uint64' : 'le_uint'
+const tvbMethod = function ({ type, offset }) {
+  if (type === 'string') {
+    return 'string(ENC_UTF_8)'
+  } else if (type === 'bytes') {
+    return `raw(${offset})`
+  } else if (type.startsWith('uint')) {
+    return type === 'uint64' ? 'le_uint64()' : 'le_uint()'
   } else if (type.startsWith('int')) {
-    return type === 'int64' ? 'le_int64' : 'le_int'
+    return type === 'int64' ? 'le_int64()' : 'le_int()'
   } else if (type === 'float') {
-    return 'le_float'
+    return 'le_float()'
   }
 
-  return type
+  return `${type}()`
 }
 
 const itemAppend = function (item, indent = '  ') {
@@ -120,7 +122,7 @@ const renderField = function (snakeName, item) {
   }
 
   let content = `${indent}local ${item.key}_tvbr = tvbuf:range(${item.offset}${item.length ? `, ${item.length}` : ''})
-${indent}local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || `${tvbMethod(item.type)}()`}`
+${indent}local ${item.key}_val  = ${item.key}_tvbr:${item.tvb_method || tvbMethod(item)}`
 
   let labelKeyVar = null
   let labelValVar = null
