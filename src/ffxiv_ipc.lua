@@ -54,12 +54,12 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
   tree:add_le(ipc_hdr_fields.server_id, server_id_tvbr)
 
   -- dissect the epoch field
-  local epoch_tvbr = tvbuf:range(0 + 14, 2)
+  local epoch_tvbr = tvbuf:range(0 + 8, 4)
   local epoch_val  = epoch_tvbr:le_uint()
   tree:add_le(ipc_hdr_fields.epoch, epoch_tvbr)
 
   -- dissect the unknown2 field
-  local unknown2_tvbr = tvbuf:range(0 + 14, 2)
+  local unknown2_tvbr = tvbuf:range(0 + 12, 4)
   local unknown2_val  = unknown2_tvbr:le_uint()
   tree:add_le(ipc_hdr_fields.unknown2, unknown2_tvbr)
 
