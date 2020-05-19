@@ -3,344 +3,288 @@
   "type": {
     "5.0": "0x0190",
     "5.11_cn": "0x031E",
-    "5.15_cn": "0x0285"
+    "5.15_cn": "0x0285",
+    "5.18_cn": "0x0346"
   },
-  "fields": [
-    {
-      "name": "strength",
-      "type": "uint32",
-      "length": 4,
-      "offset": 0
-    },
-    {
-      "name": "dexterity",
-      "type": "uint32",
-      "length": 4,
-      "offset": 4
-    },
-    {
-      "name": "vitality",
-      "type": "uint32",
-      "length": 4,
-      "offset": 8
-    },
-    {
-      "name": "intelligence",
-      "type": "uint32",
-      "length": 4,
-      "offset": 12
-    },
-    {
-      "name": "mind",
-      "type": "uint32",
-      "length": 4,
-      "offset": 16
-    },
-    {
-      "name": "piety",
-      "type": "uint32",
-      "length": 4,
-      "offset": 20
-    },
-    {
-      "name": "hp",
-      "type": "uint32",
-      "length": 4,
-      "offset": 24
-    },
-    {
-      "name": "mp",
-      "type": "uint32",
-      "length": 4,
-      "offset": 28
-    },
-    {
-      "name": "tp",
-      "type": "uint32",
-      "length": 4,
-      "offset": 32
-    },
-    {
-      "name": "gp",
-      "type": "uint32",
-      "length": 4,
-      "offset": 36
-    },
-    {
-      "name": "cp",
-      "type": "uint32",
-      "length": 4,
-      "offset": 40
-    },
-    {
-      "name": "delay",
-      "type": "uint32",
-      "length": 4,
-      "offset": 44
-    },
-    {
-      "name": "tenacity",
-      "type": "uint32",
-      "length": 4,
-      "offset": 48
-    },
-    {
-      "name": "attackPower",
-      "type": "uint32",
-      "length": 4,
-      "offset": 52
-    },
-    {
-      "name": "defense",
-      "type": "uint32",
-      "length": 4,
-      "offset": 56
-    },
-    {
-      "name": "directHitRate",
-      "type": "uint32",
-      "length": 4,
-      "offset": 60
-    },
-    {
-      "name": "evasion",
-      "type": "uint32",
-      "length": 4,
-      "offset": 64
-    },
-    {
-      "name": "magicDefense",
-      "type": "uint32",
-      "length": 4,
-      "offset": 68
-    },
-    {
-      "name": "criticalHit",
-      "type": "uint32",
-      "length": 4,
-      "offset": 72
-    },
-    {
-      "name": "attackMagicPotency",
-      "type": "uint32",
-      "length": 4,
-      "offset": 76
-    },
-    {
-      "name": "healingMagicPotency",
-      "type": "uint32",
-      "length": 4,
-      "offset": 80
-    },
-    {
-      "name": "elementalBonus",
-      "type": "uint32",
-      "length": 4,
-      "offset": 84
-    },
-    {
-      "name": "determination",
-      "type": "uint32",
-      "length": 4,
-      "offset": 88
-    },
-    {
-      "name": "skillSpeed",
-      "type": "uint32",
-      "length": 4,
-      "offset": 92
-    },
-    {
-      "name": "spellSpeed",
-      "type": "uint32",
-      "length": 4,
-      "offset": 96
-    },
-    {
-      "name": "haste",
-      "type": "uint32",
-      "length": 4,
-      "offset": 100
-    },
-    {
-      "name": "craftsmanship",
-      "type": "uint32",
-      "length": 4,
-      "offset": 104
-    },
-    {
-      "name": "control",
-      "type": "uint32",
-      "length": 4,
-      "offset": 108
-    },
-    {
-      "name": "gathering",
-      "type": "uint32",
-      "length": 4,
-      "offset": 112
-    },
-    {
-      "name": "perception",
-      "type": "uint32",
-      "length": 4,
-      "offset": 116
-    },
-    {
-      "name": "unknown0",
-      "type": "uint32",
-      "length": 4,
-      "offset": 120
-    },
-    {
-      "name": "unknown1",
-      "type": "uint32",
-      "length": 4,
-      "offset": 124
-    },
-    {
-      "name": "unknown2",
-      "type": "uint32",
-      "length": 4,
-      "offset": 128
-    },
-    {
-      "name": "unknown3",
-      "type": "uint32",
-      "length": 4,
-      "offset": 132
-    },
-    {
-      "name": "unknown4",
-      "type": "uint32",
-      "length": 4,
-      "offset": 136
-    },
-    {
-      "name": "unknown5",
-      "type": "uint32",
-      "length": 4,
-      "offset": 140
-    },
-    {
-      "name": "unknown6",
-      "type": "uint32",
-      "length": 4,
-      "offset": 144
-    },
-    {
-      "name": "unknown7",
-      "type": "uint32",
-      "length": 4,
-      "offset": 148
-    },
-    {
-      "name": "unknown8",
-      "type": "uint32",
-      "length": 4,
-      "offset": 152
-    },
-    {
-      "name": "unknown9",
-      "type": "uint32",
-      "length": 4,
-      "offset": 156
-    },
-    {
-      "name": "unknown10",
-      "type": "uint32",
-      "length": 4,
-      "offset": 160
-    },
-    {
-      "name": "unknown11",
-      "type": "uint32",
-      "length": 4,
-      "offset": 164
-    },
-    {
-      "name": "unknown12",
-      "type": "uint32",
-      "length": 4,
-      "offset": 168
-    },
-    {
-      "name": "unknown13",
-      "type": "uint32",
-      "length": 4,
-      "offset": 172
-    },
-    {
-      "name": "unknown14",
-      "type": "uint32",
-      "length": 4,
-      "offset": 176
-    },
-    {
-      "name": "unknown15",
-      "type": "uint32",
-      "length": 4,
-      "offset": 180
-    },
-    {
-      "name": "unknown16",
-      "type": "uint32",
-      "length": 4,
-      "offset": 184
-    },
-    {
-      "name": "unknown17",
-      "type": "uint32",
-      "length": 4,
-      "offset": 188
-    },
-    {
-      "name": "unknown18",
-      "type": "uint32",
-      "length": 4,
-      "offset": 192
-    },
-    {
-      "name": "unknown19",
-      "type": "uint32",
-      "length": 4,
-      "offset": 196
-    },
-    {
-      "name": "unknown20",
-      "type": "uint32",
-      "length": 4,
-      "offset": 200
-    },
-    {
-      "name": "unknown21",
-      "type": "uint32",
-      "length": 4,
-      "offset": 204
-    },
-    {
-      "name": "unknown22",
-      "type": "uint32",
-      "length": 4,
-      "offset": 208
-    },
-    {
-      "name": "unknown23",
-      "type": "uint32",
-      "length": 4,
-      "offset": 212
-    },
-    {
-      "name": "unknown24",
-      "type": "uint32",
-      "length": 4,
-      "offset": 216
-    },
-    {
-      "name": "unknown25",
-      "type": "uint32",
-      "length": 4,
-      "offset": 220
-    }
-  ]
+  "fields": [{
+    "name": "strength",
+    "type": "uint32",
+    "length": 4,
+    "offset": 0
+  }, {
+    "name": "dexterity",
+    "type": "uint32",
+    "length": 4,
+    "offset": 4
+  }, {
+    "name": "vitality",
+    "type": "uint32",
+    "length": 4,
+    "offset": 8
+  }, {
+    "name": "intelligence",
+    "type": "uint32",
+    "length": 4,
+    "offset": 12
+  }, {
+    "name": "mind",
+    "type": "uint32",
+    "length": 4,
+    "offset": 16
+  }, {
+    "name": "piety",
+    "type": "uint32",
+    "length": 4,
+    "offset": 20
+  }, {
+    "name": "hp",
+    "type": "uint32",
+    "length": 4,
+    "offset": 24
+  }, {
+    "name": "mp",
+    "type": "uint32",
+    "length": 4,
+    "offset": 28
+  }, {
+    "name": "tp",
+    "type": "uint32",
+    "length": 4,
+    "offset": 32
+  }, {
+    "name": "gp",
+    "type": "uint32",
+    "length": 4,
+    "offset": 36
+  }, {
+    "name": "cp",
+    "type": "uint32",
+    "length": 4,
+    "offset": 40
+  }, {
+    "name": "delay",
+    "type": "uint32",
+    "length": 4,
+    "offset": 44
+  }, {
+    "name": "tenacity",
+    "type": "uint32",
+    "length": 4,
+    "offset": 48
+  }, {
+    "name": "attackPower",
+    "type": "uint32",
+    "length": 4,
+    "offset": 52
+  }, {
+    "name": "defense",
+    "type": "uint32",
+    "length": 4,
+    "offset": 56
+  }, {
+    "name": "directHitRate",
+    "type": "uint32",
+    "length": 4,
+    "offset": 60
+  }, {
+    "name": "evasion",
+    "type": "uint32",
+    "length": 4,
+    "offset": 64
+  }, {
+    "name": "magicDefense",
+    "type": "uint32",
+    "length": 4,
+    "offset": 68
+  }, {
+    "name": "criticalHit",
+    "type": "uint32",
+    "length": 4,
+    "offset": 72
+  }, {
+    "name": "attackMagicPotency",
+    "type": "uint32",
+    "length": 4,
+    "offset": 76
+  }, {
+    "name": "healingMagicPotency",
+    "type": "uint32",
+    "length": 4,
+    "offset": 80
+  }, {
+    "name": "elementalBonus",
+    "type": "uint32",
+    "length": 4,
+    "offset": 84
+  }, {
+    "name": "determination",
+    "type": "uint32",
+    "length": 4,
+    "offset": 88
+  }, {
+    "name": "skillSpeed",
+    "type": "uint32",
+    "length": 4,
+    "offset": 92
+  }, {
+    "name": "spellSpeed",
+    "type": "uint32",
+    "length": 4,
+    "offset": 96
+  }, {
+    "name": "haste",
+    "type": "uint32",
+    "length": 4,
+    "offset": 100
+  }, {
+    "name": "craftsmanship",
+    "type": "uint32",
+    "length": 4,
+    "offset": 104
+  }, {
+    "name": "control",
+    "type": "uint32",
+    "length": 4,
+    "offset": 108
+  }, {
+    "name": "gathering",
+    "type": "uint32",
+    "length": 4,
+    "offset": 112
+  }, {
+    "name": "perception",
+    "type": "uint32",
+    "length": 4,
+    "offset": 116
+  }, {
+    "name": "unknown0",
+    "type": "uint32",
+    "length": 4,
+    "offset": 120
+  }, {
+    "name": "unknown1",
+    "type": "uint32",
+    "length": 4,
+    "offset": 124
+  }, {
+    "name": "unknown2",
+    "type": "uint32",
+    "length": 4,
+    "offset": 128
+  }, {
+    "name": "unknown3",
+    "type": "uint32",
+    "length": 4,
+    "offset": 132
+  }, {
+    "name": "unknown4",
+    "type": "uint32",
+    "length": 4,
+    "offset": 136
+  }, {
+    "name": "unknown5",
+    "type": "uint32",
+    "length": 4,
+    "offset": 140
+  }, {
+    "name": "unknown6",
+    "type": "uint32",
+    "length": 4,
+    "offset": 144
+  }, {
+    "name": "unknown7",
+    "type": "uint32",
+    "length": 4,
+    "offset": 148
+  }, {
+    "name": "unknown8",
+    "type": "uint32",
+    "length": 4,
+    "offset": 152
+  }, {
+    "name": "unknown9",
+    "type": "uint32",
+    "length": 4,
+    "offset": 156
+  }, {
+    "name": "unknown10",
+    "type": "uint32",
+    "length": 4,
+    "offset": 160
+  }, {
+    "name": "unknown11",
+    "type": "uint32",
+    "length": 4,
+    "offset": 164
+  }, {
+    "name": "unknown12",
+    "type": "uint32",
+    "length": 4,
+    "offset": 168
+  }, {
+    "name": "unknown13",
+    "type": "uint32",
+    "length": 4,
+    "offset": 172
+  }, {
+    "name": "unknown14",
+    "type": "uint32",
+    "length": 4,
+    "offset": 176
+  }, {
+    "name": "unknown15",
+    "type": "uint32",
+    "length": 4,
+    "offset": 180
+  }, {
+    "name": "unknown16",
+    "type": "uint32",
+    "length": 4,
+    "offset": 184
+  }, {
+    "name": "unknown17",
+    "type": "uint32",
+    "length": 4,
+    "offset": 188
+  }, {
+    "name": "unknown18",
+    "type": "uint32",
+    "length": 4,
+    "offset": 192
+  }, {
+    "name": "unknown19",
+    "type": "uint32",
+    "length": 4,
+    "offset": 196
+  }, {
+    "name": "unknown20",
+    "type": "uint32",
+    "length": 4,
+    "offset": 200
+  }, {
+    "name": "unknown21",
+    "type": "uint32",
+    "length": 4,
+    "offset": 204
+  }, {
+    "name": "unknown22",
+    "type": "uint32",
+    "length": 4,
+    "offset": 208
+  }, {
+    "name": "unknown23",
+    "type": "uint32",
+    "length": 4,
+    "offset": 212
+  }, {
+    "name": "unknown24",
+    "type": "uint32",
+    "length": 4,
+    "offset": 216
+  }, {
+    "name": "unknown25",
+    "type": "uint32",
+    "length": 4,
+    "offset": 220
+  }]
 }

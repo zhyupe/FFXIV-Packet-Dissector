@@ -2,7 +2,8 @@
   "name": "Examine",
   "type": {
     "5.0": "0x0197",
-    "5.15_cn": "0x00BD"
+    "5.15_cn": "0x00BD",
+    "5.18_cn": "0x038D"
   },
   "fields": [{
     "name": "Unknown0",

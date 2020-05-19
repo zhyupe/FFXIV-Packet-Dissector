@@ -1,7 +1,8 @@
 {
   "name": "Inventory Action Ack",
   "type": {
-    "5.0": "0x01A7"
+    "5.0": "0x01A7",
+    "5.18_cn": "0x0177"
   },
   "fields": [{
     "offset": 0,
