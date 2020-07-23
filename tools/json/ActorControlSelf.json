@@ -60,8 +60,17 @@
         "label": "Bait",
         "enum": "$Item"
       }, {
+        "value": 515,
+        "label": "Achievement"
+      }, {
         "value": 521,
         "label": "ItemLevel"
+      }, {
+        "value": 1204,
+        "label": "TripleTriadCardId"
+      }, {
+        "value": 1205,
+        "label": "TriadId"
       }]
     },
     "length": 4

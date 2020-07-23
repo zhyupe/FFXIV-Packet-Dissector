@@ -483,6 +483,12 @@
       "key": "HousingStoreroomStatus",
       "value": 1049
     }, {
+      "key": "TripleTriadCard",
+      "value": 1204
+    }, {
+      "key": "TripleTriadUnknown",
+      "value": 1205
+    }, {
       "key": "SetPvPState",
       "value": 1504
     }, {
@@ -539,6 +545,9 @@
         "value": 116,
         "label": "Fate",
         "enum": "$Fate"
+      }, {
+        "value": 518,
+        "label": "Achievement"
       }]
     },
     "length": 4
