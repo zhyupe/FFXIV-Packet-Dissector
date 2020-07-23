@@ -5,7 +5,8 @@
     "5.1_cn": "0x034c",
     "5.11_cn": "0x0225",
     "5.15_cn": "0x0128",
-    "5.18_cn": "0x02e0"
+    "5.18_cn": "0x02e0",
+    "5.2_cn": "0x014a"
   },
   "fields": [{
     "offset": 0,
@@ -292,71 +293,66 @@
     "length": 2
   }, {
     "offset": 144,
-    "name": "u30b",
-    "type": "uint32",
-    "length": 4
-  }, {
-    "offset": 148,
     "name": "StatusEffectListItem",
     "type": "children",
     "count": 30
   }, {
-    "offset": 508,
+    "offset": 504,
     "name": "POSITION3",
     "type": "children",
     "count": 1
   }, {
-    "offset": 520,
+    "offset": 516,
     "name": "models0",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 524,
+    "offset": 520,
     "name": "models1",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 528,
+    "offset": 524,
     "name": "models2",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 532,
+    "offset": 528,
     "name": "models3",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 536,
+    "offset": 532,
     "name": "models4",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 540,
+    "offset": 536,
     "name": "models5",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 544,
+    "offset": 540,
     "name": "models6",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 548,
+    "offset": 544,
     "name": "models7",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 552,
+    "offset": 548,
     "name": "models8",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 556,
+    "offset": 552,
     "name": "models9",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 560,
+    "offset": 556,
     "name": "Nickname",
     "type": "string",
     "check_length": true,

@@ -3,7 +3,8 @@
   "type": {
     "5.0": "0x0065",
     "5.1_cn": "0x0065",
-    "5.15_cn": "0x0065"
+    "5.15_cn": "0x0065",
+    "5.2_cn": "0x0072"
   },
   "enums": [
     {
@@ -72,19 +73,26 @@
     },
     {
       "offset": 22,
+      "name": "UserServer2",
+      "type": "uint16",
+      "length": 2,
+      "enum": "$server"
+    },
+    {
+      "offset": 24,
       "name": "Reserved0",
       "type": "uint8",
       "length": 1
     },
     {
-      "offset": 23,
+      "offset": 25,
       "name": "Nickname",
       "type": "string",
       "check_length": true,
       "length": 32
     },
     {
-      "offset": 55,
+      "offset": 57,
       "name": "Content",
       "type": "string",
       "check_length": true

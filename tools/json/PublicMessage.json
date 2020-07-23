@@ -5,7 +5,8 @@
     "5.1_cn": "0x03c0",
     "5.11_cn": "0x00bb",
     "5.15_cn": "0x0078",
-    "5.18_cn": "0x02AE"
+    "5.18_cn": "0x02AE",
+    "5.2_cn": "0x0376"
   },
   "enums": [{
     "name": "PublicMessageType",

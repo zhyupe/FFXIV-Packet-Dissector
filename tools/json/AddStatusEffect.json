@@ -5,7 +5,8 @@
     "5.1_cn": "0x01e2",
     "5.11_cn": "0x0127",
     "5.15_cn": "0x0237",
-    "5.18_cn": "0x0251"
+    "5.18_cn": "0x0251",
+    "5.2_cn": "0x00a7"
   },
   "enums": [],
   "fields": [{
@@ -20,17 +21,12 @@
     "length": 4
   }, {
     "offset": 8,
-    "name": "Unknown1",
-    "type": "uint16",
-    "length": 2
-  }, {
-    "offset": 10,
-    "name": "Unknown2",
-    "type": "uint16",
-    "length": 2
+    "name": "CurrentHp",
+    "type": "uint32",
+    "length": 4
   }, {
     "offset": 12,
-    "name": "CurrentHP",
+    "name": "MaxHp",
     "type": "uint32",
     "length": 4
   }, {
@@ -45,31 +41,26 @@
     "length": 2
   }, {
     "offset": 20,
-    "name": "MaxHP",
-    "type": "uint32",
-    "length": 4
+    "name": "DamageShield",
+    "type": "uint8",
+    "length": 1
   }, {
-    "offset": 24,
-    "name": "MaxMP",
-    "type": "uint16",
-    "length": 2
-  }, {
-    "offset": 25,
+    "offset": 21,
     "name": "Count",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 26,
+    "offset": 22,
     "name": "Unknown3",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 28,
+    "offset": 24,
     "name": "Unknown4",
     "type": "uint16",
     "length": 2
   }, {
-    "offset": 30,
+    "offset": 26,
     "name": "AddStatusEffectItem",
     "type": "children",
     "count": "Count"

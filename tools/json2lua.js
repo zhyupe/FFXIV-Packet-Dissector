@@ -289,8 +289,8 @@ for (let file of files) {
     const name = obj.name || file.replace('.json', '')
     if (obj.skip) continue
 
-    if (obj.type && obj.type['5.0'] && !obj.type['5.15_cn']) {
-      console.log(name, 'has type for 5.0 but not for 5.15_cn')
+    if (obj.type && obj.type['5.0'] && !obj.type['5.2_cn']) {
+      console.log(name, 'has type for 5.0 but not for 5.2_cn')
     }
 
     if (obj.children) {
