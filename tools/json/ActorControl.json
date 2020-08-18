@@ -145,16 +145,16 @@
       "value": 109
     }, {
       "key": "FateStart",
-      "value": 116
+      "value": 2372
     }, {
       "key": "ItemObtainMsg",
       "value": 117
     }, {
       "key": "FateInit",
-      "value": 120
+      "value": 2353
     }, {
       "key": "FateEnd",
-      "value": 121
+      "value": 2358
     }, {
       "key": "DutyQuestScreenMsg",
       "value": 123
@@ -184,7 +184,7 @@
       "value": 144
     }, {
       "key": "FateProgress",
-      "value": 155
+      "value": 2366
     }, {
       "key": "SetBGM",
       "value": 161
@@ -199,7 +199,7 @@
       "value": 170
     }, {
       "key": "FateNpc",
-      "value": 178
+      "value": 2351
     }, {
       "key": "ZoneIn",
       "value": 200

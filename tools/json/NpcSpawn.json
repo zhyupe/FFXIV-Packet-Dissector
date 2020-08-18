@@ -223,16 +223,11 @@
     "length": 1
   }, {
     "offset": 126,
-    "name": "u25c",
-    "type": "uint16",
-    "length": 2
-  }, {
-    "offset": 128,
     "name": "enemyType",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 129,
+    "offset": 127,
     "name": "level",
     "type": "uint8",
     "length": 1
@@ -293,106 +288,96 @@
     "length": 2
   }, {
     "offset": 144,
-    "name": "u30b",
-    "type": "uint32",
-    "length": 4
-  }, {
-    "offset": 148,
     "name": "StatusEffectListItem",
     "type": "children",
     "count": 30
   }, {
-    "offset": 508,
+    "offset": 504,
     "name": "POSITION3",
     "type": "children",
     "count": 1
   }, {
-    "offset": 520,
+    "offset": 516,
     "name": "models0",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 524,
+    "offset": 520,
     "name": "models1",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 528,
+    "offset": 524,
     "name": "models2",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 532,
+    "offset": 528,
     "name": "models3",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 536,
+    "offset": 532,
     "name": "models4",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 540,
+    "offset": 536,
     "name": "models5",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 544,
+    "offset": 540,
     "name": "models6",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 548,
+    "offset": 544,
     "name": "models7",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 552,
+    "offset": 548,
     "name": "models8",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 556,
+    "offset": 552,
     "name": "models9",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 560,
+    "offset": 556,
     "name": "Nickname",
     "type": "string",
     "check_length": true,
     "length": 32,
     "append": "val"
   }, {
-    "offset": 592,
+    "offset": 588,
     "name": "Look",
     "type": "string",
     "check_length": true,
     "length": 26
   }, {
-    "offset": 618,
+    "offset": 614,
     "name": "fcTag",
     "type": "string",
     "length": 14
   }, {
-    "offset": 632,
+    "offset": 628,
     "name": "bNPCPartSlot",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 633,
+    "offset": 629,
     "name": "unk32",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 634,
+    "offset": 630,
     "name": "unk33",
     "type": "uint16",
     "length": 2
-  }, {
-    "offset": 636,
-    "name": "unk34",
-    "type": "uint32",
-    "length": 4
   }]
 }

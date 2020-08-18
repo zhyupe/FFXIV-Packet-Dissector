@@ -11,18 +11,16 @@
   "enums": [{
     "name": "PublicMessageType",
     "type": "byte",
-    "values": [
-      {
-        "key": "Shout",
-        "value": 11
-      }, {
-        "key": "Yell",
-        "value": 30
-      }, {
-        "key": "Say",
-        "value": 10
-      }
-    ]
+    "values": [{
+      "key": "Shout",
+      "value": 11
+    }, {
+      "key": "Yell",
+      "value": 30
+    }, {
+      "key": "Say",
+      "value": 10
+    }]
   }],
   "fields": [{
     "offset": 0,

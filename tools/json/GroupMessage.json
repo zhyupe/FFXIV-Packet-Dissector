@@ -6,96 +6,78 @@
     "5.15_cn": "0x0065",
     "5.2_cn": "0x0072"
   },
-  "enums": [
-    {
-      "name": "GroupMessageType",
-      "type": "ushort",
-      "values": [
-        {
-          "key": "Linkshell",
-          "value": 2
-        },
-        {
-          "key": "FreeCompany",
-          "value": 3
-        },
-        {
-          "key": "NoviceNetwork",
-          "value": 4
-        },
-        {
-          "key": "Time",
-          "value": 333
-        }
-      ]
-    }
-  ],
-  "fields": [
-    {
-      "offset": 0,
-      "name": "GroupID",
-      "type": "uint32",
-      "length": 4
-    },
-    {
-      "offset": 4,
-      "name": "Type",
-      "type": "uint16",
-      "length": 2,
-      "enum": "GroupMessageType"
-    },
-    {
-      "offset": 6,
-      "name": "Server",
-      "type": "uint16",
-      "length": 2,
-      "enum": "$server"
-    },
-    {
-      "offset": 8,
-      "name": "UniqueID",
-      "type": "uint64",
-      "length": 8,
-      "base": "HEX"
-    },
-    {
-      "offset": 16,
-      "name": "CharacterID",
-      "type": "uint32",
-      "length": 4
-    },
-    {
-      "offset": 20,
-      "name": "UserServer",
-      "type": "uint16",
-      "length": 2,
-      "enum": "$server"
-    },
-    {
-      "offset": 22,
-      "name": "UserServer2",
-      "type": "uint16",
-      "length": 2,
-      "enum": "$server"
-    },
-    {
-      "offset": 24,
-      "name": "Reserved0",
-      "type": "uint8",
-      "length": 1
-    },
-    {
-      "offset": 25,
-      "name": "Nickname",
-      "type": "string",
-      "check_length": true,
-      "length": 32
-    },
-    {
-      "offset": 57,
-      "name": "Content",
-      "type": "string",
-      "check_length": true
-    }
-  ]
+  "enums": [{
+    "name": "GroupMessageType",
+    "type": "ushort",
+    "values": [{
+      "key": "Linkshell",
+      "value": 2
+    }, {
+      "key": "FreeCompany",
+      "value": 3
+    }, {
+      "key": "NoviceNetwork",
+      "value": 4
+    }, {
+      "key": "Time",
+      "value": 333
+    }]
+  }],
+  "fields": [{
+    "offset": 0,
+    "name": "GroupID",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "Type",
+    "type": "uint16",
+    "length": 2,
+    "enum": "GroupMessageType"
+  }, {
+    "offset": 6,
+    "name": "Server",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$server"
+  }, {
+    "offset": 8,
+    "name": "UniqueID",
+    "type": "uint64",
+    "length": 8,
+    "base": "HEX"
+  }, {
+    "offset": 16,
+    "name": "CharacterID",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "UserServer",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$server"
+  }, {
+    "offset": 22,
+    "name": "UserServer2",
+    "type": "uint16",
+    "length": 2,
+    "enum": "$server"
+  }, {
+    "offset": 24,
+    "name": "Reserved0",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 25,
+    "name": "Nickname",
+    "type": "string",
+    "check_length": true,
+    "length": 32
+  }, {
+    "offset": 57,
+    "name": "Content",
+    "type": "string",
+    "check_length": true
+  }]
 }
