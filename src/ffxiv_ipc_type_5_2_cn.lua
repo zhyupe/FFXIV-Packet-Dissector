@@ -2,287 +2,211 @@
 
 local M = {}
 M.types = {
-  [0x0186] = {
+  [0x029D] = {
     [0] = {
       name = "ffxiv_ipc_actor_cast",
       length = 32,
     },
-    [1] = {
-      name = "ffxiv_ipc_npc_spawn",
-      length = 632,
-    },
   },
-  [0x0142] = {
+  [0x03AF] = {
     [0] = {
       name = "ffxiv_ipc_actor_control",
       length = 24,
     },
   },
-  [0x0143] = {
+  [0x0142] = {
     [0] = {
       name = "ffxiv_ipc_actor_control_self",
       length = 32,
     },
   },
-  [0x24d] = {
-    [0] = {
-      name = "ffxiv_ipc_actor_control_target",
-      length = 32,
-    },
-  },
-  [0x016D] = {
+  [0x00F7] = {
     [0] = {
       name = "ffxiv_ipc_actor_gauge",
       length = 16,
     },
   },
-  [0x0182] = {
+  [0x0356] = {
     [0] = {
       name = "ffxiv_ipc_actor_move",
       length = 16,
     },
   },
-  [0x0068] = {
+  [0x00D5] = {
     [0] = {
       name = "ffxiv_ipc_actor_set_pos",
       length = 24,
     },
   },
-  [0x0141] = {
+  [0x00a7] = {
     [0] = {
       name = "ffxiv_ipc_add_status_effect",
       length = 26,
     },
   },
-  [0x0312] = {
+  [0x016E] = {
+    [0] = {
+      name = "ffxiv_ipc_effect16",
+      length = 1212,
+    },
+  },
+  [0x0267] = {
+    [0] = {
+      name = "ffxiv_ipc_effect24",
+      length = 1788,
+    },
+  },
+  [0x024C] = {
+    [0] = {
+      name = "ffxiv_ipc_effect32",
+      length = 2364,
+    },
+  },
+  [0x0161] = {
+    [0] = {
+      name = "ffxiv_ipc_effect8",
+      length = 636,
+    },
+  },
+  [0x0129] = {
     [0] = {
       name = "ffxiv_ipc_boss_status_effect_list",
       length = 744,
     },
   },
-  [0x0180] = {
-    [0] = {
-      name = "ffxiv_ipc_character",
-      length = 592,
-    },
-    [1] = {
-      name = "ffxiv_ipc_update_position_instance",
-      length = 40,
-    },
-  },
-  [0x015b] = {
-    [0] = {
-      name = "ffxiv_ipc_client_action",
-      length = 24,
-    },
-  },
-  [0x013A] = {
+  [0x02A3] = {
     [0] = {
       name = "ffxiv_ipc_client_trigger",
       length = 32,
     },
-    [1] = {
-      name = "ffxiv_ipc_mail_letter_notification",
-      length = 12,
-    },
   },
-  [0x0150] = {
-    [0] = {
-      name = "ffxiv_ipc_company_board",
-      length = 1,
-    },
-  },
-  [0x014f] = {
-    [0] = {
-      name = "ffxiv_ipc_company_info",
-      length = 80,
-    },
-  },
-  [0x0151] = {
-    [0] = {
-      name = "ffxiv_ipc_company_level",
-      length = 32,
-    },
-  },
-  [0x01A2] = {
+  [0x00f4] = {
     [0] = {
       name = "ffxiv_ipc_container_info",
       length = 16,
     },
   },
-  [0x007A] = {
+  [0x00FD] = {
     [0] = {
-      name = "ffxiv_ipc_content_finder_duty_info",
-      length = 8,
+      name = "ffxiv_ipc_content_finder_notify_pop",
+      length = 32,
     },
   },
-  [0x0079] = {
-    [0] = {
-      name = "ffxiv_ipc_content_finder_member_status",
-      length = 16,
-    },
-  },
-  [0x0078] = {
-    [0] = {
-      name = "ffxiv_ipc_content_finder_notify",
-      length = 12,
-    },
-  },
-  [0x01A5] = {
+  [0x0159] = {
     [0] = {
       name = "ffxiv_ipc_currency_crystal_info",
       length = 32,
     },
   },
-  [0x015E] = {
+  [0x00EB] = {
     [0] = {
       name = "ffxiv_ipc_effect",
       length = 124,
     },
   },
-  [0x015A] = {
-    [0] = {
-      name = "ffxiv_ipc_event_handler_return",
-      length = 18,
-    },
-  },
-  [0x0197] = {
+  [0x0293] = {
     [0] = {
       name = "ffxiv_ipc_examine",
       length = 656,
     },
   },
-  [0x01b5] = {
+  [0x0339] = {
     [0] = {
-      name = "ffxiv_ipc_fish_event",
-      length = 36,
+      name = "ffxiv_ipc_fate_info",
+      length = 24,
     },
   },
-  [0x0065] = {
+  [0x0072] = {
     [0] = {
       name = "ffxiv_ipc_group_message",
       length = 57,
     },
-    [1] = {
-      name = "ffxiv_ipc_ping",
-      length = 8,
-    },
   },
-  [0x0066] = {
-    [0] = {
-      name = "ffxiv_ipc_init",
-      length = 16,
-    },
-  },
-  [0x007C] = {
+  [0x033B] = {
     [0] = {
       name = "ffxiv_ipc_init_zone",
       length = 96,
     },
   },
-  [0x01A7] = {
+  [0x0371] = {
     [0] = {
       name = "ffxiv_ipc_inventory_action_ack",
       length = 16,
     },
   },
-  [0x01A4] = {
+  [0x020A] = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction",
       length = 36,
     },
   },
-  [0x01A3] = {
+  [0x0393] = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction_finish",
       length = 16,
     },
   },
-  [0x012A] = {
+  [0x03D2] = {
     [0] = {
-      name = "ffxiv_ipc_linkshell_list",
-      length = 0,
+      name = "ffxiv_ipc_npc_spawn",
+      length = 632,
     },
   },
-  [0x010c] = {
+  [0x014a] = {
     [0] = {
       name = "ffxiv_ipc_boss_npc_spawn",
       length = 640,
     },
   },
-  [0x017F] = {
+  [0x03BA] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
       length = 624,
     },
   },
-  [0x0193] = {
-    [0] = {
-      name = "ffxiv_ipc_player_state_flags",
-      length = 16,
-    },
-  },
-  [0x0190] = {
+  [0x0276] = {
     [0] = {
       name = "ffxiv_ipc_player_stats",
       length = 224,
     },
   },
-  [0x0104] = {
+  [0x0376] = {
     [0] = {
       name = "ffxiv_ipc_public_message",
       length = 48,
     },
   },
-  [0x0116] = {
+  [0x0289] = {
     [0] = {
-      name = "ffxiv_ipc_server_notice",
-      length = 1,
+      name = "ffxiv_ipc_retainer_information",
+      length = 73,
     },
   },
-  [0x0115] = {
-    [0] = {
-      name = "ffxiv_ipc_server_notice_short",
-      length = 1,
-    },
-  },
-  [0x0117] = {
-    [0] = {
-      name = "ffxiv_ipc_set_online_status",
-      length = 8,
-    },
-  },
-  [0x013d] = {
-    [0] = {
-      name = "ffxiv_ipc_skill_handler",
-      length = 32,
-    },
-  },
-  [0x015B] = {
+  [0x021A] = {
     [0] = {
       name = "ffxiv_ipc_status_effect_list",
       length = 384,
     },
   },
-  [0x018D] = {
+  [0x03AA] = {
     [0] = {
       name = "ffxiv_ipc_update_class_info",
       length = 16,
     },
   },
-  [0x0145] = {
+  [0x0282] = {
     [0] = {
       name = "ffxiv_ipc_update_hp_mp_tp",
       length = 8,
     },
   },
-  [0x01A8] = {
+  [0x00A4] = {
     [0] = {
       name = "ffxiv_ipc_update_inventory_slot",
       length = 64,
     },
   },
-  [0x01A1] = {
+  [0x0069] = {
     [0] = {
       name = "ffxiv_ipc_item_info",
       length = 64,

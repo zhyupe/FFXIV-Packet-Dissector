@@ -47,7 +47,7 @@ M.types = {
   [0x0127] = {
     [0] = {
       name = "ffxiv_ipc_add_status_effect",
-      length = 30,
+      length = 26,
     },
   },
   [0x0114] = {
@@ -179,7 +179,7 @@ M.types = {
   [0x0111] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn",
-      length = 640,
+      length = 632,
     },
   },
   [0x0225] = {
@@ -197,7 +197,7 @@ M.types = {
   [0x022f] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
-      length = 632,
+      length = 624,
     },
   },
   [0x031E] = {
@@ -233,7 +233,7 @@ M.types = {
   [0x0084] = {
     [0] = {
       name = "ffxiv_ipc_update_hp_mp_tp",
-      length = 14,
+      length = 8,
     },
   },
   [0x011E] = {

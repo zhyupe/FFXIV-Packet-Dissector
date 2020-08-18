@@ -46,7 +46,6 @@ local npc_spawn_fields = {
   model_type              = ProtoField.uint8("ffxiv_ipc_npc_spawn.model_type", "modelType", base.DEC),
   subtype                 = ProtoField.uint8("ffxiv_ipc_npc_spawn.subtype", "subtype", base.DEC),
   voice                   = ProtoField.uint8("ffxiv_ipc_npc_spawn.voice", "voice", base.DEC),
-  u25c                    = ProtoField.uint16("ffxiv_ipc_npc_spawn.u25c", "u25c", base.DEC),
   enemy_type              = ProtoField.uint8("ffxiv_ipc_npc_spawn.enemy_type", "enemyType", base.DEC),
   level                   = ProtoField.uint8("ffxiv_ipc_npc_spawn.level", "level", base.DEC),
   class_job               = ProtoField.uint8("ffxiv_ipc_npc_spawn.class_job", "classJob", base.DEC),
@@ -60,7 +59,6 @@ local npc_spawn_fields = {
   scale                   = ProtoField.uint8("ffxiv_ipc_npc_spawn.scale", "scale", base.DEC),
   elemental_level         = ProtoField.uint16("ffxiv_ipc_npc_spawn.elemental_level", "elementalLevel", base.DEC),
   element                 = ProtoField.uint16("ffxiv_ipc_npc_spawn.element", "element", base.DEC),
-  u30b                    = ProtoField.uint32("ffxiv_ipc_npc_spawn.u30b", "u30b", base.DEC),
   models0                 = ProtoField.uint32("ffxiv_ipc_npc_spawn.models0", "models0", base.DEC),
   models1                 = ProtoField.uint32("ffxiv_ipc_npc_spawn.models1", "models1", base.DEC),
   models2                 = ProtoField.uint32("ffxiv_ipc_npc_spawn.models2", "models2", base.DEC),
@@ -77,7 +75,6 @@ local npc_spawn_fields = {
   b_npcpart_slot          = ProtoField.uint8("ffxiv_ipc_npc_spawn.b_npcpart_slot", "bNPCPartSlot", base.DEC),
   unk32                   = ProtoField.uint8("ffxiv_ipc_npc_spawn.unk32", "unk32", base.DEC),
   unk33                   = ProtoField.uint16("ffxiv_ipc_npc_spawn.unk33", "unk33", base.DEC),
-  unk34                   = ProtoField.uint32("ffxiv_ipc_npc_spawn.unk34", "unk34", base.DEC),
 }
 
 ffxiv_ipc_npc_spawn.fields = npc_spawn_fields
@@ -302,18 +299,13 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   local voice_val  = voice_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.voice, voice_tvbr, voice_val)
 
-  -- dissect the u25c field
-  local u25c_tvbr = tvbuf:range(126, 2)
-  local u25c_val  = u25c_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.u25c, u25c_tvbr, u25c_val)
-
   -- dissect the enemy_type field
-  local enemy_type_tvbr = tvbuf:range(128, 1)
+  local enemy_type_tvbr = tvbuf:range(126, 1)
   local enemy_type_val  = enemy_type_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.enemy_type, enemy_type_tvbr, enemy_type_val)
 
   -- dissect the level field
-  local level_tvbr = tvbuf:range(129, 1)
+  local level_tvbr = tvbuf:range(127, 1)
   local level_val  = level_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.level, level_tvbr, level_val)
 
@@ -372,14 +364,9 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   local element_val  = element_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.element, element_tvbr, element_val)
 
-  -- dissect the u30b field
-  local u30b_tvbr = tvbuf:range(144, 4)
-  local u30b_val  = u30b_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.u30b, u30b_tvbr, u30b_val)
-
   -- dissect status_effect_list_item
   local status_effect_list_item_dissector = Dissector.get('ffxiv_ipc_status_effect_list_item')
-  local status_effect_list_item_pos = 148
+  local status_effect_list_item_pos = 144
   local status_effect_list_item_len = 12
   local status_effect_list_item_count = 30
 
@@ -395,7 +382,7 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
 
   -- dissect position3
   local position3_dissector = Dissector.get('ffxiv_ipc_position3')
-  local position3_pos = 508
+  local position3_pos = 504
   local position3_len = 12
   local position3_count = 1
 
@@ -410,58 +397,58 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   end
 
   -- dissect the models0 field
-  local models0_tvbr = tvbuf:range(520, 4)
+  local models0_tvbr = tvbuf:range(516, 4)
   local models0_val  = models0_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.models0, models0_tvbr, models0_val)
 
   -- dissect the models1 field
-  local models1_tvbr = tvbuf:range(524, 4)
+  local models1_tvbr = tvbuf:range(520, 4)
   local models1_val  = models1_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.models1, models1_tvbr, models1_val)
 
   -- dissect the models2 field
-  local models2_tvbr = tvbuf:range(528, 4)
+  local models2_tvbr = tvbuf:range(524, 4)
   local models2_val  = models2_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.models2, models2_tvbr, models2_val)
 
   -- dissect the models3 field
-  local models3_tvbr = tvbuf:range(532, 4)
+  local models3_tvbr = tvbuf:range(528, 4)
   local models3_val  = models3_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.models3, models3_tvbr, models3_val)
 
   -- dissect the models4 field
-  local models4_tvbr = tvbuf:range(536, 4)
+  local models4_tvbr = tvbuf:range(532, 4)
   local models4_val  = models4_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.models4, models4_tvbr, models4_val)
 
   -- dissect the models5 field
-  local models5_tvbr = tvbuf:range(540, 4)
+  local models5_tvbr = tvbuf:range(536, 4)
   local models5_val  = models5_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.models5, models5_tvbr, models5_val)
 
   -- dissect the models6 field
-  local models6_tvbr = tvbuf:range(544, 4)
+  local models6_tvbr = tvbuf:range(540, 4)
   local models6_val  = models6_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.models6, models6_tvbr, models6_val)
 
   -- dissect the models7 field
-  local models7_tvbr = tvbuf:range(548, 4)
+  local models7_tvbr = tvbuf:range(544, 4)
   local models7_val  = models7_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.models7, models7_tvbr, models7_val)
 
   -- dissect the models8 field
-  local models8_tvbr = tvbuf:range(552, 4)
+  local models8_tvbr = tvbuf:range(548, 4)
   local models8_val  = models8_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.models8, models8_tvbr, models8_val)
 
   -- dissect the models9 field
-  local models9_tvbr = tvbuf:range(556, 4)
+  local models9_tvbr = tvbuf:range(552, 4)
   local models9_val  = models9_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.models9, models9_tvbr, models9_val)
 
   -- dissect the nickname field
-  if tvbuf:len() > 592 then
-    local nickname_tvbr = tvbuf:range(560, 32)
+  if tvbuf:len() > 588 then
+    local nickname_tvbr = tvbuf:range(556, 32)
     local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
     tree:add(npc_spawn_fields.nickname, nickname_tvbr, nickname_val)
 
@@ -471,36 +458,31 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   end
 
   -- dissect the look field
-  if tvbuf:len() > 618 then
-    local look_tvbr = tvbuf:range(592, 26)
+  if tvbuf:len() > 614 then
+    local look_tvbr = tvbuf:range(588, 26)
     local look_val  = look_tvbr:string(ENC_UTF_8)
     tree:add(npc_spawn_fields.look, look_tvbr, look_val)
   end
 
   -- dissect the fc_tag field
-  local fc_tag_tvbr = tvbuf:range(618, 14)
+  local fc_tag_tvbr = tvbuf:range(614, 14)
   local fc_tag_val  = fc_tag_tvbr:string(ENC_UTF_8)
   tree:add(npc_spawn_fields.fc_tag, fc_tag_tvbr, fc_tag_val)
 
   -- dissect the b_npcpart_slot field
-  local b_npcpart_slot_tvbr = tvbuf:range(632, 1)
+  local b_npcpart_slot_tvbr = tvbuf:range(628, 1)
   local b_npcpart_slot_val  = b_npcpart_slot_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.b_npcpart_slot, b_npcpart_slot_tvbr, b_npcpart_slot_val)
 
   -- dissect the unk32 field
-  local unk32_tvbr = tvbuf:range(633, 1)
+  local unk32_tvbr = tvbuf:range(629, 1)
   local unk32_val  = unk32_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.unk32, unk32_tvbr, unk32_val)
 
   -- dissect the unk33 field
-  local unk33_tvbr = tvbuf:range(634, 2)
+  local unk33_tvbr = tvbuf:range(630, 2)
   local unk33_val  = unk33_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.unk33, unk33_tvbr, unk33_val)
-
-  -- dissect the unk34 field
-  local unk34_tvbr = tvbuf:range(636, 4)
-  local unk34_val  = unk34_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.unk34, unk34_tvbr, unk34_val)
 
   return len
 end

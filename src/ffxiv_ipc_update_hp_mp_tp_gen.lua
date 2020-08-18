@@ -3,12 +3,9 @@
 local ffxiv_ipc_update_hp_mp_tp = Proto("ffxiv_ipc_update_hp_mp_tp", "FFXIV-IPC UpdateHpMpTp")
 
 local update_hp_mp_tp_fields = {
-  hp       = ProtoField.uint32("ffxiv_ipc_update_hp_mp_tp.hp", "HP", base.DEC),
-  mp       = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.mp", "MP", base.DEC),
-  tp       = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.tp", "TP", base.DEC),
-  gp       = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.gp", "GP", base.DEC),
-  unknown1 = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.unknown1", "Unknown1", base.DEC),
-  unknown2 = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.unknown2", "Unknown2", base.DEC),
+  hp = ProtoField.uint32("ffxiv_ipc_update_hp_mp_tp.hp", "HP", base.DEC),
+  mp = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.mp", "MP", base.DEC),
+  tp = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.tp", "TP", base.DEC),
 }
 
 ffxiv_ipc_update_hp_mp_tp.fields = update_hp_mp_tp_fields
@@ -33,21 +30,6 @@ function ffxiv_ipc_update_hp_mp_tp.dissector(tvbuf, pktinfo, root)
   local tp_tvbr = tvbuf:range(6, 2)
   local tp_val  = tp_tvbr:le_uint()
   tree:add_le(update_hp_mp_tp_fields.tp, tp_tvbr, tp_val)
-
-  -- dissect the gp field
-  local gp_tvbr = tvbuf:range(8, 2)
-  local gp_val  = gp_tvbr:le_uint()
-  tree:add_le(update_hp_mp_tp_fields.gp, gp_tvbr, gp_val)
-
-  -- dissect the unknown1 field
-  local unknown1_tvbr = tvbuf:range(10, 2)
-  local unknown1_val  = unknown1_tvbr:le_uint()
-  tree:add_le(update_hp_mp_tp_fields.unknown1, unknown1_tvbr, unknown1_val)
-
-  -- dissect the unknown2 field
-  local unknown2_tvbr = tvbuf:range(12, 2)
-  local unknown2_val  = unknown2_tvbr:le_uint()
-  tree:add_le(update_hp_mp_tp_fields.unknown2, unknown2_tvbr, unknown2_val)
 
   return len
 end

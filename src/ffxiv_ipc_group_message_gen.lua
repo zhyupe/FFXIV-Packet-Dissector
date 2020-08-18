@@ -11,6 +11,7 @@ local group_message_fields = {
   unique_id    = ProtoField.uint64("ffxiv_ipc_group_message.unique_id", "UniqueID", base.HEX),
   character_id = ProtoField.uint32("ffxiv_ipc_group_message.character_id", "CharacterID", base.DEC),
   user_server  = ProtoField.uint16("ffxiv_ipc_group_message.user_server", "UserServer", base.DEC, db.server),
+  user_server2 = ProtoField.uint16("ffxiv_ipc_group_message.user_server2", "UserServer2", base.DEC, db.server),
   reserved0    = ProtoField.uint8("ffxiv_ipc_group_message.reserved0", "Reserved0", base.DEC),
   nickname     = ProtoField.string("ffxiv_ipc_group_message.nickname", "Nickname", base.UNICODE),
   content      = ProtoField.string("ffxiv_ipc_group_message.content", "Content", base.UNICODE),
@@ -54,21 +55,26 @@ function ffxiv_ipc_group_message.dissector(tvbuf, pktinfo, root)
   local user_server_val  = user_server_tvbr:le_uint()
   tree:add_le(group_message_fields.user_server, user_server_tvbr, user_server_val)
 
+  -- dissect the user_server2 field
+  local user_server2_tvbr = tvbuf:range(22, 2)
+  local user_server2_val  = user_server2_tvbr:le_uint()
+  tree:add_le(group_message_fields.user_server2, user_server2_tvbr, user_server2_val)
+
   -- dissect the reserved0 field
-  local reserved0_tvbr = tvbuf:range(22, 1)
+  local reserved0_tvbr = tvbuf:range(24, 1)
   local reserved0_val  = reserved0_tvbr:le_uint()
   tree:add_le(group_message_fields.reserved0, reserved0_tvbr, reserved0_val)
 
   -- dissect the nickname field
-  if tvbuf:len() > 55 then
-    local nickname_tvbr = tvbuf:range(23, 32)
+  if tvbuf:len() > 57 then
+    local nickname_tvbr = tvbuf:range(25, 32)
     local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
     tree:add(group_message_fields.nickname, nickname_tvbr, nickname_val)
   end
 
   -- dissect the content field
-  if tvbuf:len() > 55 then
-    local content_tvbr = tvbuf:range(55)
+  if tvbuf:len() > 57 then
+    local content_tvbr = tvbuf:range(57)
     local content_val  = content_tvbr:string(ENC_UTF_8)
     tree:add(group_message_fields.content, content_tvbr, content_val)
   end

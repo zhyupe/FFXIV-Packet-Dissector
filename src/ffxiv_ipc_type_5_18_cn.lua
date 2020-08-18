@@ -41,7 +41,7 @@ M.types = {
   [0x0251] = {
     [0] = {
       name = "ffxiv_ipc_add_status_effect",
-      length = 30,
+      length = 26,
     },
   },
   [0x0245] = {
@@ -128,10 +128,16 @@ M.types = {
       length = 16,
     },
   },
+  [0x03b7] = {
+    [0] = {
+      name = "ffxiv_ipc_npc_remove",
+      length = 8,
+    },
+  },
   [0x0280] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn",
-      length = 640,
+      length = 632,
     },
   },
   [0x02e0] = {
@@ -143,7 +149,7 @@ M.types = {
   [0x0116] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
-      length = 632,
+      length = 624,
     },
   },
   [0x0346] = {
@@ -170,6 +176,24 @@ M.types = {
       length = 384,
     },
   },
+  [0x00db] = {
+    [0] = {
+      name = "ffxiv_ipc_triple_traid",
+      length = 16,
+    },
+  },
+  [0x02ff] = {
+    [0] = {
+      name = "ffxiv_ipc_triple_traid_info",
+      length = 40,
+    },
+  },
+  [0x0290] = {
+    [0] = {
+      name = "ffxiv_ipc_triple_traid_status",
+      length = 16,
+    },
+  },
   [0x0096] = {
     [0] = {
       name = "ffxiv_ipc_update_class_info",
@@ -179,7 +203,7 @@ M.types = {
   [0x01F6] = {
     [0] = {
       name = "ffxiv_ipc_update_hp_mp_tp",
-      length = 14,
+      length = 8,
     },
   },
   [0x01A7] = {

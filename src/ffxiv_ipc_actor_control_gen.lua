@@ -5,6 +5,7 @@ local enum = require('ffxiv_enum')
 local label_data0_type = {
   [21] = "Status",
   [116] = "Fate",
+  [518] = "Achievement",
 }
 local label_mode_type = {
   [300] = "Enabled",
@@ -54,6 +55,8 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   elseif type_val == 116 then
     data0_label_key = "Fate"
     data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 518 then
+    data0_label_key = "Achievement"
   end
   tree:add_le(actor_control_fields.data0, data0_tvbr, data0_val, data0_label_key .. ": " .. data0_label_val)
 

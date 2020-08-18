@@ -4,8 +4,9 @@ local db = require('ffxiv_db')
 local ffxiv_ipc_content_finder_notify_pop = Proto("ffxiv_ipc_content_finder_notify_pop", "FFXIV-IPC Content Finder Notify Pop")
 
 local content_finder_notify_pop_fields = {
-  unknown1       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown1", "Unknown1", base.DEC),
-  unknown2       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown2", "Unknown2", base.DEC),
+  unknown1       = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.unknown1", "Unknown1", base.DEC),
+  roulette       = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.roulette", "Roulette", base.DEC),
+  flags          = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.flags", "Flags", base.DEC),
   unknown3       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown3", "Unknown3", base.DEC),
   unknown4       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown4", "Unknown4", base.DEC),
   unknown5       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown5", "Unknown5", base.DEC),
@@ -29,14 +30,19 @@ function ffxiv_ipc_content_finder_notify_pop.dissector(tvbuf, pktinfo, root)
   local len = tvbuf:len()
 
   -- dissect the unknown1 field
-  local unknown1_tvbr = tvbuf:range(0, 4)
+  local unknown1_tvbr = tvbuf:range(0, 2)
   local unknown1_val  = unknown1_tvbr:le_uint()
   tree:add_le(content_finder_notify_pop_fields.unknown1, unknown1_tvbr, unknown1_val)
 
-  -- dissect the unknown2 field
-  local unknown2_tvbr = tvbuf:range(4, 4)
-  local unknown2_val  = unknown2_tvbr:le_uint()
-  tree:add_le(content_finder_notify_pop_fields.unknown2, unknown2_tvbr, unknown2_val)
+  -- dissect the roulette field
+  local roulette_tvbr = tvbuf:range(2, 2)
+  local roulette_val  = roulette_tvbr:le_uint()
+  tree:add_le(content_finder_notify_pop_fields.roulette, roulette_tvbr, roulette_val)
+
+  -- dissect the flags field
+  local flags_tvbr = tvbuf:range(4, 4)
+  local flags_val  = flags_tvbr:le_uint()
+  tree:add_le(content_finder_notify_pop_fields.flags, flags_tvbr, flags_val)
 
   -- dissect the unknown3 field
   local unknown3_tvbr = tvbuf:range(8, 4)

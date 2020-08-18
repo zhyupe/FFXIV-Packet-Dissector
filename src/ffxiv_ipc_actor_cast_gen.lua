@@ -8,7 +8,7 @@ local actor_cast_fields = {
   action     = ProtoField.uint16("ffxiv_ipc_actor_cast.action", "Action", base.DEC, db.Action),
   skill_type = ProtoField.uint8("ffxiv_ipc_actor_cast.skill_type", "skillType", base.DEC, enum.reverse.actor_cast_skill_type),
   unknown    = ProtoField.uint8("ffxiv_ipc_actor_cast.unknown", "unknown", base.DEC),
-  unknown_1  = ProtoField.uint32("ffxiv_ipc_actor_cast.unknown_1", "unknown_1", base.DEC),
+  item_id    = ProtoField.uint32("ffxiv_ipc_actor_cast.item_id", "ItemId", base.DEC, db.Item),
   cast_time  = ProtoField.float("ffxiv_ipc_actor_cast.cast_time", "cast_time", base.DEC),
   target_id  = ProtoField.uint32("ffxiv_ipc_actor_cast.target_id", "target_id", base.HEX),
   rotation   = ProtoField.float("ffxiv_ipc_actor_cast.rotation", "rotation", base.DEC),
@@ -42,10 +42,10 @@ function ffxiv_ipc_actor_cast.dissector(tvbuf, pktinfo, root)
   local unknown_val  = unknown_tvbr:le_uint()
   tree:add_le(actor_cast_fields.unknown, unknown_tvbr, unknown_val)
 
-  -- dissect the unknown_1 field
-  local unknown_1_tvbr = tvbuf:range(4, 4)
-  local unknown_1_val  = unknown_1_tvbr:le_uint()
-  tree:add_le(actor_cast_fields.unknown_1, unknown_1_tvbr, unknown_1_val)
+  -- dissect the item_id field
+  local item_id_tvbr = tvbuf:range(4, 4)
+  local item_id_val  = item_id_tvbr:le_uint()
+  tree:add_le(actor_cast_fields.item_id, item_id_tvbr, item_id_val)
 
   -- dissect the cast_time field
   local cast_time_tvbr = tvbuf:range(8, 4)

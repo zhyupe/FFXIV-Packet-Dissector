@@ -13,7 +13,10 @@ local label_data0_type = {
   [155] = "Fate",
   [320] = "Item",
   [325] = "Bait",
+  [515] = "Achievement",
   [521] = "ItemLevel",
+  [1204] = "TripleTriadCardId",
+  [1205] = "TriadId",
 }
 local label_data1_type = {
   [7] = "Exp",
@@ -100,8 +103,14 @@ function ffxiv_ipc_actor_control_self.dissector(tvbuf, pktinfo, root)
   elseif type_val == 325 then
     data0_label_key = "Bait"
     data0_label_val = (db.Item[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 515 then
+    data0_label_key = "Achievement"
   elseif type_val == 521 then
     data0_label_key = "ItemLevel"
+  elseif type_val == 1204 then
+    data0_label_key = "TripleTriadCardId"
+  elseif type_val == 1205 then
+    data0_label_key = "TriadId"
   end
   tree:add_le(actor_control_self_fields.data0, data0_tvbr, data0_val, data0_label_key .. ": " .. data0_label_val)
 
