@@ -1,0 +1,27 @@
+{
+  "name": "Triple Traid Status",
+  "type": {
+    "5.18_cn": "0x0290"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "TraidId",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "unknown2",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "unknown3",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "unknown4",
+    "type": "uint32",
+    "length": 4
+  }]
+}
