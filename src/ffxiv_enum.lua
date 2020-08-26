@@ -120,6 +120,7 @@ M.forward.actor_control_type = {
   FishingBaitMsg = 325,
   FishingReachMsg = 327,
   FishingFailMsg = 328,
+  WeeklyIntervalUpdateTime = 336,
   MateriaConvertMsg = 350,
   MeldSuccessMsg = 351,
   MeldFailMsg = 352,

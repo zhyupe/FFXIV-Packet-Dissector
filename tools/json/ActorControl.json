@@ -307,6 +307,9 @@
       "key": "FishingFailMsg",
       "value": 328
     }, {
+      "key": "WeeklyIntervalUpdateTime",
+      "value": 336
+    }, {
       "key": "MateriaConvertMsg",
       "value": 350
     }, {

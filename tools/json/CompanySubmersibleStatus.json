@@ -1,0 +1,63 @@
+{
+  "name": "CompanySubmersibleStatus",
+  "type": {
+    "5.21_cn": "0x0306"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "CompanySubmersibleStatusItem",
+    "type": "children",
+    "count": 4
+  }],
+  "children": [{
+    "name": "CompanySubmersibleStatusItem",
+    "fields": [{
+      "offset": 0,
+      "name": "ReturnTime",
+      "type": "uint32",
+      "length": 4
+    }, {
+      "offset": 4,
+      "name": "MaxDistance",
+      "type": "uint16",
+      "length": 2
+    }, {
+      "offset": 6,
+      "name": "Unknown2",
+      "type": "uint16",
+      "length": 2
+    }, {
+      "offset": 8,
+      "name": "Name",
+      "type": "string",
+      "check_length": true,
+      "length": 23,
+      "append": "val"
+    }, {
+      "offset": 31,
+      "name": "Dest1",
+      "type": "uint8",
+      "length": 1
+    },  {
+      "offset": 32,
+      "name": "Dest2",
+      "type": "uint8",
+      "length": 1
+    },  {
+      "offset": 33,
+      "name": "Dest3",
+      "type": "uint8",
+      "length": 1
+    },  {
+      "offset": 34,
+      "name": "Dest4",
+      "type": "uint8",
+      "length": 1
+    },  {
+      "offset": 35,
+      "name": "Dest5",
+      "type": "uint8",
+      "length": 1
+    }]
+  }]
+}

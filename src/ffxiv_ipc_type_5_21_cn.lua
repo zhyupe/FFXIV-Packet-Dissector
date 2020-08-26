@@ -80,6 +80,18 @@ M.types = {
       length = 32,
     },
   },
+  [0x0168] = {
+    [0] = {
+      name = "ffxiv_ipc_company_airship_status",
+      length = 0,
+    },
+  },
+  [0x0306] = {
+    [0] = {
+      name = "ffxiv_ipc_company_submersible_status",
+      length = 0,
+    },
+  },
   [0x02eb] = {
     [0] = {
       name = "ffxiv_ipc_container_info",
