@@ -26,6 +26,12 @@ M.types = {
       length = 16,
     },
   },
+  [0x0202] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_move",
+      length = 16,
+    },
+  },
   [0x0158] = {
     [0] = {
       name = "ffxiv_ipc_actor_set_pos",
@@ -74,6 +80,12 @@ M.types = {
       length = 32,
     },
   },
+  [0x02eb] = {
+    [0] = {
+      name = "ffxiv_ipc_container_info",
+      length = 16,
+    },
+  },
   [0x034F] = {
     [0] = {
       name = "ffxiv_ipc_content_finder_notify_pop",
@@ -98,16 +110,34 @@ M.types = {
       length = 656,
     },
   },
+  [0x0065] = {
+    [0] = {
+      name = "ffxiv_ipc_group_message",
+      length = 57,
+    },
+  },
   [0x013C] = {
     [0] = {
       name = "ffxiv_ipc_init_zone",
       length = 96,
     },
   },
+  [0x009a] = {
+    [0] = {
+      name = "ffxiv_ipc_inventory_action_ack",
+      length = 16,
+    },
+  },
   [0x011E] = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction",
       length = 36,
+    },
+  },
+  [0x01f0] = {
+    [0] = {
+      name = "ffxiv_ipc_inventory_transaction_finish",
+      length = 16,
     },
   },
   [0x0211] = {
@@ -122,6 +152,12 @@ M.types = {
       length = 640,
     },
   },
+  [0x01dc] = {
+    [0] = {
+      name = "ffxiv_ipc_ping",
+      length = 8,
+    },
+  },
   [0x03A0] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
@@ -132,6 +168,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_player_stats",
       length = 224,
+    },
+  },
+  [0x01f3] = {
+    [0] = {
+      name = "ffxiv_ipc_public_message",
+      length = 48,
     },
   },
   [0x0179] = {
@@ -158,7 +200,7 @@ M.types = {
       length = 8,
     },
   },
-  [0x02F0] = {
+  [0x03c8] = {
     [0] = {
       name = "ffxiv_ipc_update_inventory_slot",
       length = 64,
