@@ -1,0 +1,32 @@
+{
+  "name": "FellowshipMessageBoardQuery",
+  "type": {
+    "5.21_cn": "0x02ab"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "ID1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "ID2",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Offset",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 14,
+    "name": "Unknown2",
+    "type": "uint16",
+    "length": 2
+  }]
+}

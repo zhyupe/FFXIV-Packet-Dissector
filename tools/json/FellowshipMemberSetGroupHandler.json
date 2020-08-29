@@ -1,0 +1,27 @@
+{
+  "name": "FellowshipMemberSetGroupHandler",
+  "type": {
+    "5.21_cn": "0x021e"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "ID",
+    "type": "uint64",
+    "length": 8
+  }, {
+    "offset": 8,
+    "name": "Target",
+    "type": "uint64",
+    "length": 8
+  }, {
+    "offset": 16,
+    "name": "Group",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "Unknown3",
+    "type": "uint32",
+    "length": 4
+  }]
+}

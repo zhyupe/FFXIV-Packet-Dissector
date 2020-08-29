@@ -1,0 +1,22 @@
+{
+  "name": "FellowshipInfoQuery",
+  "type": {
+    "5.21_cn": "0x0372"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "ID",
+    "type": "uint64",
+    "length": 8
+  }, {
+    "offset": 8,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Unknown2",
+    "type": "uint32",
+    "length": 4
+  }]
+}
