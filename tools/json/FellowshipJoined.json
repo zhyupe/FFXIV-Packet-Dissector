@@ -1,0 +1,42 @@
+{
+  "name": "FellowshipJoined",
+  "type": {
+    "5.21_cn": "0x00c1"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "FellowshipJoinedItem",
+    "type": "children",
+    "count": 10
+  }],
+  "children": [{
+    "name": "FellowshipJoinedItem",
+    "fields": [{
+      "offset": 0,
+      "name": "UniqueID",
+      "type": "uint64",
+      "length": 8,
+      "base": "HEX"
+    }, {
+      "offset": 8,
+      "name": "Unknown0",
+      "type": "uint64",
+      "length": 8
+    }, {
+      "offset": 16,
+      "name": "Unknown1",
+      "type": "uint8",
+      "length": 1
+    }, {
+      "offset": 17,
+      "name": "Name",
+      "type": "string",
+      "length": 62
+    }, {
+      "offset": 79,
+      "name": "Padding",
+      "type": "uint8",
+      "length": 1
+    }]
+  }]
+}
