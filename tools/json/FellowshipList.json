@@ -1,0 +1,73 @@
+{
+  "name": "FellowshipList",
+  "type": {
+    "5.21_cn": "0x02e5"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "ID",
+    "type": "uint64",
+    "length": 8
+  }, {
+    "offset": 8,
+    "name": "CreateTime",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "JoinTime",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "FellowshipMessageBoardItem",
+    "type": "children",
+    "count": 10
+  }],
+  "children": [{
+    "name": "FellowshipMessageBoardItem",
+    "fields": [{
+      "offset": 0,
+      "name": "UniqueID",
+      "type": "uint64",
+      "length": 8,
+      "base": "HEX"
+    }, {
+      "offset": 8,
+      "name": "Time",
+      "type": "uint32",
+      "length": 4
+    }, {
+      "offset": 12,
+      "name": "UserServer",
+      "type": "uint16",
+      "length": 2,
+      "enum": "$server"
+    }, {
+      "offset": 14,
+      "name": "Unknown0",
+      "type": "uint8",
+      "length": 1
+    }, {
+      "offset": 15,
+      "name": "Emotion",
+      "type": "uint8",
+      "length": 1
+    }, {
+      "offset": 16,
+      "name": "Index",
+      "type": "uint16",
+      "length": 2
+    }, {
+      "offset": 18,
+      "name": "Nickname",
+      "type": "string",
+      "length": 32
+    }, {
+      "offset": 50,
+      "name": "Content",
+      "type": "string",
+      "length": 122
+    }]
+  }]
+}

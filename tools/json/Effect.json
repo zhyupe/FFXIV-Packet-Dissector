@@ -7,7 +7,8 @@
     "5.15_cn": "0x023E",
     "5.18_cn": "0x00D5",
     "5.2_cn": "0x00EB",
-    "5.21_cn": "0x035E"
+    "5.21_cn": "0x035E",
+    "5.25_cn": "0x02D6"
   },
   "enums": [{
     "name": "ActionEffectType",

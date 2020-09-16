@@ -1,7 +1,8 @@
 {
   "name": "CompanySubmersibleStatus",
   "type": {
-    "5.21_cn": "0x0306"
+    "5.21_cn": "0x0306",
+    "5.25_cn": "0x00da"
   },
   "fields": [{
     "offset": 0,
@@ -38,22 +39,22 @@
       "name": "Dest1",
       "type": "uint8",
       "length": 1
-    },  {
+    }, {
       "offset": 32,
       "name": "Dest2",
       "type": "uint8",
       "length": 1
-    },  {
+    }, {
       "offset": 33,
       "name": "Dest3",
       "type": "uint8",
       "length": 1
-    },  {
+    }, {
       "offset": 34,
       "name": "Dest4",
       "type": "uint8",
       "length": 1
-    },  {
+    }, {
       "offset": 35,
       "name": "Dest5",
       "type": "uint8",

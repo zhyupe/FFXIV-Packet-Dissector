@@ -14,12 +14,6 @@ M.types = {
       length = 16,
     },
   },
-  [0x019b] = {
-    [0] = {
-      name = "ffxiv_ipc_item_simple",
-      length = 32,
-    },
-  },
 }
 
 function M.getDissector(typeNum, length)

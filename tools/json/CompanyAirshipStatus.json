@@ -1,7 +1,8 @@
 {
   "name": "CompanyAirshipStatus",
   "type": {
-    "5.21_cn": "0x0168"
+    "5.21_cn": "0x0168",
+    "5.25_cn": "0x01ae"
   },
   "fields": [{
     "offset": 0,
@@ -33,22 +34,22 @@
       "name": "Dest1",
       "type": "uint8",
       "length": 1
-    },  {
+    }, {
       "offset": 30,
       "name": "Dest2",
       "type": "uint8",
       "length": 1
-    },  {
+    }, {
       "offset": 31,
       "name": "Dest3",
       "type": "uint8",
       "length": 1
-    },  {
+    }, {
       "offset": 32,
       "name": "Dest4",
       "type": "uint8",
       "length": 1
-    },  {
+    }, {
       "offset": 33,
       "name": "Dest5",
       "type": "uint8",
