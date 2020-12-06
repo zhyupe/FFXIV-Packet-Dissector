@@ -38,7 +38,7 @@ function ffxiv_ipc_company_submersible_status_item.dissector(tvbuf, pktinfo, roo
   tree:add_le(company_submersible_status_item_fields.unknown2, unknown2_tvbr, unknown2_val)
 
   -- dissect the name field
-  if tvbuf:len() > 31 then
+  if tvbuf:len() >= 31 then
     local name_tvbr = tvbuf:range(8, 23)
     local name_val  = name_tvbr:string(ENC_UTF_8)
     tree:add(company_submersible_status_item_fields.name, name_tvbr, name_val)

@@ -128,7 +128,7 @@ function ffxiv_ipc_examine.dissector(tvbuf, pktinfo, root)
   end
 
   -- dissect the nickname field
-  if tvbuf:len() > 656 then
+  if tvbuf:len() >= 656 then
     local nickname_tvbr = tvbuf:range(624, 32)
     local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
     tree:add(examine_fields.nickname, nickname_tvbr, nickname_val)

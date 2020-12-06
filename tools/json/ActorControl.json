@@ -8,7 +8,8 @@
     "5.18_cn": "0x03CC",
     "5.2_cn": "0x03AF",
     "5.21_cn": "0x0229",
-    "5.25_cn": "0x038F"
+    "5.25_cn": "0x038F",
+    "5.3_cn": "0x0312"
   },
   "enums": [{
     "name": "ActorControlType",
@@ -147,7 +148,7 @@
       "value": 109
     }, {
       "key": "FateStart",
-      "value": 2372
+      "value": 2357
     }, {
       "key": "ItemObtainMsg",
       "value": 117

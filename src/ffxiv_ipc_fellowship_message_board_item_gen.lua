@@ -58,7 +58,7 @@ function ffxiv_ipc_fellowship_message_board_item.dissector(tvbuf, pktinfo, root)
   tree:add(fellowship_message_board_item_fields.nickname, nickname_tvbr, nickname_val)
 
   -- dissect the content field
-  local content_tvbr = tvbuf:range(50, 122)
+  local content_tvbr = tvbuf:range(50, 102)
   local content_val  = content_tvbr:string(ENC_UTF_8)
   tree:add(fellowship_message_board_item_fields.content, content_tvbr, content_val)
 

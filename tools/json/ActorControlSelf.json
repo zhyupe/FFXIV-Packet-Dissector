@@ -8,7 +8,8 @@
     "5.18_cn": "0x0398",
     "5.2_cn": "0x0142",
     "5.21_cn": "0x025E",
-    "5.25_cn": "0x028B"
+    "5.25_cn": "0x028B",
+    "5.3_cn": "0x02B0"
   },
   "fields": [{
     "offset": 0,
@@ -34,23 +35,23 @@
     "type": "uint32",
     "condition": {
       "Type": [{
-        "value": 116,
+        "value": 2372,
         "label": "Fate",
         "enum": "$Fate"
       }, {
-        "value": 120,
+        "value": 2353,
         "label": "Fate",
         "enum": "$Fate"
       }, {
-        "value": 125,
+        "value": 2358,
         "label": "Fate",
         "enum": "$Fate"
       }, {
-        "value": 139,
+        "value": 2351,
         "label": "Fate",
         "enum": "$Fate"
       }, {
-        "value": 155,
+        "value": 2366,
         "label": "Fate",
         "enum": "$Fate"
       }, {

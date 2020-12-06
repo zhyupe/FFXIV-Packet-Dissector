@@ -6,11 +6,11 @@ local label_unknown0_type = {
   [521] = "JobLevel",
 }
 local label_data0_type = {
-  [116] = "Fate",
-  [120] = "Fate",
-  [125] = "Fate",
-  [139] = "Fate",
-  [155] = "Fate",
+  [2372] = "Fate",
+  [2353] = "Fate",
+  [2358] = "Fate",
+  [2351] = "Fate",
+  [2366] = "Fate",
   [320] = "Item",
   [325] = "Bait",
   [515] = "Achievement",
@@ -82,19 +82,19 @@ function ffxiv_ipc_actor_control_self.dissector(tvbuf, pktinfo, root)
   local data0_val  = data0_tvbr:le_uint()
   local data0_label_key = "Data0"
   local data0_label_val = data0_val
-  if type_val == 116 then
+  if type_val == 2372 then
     data0_label_key = "Fate"
     data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
-  elseif type_val == 120 then
+  elseif type_val == 2353 then
     data0_label_key = "Fate"
     data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
-  elseif type_val == 125 then
+  elseif type_val == 2358 then
     data0_label_key = "Fate"
     data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
-  elseif type_val == 139 then
+  elseif type_val == 2351 then
     data0_label_key = "Fate"
     data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
-  elseif type_val == 155 then
+  elseif type_val == 2366 then
     data0_label_key = "Fate"
     data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
   elseif type_val == 320 then

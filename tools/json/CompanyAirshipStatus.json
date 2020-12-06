@@ -2,7 +2,8 @@
   "name": "CompanyAirshipStatus",
   "type": {
     "5.21_cn": "0x0168",
-    "5.25_cn": "0x01ae"
+    "5.25_cn": "0x01ae",
+    "5.3_cn": "0x0159"
   },
   "fields": [{
     "offset": 0,

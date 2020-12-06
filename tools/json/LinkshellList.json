@@ -2,7 +2,8 @@
   "name": "Linkshell List",
   "type": {
     "5.0": "0x012A",
-    "5.11_cn": "0x023D"
+    "5.11_cn": "0x023D",
+    "5.25_cn": "0x0153"
   },
   "fields": [{
     "offset": 0,

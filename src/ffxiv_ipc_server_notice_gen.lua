@@ -21,7 +21,7 @@ function ffxiv_ipc_server_notice.dissector(tvbuf, pktinfo, root)
   tree:add_le(server_notice_fields.padding, padding_tvbr, padding_val)
 
   -- dissect the content field
-  if tvbuf:len() > 1 then
+  if tvbuf:len() >= 1 then
     local content_tvbr = tvbuf:range(1)
     local content_val  = content_tvbr:string(ENC_UTF_8)
     tree:add(server_notice_fields.content, content_tvbr, content_val)

@@ -33,7 +33,7 @@ function ffxiv_ipc_company_airship_status_item.dissector(tvbuf, pktinfo, root)
   tree:add_le(company_airship_status_item_fields.max_distance, max_distance_tvbr, max_distance_val)
 
   -- dissect the name field
-  if tvbuf:len() > 29 then
+  if tvbuf:len() >= 29 then
     local name_tvbr = tvbuf:range(6, 23)
     local name_val  = name_tvbr:string(ENC_UTF_8)
     tree:add(company_airship_status_item_fields.name, name_tvbr, name_val)

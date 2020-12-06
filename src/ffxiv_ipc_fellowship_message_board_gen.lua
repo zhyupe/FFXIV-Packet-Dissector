@@ -40,11 +40,11 @@ function ffxiv_ipc_fellowship_message_board.dissector(tvbuf, pktinfo, root)
   -- dissect fellowship_message_board_item
   local fellowship_message_board_item_dissector = Dissector.get('ffxiv_ipc_fellowship_message_board_item')
   local fellowship_message_board_item_pos = 16
-  local fellowship_message_board_item_len = 172
+  local fellowship_message_board_item_len = 152
   local fellowship_message_board_item_count = 10
 
   while fellowship_message_board_item_pos + fellowship_message_board_item_len <= len do
-    local fellowship_message_board_item_tvbr = tvbuf:range(fellowship_message_board_item_pos, 172)
+    local fellowship_message_board_item_tvbr = tvbuf:range(fellowship_message_board_item_pos, 152)
     fellowship_message_board_item_dissector:call(fellowship_message_board_item_tvbr:tvb(), pktinfo, root)
     fellowship_message_board_item_pos = fellowship_message_board_item_pos + fellowship_message_board_item_len
     fellowship_message_board_item_count = fellowship_message_board_item_count - 1

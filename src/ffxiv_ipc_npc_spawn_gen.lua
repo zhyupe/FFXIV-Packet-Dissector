@@ -447,7 +447,7 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   tree:add_le(npc_spawn_fields.models9, models9_tvbr, models9_val)
 
   -- dissect the nickname field
-  if tvbuf:len() > 588 then
+  if tvbuf:len() >= 588 then
     local nickname_tvbr = tvbuf:range(556, 32)
     local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
     tree:add(npc_spawn_fields.nickname, nickname_tvbr, nickname_val)
@@ -458,7 +458,7 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   end
 
   -- dissect the look field
-  if tvbuf:len() > 614 then
+  if tvbuf:len() >= 614 then
     local look_tvbr = tvbuf:range(588, 26)
     local look_val  = look_tvbr:string(ENC_UTF_8)
     tree:add(npc_spawn_fields.look, look_tvbr, look_val)

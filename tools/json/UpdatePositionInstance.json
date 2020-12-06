@@ -1,7 +1,8 @@
 {
   "name": "UpdatePositionInstance",
   "type": {
-    "5.0": "0x0180"
+    "5.0": "0x0180",
+    "5.3_cn": "0x0181"
   },
   "fields": [{
     "offset": 0,

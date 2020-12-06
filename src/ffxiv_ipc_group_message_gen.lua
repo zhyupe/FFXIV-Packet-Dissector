@@ -66,14 +66,14 @@ function ffxiv_ipc_group_message.dissector(tvbuf, pktinfo, root)
   tree:add_le(group_message_fields.reserved0, reserved0_tvbr, reserved0_val)
 
   -- dissect the nickname field
-  if tvbuf:len() > 57 then
+  if tvbuf:len() >= 57 then
     local nickname_tvbr = tvbuf:range(25, 32)
     local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
     tree:add(group_message_fields.nickname, nickname_tvbr, nickname_val)
   end
 
   -- dissect the content field
-  if tvbuf:len() > 57 then
+  if tvbuf:len() >= 57 then
     local content_tvbr = tvbuf:range(57)
     local content_val  = content_tvbr:string(ENC_UTF_8)
     tree:add(group_message_fields.content, content_tvbr, content_val)

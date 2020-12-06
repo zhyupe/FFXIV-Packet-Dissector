@@ -2,7 +2,8 @@
   "name": "CompanySubmersibleStatus",
   "type": {
     "5.21_cn": "0x0306",
-    "5.25_cn": "0x00da"
+    "5.25_cn": "0x00da",
+    "5.3_cn": "0x023a"
   },
   "fields": [{
     "offset": 0,

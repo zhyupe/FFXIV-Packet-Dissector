@@ -48,7 +48,7 @@ const itemAppend = function (item, indent = '  ') {
       }
       break
     case 'hex':
-      output = `string.format('%0${item.length / 4}x', ${output}))`
+      output = `string.format('%0${item.length * 2}x', ${output})`
       break
     case 'val':
     default:
@@ -116,7 +116,7 @@ const renderField = function (snakeName, item) {
   let suffix = ''
 
   if (item.check_length) {
-    prefix += `${indent}if tvbuf:len() > ${item.offset + (item.length || 0)} then\n`
+    prefix += `${indent}if tvbuf:len() >= ${item.offset + (item.length || 0)} then\n`
     suffix = `\n${indent}end` + suffix
     indent += '  '
   }
