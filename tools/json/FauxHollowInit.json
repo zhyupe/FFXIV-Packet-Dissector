@@ -1,0 +1,78 @@
+{
+  "name": "Faux Hollow Init",
+  "type": {
+    "5.3_cn": "0x0122"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "Unknown2",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "Unknown3",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Unknown4",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 16,
+    "name": "Unknown5",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 20,
+    "name": "Unknown6",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 24,
+    "name": "Unknown7",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 28,
+    "name": "Chance",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 36,
+    "name": "FauxHollowBlock",
+    "type": "children",
+    "count": 5
+  }, {
+    "offset": 88,
+    "name": "Timestamp1",
+    "type": "uint64",
+    "length": 8
+  }, {
+    "offset": 80,
+    "name": "Timestamp2",
+    "type": "uint64",
+    "length": 8
+  }],
+  "children": [{
+    "name": "FauxHollowBlock",
+    "fields": [{
+      "offset": 0,
+      "name": "Row",
+      "type": "uint32",
+      "append": "val",
+      "length": 4
+    }, {
+      "offset": 4,
+      "name": "Column",
+      "type": "uint32",
+      "append": "val",
+      "length": 4
+    }]
+  }]
+}

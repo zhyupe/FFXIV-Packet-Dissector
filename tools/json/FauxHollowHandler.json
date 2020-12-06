@@ -1,0 +1,49 @@
+{
+  "name": "Faux Hollow Handler",
+  "type": {
+    "5.3_cn": "0x00bc"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "Unknown1",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "Unknown2",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 12,
+    "name": "Row",
+    "type": "uint32",
+    "length": 4,
+    "append": "val"
+  }, {
+    "offset": 16,
+    "name": "Column",
+    "type": "uint32",
+    "length": 4,
+    "append": "val"
+  }, {
+    "offset": 20,
+    "name": "unknown3",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 24,
+    "name": "unknown4",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 28,
+    "name": "unknown6",
+    "type": "uint32",
+    "length": 4
+  }]
+}
