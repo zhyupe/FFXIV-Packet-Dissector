@@ -1,0 +1,76 @@
+{
+  "name": "WardLandInfo",
+  "type": {
+    "5.25_cn": "0x022b",
+    "5.3_cn": "0x0130"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "unknown0",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 2,
+    "name": "Section",
+    "type": "uint16",
+    "append": "val",
+    "length": 2
+  }, {
+    "offset": 4,
+    "name": "TerritoryType",
+    "type": "uint16",
+    "enum": "$TerritoryType",
+    "append": "enum",
+    "length": 2
+  }, {
+    "offset": 6,
+    "name": "World",
+    "type": "uint16",
+    "enum": "$World",
+    "length": 2
+  }, {
+    "offset": 8,
+    "name": "WardLandItem",
+    "type": "children",
+    "count": 60
+  }],
+  "children": [{
+    "name": "WardLandItem",
+    "fields": [{
+      "offset": 0,
+      "name": "Price",
+      "type": "uint32",
+      "append": "val",
+      "length": 4
+    }, {
+      "offset": 4,
+      "name": "Type",
+      "type": "uint8",
+      "base": "HEX",
+      "append": "hex",
+      "length": 1
+    }, {
+      "offset": 5,
+      "name": "Appeal1",
+      "type": "uint8",
+      "length": 1
+    }, {
+      "offset": 6,
+      "name": "Appeal2",
+      "type": "uint8",
+      "length": 1
+    }, {
+      "offset": 7,
+      "name": "Appeal3",
+      "type": "uint8",
+      "length": 1
+    }, {
+      "offset": 8,
+      "name": "Name",
+      "type": "string",
+      "check_length": true,
+      "length": 32,
+      "append": "val"
+    }]
+  }]
+}
