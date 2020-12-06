@@ -31,10 +31,6 @@ M.types = {
       name = "ffxiv_ipc_actor_move",
       length = 16,
     },
-    [1] = {
-      name = "ffxiv_ipc_update_class_info",
-      length = 16,
-    },
   },
   [0x0323] = {
     [0] = {
@@ -90,10 +86,22 @@ M.types = {
       length = 0,
     },
   },
+  [0x0113] = {
+    [0] = {
+      name = "ffxiv_ipc_company_level",
+      length = 32,
+    },
+  },
   [0x00da] = {
     [0] = {
       name = "ffxiv_ipc_company_submersible_status",
       length = 0,
+    },
+  },
+  [0x013b] = {
+    [0] = {
+      name = "ffxiv_ipc_container_info",
+      length = 16,
     },
   },
   [0x02A6] = {
@@ -120,6 +128,12 @@ M.types = {
       length = 656,
     },
   },
+  [0x0110] = {
+    [0] = {
+      name = "ffxiv_ipc_garden_status",
+      length = 34,
+    },
+  },
   [0x0242] = {
     [0] = {
       name = "ffxiv_ipc_init_zone",
@@ -142,6 +156,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction_finish",
       length = 16,
+    },
+  },
+  [0x0153] = {
+    [0] = {
+      name = "ffxiv_ipc_linkshell_list",
+      length = 0,
     },
   },
   [0x0142] = {
@@ -186,16 +206,34 @@ M.types = {
       length = 384,
     },
   },
+  [0x0199] = {
+    [0] = {
+      name = "ffxiv_ipc_update_class_info",
+      length = 16,
+    },
+  },
   [0x016B] = {
     [0] = {
       name = "ffxiv_ipc_update_hp_mp_tp",
       length = 8,
     },
   },
+  [0x00a2] = {
+    [0] = {
+      name = "ffxiv_ipc_update_inventory_slot",
+      length = 64,
+    },
+  },
   [0x028C] = {
     [0] = {
       name = "ffxiv_ipc_item_info",
       length = 64,
+    },
+  },
+  [0x022b] = {
+    [0] = {
+      name = "ffxiv_ipc_ward_land_info",
+      length = 8,
     },
   },
 }
