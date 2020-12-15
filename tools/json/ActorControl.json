@@ -9,7 +9,8 @@
     "5.2_cn": "0x03AF",
     "5.21_cn": "0x0229",
     "5.25_cn": "0x038F",
-    "5.3_cn": "0x0312"
+    "5.3_cn": "0x0312",
+    "5.301_cn": "0x0388"
   },
   "enums": [{
     "name": "ActorControlType",
@@ -548,6 +549,10 @@
         "label": "Status",
         "enum": "$Status"
       }, {
+        "value": 23,
+        "label": "Status",
+        "enum": "$Status"
+      }, {
         "value": 116,
         "label": "Fate",
         "enum": "$Fate"
@@ -559,10 +564,13 @@
     "length": 4
   }, {
     "offset": 8,
-    "name": "Mode",
+    "name": "Data1",
     "type": "uint32",
     "condition": {
       "Type": [{
+        "value": 23,
+        "label": "Type"
+      }, {
         "value": 300,
         "label": "Enabled"
       }]
@@ -570,18 +578,30 @@
     "length": 4
   }, {
     "offset": 12,
-    "name": "SkillID",
+    "name": "Data2",
     "type": "uint32",
-    "length": 4,
-    "enum": "$Action"
+    "condition": {
+      "Type": [{
+        "value": 23,
+        "label": "Value"
+      }]
+    },
+    "length": 4
   }, {
     "offset": 16,
-    "name": "Param1",
+    "name": "Data3",
     "type": "uint32",
+    "condition": {
+      "Type": [{
+        "value": 23,
+        "label": "ActorId",
+        "base": "HEX"
+      }]
+    },
     "length": 4
   }, {
     "offset": 20,
-    "name": "Param2",
+    "name": "Data4",
     "type": "uint32",
     "length": 4
   }]

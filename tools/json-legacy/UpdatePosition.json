@@ -1,0 +1,77 @@
+{
+  "name": "Update Position",
+  "fields": [
+    {
+      "name": "rotation",
+      "type": "float",
+      "length": 4,
+      "offset": 0
+    },
+    {
+      "name": "unk_10",
+      "type": "uint8",
+      "length": 1,
+      "offset": 4
+    },
+    {
+      "name": "unk_11",
+      "type": "uint8",
+      "length": 1,
+      "offset": 5
+    },
+    {
+      "name": "unk_12",
+      "type": "uint8",
+      "length": 1,
+      "offset": 6
+    },
+    {
+      "name": "headPosition",
+      "type": "uint8",
+      "length": 1,
+      "offset": 7
+    },
+    {
+      "name": "position_x",
+      "type": "float",
+      "length": 4,
+      "offset": 8
+    },
+    {
+      "name": "position_y",
+      "type": "float",
+      "length": 4,
+      "offset": 12
+    },
+    {
+      "name": "position_z",
+      "type": "float",
+      "length": 4,
+      "offset": 16
+    },
+    {
+      "name": "animationType",
+      "type": "uint8",
+      "length": 1,
+      "offset": 20
+    },
+    {
+      "name": "animationState",
+      "type": "uint8",
+      "length": 1,
+      "offset": 21
+    },
+    {
+      "name": "clientAnimationType",
+      "type": "uint8",
+      "length": 1,
+      "offset": 22
+    },
+    {
+      "name": "unk_2",
+      "type": "uint8",
+      "length": 1,
+      "offset": 23
+    }
+  ]
+}

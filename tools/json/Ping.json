@@ -5,14 +5,13 @@
     "5.1_cn": "0x0358",
     "5.21_cn": "0x01dc",
     "5.25_cn": "0x03cd",
-    "5.3_cn": "0x016f"
+    "5.3_cn": "0x016f",
+    "5.301_cn": "0x027a"
   },
-  "fields": [
-    {
-      "offset": 0,
-      "name": "timeInMilliseconds",
-      "type": "uint64",
-      "length": 8
-    }
-  ]
+  "fields": [{
+    "offset": 0,
+    "name": "timeInMilliseconds",
+    "type": "uint64",
+    "length": 8
+  }]
 }

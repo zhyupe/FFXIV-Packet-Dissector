@@ -4,22 +4,30 @@ local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
 local label_data0_type = {
   [21] = "Status",
+  [23] = "Status",
   [116] = "Fate",
   [518] = "Achievement",
 }
-local label_mode_type = {
+local label_data1_type = {
+  [23] = "Type",
   [300] = "Enabled",
+}
+local label_data2_type = {
+  [23] = "Value",
+}
+local label_data3_type = {
+  [23] = "ActorId",
 }
 local ffxiv_ipc_actor_control = Proto("ffxiv_ipc_actor_control", "FFXIV-IPC Actor Control")
 
 local actor_control_fields = {
-  type     = ProtoField.uint16("ffxiv_ipc_actor_control.type", "Type", base.DEC, enum.reverse.actor_control_type),
-  unknown  = ProtoField.uint16("ffxiv_ipc_actor_control.unknown", "Unknown", base.DEC),
-  data0    = ProtoField.uint32("ffxiv_ipc_actor_control.data0", "Data0", base.DEC),
-  mode     = ProtoField.uint32("ffxiv_ipc_actor_control.mode", "Mode", base.DEC),
-  skill_id = ProtoField.uint32("ffxiv_ipc_actor_control.skill_id", "SkillID", base.DEC, db.Action),
-  param1   = ProtoField.uint32("ffxiv_ipc_actor_control.param1", "Param1", base.DEC),
-  param2   = ProtoField.uint32("ffxiv_ipc_actor_control.param2", "Param2", base.DEC),
+  type    = ProtoField.uint16("ffxiv_ipc_actor_control.type", "Type", base.DEC, enum.reverse.actor_control_type),
+  unknown = ProtoField.uint16("ffxiv_ipc_actor_control.unknown", "Unknown", base.DEC),
+  data0   = ProtoField.uint32("ffxiv_ipc_actor_control.data0", "Data0", base.DEC),
+  data1   = ProtoField.uint32("ffxiv_ipc_actor_control.data1", "Data1", base.DEC),
+  data2   = ProtoField.uint32("ffxiv_ipc_actor_control.data2", "Data2", base.DEC),
+  data3   = ProtoField.uint32("ffxiv_ipc_actor_control.data3", "Data3", base.DEC),
+  data4   = ProtoField.uint32("ffxiv_ipc_actor_control.data4", "Data4", base.DEC),
 }
 
 ffxiv_ipc_actor_control.fields = actor_control_fields
@@ -52,6 +60,9 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   if type_val == 21 then
     data0_label_key = "Status"
     data0_label_val = (db.Status[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 23 then
+    data0_label_key = "Status"
+    data0_label_val = (db.Status[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
   elseif type_val == 116 then
     data0_label_key = "Fate"
     data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
@@ -60,30 +71,42 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   end
   tree:add_le(actor_control_fields.data0, data0_tvbr, data0_val, data0_label_key .. ": " .. data0_label_val)
 
-  -- dissect the mode field
-  local mode_tvbr = tvbuf:range(8, 4)
-  local mode_val  = mode_tvbr:le_uint()
-  local mode_label_key = "Mode"
-  local mode_label_val = mode_val
-  if type_val == 300 then
-    mode_label_key = "Enabled"
+  -- dissect the data1 field
+  local data1_tvbr = tvbuf:range(8, 4)
+  local data1_val  = data1_tvbr:le_uint()
+  local data1_label_key = "Data1"
+  local data1_label_val = data1_val
+  if type_val == 23 then
+    data1_label_key = "Type"
+  elseif type_val == 300 then
+    data1_label_key = "Enabled"
   end
-  tree:add_le(actor_control_fields.mode, mode_tvbr, mode_val, mode_label_key .. ": " .. mode_label_val)
+  tree:add_le(actor_control_fields.data1, data1_tvbr, data1_val, data1_label_key .. ": " .. data1_label_val)
 
-  -- dissect the skill_id field
-  local skill_id_tvbr = tvbuf:range(12, 4)
-  local skill_id_val  = skill_id_tvbr:le_uint()
-  tree:add_le(actor_control_fields.skill_id, skill_id_tvbr, skill_id_val)
+  -- dissect the data2 field
+  local data2_tvbr = tvbuf:range(12, 4)
+  local data2_val  = data2_tvbr:le_uint()
+  local data2_label_key = "Data2"
+  local data2_label_val = data2_val
+  if type_val == 23 then
+    data2_label_key = "Value"
+  end
+  tree:add_le(actor_control_fields.data2, data2_tvbr, data2_val, data2_label_key .. ": " .. data2_label_val)
 
-  -- dissect the param1 field
-  local param1_tvbr = tvbuf:range(16, 4)
-  local param1_val  = param1_tvbr:le_uint()
-  tree:add_le(actor_control_fields.param1, param1_tvbr, param1_val)
+  -- dissect the data3 field
+  local data3_tvbr = tvbuf:range(16, 4)
+  local data3_val  = data3_tvbr:le_uint()
+  local data3_label_key = "Data3"
+  local data3_label_val = data3_val
+  if type_val == 23 then
+    data3_label_key = "ActorId"
+  end
+  tree:add_le(actor_control_fields.data3, data3_tvbr, data3_val, data3_label_key .. ": " .. data3_label_val)
 
-  -- dissect the param2 field
-  local param2_tvbr = tvbuf:range(20, 4)
-  local param2_val  = param2_tvbr:le_uint()
-  tree:add_le(actor_control_fields.param2, param2_tvbr, param2_val)
+  -- dissect the data4 field
+  local data4_tvbr = tvbuf:range(20, 4)
+  local data4_val  = data4_tvbr:le_uint()
+  tree:add_le(actor_control_fields.data4, data4_tvbr, data4_val)
 
   return len
 end
