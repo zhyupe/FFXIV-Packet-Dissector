@@ -6,7 +6,8 @@
     "5.11_cn": "0x010b",
     "5.15_cn": "0x026d",
     "5.3_cn": "0x02C6",
-    "5.301_cn": "0x00F5"
+    "5.301_cn": "0x00F5",
+    "5.31_cn": "0x008A"
   },
   "enums": [{
     "name": "ActorControl144Category",

@@ -2,7 +2,8 @@
   "name": "WardLandInfo",
   "type": {
     "5.25_cn": "0x022b",
-    "5.3_cn": "0x0130"
+    "5.3_cn": "0x0130",
+    "5.31_cn": "0x0164"
   },
   "fields": [{
     "offset": 0,
