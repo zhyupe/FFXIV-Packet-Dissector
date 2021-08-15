@@ -3,7 +3,8 @@
 local ffxiv_ipc_ping = Proto("ffxiv_ipc_ping", "FFXIV-IPC Ping")
 
 local ping_fields = {
-  time_in_milliseconds = ProtoField.uint64("ffxiv_ipc_ping.time_in_milliseconds", "timeInMilliseconds", base.DEC),
+  sequence = ProtoField.uint32("ffxiv_ipc_ping.sequence", "Sequence", base.DEC),
+  unknown  = ProtoField.uint32("ffxiv_ipc_ping.unknown", "Unknown", base.DEC),
 }
 
 ffxiv_ipc_ping.fields = ping_fields
@@ -14,10 +15,15 @@ function ffxiv_ipc_ping.dissector(tvbuf, pktinfo, root)
 
   local len = tvbuf:len()
 
-  -- dissect the time_in_milliseconds field
-  local time_in_milliseconds_tvbr = tvbuf:range(0, 8)
-  local time_in_milliseconds_val  = time_in_milliseconds_tvbr:le_uint64()
-  tree:add_le(ping_fields.time_in_milliseconds, time_in_milliseconds_tvbr, time_in_milliseconds_val)
+  -- dissect the sequence field
+  local sequence_tvbr = tvbuf:range(0, 4)
+  local sequence_val  = sequence_tvbr:le_uint()
+  tree:add_le(ping_fields.sequence, sequence_tvbr, sequence_val)
+
+  -- dissect the unknown field
+  local unknown_tvbr = tvbuf:range(4, 4)
+  local unknown_val  = unknown_tvbr:le_uint()
+  tree:add_le(ping_fields.unknown, unknown_tvbr, unknown_val)
 
   return len
 end

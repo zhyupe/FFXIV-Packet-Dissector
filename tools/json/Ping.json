@@ -9,12 +9,24 @@
     "5.301_cn": "0x027a",
     "5.31_cn": "0x0372",
     "5.4_cn": "0x0103",
-    "5.41_cn": "0x0270"
+    "5.41_cn": "0x0270",
+    "5.5_cn": "0x034d"
   },
+  "aliases": [{
+    "name": "PingHandler",
+    "type": {
+      "5.5_cn": "0x0372"
+    }
+  }],
   "fields": [{
     "offset": 0,
-    "name": "timeInMilliseconds",
-    "type": "uint64",
-    "length": 8
+    "name": "Sequence",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "Unknown",
+    "type": "uint32",
+    "length": 4
   }]
 }

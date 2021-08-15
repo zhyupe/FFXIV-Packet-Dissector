@@ -1,0 +1,40 @@
+{
+  "name": "Dynamic Event",
+  "type": {
+    "5.35_cn": "0x0144",
+    "5.4_cn": "0x0129"
+  },
+  "fields": [{
+    "offset": 0,
+    "name": "timeStart",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 4,
+    "name": "timeRemaining",
+    "type": "uint32",
+    "length": 4
+  }, {
+    "offset": 8,
+    "name": "event",
+    "type": "uint8",
+    "length": 1,
+    "enum": "$DynamicEvent",
+    "append": "enum"
+  }, {
+    "offset": 9,
+    "name": "players",
+    "type": "uint8",
+    "length": 1
+  }, {
+    "offset": 10,
+    "name": "status",
+    "type": "uint16",
+    "length": 2
+  }, {
+    "offset": 12,
+    "name": "progress",
+    "type": "uint32",
+    "length": 4
+  }]
+}

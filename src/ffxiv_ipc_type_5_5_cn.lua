@@ -150,6 +150,24 @@ M.types = {
       length = 636,
     },
   },
+  [0x03b5] = {
+    [0] = {
+      name = "ffxiv_ipc_object_spawn",
+      length = 64,
+    },
+  },
+  [0x034d] = {
+    [0] = {
+      name = "ffxiv_ipc_ping",
+      length = 8,
+    },
+  },
+  [0x0372] = {
+    [0] = {
+      name = "ffxiv_ipc_ping_handler",
+      length = 8,
+    },
+  },
   [0x0323] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
@@ -172,6 +190,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_status_effect_list",
       length = 384,
+    },
+  },
+  [0x013D] = {
+    [0] = {
+      name = "ffxiv_ipc_treasure_shifting_wheel_result",
+      length = 56,
     },
   },
   [0x006F] = {

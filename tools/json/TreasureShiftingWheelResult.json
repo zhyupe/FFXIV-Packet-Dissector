@@ -1,0 +1,116 @@
+{
+  "name": "Treasure Shifting Wheel Result",
+  "type": {
+    "5.5_cn": "0x013D"
+  },
+  "fields": [
+    {
+      "name": "StartPos",
+      "type": "uint8",
+      "length": 1,
+      "offset": 0
+    },
+    {
+      "name": "EndPos",
+      "type": "uint8",
+      "length": 1,
+      "offset": 1
+    },
+    {
+      "name": "UnknownResult1",
+      "type": "uint16",
+      "length": 2,
+      "offset": 2
+    },
+    {
+      "name": "UnknownConstant1",
+      "type": "uint32",
+      "length": 4,
+      "offset": 4
+    },
+    {
+      "name": "UnknownConstant2",
+      "type": "uint32",
+      "length": 4,
+      "offset": 8
+    },
+    {
+      "name": "UnknownConstant3",
+      "type": "uint32",
+      "length": 4,
+      "offset": 12
+    },
+    {
+      "name": "UnknownConstant4",
+      "type": "uint32",
+      "length": 4,
+      "offset": 16
+    },
+    {
+      "name": "UnknownConstant5",
+      "type": "uint32",
+      "length": 4,
+      "offset": 20
+    },
+    {
+      "name": "UnknownLevel",
+      "type": "uint32",
+      "length": 4,
+      "offset": 24
+    },
+    {
+      "name": "ExtraMove",
+      "type": "uint8",
+      "length": 1,
+      "offset": 28
+    },
+    {
+      "name": "Unknown1",
+      "type": "uint8",
+      "length": 1,
+      "offset": 29
+    },
+    {
+      "name": "Unknown2",
+      "type": "uint16",
+      "length": 2,
+      "offset": 30
+    },
+    {
+      "name": "UnknownConstant6",
+      "type": "uint32",
+      "length": 4,
+      "offset": 32
+    },
+    {
+      "name": "UnknownConstant7",
+      "type": "uint32",
+      "length": 4,
+      "offset": 36
+    },
+    {
+      "name": "Result",
+      "type": "uint32",
+      "length": 4,
+      "offset": 40
+    },
+    {
+      "name": "UnknownConstant8",
+      "type": "uint32",
+      "length": 4,
+      "offset": 44
+    },
+    {
+      "name": "UnknownConstant9",
+      "type": "uint32",
+      "length": 4,
+      "offset": 48
+    },
+    {
+      "name": "FinalLevel",
+      "type": "uint32",
+      "length": 4,
+      "offset": 52
+    }
+  ]
+}

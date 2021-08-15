@@ -210,6 +210,12 @@ M.types = {
       length = 640,
     },
   },
+  [0x018B] = {
+    [0] = {
+      name = "ffxiv_ipc_object_spawn",
+      length = 64,
+    },
+  },
   [0x017F] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
