@@ -310,12 +310,12 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
   tree:add_le(player_spawn_fields.enemy_type, enemy_type_tvbr, enemy_type_val)
 
   -- dissect the level field
-  local level_tvbr = tvbuf:range(127, 1)
+  local level_tvbr = tvbuf:range(129, 1)
   local level_val  = level_tvbr:le_uint()
   tree:add_le(player_spawn_fields.level, level_tvbr, level_val)
 
   -- dissect the class_job field
-  local class_job_tvbr = tvbuf:range(128, 1)
+  local class_job_tvbr = tvbuf:range(130, 1)
   local class_job_val  = class_job_tvbr:le_uint()
   tree:add_le(player_spawn_fields.class_job, class_job_tvbr, class_job_val)
 
@@ -324,58 +324,58 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
   tree:append_text(class_job_display)
 
   -- dissect the u26d field
-  local u26d_tvbr = tvbuf:range(129, 1)
+  local u26d_tvbr = tvbuf:range(131, 1)
   local u26d_val  = u26d_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u26d, u26d_tvbr, u26d_val)
 
   -- dissect the u27a field
-  local u27a_tvbr = tvbuf:range(130, 2)
+  local u27a_tvbr = tvbuf:range(132, 2)
   local u27a_val  = u27a_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u27a, u27a_tvbr, u27a_val)
 
   -- dissect the current_mount field
-  local current_mount_tvbr = tvbuf:range(132, 1)
+  local current_mount_tvbr = tvbuf:range(134, 1)
   local current_mount_val  = current_mount_tvbr:le_uint()
   tree:add_le(player_spawn_fields.current_mount, current_mount_tvbr, current_mount_val)
 
   -- dissect the mount_head field
-  local mount_head_tvbr = tvbuf:range(133, 1)
+  local mount_head_tvbr = tvbuf:range(135, 1)
   local mount_head_val  = mount_head_tvbr:le_uint()
   tree:add_le(player_spawn_fields.mount_head, mount_head_tvbr, mount_head_val)
 
   -- dissect the mount_body field
-  local mount_body_tvbr = tvbuf:range(134, 1)
+  local mount_body_tvbr = tvbuf:range(136, 1)
   local mount_body_val  = mount_body_tvbr:le_uint()
   tree:add_le(player_spawn_fields.mount_body, mount_body_tvbr, mount_body_val)
 
   -- dissect the mount_feet field
-  local mount_feet_tvbr = tvbuf:range(135, 1)
+  local mount_feet_tvbr = tvbuf:range(137, 1)
   local mount_feet_val  = mount_feet_tvbr:le_uint()
   tree:add_le(player_spawn_fields.mount_feet, mount_feet_tvbr, mount_feet_val)
 
   -- dissect the mount_color field
-  local mount_color_tvbr = tvbuf:range(136, 1)
+  local mount_color_tvbr = tvbuf:range(138, 1)
   local mount_color_val  = mount_color_tvbr:le_uint()
   tree:add_le(player_spawn_fields.mount_color, mount_color_tvbr, mount_color_val)
 
   -- dissect the scale field
-  local scale_tvbr = tvbuf:range(137, 1)
+  local scale_tvbr = tvbuf:range(139, 1)
   local scale_val  = scale_tvbr:le_uint()
   tree:add_le(player_spawn_fields.scale, scale_tvbr, scale_val)
 
   -- dissect the u29b field
-  local u29b_tvbr = tvbuf:range(138, 4)
+  local u29b_tvbr = tvbuf:range(140, 4)
   local u29b_val  = u29b_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u29b, u29b_tvbr, u29b_val)
 
   -- dissect the u30b field
-  local u30b_tvbr = tvbuf:range(142, 4)
+  local u30b_tvbr = tvbuf:range(144, 4)
   local u30b_val  = u30b_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u30b, u30b_tvbr, u30b_val)
 
   -- dissect status_effect_list_item
   local status_effect_list_item_dissector = Dissector.get('ffxiv_ipc_status_effect_list_item')
-  local status_effect_list_item_pos = 144
+  local status_effect_list_item_pos = 148
   local status_effect_list_item_len = 12
   local status_effect_list_item_count = 30
 
@@ -391,7 +391,7 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
 
   -- dissect position3
   local position3_dissector = Dissector.get('ffxiv_ipc_position3')
-  local position3_pos = 504
+  local position3_pos = 508
   local position3_len = 12
   local position3_count = 1
 
@@ -406,58 +406,58 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
   end
 
   -- dissect the models0 field
-  local models0_tvbr = tvbuf:range(516, 4)
+  local models0_tvbr = tvbuf:range(520, 4)
   local models0_val  = models0_tvbr:le_uint()
   tree:add_le(player_spawn_fields.models0, models0_tvbr, models0_val)
 
   -- dissect the models1 field
-  local models1_tvbr = tvbuf:range(520, 4)
+  local models1_tvbr = tvbuf:range(524, 4)
   local models1_val  = models1_tvbr:le_uint()
   tree:add_le(player_spawn_fields.models1, models1_tvbr, models1_val)
 
   -- dissect the models2 field
-  local models2_tvbr = tvbuf:range(524, 4)
+  local models2_tvbr = tvbuf:range(528, 4)
   local models2_val  = models2_tvbr:le_uint()
   tree:add_le(player_spawn_fields.models2, models2_tvbr, models2_val)
 
   -- dissect the models3 field
-  local models3_tvbr = tvbuf:range(528, 4)
+  local models3_tvbr = tvbuf:range(532, 4)
   local models3_val  = models3_tvbr:le_uint()
   tree:add_le(player_spawn_fields.models3, models3_tvbr, models3_val)
 
   -- dissect the models4 field
-  local models4_tvbr = tvbuf:range(532, 4)
+  local models4_tvbr = tvbuf:range(536, 4)
   local models4_val  = models4_tvbr:le_uint()
   tree:add_le(player_spawn_fields.models4, models4_tvbr, models4_val)
 
   -- dissect the models5 field
-  local models5_tvbr = tvbuf:range(536, 4)
+  local models5_tvbr = tvbuf:range(540, 4)
   local models5_val  = models5_tvbr:le_uint()
   tree:add_le(player_spawn_fields.models5, models5_tvbr, models5_val)
 
   -- dissect the models6 field
-  local models6_tvbr = tvbuf:range(540, 4)
+  local models6_tvbr = tvbuf:range(544, 4)
   local models6_val  = models6_tvbr:le_uint()
   tree:add_le(player_spawn_fields.models6, models6_tvbr, models6_val)
 
   -- dissect the models7 field
-  local models7_tvbr = tvbuf:range(544, 4)
+  local models7_tvbr = tvbuf:range(548, 4)
   local models7_val  = models7_tvbr:le_uint()
   tree:add_le(player_spawn_fields.models7, models7_tvbr, models7_val)
 
   -- dissect the models8 field
-  local models8_tvbr = tvbuf:range(548, 4)
+  local models8_tvbr = tvbuf:range(552, 4)
   local models8_val  = models8_tvbr:le_uint()
   tree:add_le(player_spawn_fields.models8, models8_tvbr, models8_val)
 
   -- dissect the models9 field
-  local models9_tvbr = tvbuf:range(552, 4)
+  local models9_tvbr = tvbuf:range(556, 4)
   local models9_val  = models9_tvbr:le_uint()
   tree:add_le(player_spawn_fields.models9, models9_tvbr, models9_val)
 
   -- dissect the nickname field
-  if tvbuf:len() >= 588 then
-    local nickname_tvbr = tvbuf:range(556, 32)
+  if tvbuf:len() >= 592 then
+    local nickname_tvbr = tvbuf:range(560, 32)
     local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
     tree:add(player_spawn_fields.nickname, nickname_tvbr, nickname_val)
 
@@ -467,14 +467,14 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
   end
 
   -- dissect the look field
-  if tvbuf:len() >= 614 then
-    local look_tvbr = tvbuf:range(588, 26)
+  if tvbuf:len() >= 618 then
+    local look_tvbr = tvbuf:range(592, 26)
     local look_val  = look_tvbr:string(ENC_UTF_8)
     tree:add(player_spawn_fields.look, look_tvbr, look_val)
   end
 
   -- dissect the fc_tag field
-  local fc_tag_tvbr = tvbuf:range(614, 10)
+  local fc_tag_tvbr = tvbuf:range(618, 10)
   local fc_tag_val  = fc_tag_tvbr:string(ENC_UTF_8)
   tree:add(player_spawn_fields.fc_tag, fc_tag_tvbr, fc_tag_val)
 

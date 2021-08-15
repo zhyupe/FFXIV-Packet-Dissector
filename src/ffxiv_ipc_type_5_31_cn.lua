@@ -149,7 +149,7 @@ M.types = {
   [0x0213] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn",
-      length = 632,
+      length = 636,
     },
   },
   [0x0372] = {
@@ -161,7 +161,7 @@ M.types = {
   [0x024A] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
-      length = 624,
+      length = 628,
     },
   },
   [0x01F8] = {

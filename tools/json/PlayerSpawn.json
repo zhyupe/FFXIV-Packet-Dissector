@@ -14,7 +14,8 @@
     "5.31_cn": "0x024A",
     "5.35_cn": "0x00D1",
     "5.4_cn": "0x030A",
-    "5.41_cn": "0x029A"
+    "5.41_cn": "0x029A",
+    "5.5_cn": "0x0323"
   },
   "fields": [{
     "offset": 0,
@@ -242,142 +243,142 @@
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 127,
+    "offset": 129,
     "name": "level",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 128,
+    "offset": 130,
     "name": "classJob",
     "type": "uint8",
     "length": 1,
     "enum": "$ClassJob",
     "append": "enum"
   }, {
-    "offset": 129,
+    "offset": 131,
     "name": "u26d",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 130,
+    "offset": 132,
     "name": "u27a",
     "type": "uint16",
     "length": 2
   }, {
-    "offset": 132,
+    "offset": 134,
     "name": "currentMount",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 133,
+    "offset": 135,
     "name": "mountHead",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 134,
+    "offset": 136,
     "name": "mountBody",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 135,
+    "offset": 137,
     "name": "mountFeet",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 136,
+    "offset": 138,
     "name": "mountColor",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 137,
+    "offset": 139,
     "name": "scale",
     "type": "uint8",
     "length": 1
   }, {
-    "offset": 138,
+    "offset": 140,
     "name": "u29b",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 142,
+    "offset": 144,
     "name": "u30b",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 144,
+    "offset": 148,
     "name": "StatusEffectListItem",
     "type": "children",
     "count": 30
   }, {
-    "offset": 504,
+    "offset": 508,
     "name": "POSITION3",
     "type": "children",
     "count": 1
   }, {
-    "offset": 516,
+    "offset": 520,
     "name": "models0",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 520,
+    "offset": 524,
     "name": "models1",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 524,
+    "offset": 528,
     "name": "models2",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 528,
+    "offset": 532,
     "name": "models3",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 532,
+    "offset": 536,
     "name": "models4",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 536,
+    "offset": 540,
     "name": "models5",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 540,
+    "offset": 544,
     "name": "models6",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 544,
+    "offset": 548,
     "name": "models7",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 548,
+    "offset": 552,
     "name": "models8",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 552,
+    "offset": 556,
     "name": "models9",
     "type": "uint32",
     "length": 4
   }, {
-    "offset": 556,
+    "offset": 560,
     "name": "Nickname",
     "type": "string",
     "check_length": true,
     "length": 32,
     "append": "enum"
   }, {
-    "offset": 588,
+    "offset": 592,
     "name": "Look",
     "type": "string",
     "check_length": true,
     "length": 26
   }, {
-    "offset": 614,
+    "offset": 618,
     "name": "fcTag",
     "type": "string",
     "length": 10,
