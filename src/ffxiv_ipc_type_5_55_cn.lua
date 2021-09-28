@@ -168,6 +168,12 @@ M.types = {
       length = 64,
     },
   },
+  [0x00db] = {
+    [0] = {
+      name = "ffxiv_ipc_ping",
+      length = 8,
+    },
+  },
   [0x01EB] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
