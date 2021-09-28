@@ -1,5 +1,5 @@
 {
-  "name": "AddStatusEffect",
+  "name": "Effect Result",
   "type": {
     "5.0": "0x0141",
     "5.1_cn": "0x01e2",
@@ -12,7 +12,9 @@
     "5.3_cn": "0x037C",
     "5.301_cn": "0x00EA",
     "5.4_cn": "0x03B7",
-    "5.41_cn": "0x03C8"
+    "5.41_cn": "0x03C8",
+    "5.5_cn": "0x02d5",
+    "5.55_cn": "0x0315"
   },
   "enums": [],
   "fields": [{

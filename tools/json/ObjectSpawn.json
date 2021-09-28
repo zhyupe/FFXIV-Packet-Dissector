@@ -2,135 +2,114 @@
   "name": "Object Spawn",
   "type": {
     "5.0": "0x018B",
-    "5.5_cn": "0x03b5"
+    "5.5_cn": "0x03b5",
+    "5.55_cn": "0x0174"
   },
-  "fields": [
-    {
-      "name": "spawnIndex",
-      "type": "uint8",
-      "length": 1,
-      "offset": 0
-    },
-    {
-      "name": "objKind",
-      "type": "uint8",
-      "length": 1,
-      "offset": 1
-    },
-    {
-      "name": "state",
-      "type": "uint8",
-      "length": 1,
-      "offset": 2
-    },
-    {
-      "name": "unknown3",
-      "type": "uint8",
-      "length": 1,
-      "offset": 3
-    },
-    {
-      "name": "objId",
-      "type": "uint32",
-      "length": 4,
-      "offset": 4,
-      "append": "val"
-    },
-    {
-      "name": "actorId",
-      "type": "uint32",
-      "length": 4,
-      "offset": 8
-    },
-    {
-      "name": "levelId",
-      "type": "uint32",
-      "length": 4,
-      "offset": 12
-    },
-    {
-      "name": "unknown10",
-      "type": "uint32",
-      "length": 4,
-      "offset": 16
-    },
-    {
-      "name": "someActorId14",
-      "type": "uint32",
-      "length": 4,
-      "offset": 20
-    },
-    {
-      "name": "gimmickId",
-      "type": "uint32",
-      "length": 4,
-      "offset": 24
-    },
-    {
-      "name": "scale",
-      "type": "float",
-      "length": 4,
-      "offset": 28
-    },
-    {
-      "name": "unknown20a",
-      "type": "int16",
-      "length": 2,
-      "offset": 32
-    },
-    {
-      "name": "rotation",
-      "type": "uint16",
-      "length": 2,
-      "offset": 34
-    },
-    {
-      "name": "unknown24a",
-      "type": "int16",
-      "length": 2,
-      "offset": 36
-    },
-    {
-      "name": "unknown24b",
-      "type": "int16",
-      "length": 2,
-      "offset": 38
-    },
-    {
-      "name": "unknown28a",
-      "type": "uint16",
-      "length": 2,
-      "offset": 40
-    },
-    {
-      "name": "unknown28c",
-      "type": "int16",
-      "length": 2,
-      "offset": 42
-    },
-    {
-      "name": "housingLink",
-      "type": "uint32",
-      "length": 4,
-      "offset": 44
-    },
-    {
-      "name": "POSITION3",
-      "type": "children",
-      "count": 1,
-      "offset": 48
-    },
-    {
-      "name": "unknown3C",
-      "type": "int16",
-      "length": 2,
-      "offset": 60
-    },
-    {
-      "name": "unknown3E",
-      "type": "int16",
-      "length": 2,
-      "offset": 62
-    }
-  ]
+  "fields": [{
+    "name": "spawnIndex",
+    "type": "uint8",
+    "length": 1,
+    "offset": 0
+  }, {
+    "name": "objKind",
+    "type": "uint8",
+    "length": 1,
+    "offset": 1
+  }, {
+    "name": "state",
+    "type": "uint8",
+    "length": 1,
+    "offset": 2
+  }, {
+    "name": "unknown3",
+    "type": "uint8",
+    "length": 1,
+    "offset": 3
+  }, {
+    "name": "objId",
+    "type": "uint32",
+    "length": 4,
+    "offset": 4,
+    "append": "val"
+  }, {
+    "name": "actorId",
+    "type": "uint32",
+    "length": 4,
+    "offset": 8
+  }, {
+    "name": "levelId",
+    "type": "uint32",
+    "length": 4,
+    "offset": 12
+  }, {
+    "name": "unknown10",
+    "type": "uint32",
+    "length": 4,
+    "offset": 16
+  }, {
+    "name": "someActorId14",
+    "type": "uint32",
+    "length": 4,
+    "offset": 20
+  }, {
+    "name": "gimmickId",
+    "type": "uint32",
+    "length": 4,
+    "offset": 24
+  }, {
+    "name": "scale",
+    "type": "float",
+    "length": 4,
+    "offset": 28
+  }, {
+    "name": "unknown20a",
+    "type": "int16",
+    "length": 2,
+    "offset": 32
+  }, {
+    "name": "rotation",
+    "type": "uint16",
+    "length": 2,
+    "offset": 34
+  }, {
+    "name": "unknown24a",
+    "type": "int16",
+    "length": 2,
+    "offset": 36
+  }, {
+    "name": "unknown24b",
+    "type": "int16",
+    "length": 2,
+    "offset": 38
+  }, {
+    "name": "unknown28a",
+    "type": "uint16",
+    "length": 2,
+    "offset": 40
+  }, {
+    "name": "unknown28c",
+    "type": "int16",
+    "length": 2,
+    "offset": 42
+  }, {
+    "name": "housingLink",
+    "type": "uint32",
+    "length": 4,
+    "offset": 44
+  }, {
+    "name": "POSITION3",
+    "type": "children",
+    "count": 1,
+    "offset": 48
+  }, {
+    "name": "unknown3C",
+    "type": "int16",
+    "length": 2,
+    "offset": 60
+  }, {
+    "name": "unknown3E",
+    "type": "int16",
+    "length": 2,
+    "offset": 62
+  }]
 }

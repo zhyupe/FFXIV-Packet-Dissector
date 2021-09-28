@@ -1,0 +1,56 @@
+{
+  "name": "Treasure Info",
+  "type": {
+    "5.5_cn": "0x00c8"
+  },
+  "fields": [
+    {
+      "name": "TreasureId",
+      "type": "uint32",
+      "length": 4,
+      "offset": 0
+    },
+    {
+      "name": "InDungeon",
+      "type": "uint16",
+      "length": 2,
+      "offset": 4
+    },
+    {
+      "name": "Stage",
+      "type": "uint8",
+      "length": 1,
+      "offset": 6
+    },
+    {
+      "name": "Unknown07",
+      "type": "uint8",
+      "length": 1,
+      "offset": 7
+    },
+    {
+      "name": "Unknown08",
+      "type": "uint32",
+      "length": 4,
+      "offset": 8
+    },
+    {
+      "name": "Unknown12",
+      "type": "uint32",
+      "length": 4,
+      "offset": 12
+    },
+    {
+      "name": "Unknown16",
+      "type": "uint32",
+      "length": 4,
+      "offset": 16
+    },
+    {
+      "name": "Unknown20",
+      "type": "uint32",
+      "length": 4,
+      "offset": 20
+    }
+  ]
+}

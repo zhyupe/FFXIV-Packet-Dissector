@@ -48,12 +48,6 @@ M.types = {
       length = 24,
     },
   },
-  [0x0141] = {
-    [0] = {
-      name = "ffxiv_ipc_add_status_effect",
-      length = 26,
-    },
-  },
   [0x0312] = {
     [0] = {
       name = "ffxiv_ipc_boss_status_effect_list",
@@ -138,6 +132,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_effect",
       length = 124,
+    },
+  },
+  [0x0141] = {
+    [0] = {
+      name = "ffxiv_ipc_effect_result",
+      length = 26,
     },
   },
   [0x015A] = {

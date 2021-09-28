@@ -114,6 +114,12 @@ M.types = {
       length = 124,
     },
   },
+  [0x02d5] = {
+    [0] = {
+      name = "ffxiv_ipc_effect_result",
+      length = 26,
+    },
+  },
   [0x0334] = {
     [0] = {
       name = "ffxiv_ipc_examine",
@@ -190,6 +196,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_status_effect_list",
       length = 384,
+    },
+  },
+  [0x00c8] = {
+    [0] = {
+      name = "ffxiv_ipc_treasure_info",
+      length = 24,
     },
   },
   [0x013D] = {

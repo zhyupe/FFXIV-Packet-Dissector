@@ -15,7 +15,8 @@
     "5.35_cn": "0x03DD",
     "5.4_cn": "0x00A2",
     "5.41_cn": "0x0354",
-    "5.5_cn": "0x03C1"
+    "5.5_cn": "0x03C1",
+    "5.55_cn": "0x0270"
   },
   "enums": [{
     "name": "ClientTriggerCommandId",

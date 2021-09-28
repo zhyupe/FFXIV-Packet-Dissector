@@ -38,12 +38,6 @@ M.types = {
       length = 24,
     },
   },
-  [0x02D0] = {
-    [0] = {
-      name = "ffxiv_ipc_add_status_effect",
-      length = 26,
-    },
-  },
   [0x021F] = {
     [0] = {
       name = "ffxiv_ipc_effect16",
@@ -114,6 +108,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_effect",
       length = 124,
+    },
+  },
+  [0x02D0] = {
+    [0] = {
+      name = "ffxiv_ipc_effect_result",
+      length = 26,
     },
   },
   [0x0174] = {
