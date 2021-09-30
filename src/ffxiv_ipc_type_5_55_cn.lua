@@ -72,6 +72,12 @@ M.types = {
       length = 636,
     },
   },
+  [0x00c0] = {
+    [0] = {
+      name = "ffxiv_ipc_cedirector",
+      length = 16,
+    },
+  },
   [0x0270] = {
     [0] = {
       name = "ffxiv_ipc_client_trigger",

@@ -68,6 +68,12 @@ M.types = {
       length = 636,
     },
   },
+  [0x0144] = {
+    [0] = {
+      name = "ffxiv_ipc_cedirector",
+      length = 16,
+    },
+  },
   [0x03DD] = {
     [0] = {
       name = "ffxiv_ipc_client_trigger",
@@ -90,12 +96,6 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_currency_crystal_info",
       length = 32,
-    },
-  },
-  [0x0144] = {
-    [0] = {
-      name = "ffxiv_ipc_dynamic_event",
-      length = 16,
     },
   },
   [0x02FB] = {

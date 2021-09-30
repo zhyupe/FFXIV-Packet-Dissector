@@ -1,8 +1,9 @@
 {
-  "name": "Dynamic Event",
+  "name": "CEDirector",
   "type": {
     "5.35_cn": "0x0144",
-    "5.4_cn": "0x0129"
+    "5.4_cn": "0x0129",
+    "5.55_cn": "0x00c0"
   },
   "fields": [{
     "offset": 0,
