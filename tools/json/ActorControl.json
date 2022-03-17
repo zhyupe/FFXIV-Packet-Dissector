@@ -17,7 +17,8 @@
     "5.41_cn": "0x01EA",
     "5.5_cn": "0x008B",
     "5.55_cn": "0x01D8",
-    "5.57_cn": "0x00CA"
+    "5.57_cn": "0x00CA",
+    "6.0_cn": "0x00F6"
   },
   "enums": [{
     "name": "ActorControlType",

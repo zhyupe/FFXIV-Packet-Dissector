@@ -1,5 +1,5 @@
 local ffxiv_ipc = Proto("ffxiv_ipc", "FFXIV IPC")
-local ipc_type = require("ffxiv_ipc_type_5_57_cn")
+local ipc_type = require("ffxiv_ipc_type_6_0_cn")
 
 local function makeValString(enumTable)
   local t = {}
