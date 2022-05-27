@@ -12,7 +12,12 @@ For Windows users, `mklink.bat` is provided to create a symbolic link from the p
 ![image](https://user-images.githubusercontent.com/2197479/68070741-31e87c00-fdad-11e9-9ced-86f2fce3d17e.png)
 
 Please notice that the plugin checks **all tcp packets** and determines packet types only by magic (`0x41a05252` or 16 bytes of `0`). So its highly
-recommended to set capture filters properly to reduce packets to be processed.
+recommended to set capture filters properly to reduce packets to be processed. For example:
+
+```
+# This filters all tcp packets from and to Luxingniao (#1 CN Datacenter)
+tcp and host 109.244.5
+```
 
 ## Supported Packets
 
