@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build": "tsup src/index.mts --format esm"
+  },
+  "dependencies": {
+    "@ffxiv-teamcraft/dll-inject": "^0.0.8"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.2"
+  }
+}
