@@ -6,6 +6,7 @@
     "@ffxiv-teamcraft/dll-inject": "^0.0.8"
   },
   "devDependencies": {
+    "@types/node": "^20.10.3",
     "tsup": "^8.0.1",
     "typescript": "^5.3.2"
   }
