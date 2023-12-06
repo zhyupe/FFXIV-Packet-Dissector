@@ -1,0 +1,5 @@
+{
+  "name": "ffxiv-packet-dissector",
+  "private": true,
+  "packageManager": "yarn@4.0.2"
+}
