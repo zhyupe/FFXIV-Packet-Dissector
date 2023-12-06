@@ -7,7 +7,13 @@ const bundleMagic = Buffer.from([
   //
   0x7f, 0x2a, 0x64, 0x4d, 0x7b, 0x99, 0xc4, 0x75,
 ])
-const ipc = (from: Socket, to: Socket, packet: DeucalionPacket) => {
+
+const ipc = (
+  from: Socket,
+  toAddress: string,
+  toPort: number,
+  packet: DeucalionPacket,
+) => {
   // Bundle (40) + Segment (16) + IPC (16) = 72
   const headerLength = 72
 
@@ -33,9 +39,18 @@ const ipc = (from: Socket, to: Socket, packet: DeucalionPacket) => {
   // ipc epoch
   header.writeUint32LE(packet.header.timestamp, 64)
 
-  const { address, port } = to.address()
-  from.send(Buffer.concat([header, packet.data]), port, address)
+  from.send(Buffer.concat([header, packet.data]), toPort, toAddress)
 }
+
+const bind = (socket: Socket, address: string) =>
+  new Promise<number>((resolve) => {
+    socket.bind(undefined, address, () => {
+      resolve(socket.address().port)
+    })
+  })
+
+const clientAddress = '127.0.0.11'
+const serverAddress = '127.0.0.12'
 
 ;(async () => {
   const capture = new CaptureInterface()
@@ -43,14 +58,16 @@ const ipc = (from: Socket, to: Socket, packet: DeucalionPacket) => {
   const clientSocket = createSocket('udp4')
   const serverSocket = createSocket('udp4')
 
-  clientSocket.bind()
-  serverSocket.bind()
+  const [clientPort, serverPort] = await Promise.all([
+    bind(clientSocket, clientAddress),
+    bind(serverSocket, serverAddress),
+  ])
 
   capture.on('packet', (packet) => {
     if (packet.origin === Origin.Client) {
-      ipc(clientSocket, serverSocket, packet)
+      ipc(clientSocket, serverAddress, serverPort, packet)
     } else {
-      ipc(serverSocket, clientSocket, packet)
+      ipc(serverSocket, clientAddress, clientPort, packet)
     }
   })
 
