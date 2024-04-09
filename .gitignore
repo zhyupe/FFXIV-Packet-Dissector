@@ -151,3 +151,5 @@ public/
 # Generated Sapphire JSON protocol schema
 /tools/sapphire/
 /tools/local/
+
+dist/

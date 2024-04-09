@@ -1,9 +1,18 @@
 {
+  "name": "forwarder",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsup src/index.mts --format esm"
   },
   "dependencies": {
-    "@ffxiv-teamcraft/dll-inject": "^0.0.8"
+    "pcap": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "^20.10.3",

@@ -8,6 +8,6 @@
     "trailingComma": "all"
   },
   "workspaces": [
-    "forwarder"
+    "packages/*"
   ]
 }

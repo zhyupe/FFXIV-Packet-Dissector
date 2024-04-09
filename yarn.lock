@@ -367,6 +367,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tsconfig/node20@npm:^20.1.4":
+  version: 20.1.4
+  resolution: "@tsconfig/node20@npm:20.1.4"
+  checksum: 239cd6abaceaaffc758e7a9dd3748ec1acfdabd6de28a9a16a3824c21f17ad69a16184870298460345d2fb6f3663d092c21d5b764bef669a179658b4a7eac739
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^20.10.3":
   version: 20.10.3
   resolution: "@types/node@npm:20.10.3"
@@ -850,12 +857,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"forwarder-457d22@workspace:forwarder":
+"forwarder@workspace:packages/forwarder":
   version: 0.0.0-use.local
-  resolution: "forwarder-457d22@workspace:forwarder"
+  resolution: "forwarder@workspace:packages/forwarder"
   dependencies:
-    "@ffxiv-teamcraft/dll-inject": "npm:^0.0.8"
     "@types/node": "npm:^20.10.3"
+    pcap: "workspace:^"
     tsup: "npm:^8.0.1"
     typescript: "npm:^5.3.2"
   languageName: unknown
@@ -1506,6 +1513,18 @@ __metadata:
   checksum: 666f6973f332f27581371efaf303fd6c272cc43c2057b37aa99e3643158c7e4b2626549555d88626e99ea9e046f82f32e41bbde5f1508547e9a11b149b52387c
   languageName: node
   linkType: hard
+
+"pcap@workspace:^, pcap@workspace:packages/pcap":
+  version: 0.0.0-use.local
+  resolution: "pcap@workspace:packages/pcap"
+  dependencies:
+    "@ffxiv-teamcraft/dll-inject": "npm:^0.0.8"
+    "@tsconfig/node20": "npm:^20.1.4"
+    "@types/node": "npm:^20.10.3"
+    tsup: "npm:^8.0.1"
+    typescript: "npm:^5.3.2"
+  languageName: unknown
+  linkType: soft
 
 "picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.3.1":
   version: 2.3.1

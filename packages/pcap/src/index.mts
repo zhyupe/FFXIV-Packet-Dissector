@@ -156,3 +156,5 @@ export declare interface CaptureInterface {
     ...args: Parameters<CaptureInterfaceEvents[U]>
   ): boolean
 }
+
+export * from './interface.mjs'
