@@ -3,14 +3,19 @@ import { ScannerRunner } from './scanner/scanner.mjs'
 import { getScanners } from './scanner/index.mjs'
 import { fileURLToPath } from 'url'
 ;(async () => {
-  const capture = new CaptureInterface()
   const runner = new ScannerRunner(getScanners(), {
     outDir: fileURLToPath(new URL('../out', import.meta.url)),
     onFinish: () => {
-      capture.stop()
+      capture?.stop()
     },
   })
 
+  if (runner.finished) {
+    runner.output()
+    return
+  }
+
+  const capture = new CaptureInterface()
   capture.on('packet', (packet) => {
     runner.write(packet)
   })

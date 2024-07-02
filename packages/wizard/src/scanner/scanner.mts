@@ -10,7 +10,11 @@ export interface Scanner<T extends Answers = Answers> {
   instruction: string
   source: PacketSource
   prompt?: QuestionCollection<T>
-  handler: (packet: DeucalionPacket, answer: Answers) => boolean | string
+  handler: (
+    packet: DeucalionPacket,
+    answer: Answers,
+    context: Record<string, string>,
+  ) => boolean | string
 }
 
 export interface OpcodeResult {
@@ -30,6 +34,9 @@ export class ScannerRunner extends Writable {
   #scannerIndex = 0
   #scannerAnswer: Answers | null = null
 
+  #context: Record<string, string> = {}
+  public finished = false
+
   constructor(
     private scanners: Scanner[],
     private options: {
@@ -45,16 +52,20 @@ export class ScannerRunner extends Writable {
     while (this.#scannerIndex < scanners.length) {
       const scanner = scanners[this.#scannerIndex]
       const state = this.#state.get(scanner.name)
+      const answer = state?.answer
+
+      if (answer) {
+        for (const [k, v] of Object.entries(answer)) {
+          this.#context[`${scanner.name}:${k}`] = v
+        }
+      }
 
       if (state?.value) {
         this.#scannerIndex += 1
         continue
       }
 
-      if (state?.answer) {
-        this.#scannerAnswer = state.answer
-      }
-
+      this.#scannerAnswer = answer || null
       break
     }
 
@@ -80,15 +91,26 @@ export class ScannerRunner extends Writable {
 
     if (this.#scannerIndex >= this.scanners.length) {
       this.options.onFinish()
+      this.finished = true
       return callback()
     }
 
     const [scanner, state] = await this.#prepareScanner()
+    if (scanner === null || state === null) {
+      this.options.onFinish()
+      this.finished = true
+      return callback()
+    }
+
     if (packet.origin !== scanner.source) {
       return callback()
     }
 
-    const ret = scanner.handler(packet, this.#scannerAnswer || {})
+    const ret = scanner.handler(
+      packet,
+      this.#scannerAnswer || {},
+      this.#context,
+    )
     if (ret === false) {
       return callback()
     }
@@ -123,6 +145,11 @@ export class ScannerRunner extends Writable {
 
   async #prepareScanner() {
     const scanner = this.scanners[this.#scannerIndex]
+    if (!scanner) {
+      this.finished = true
+      return [null, null] as const
+    }
+
     if (!this.#state.has(scanner.name)) {
       this.#state.set(scanner.name, {})
     }

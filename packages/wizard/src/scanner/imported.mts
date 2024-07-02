@@ -29,7 +29,7 @@ export const getImportedScanners = () => {
     handler: (
       packet: ImportedPacket,
       answer: string[],
-      options: { Text: string },
+      options: { context: Record<string, string>; Text: string },
     ) => boolean,
     prompts: string[] = [],
   ) => {
@@ -42,8 +42,8 @@ export const getImportedScanners = () => {
         name: 'a',
         message,
       })),
-      handler: (packet, answer) => {
-        const store = { Text: '' }
+      handler: (packet, answer, context) => {
+        const store = { Text: '', context }
         const result = handler(
           {
             PacketSize: packet.data.length + Offsets.IpcData,
@@ -91,7 +91,7 @@ export const getImportedScanners = () => {
       var packetHp = BitConverter.ToUInt32(packet.Data, Offsets.IpcData)
       var packetMp = BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4)
 
-      return packetHp == maxHp && packetMp == 10000
+      return packetHp == maxHp && (packetMp === 10000 || packetMp === 0)
     },
     ['Please enter your max HP:'],
   )
@@ -111,11 +111,21 @@ export const getImportedScanners = () => {
     'PlayerStats',
     'Switch back to the job you entered HP for.',
     PacketSource.Server,
-    (packet, parameters) =>
-      packet.PacketSize == 176 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 24) == maxHp &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 28) == 10000 && // MP equals 10000
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 36) == 10000,
+    (packet, parameters, { context }) => {
+      if (!maxHp) {
+        maxHp = int.Parse(context['UpdateHpMpTp:a'])
+      }
+
+      if (packet.PacketSize !== 176) {
+        return false
+      }
+
+      const hp = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 24)
+      const mp = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 28)
+      const tp = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 32)
+
+      return hp == maxHp && (mp == 10000 || mp == 0) && (tp == 10000 || tp == 0)
+    },
   ) // GP equals 10000
   //=================
   RegisterScanner(
@@ -204,6 +214,27 @@ export const getImportedScanners = () => {
     ['Type /playtime, and input the days you played:'],
   )
   //=================
+  let fcRank = 0
+  RegisterScanner(
+    'FreeCompanyInfo',
+    'Load a zone. (If you are running scanners by order, suggest teleporting to Aetheryte Plaza)',
+    PacketSource.Server,
+    (packet, parameters) => {
+      fcRank = int.Parse(parameters[0])
+      return (
+        packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 45] == fcRank
+      )
+    },
+    ['Please enter your Free Company rank:'],
+  )
+  RegisterScanner(
+    'FreeCompanyDialog',
+    'Open your Free Company window (press G or ;)',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 0x31] == fcRank,
+  )
+  //=================
   let searchBytes: Buffer
   RegisterScanner(
     'SetSearchInfoHandler',
@@ -226,16 +257,6 @@ export const getImportedScanners = () => {
     PacketSource.Server,
     (packet, _) =>
       packet.PacketSize > 232 && IncludesBytes(packet.Data, searchBytes),
-  )
-  //=================
-  RegisterScanner(
-    'Examine',
-    "Please examine that character's equipment.",
-    PacketSource.Server,
-    (packet, parameters) =>
-      packet.PacketSize > 600 &&
-      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(parameters[0])),
-    ["Please enter a nearby character's name:"],
   )
   //=================
   var lightningCrystals = -1
@@ -327,6 +348,16 @@ export const getImportedScanners = () => {
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4) ==
         int.Parse(parameters[0]),
     ['Please enter your world ID:'],
+  )
+  //=================
+  RegisterScanner(
+    'Examine',
+    "Please examine that character's equipment.",
+    PacketSource.Server,
+    (packet, parameters) =>
+      packet.PacketSize > 600 &&
+      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(parameters[0])),
+    ["Please enter a nearby character's name:"],
   )
   /* Commented for now because this also matches UpdateTpHpMp
             RegisterScanner("ActorFreeSpawn", '',
@@ -503,27 +534,6 @@ export const getImportedScanners = () => {
       desynthResult.includes(
         BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x0c) % 1000000,
       ),
-  )
-  //=================
-  let fcRank = 0
-  RegisterScanner(
-    'FreeCompanyInfo',
-    'Load a zone. (If you are running scanners by order, suggest teleporting to Aetheryte Plaza)',
-    PacketSource.Server,
-    (packet, parameters) => {
-      fcRank = int.Parse(parameters[0])
-      return (
-        packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 45] == fcRank
-      )
-    },
-    ['Please enter your Free Company rank:'],
-  )
-  RegisterScanner(
-    'FreeCompanyDialog',
-    'Open your Free Company window (press G or ;)',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 0x31] == fcRank,
   )
   //=================
   const darkMatter = [5594, 5595, 5596, 5597, 5598, 10386, 17837, 33916]
@@ -710,18 +720,6 @@ export const getImportedScanners = () => {
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10) == 123456,
   )
   //=================
-  RegisterScanner(
-    'ObjectSpawn',
-    'Please enter a furnished house.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 96 &&
-      packet.Data[Offsets.IpcData + 1] == 12 &&
-      packet.Data[Offsets.IpcData + 2] == 4 &&
-      packet.Data[Offsets.IpcData + 3] == 0 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 12) == 0,
-  )
-  //=================
   const basicSynthesis = [
     100001, 100015, 100030, 100045, 100060, 100075, 100090, 100105,
   ]
@@ -736,6 +734,18 @@ export const getImportedScanners = () => {
       basicSynthesis.includes(
         BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 44),
       ),
+  )
+  //=================
+  RegisterScanner(
+    'ObjectSpawn',
+    'Please enter a furnished house. (Suggest teleporting to your FC house)',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 96 &&
+      packet.Data[Offsets.IpcData + 1] == 12 &&
+      packet.Data[Offsets.IpcData + 2] == 4 &&
+      packet.Data[Offsets.IpcData + 3] == 0 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 12) == 0,
   )
   //=================
   RegisterScanner(
@@ -954,6 +964,7 @@ export const getImportedScanners = () => {
     ],
   )
   //=================
+  /*
   RegisterScanner(
     'IslandWorkshopSupplyDemand',
     'Go to your Island Sanctuary and check workshop supply/demand status',
@@ -963,6 +974,7 @@ export const getImportedScanners = () => {
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData) == 0 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 1) == 0,
   )
+  */
   RegisterScanner(
     'MiniCactpotInit',
     'Start playing Mini Cactpot.',
@@ -979,19 +991,23 @@ export const getImportedScanners = () => {
     },
   )
   //=================
-  RegisterScanner(
-    'SocialList',
-    'Open your Party List.',
-    PacketSource.Server,
-    (packet, parameters) => {
-      if (packet.Data.length != Offsets.IpcData + 896) return false
-      if (packet.Data[Offsets.IpcData + 13 - 1] != 1) return false
-      if (!IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(parameters[0])))
-        return false
-      return true
-    },
-    ['Please enter your character name:'],
-  )
+  // RegisterScanner(
+  //   'SocialList',
+  //   'Open your Party List.',
+  //   PacketSource.Server,
+  //   (packet, parameters, { context }) => {
+  //     if (packet.Data.length != Offsets.IpcData + 896) return false
+  //     if (packet.Data[Offsets.IpcData + 13 - 1] != 1) return false
+  //     if (
+  //       !IncludesBytes(
+  //         packet.Data,
+  //         Encoding.UTF8.GetBytes(context['PlayerSetup:a']),
+  //       )
+  //     )
+  //       return false
+  //     return true
+  //   },
+  // )
 
   return scanners
 }
