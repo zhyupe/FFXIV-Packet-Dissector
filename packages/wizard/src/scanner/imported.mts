@@ -1,3 +1,4 @@
+import { input, number } from '@inquirer/prompts'
 import {
   BitConverter,
   Encoding,
@@ -8,7 +9,7 @@ import {
   hex,
   int,
 } from './helper.mjs'
-import { Scanner } from './scanner.mjs'
+import { Scanner, ScannerPrompt } from './interface.mjs'
 
 interface ImportedPacket {
   PacketSize: number
@@ -17,8 +18,25 @@ interface ImportedPacket {
   TargetActor: number
 }
 
+type QuickPrompt = string[] | Record<string, string> | ScannerPrompt<any>
+
 const bigIntZero = BigInt(0)
 const emptyHeader = Buffer.alloc(Offsets.IpcData)
+
+const buildPrompt = (prompt: QuickPrompt) => {
+  if (typeof prompt === 'function') {
+    return prompt
+  }
+
+  return async (values: Record<number | string, string>) => {
+    for (const [key, message] of Object.entries(prompt)) {
+      values[key] = await input({
+        message,
+        default: values[key],
+      })
+    }
+  }
+}
 
 export const getImportedScanners = () => {
   const scanners: Scanner[] = []
@@ -28,20 +46,16 @@ export const getImportedScanners = () => {
     source: PacketSource,
     handler: (
       packet: ImportedPacket,
-      answer: string[],
-      options: { context: Record<string, string>; Text: string },
+      answer: any,
+      options: { context: Record<string, any>; Text: string },
     ) => boolean,
-    prompts: string[] = [],
+    prompt?: QuickPrompt,
   ) => {
     scanners.push({
       name,
       instruction: tutorial,
       source,
-      prompt: prompts.map((message) => ({
-        type: 'input',
-        name: 'a',
-        message,
-      })),
+      prompt: prompt ? buildPrompt(prompt) : undefined,
       handler: (packet, answer, context) => {
         const store = { Text: '', context }
         const result = handler(
@@ -51,16 +65,17 @@ export const getImportedScanners = () => {
             SourceActor: packet.header.sourceActor,
             TargetActor: packet.header.targetActor,
           },
-          [answer.a],
+          answer,
           store,
         )
 
         if (result) {
-          if (store.Text) return store.Text
-          return true
+          return {
+            comment: store.Text,
+          }
         }
 
-        return false
+        return null
       },
     })
     //
@@ -71,29 +86,32 @@ export const getImportedScanners = () => {
     'PlayerSetup',
     'Please log in.',
     PacketSource.Server,
-    (packet, parameters) =>
+    (packet, { $playerName }) =>
       packet.PacketSize > 300 &&
-      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(parameters[0])),
-    ['Please enter your character name:'],
+      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes($playerName)),
+    {
+      $playerName: 'Please enter your character name:',
+    },
   )
 
   //=================
-  var maxHp = 0
   RegisterScanner(
     'UpdateHpMpTp',
     'Please alter your HP or MP and allow your stats to regenerate completely.',
     PacketSource.Server,
-    (packet, parameters) => {
-      maxHp = int.Parse(parameters[0])
-
+    (packet, { $maxHP }) => {
       if (packet.PacketSize != 40 && packet.PacketSize != 48) return false
 
       var packetHp = BitConverter.ToUInt32(packet.Data, Offsets.IpcData)
       var packetMp = BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4)
 
-      return packetHp == maxHp && (packetMp === 10000 || packetMp === 0)
+      return packetHp == $maxHP && (packetMp === 10000 || packetMp === 0)
     },
-    ['Please enter your max HP:'],
+    async (v) => {
+      v.$maxHP = await number({
+        message: 'Please enter your max HP:',
+      })
+    },
   )
   //=================
   RegisterScanner(
@@ -112,10 +130,6 @@ export const getImportedScanners = () => {
     'Switch back to the job you entered HP for.',
     PacketSource.Server,
     (packet, parameters, { context }) => {
-      if (!maxHp) {
-        maxHp = int.Parse(context['UpdateHpMpTp:a'])
-      }
-
       if (packet.PacketSize !== 176) {
         return false
       }
@@ -124,7 +138,11 @@ export const getImportedScanners = () => {
       const mp = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 28)
       const tp = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 32)
 
-      return hp == maxHp && (mp == 10000 || mp == 0) && (tp == 10000 || tp == 0)
+      return (
+        hp === context.$maxHP &&
+        (mp == 10000 || mp == 0) &&
+        (tp == 10000 || tp == 0)
+      )
     },
   ) // GP equals 10000
   //=================
@@ -212,27 +230,6 @@ export const getImportedScanners = () => {
       return inputDays == packetDays || inputDays + 1 == packetDays
     },
     ['Type /playtime, and input the days you played:'],
-  )
-  //=================
-  let fcRank = 0
-  RegisterScanner(
-    'FreeCompanyInfo',
-    'Load a zone. (If you are running scanners by order, suggest teleporting to Aetheryte Plaza)',
-    PacketSource.Server,
-    (packet, parameters) => {
-      fcRank = int.Parse(parameters[0])
-      return (
-        packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 45] == fcRank
-      )
-    },
-    ['Please enter your Free Company rank:'],
-  )
-  RegisterScanner(
-    'FreeCompanyDialog',
-    'Open your Free Company window (press G or ;)',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 0x31] == fcRank,
   )
   //=================
   let searchBytes: Buffer
@@ -534,6 +531,27 @@ export const getImportedScanners = () => {
       desynthResult.includes(
         BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x0c) % 1000000,
       ),
+  )
+  //=================
+  let fcRank = 0
+  RegisterScanner(
+    'FreeCompanyInfo',
+    'Load a zone. (If you are running scanners by order, suggest teleporting to Limsa Lominsa Lower Decks)',
+    PacketSource.Server,
+    (packet, parameters) => {
+      fcRank = int.Parse(parameters[0])
+      return (
+        packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 45] == fcRank
+      )
+    },
+    ['Please enter your Free Company rank:'],
+  )
+  RegisterScanner(
+    'FreeCompanyDialog',
+    'Open your Free Company window (press G or ;)',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 0x31] == fcRank,
   )
   //=================
   const darkMatter = [5594, 5595, 5596, 5597, 5598, 10386, 17837, 33916]
