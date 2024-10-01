@@ -12,7 +12,7 @@
     "build": "tsup src/index.mts --format esm --dts"
   },
   "dependencies": {
-    "@ffxiv-teamcraft/dll-inject": "^0.0.8"
+    "@ffxiv-teamcraft/dll-inject": "^0.0.11"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
