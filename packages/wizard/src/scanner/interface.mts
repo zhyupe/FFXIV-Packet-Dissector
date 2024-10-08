@@ -1,8 +1,9 @@
 import { PacketSource } from './helper.mjs'
-import { Answers, QuestionCollection } from 'inquirer'
+import { Answers } from 'inquirer'
 import { DeucalionPacket } from 'pcap'
 
 export interface OpcodeResult {
+  source: PacketSource
   value: number
   comment?: string
 }
@@ -18,5 +19,5 @@ export interface Scanner<T extends Answers = Answers> {
     packet: DeucalionPacket,
     answer: Answers,
     context: Record<string, any>,
-  ) => Omit<OpcodeResult, 'value'> | null
+  ) => Pick<OpcodeResult, 'comment'> | null
 }

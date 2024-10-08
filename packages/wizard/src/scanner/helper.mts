@@ -39,7 +39,7 @@ export const Offsets = {
   ServerId: 0x16,
   Timestamp: 0x18,
   IpcData: 0x20,
-}
+} as const
 
 export const IncludesBytes = (source: Buffer, search: Buffer) => {
   if (search == null) return false
@@ -62,7 +62,7 @@ export const IncludesBytes = (source: Buffer, search: Buffer) => {
 }
 
 export class Vector3 {
-  constructor(public X: number, public Y: number, public Z: number) {}
+  constructor(public X: number, public Y: number, public Z: number) { }
 
   minus(v: Vector3) {
     return new Vector3(this.X - v.X, this.Y - v.Y, this.Z - v.Z)

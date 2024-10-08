@@ -3,7 +3,7 @@ import { OpcodeResult, Scanner, ScannerPrompt } from './interface.mjs'
 import { readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { DeucalionPacket } from 'pcap'
-import { hex } from './helper.mjs'
+import { hex, PacketSource } from './helper.mjs'
 
 export class StateManager {
   constructor(private scanners: Scanner[], private outDir: string) {
@@ -13,7 +13,8 @@ export class StateManager {
     })
   }
 
-  #recognizedOpcodes = new Set<number>()
+  #recognizedClientOpcodes = new Set<number>()
+  #recognizedServerOpcodes = new Set<number>()
   #state = new Map<string, OpcodeResult>()
 
   #scannerIndex = -1
@@ -33,13 +34,13 @@ export class StateManager {
       await this.readyPromise
     }
 
-    const opcode = packet.header.type
-    if (this.#isRecognized(opcode)) {
+    const scanner = this.scanners[this.#scannerIndex]
+    if (packet.origin !== scanner.source) {
       return false
     }
 
-    const scanner = this.scanners[this.#scannerIndex]
-    if (packet.origin !== scanner.source) {
+    const opcode = packet.header.type
+    if (this.#isRecognized(packet.origin, opcode)) {
       return false
     }
 
@@ -53,6 +54,7 @@ export class StateManager {
       this.#setRecognized(scanner.name, {
         ...result,
         value: opcode,
+        source: scanner.source
       })
       return true
     }
@@ -67,14 +69,23 @@ export class StateManager {
       const state = this.#state.get(scanner.name)
       if (state?.value) {
         this.#scannerIndex += 1
-        this.#recognizedOpcodes.add(state.value)
+        console.log(
+          '[%d/%d] (%s) %s: %s',
+          this.#scannerIndex,
+          this.scanners.length,
+          scanner.source,
+          scanner.name,
+          state.value.toString(16),
+        )
+        this.#getRecognizedSet(scanner.source).add(state.value)
         continue
       }
 
       console.log(
-        '[%d/%d] %s: %s',
+        '[%d/%d] (%s) %s: %s',
         this.#scannerIndex,
         this.scanners.length,
+        scanner.source,
         scanner.name,
         scanner.instruction,
       )
@@ -102,12 +113,20 @@ export class StateManager {
     )
   }
 
-  #isRecognized(opcode: number) {
-    return this.#recognizedOpcodes.has(opcode)
+  #getRecognizedSet(source: PacketSource) {
+    if (source === PacketSource.Client) {
+      return this.#recognizedClientOpcodes
+    } else {
+      return this.#recognizedServerOpcodes
+    }
+  }
+
+  #isRecognized(source: PacketSource, opcode: number) {
+    return this.#getRecognizedSet(source).has(opcode)
   }
 
   #setRecognized(name: string, result: OpcodeResult) {
-    this.#recognizedOpcodes.add(result.value)
+    this.#getRecognizedSet(result.source).add(result.value)
     this.#state.set(name, result)
     this.#writeState()
 

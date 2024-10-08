@@ -121,7 +121,7 @@ export const getImportedScanners = () => {
     (packet, parameters) =>
       packet.PacketSize == 48 &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4) ==
-        int.Parse(parameters[0]),
+      int.Parse(parameters[0]),
     ['Please enter your the level for another job:'],
   )
   //=================
@@ -199,9 +199,9 @@ export const getImportedScanners = () => {
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x04) == 0 &&
       packet.SourceActor == packet.TargetActor &&
       packet.SourceActor ==
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x08) &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x08) &&
       packet.SourceActor ==
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x18),
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x18),
   )
   //=================
   RegisterScanner(
@@ -279,7 +279,7 @@ export const getImportedScanners = () => {
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4) == 2001 &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 6) == 10 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) ==
-        lightningCrystals &&
+      lightningCrystals &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) == 12,
   )
   RegisterScanner(
@@ -318,15 +318,15 @@ export const getImportedScanners = () => {
 
       var x =
         (BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 6) / 65536) *
-          2000 -
+        2000 -
         1000
       var y =
         (BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 8) / 65536) *
-          2000 -
+        2000 -
         1000
       var z =
         (BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 10) / 65536) *
-          2000 -
+        2000 -
         1000
 
       return inRange(
@@ -342,8 +342,8 @@ export const getImportedScanners = () => {
     PacketSource.Server,
     (packet, parameters) =>
       packet.PacketSize > 500 &&
-      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4) ==
-        int.Parse(parameters[0]),
+      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x14) ==
+      int.Parse(parameters[0]),
     ['Please enter your world ID:'],
   )
   //=================
@@ -475,9 +475,9 @@ export const getImportedScanners = () => {
       packet.PacketSize == 128 &&
       packet.SourceActor == packet.TargetActor &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) ==
-        packet.SourceActor &&
+      packet.SourceActor &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 12) ==
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x1e) == 761,
   )
   //=================
@@ -533,25 +533,30 @@ export const getImportedScanners = () => {
       ),
   )
   //=================
-  let fcRank = 0
   RegisterScanner(
     'FreeCompanyInfo',
     'Load a zone. (If you are running scanners by order, suggest teleporting to Limsa Lominsa Lower Decks)',
     PacketSource.Server,
-    (packet, parameters) => {
-      fcRank = int.Parse(parameters[0])
+    (packet, { $fcRank }) => {
       return (
-        packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 45] == fcRank
+        packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 45] == $fcRank
       )
     },
-    ['Please enter your Free Company rank:'],
+    async (v) => {
+      v.$fcRank = await number({
+        message: 'Please enter your Free Company rank:',
+      })
+    },
   )
   RegisterScanner(
     'FreeCompanyDialog',
     'Open your Free Company window (press G or ;)',
     PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 0x31] == fcRank,
+    (packet, _, { context }) => {
+      return (
+        packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 0x31] == context.$fcRank
+      )
+    }
   )
   //=================
   const darkMatter = [5594, 5595, 5596, 5597, 5598, 10386, 17837, 33916]
@@ -579,19 +584,28 @@ export const getImportedScanners = () => {
     },
   )
   RegisterScanner(
-    'MarketBoardItemListingCount',
+    'MarketBoardRequestItemListingInfo',
     'Please open the market board listings for any Dark Matter.',
+    PacketSource.Client,
+    (packet, _) =>
+      packet.PacketSize == 40 &&
+      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData)),
+  )
+  RegisterScanner(
+    'MarketBoardItemListingCount',
+    '',
     PacketSource.Server,
     (packet, _) =>
-      packet.PacketSize == 48 &&
-      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData)),
+      packet.PacketSize === 40 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) === 0 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4) <= 100,
   )
   RegisterScanner(
     'MarketBoardItemListingHistory',
     '',
     PacketSource.Server,
     (packet, _) =>
-      packet.PacketSize == 1080 &&
+      packet.PacketSize == 1000 &&
       isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData)),
   )
   RegisterScanner(
@@ -599,8 +613,8 @@ export const getImportedScanners = () => {
     '',
     PacketSource.Server,
     (packet, _) =>
-      packet.PacketSize > 1552 &&
-      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 44)),
+      packet.PacketSize > 1400 &&
+      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x2c)),
   )
   RegisterScanner(
     'MarketBoardPurchaseHandler',
@@ -627,7 +641,7 @@ export const getImportedScanners = () => {
     (packet, _) =>
       packet.PacketSize == 96 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10) ==
-        scannerItemId,
+      scannerItemId,
   )
   //=================
   let inventoryModifyHandlerId = 0
@@ -639,7 +653,7 @@ export const getImportedScanners = () => {
       var match =
         packet.PacketSize == 80 &&
         BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x18) ==
-          scannerItemId
+        scannerItemId
       if (!match) return false
 
       inventoryModifyHandlerId = BitConverter.ToUInt32(
@@ -659,7 +673,7 @@ export const getImportedScanners = () => {
     (packet, _) =>
       packet.PacketSize == 48 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
-        inventoryModifyHandlerId,
+      inventoryModifyHandlerId,
   )
   RegisterScanner(
     'InventoryTransaction',
@@ -669,7 +683,7 @@ export const getImportedScanners = () => {
       var match =
         packet.PacketSize == 80 &&
         BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x18) ==
-          scannerItemId
+        scannerItemId
       if (!match) return false
 
       inventoryModifyHandlerId = BitConverter.ToUInt32(
@@ -686,22 +700,26 @@ export const getImportedScanners = () => {
     (packet, _) =>
       packet.PacketSize == 48 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
-        inventoryModifyHandlerId,
+      inventoryModifyHandlerId,
   )
   //=================
+  const cityCount = 8
   RegisterScanner(
     'ResultDialog',
     'Please visit a retainer counter and request information about market tax rates.',
     PacketSource.Server,
     (packet, _) => {
-      if (packet.PacketSize != 72) return false
+      if (packet.PacketSize != 104) return false
 
-      var rate1 = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8)
-      var rate2 = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 12)
-      var rate3 = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16)
-      var rate4 = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 20)
+      for (let i = 0; i < cityCount; ++i) {
+        const rate = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8 + i * 4)
+        if (rate > 7) {
+          return false
+        }
+      }
 
-      return rate1 <= 7 && rate2 <= 7 && rate3 <= 7 && rate4 <= 7
+      const time = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8 + cityCount * 4)
+      return time * 1000 > Date.now()
     },
   )
   //=================
@@ -748,7 +766,7 @@ export const getImportedScanners = () => {
     (packet, _) =>
       packet.PacketSize == 320 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
-        packet.SourceActor &&
+      packet.SourceActor &&
       basicSynthesis.includes(
         BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 44),
       ),
@@ -773,7 +791,7 @@ export const getImportedScanners = () => {
     (packet, _) =>
       packet.PacketSize == 56 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) ==
-        packet.SourceActor,
+      packet.SourceActor,
   )
   //=================
   RegisterScanner(
@@ -843,11 +861,11 @@ export const getImportedScanners = () => {
       packet.SourceActor == packet.TargetActor &&
       BitConverter.ToUInt64(packet.Data, Offsets.IpcData) != bigIntZero &&
       BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x08) !=
-        bigIntZero &&
+      bigIntZero &&
       BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x10) !=
-        bigIntZero &&
+      bigIntZero &&
       BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x18) !=
-        bigIntZero &&
+      bigIntZero &&
       BitConverter.ToUInt32(packet.Data, packet.Data.length - 4) == 0,
   )
   //=================
@@ -947,7 +965,7 @@ export const getImportedScanners = () => {
     (packet, parameters) =>
       packet.PacketSize == 320 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4) ==
-        int.Parse(parameters[0]),
+      int.Parse(parameters[0]),
     [
       'Please enter the experience from the first sector (first destination in log, not the ones next to report rank and items):',
     ],
@@ -976,7 +994,7 @@ export const getImportedScanners = () => {
     (packet, parameters) =>
       packet.PacketSize == 320 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) ==
-        int.Parse(parameters[0]),
+      int.Parse(parameters[0]),
     [
       'Please enter the experience from the first sector (first destination in log, not the ones next to report rank and items):',
     ],
