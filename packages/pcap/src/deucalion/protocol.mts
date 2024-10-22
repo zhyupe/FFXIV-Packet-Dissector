@@ -6,13 +6,13 @@ import {
   WriteStream,
 } from 'fs'
 import { EventEmitter } from 'events'
-import { BufferReader } from './buffer-reader.mjs'
+import { BufferReader } from '../buffer-reader.mjs'
 import {
   DeucalionPacket,
   DeucalionPayload,
   Logger,
   Origin,
-} from './interface.mjs'
+} from '../interface.mjs'
 
 enum Operation {
   DEBUG,
