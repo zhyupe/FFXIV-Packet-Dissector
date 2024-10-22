@@ -121,7 +121,7 @@ export const getImportedScanners = () => {
     (packet, parameters) =>
       packet.PacketSize == 48 &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4) ==
-      int.Parse(parameters[0]),
+        int.Parse(parameters[0]),
     ['Please enter your the level for another job:'],
   )
   //=================
@@ -199,9 +199,9 @@ export const getImportedScanners = () => {
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x04) == 0 &&
       packet.SourceActor == packet.TargetActor &&
       packet.SourceActor ==
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x08) &&
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x08) &&
       packet.SourceActor ==
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x18),
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x18),
   )
   //=================
   RegisterScanner(
@@ -279,7 +279,7 @@ export const getImportedScanners = () => {
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4) == 2001 &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 6) == 10 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) ==
-      lightningCrystals &&
+        lightningCrystals &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) == 12,
   )
   RegisterScanner(
@@ -318,15 +318,15 @@ export const getImportedScanners = () => {
 
       var x =
         (BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 6) / 65536) *
-        2000 -
+          2000 -
         1000
       var y =
         (BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 8) / 65536) *
-        2000 -
+          2000 -
         1000
       var z =
         (BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 10) / 65536) *
-        2000 -
+          2000 -
         1000
 
       return inRange(
@@ -343,7 +343,7 @@ export const getImportedScanners = () => {
     (packet, parameters) =>
       packet.PacketSize > 500 &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x14) ==
-      int.Parse(parameters[0]),
+        int.Parse(parameters[0]),
     ['Please enter your world ID:'],
   )
   //=================
@@ -475,9 +475,9 @@ export const getImportedScanners = () => {
       packet.PacketSize == 128 &&
       packet.SourceActor == packet.TargetActor &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) ==
-      packet.SourceActor &&
+        packet.SourceActor &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 12) ==
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) &&
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x1e) == 761,
   )
   //=================
@@ -520,7 +520,8 @@ export const getImportedScanners = () => {
   const limsaLominsaFishes = [4869, 4870, 4776, 4871, 4872, 4874, 4876]
   const desynthResult = [5267, 5823]
   RegisterScanner(
-    'DesynthResult',
+    // 'DesynthResult',
+    'ResumeEventScene16',
     'Please desynth the fish (You can also purchase a Merlthor Goby, Lominsan Anchovy or Harbor Herring from marketboard). If you got items other than Fine Sand and Allagan Tin Piece, please desynth again.',
     PacketSource.Server,
     (packet, _) =>
@@ -554,9 +555,10 @@ export const getImportedScanners = () => {
     PacketSource.Server,
     (packet, _, { context }) => {
       return (
-        packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 0x31] == context.$fcRank
+        packet.PacketSize == 112 &&
+        packet.Data[Offsets.IpcData + 0x31] == context.$fcRank
       )
-    }
+    },
   )
   //=================
   const darkMatter = [5594, 5595, 5596, 5597, 5598, 10386, 17837, 33916]
@@ -641,7 +643,7 @@ export const getImportedScanners = () => {
     (packet, _) =>
       packet.PacketSize == 96 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10) ==
-      scannerItemId,
+        scannerItemId,
   )
   //=================
   let inventoryModifyHandlerId = 0
@@ -653,7 +655,7 @@ export const getImportedScanners = () => {
       var match =
         packet.PacketSize == 80 &&
         BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x18) ==
-        scannerItemId
+          scannerItemId
       if (!match) return false
 
       inventoryModifyHandlerId = BitConverter.ToUInt32(
@@ -673,7 +675,7 @@ export const getImportedScanners = () => {
     (packet, _) =>
       packet.PacketSize == 48 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
-      inventoryModifyHandlerId,
+        inventoryModifyHandlerId,
   )
   RegisterScanner(
     'InventoryTransaction',
@@ -683,7 +685,7 @@ export const getImportedScanners = () => {
       var match =
         packet.PacketSize == 80 &&
         BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x18) ==
-        scannerItemId
+          scannerItemId
       if (!match) return false
 
       inventoryModifyHandlerId = BitConverter.ToUInt32(
@@ -700,12 +702,14 @@ export const getImportedScanners = () => {
     (packet, _) =>
       packet.PacketSize == 48 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
-      inventoryModifyHandlerId,
+        inventoryModifyHandlerId,
   )
   //=================
+  /*
   const cityCount = 8
   RegisterScanner(
-    'ResultDialog',
+    'ResumeEventScene8',
+    // 'ResultDialog',
     'Please visit a retainer counter and request information about market tax rates.',
     PacketSource.Server,
     (packet, _) => {
@@ -722,6 +726,7 @@ export const getImportedScanners = () => {
       return time * 1000 > Date.now()
     },
   )
+  */
   //=================
   let retainerBytes: Buffer
   RegisterScanner(
@@ -766,7 +771,7 @@ export const getImportedScanners = () => {
     (packet, _) =>
       packet.PacketSize == 320 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
-      packet.SourceActor &&
+        packet.SourceActor &&
       basicSynthesis.includes(
         BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 44),
       ),
@@ -791,7 +796,7 @@ export const getImportedScanners = () => {
     (packet, _) =>
       packet.PacketSize == 56 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) ==
-      packet.SourceActor,
+        packet.SourceActor,
   )
   //=================
   RegisterScanner(
@@ -861,11 +866,11 @@ export const getImportedScanners = () => {
       packet.SourceActor == packet.TargetActor &&
       BitConverter.ToUInt64(packet.Data, Offsets.IpcData) != bigIntZero &&
       BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x08) !=
-      bigIntZero &&
+        bigIntZero &&
       BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x10) !=
-      bigIntZero &&
+        bigIntZero &&
       BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x18) !=
-      bigIntZero &&
+        bigIntZero &&
       BitConverter.ToUInt32(packet.Data, packet.Data.length - 4) == 0,
   )
   //=================
@@ -913,50 +918,47 @@ export const getImportedScanners = () => {
       ),
   )
   //=================
-  let airshipName: string
-  let submarineName: string
-
   RegisterScanner(
     'AirshipTimers',
     'Open your Estate tab from the Timers window if you have any airships on exploration.',
     PacketSource.Server,
-    (packet, parameters) => {
-      airshipName = parameters[0]
+    (packet, { $airshipName }) => {
       return (
         packet.PacketSize == 176 &&
-        IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(airshipName))
+        IncludesBytes(packet.Data, Encoding.UTF8.GetBytes($airshipName))
       )
     },
-    ['Please enter your airship name:'],
+    {
+      $airshipName: 'Please enter your airship name:',
+    },
   )
   RegisterScanner(
     'SubmarineTimers',
     'Open your Estate tab from the Timers window if you have any submarines on exploration.',
     PacketSource.Server,
-    (packet, parameters) => {
-      submarineName = parameters[0]
+    (packet, { $submarineName }) => {
       return (
         packet.PacketSize == 176 &&
-        IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(submarineName))
+        IncludesBytes(packet.Data, Encoding.UTF8.GetBytes($submarineName))
       )
     },
-    ['Please enter your submarine name:'],
+    { $submarineName: 'Please enter your submarine name:' },
   )
   RegisterScanner(
     'AirshipStatusList',
     'Open your airship management console if you have any airships',
     PacketSource.Server,
-    (packet, parameters) =>
+    (packet, _, { context }) =>
       packet.PacketSize == 192 &&
-      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(airshipName)),
+      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(context.$airshipName)),
   )
   RegisterScanner(
     'AirshipStatus',
     'Check the status of a specific airship if you have any airships',
     PacketSource.Server,
-    (packet, parameters) =>
+    (packet, _, { context }) =>
       packet.PacketSize == 104 &&
-      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(airshipName)),
+      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(context.$airshipName)),
   )
   RegisterScanner(
     'AirshipExplorationResult',
@@ -965,7 +967,7 @@ export const getImportedScanners = () => {
     (packet, parameters) =>
       packet.PacketSize == 320 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4) ==
-      int.Parse(parameters[0]),
+        int.Parse(parameters[0]),
     [
       'Please enter the experience from the first sector (first destination in log, not the ones next to report rank and items):',
     ],
@@ -983,9 +985,12 @@ export const getImportedScanners = () => {
     'SubmarineStatusList',
     'Open your submarine management console if you have any submarines',
     PacketSource.Server,
-    (packet, parameters) =>
+    (packet, _, { context }) =>
       packet.PacketSize == 272 &&
-      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes('黑塔')),
+      IncludesBytes(
+        packet.Data,
+        Encoding.UTF8.GetBytes(context.$submarineName),
+      ),
   )
   RegisterScanner(
     'SubmarineExplorationResult',
@@ -994,7 +999,7 @@ export const getImportedScanners = () => {
     (packet, parameters) =>
       packet.PacketSize == 320 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) ==
-      int.Parse(parameters[0]),
+        int.Parse(parameters[0]),
     [
       'Please enter the experience from the first sector (first destination in log, not the ones next to report rank and items):',
     ],
@@ -1012,7 +1017,8 @@ export const getImportedScanners = () => {
   )
   */
   RegisterScanner(
-    'MiniCactpotInit',
+    // 'MiniCactpotInit',
+    'ResumeEventScene32',
     'Start playing Mini Cactpot.',
     PacketSource.Server,
     (packet, _) => {
