@@ -2,16 +2,13 @@ import { createHash } from 'crypto'
 import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { DeucalionOptions } from '../interface.mjs'
+import { join } from 'path'
 
 export const getDefaultDeucalion = () => {
+  const dir = fileURLToPath(new URL('../deucalion/1.1.0', import.meta.url))
   return {
-    dll: fileURLToPath(new URL('../deucalion/deucalion.dll', import.meta.url)),
-    shasum: readFileSync(
-      fileURLToPath(
-        new URL('../deucalion/deucalion.sha256sum', import.meta.url),
-      ),
-      'utf-8',
-    ).trim(),
+    dll: join(dir, 'deucalion.dll'),
+    shasum: readFileSync(join(dir, 'deucalion.sha256sum'), 'utf-8').trim(),
   }
 }
 
@@ -30,7 +27,7 @@ export function verifyDeucalion({ dll, shasum }: DeucalionOptions) {
 }
 
 export function listenAbortEvents(handler: (...args: any[]) => void) {
-  [
+  ;[
     'beforeExit',
     'SIGHUP',
     'SIGINT',
