@@ -1,16 +1,28 @@
-import inquirer, { Answers, QuestionCollection } from 'inquirer'
+import { Answers } from 'inquirer'
 import { OpcodeResult, Scanner, ScannerPrompt } from './interface.mjs'
-import { readFileSync, writeFileSync } from 'fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { join } from 'path'
 import { DeucalionPacket } from 'pcap'
 import { hex, PacketSource } from './helper.mjs'
 
+export interface StateOptions {
+  outDir: string
+  version: string
+}
+
 export class StateManager {
-  constructor(private scanners: Scanner[], private outDir: string) {
+  constructor(private scanners: Scanner[], private options: StateOptions) {
     this.#readState()
     this.readyPromise = this.nextScanner().then(() => {
       this.ready = true
     })
+
+    const { outDir, version } = options
+    try {
+      mkdirSync(join(outDir, version), { recursive: true })
+    } catch (e) {
+      //
+    }
   }
 
   #recognizedClientOpcodes = new Set<number>()
@@ -54,7 +66,7 @@ export class StateManager {
       this.#setRecognized(scanner.name, {
         ...result,
         value: opcode,
-        source: scanner.source
+        source: scanner.source,
       })
       return true
     }
@@ -75,7 +87,7 @@ export class StateManager {
           this.scanners.length,
           scanner.source,
           scanner.name,
-          state.value.toString(16),
+          hex(state.value),
         )
         this.#getRecognizedSet(scanner.source).add(state.value)
         continue
@@ -110,7 +122,9 @@ export class StateManager {
       Array.from(this.#state.entries())
         .filter(([_, { value }]) => value)
         .map(([name, { value, comment }]) => [name, hex(value!), comment]),
+      true,
     )
+    console.log('Written opcode.json')
   }
 
   #getRecognizedSet(source: PacketSource) {
@@ -138,9 +152,15 @@ export class StateManager {
     )
   }
 
-  #readJson(name: string) {
+  #path(name: string, withVersion = false) {
+    const { outDir, version } = this.options
+    const dir = withVersion ? join(outDir, version) : outDir
+    return join(dir, name)
+  }
+
+  #readJson(name: string, withVersion = false) {
     try {
-      return JSON.parse(readFileSync(join(this.outDir, name), 'utf-8'))
+      return JSON.parse(readFileSync(this.#path(name, withVersion), 'utf-8'))
     } catch (e: any) {
       if (e.code === 'ENOENT') {
         return null
@@ -150,17 +170,20 @@ export class StateManager {
     }
   }
 
-  #writeJson(name: string, content: any) {
-    writeFileSync(join(this.outDir, name), JSON.stringify(content, null, 2))
+  #writeJson(name: string, content: any, withVersion = false) {
+    writeFileSync(
+      this.#path(name, withVersion),
+      JSON.stringify(content, null, 2),
+    )
   }
 
   #readState() {
-    this.#state = new Map(this.#readJson('state.json'))
+    this.#state = new Map(this.#readJson('state.json', true))
     this.#context = this.#readJson('context.json') || {}
   }
 
   #writeState() {
-    this.#writeJson('state.json', Array.from(this.#state.entries()))
+    this.#writeJson('state.json', Array.from(this.#state.entries()), true)
     this.#writeJson('context.json', this.#context)
   }
 

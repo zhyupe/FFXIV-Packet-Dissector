@@ -1,19 +1,19 @@
 import { DeucalionPacket } from 'pcap'
-import { hex } from './helper.mjs'
 import { Writable } from 'stream'
 import { Scanner } from './interface.mjs'
-import { StateManager } from './state.mjs'
+import { StateManager, StateOptions } from './state.mjs'
 
 export class ScannerRunner extends Writable {
   #state: StateManager
+  #promise: Promise<any> | null = null
+
   public get finished() {
     return this.#state.finished
   }
 
   constructor(
     scanners: Scanner[],
-    private options: {
-      outDir: string
+    private options: StateOptions & {
       onFinish: () => void
     },
   ) {
@@ -21,7 +21,7 @@ export class ScannerRunner extends Writable {
       objectMode: true,
     })
 
-    this.#state = new StateManager(scanners, options.outDir)
+    this.#state = new StateManager(scanners, options)
   }
 
   async _write(

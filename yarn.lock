@@ -1328,7 +1328,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iconv-lite@npm:^0.6.2":
+"iconv-lite@npm:^0.6.2, iconv-lite@npm:^0.6.3":
   version: 0.6.3
   resolution: "iconv-lite@npm:0.6.3"
   dependencies:
@@ -2622,6 +2622,7 @@ __metadata:
     "@inquirer/prompts": "npm:^5.3.8"
     "@types/inquirer": "npm:^9.0.7"
     "@types/node": "npm:^20.10.3"
+    iconv-lite: "npm:^0.6.3"
     pcap: "workspace:^"
     tsup: "npm:^8.3.0"
     tsx: "npm:^4.19.1"

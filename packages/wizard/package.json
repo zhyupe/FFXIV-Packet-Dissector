@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^5.3.8",
+    "iconv-lite": "^0.6.3",
     "pcap": "workspace:^"
   },
   "devDependencies": {
