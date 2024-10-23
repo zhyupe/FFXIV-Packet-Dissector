@@ -44,9 +44,13 @@ export class ScannerRunner extends Writable {
     const ret = await this.#state.handle(packet)
 
     if (ret === true) {
-      await this.#state.nextScanner()
+      await this.next()
     } else if (this.finished) {
       this.options.onFinish()
+    }
+
+    if (this.#promise) {
+      await this.#promise
     }
 
     return callback()
@@ -54,5 +58,11 @@ export class ScannerRunner extends Writable {
 
   output() {
     this.#state.output()
+  }
+
+  async next() {
+    this.#promise = this.#state.nextScanner()
+    await this.#promise
+    this.#promise = null
   }
 }
