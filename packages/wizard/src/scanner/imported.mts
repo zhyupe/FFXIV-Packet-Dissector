@@ -790,6 +790,15 @@ export const getImportedScanners = () => {
   )
   //=================
   RegisterScanner(
+    'BattleTalk2',
+    'Please enter Thornmarch (Hard) trial and attack the enmny with auto attack (For let them said the first dialog)',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize >= 64 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) == 33804,
+  )
+  //=================
+  RegisterScanner(
     'EffectResultBasic',
     'Switch to White Mage, and auto attack on an enemy.',
     PacketSource.Server,
@@ -1016,6 +1025,7 @@ export const getImportedScanners = () => {
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 1) == 0,
   )
   */
+
   RegisterScanner(
     // 'MiniCactpotInit',
     'ResumeEventScene32',
