@@ -29,5 +29,5 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 :--------------------------------------  
 
-mklink /D %APPDATA%\Wireshark\plugins %~dp0src
+mklink /D %APPDATA%\Wireshark\plugins\ffxiv %~dp0src
 pause
