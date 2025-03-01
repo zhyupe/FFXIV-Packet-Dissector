@@ -1,0 +1,17 @@
+{
+  "name": "network",
+  "dependencies": {
+    "prettier": "^3.5.2",
+    "reflect-metadata": "^0.2.2",
+    "tsx": "^4.19.3"
+  },
+  "scripts": {
+    "sync": "tsx src/sync/index.ts",
+    "build": "tsup src/index.ts --format esm"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.3",
+    "tsup": "^8.3.0",
+    "typescript": "^5.3.2"
+  }
+}
