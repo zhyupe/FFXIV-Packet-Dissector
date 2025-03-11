@@ -560,6 +560,20 @@ export const getImportedScanners = () => {
       )
     },
   )
+  RegisterScanner(
+    'WorldVisitQueue',
+    'Visit another world.',
+    PacketSource.Server,
+    (packet, _) => {
+      if (packet.Data.length != Offsets.IpcData + 16) return false
+
+      var status = BitConverter.ToUInt32(packet.Data, Offsets.IpcData)
+      var order = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4)
+      var time = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8)
+
+      return status === 3 && order === 0 && time === 0
+    },
+  )
   //=================
   const darkMatter = [5594, 5595, 5596, 5597, 5598, 10386, 17837, 33916]
   var isDarkMatter = (itemId: number) => darkMatter.includes(itemId)
