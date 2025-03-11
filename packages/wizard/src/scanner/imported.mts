@@ -287,7 +287,7 @@ export const getImportedScanners = () => {
     '',
     PacketSource.Server,
     (packet, _) =>
-      packet.PacketSize == 136 &&
+      packet.PacketSize == 144 &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 2) == 129,
   )
   const limsaLominsaWeathers = [3, 1, 2, 4, 7]
