@@ -981,6 +981,7 @@ export const getImportedScanners = () => {
       'Please enter the experience from the first sector (first destination in log, not the ones next to report rank and items):',
     ],
   )
+  /*
   RegisterScanner(
     'SubmarineProgressionStatus',
     'Open your submarine management console if you have any submarines',
@@ -990,6 +991,7 @@ export const getImportedScanners = () => {
       packet.Data[Offsets.IpcData] >= 1 &&
       packet.Data[Offsets.IpcData] <= 4,
   )
+  */
   RegisterScanner(
     'SubmarineStatusList',
     'Open your submarine management console if you have any submarines',
