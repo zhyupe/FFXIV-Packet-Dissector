@@ -180,14 +180,15 @@ export const getImportedScanners = () => {
     'Please enter sanctuary and wait for rested bonus gains.',
     PacketSource.Server,
     (packet, _) =>
-      packet.PacketSize == 64 &&
+      packet.PacketSize == 72 &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData) == 24 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4) <= 604800 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) == 0 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 12) == 0 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) == 0 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 20) == 0 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 24) == 0,
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 24) == 0 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 28) == 0,
   )
   //=================
   RegisterScanner(
@@ -287,10 +288,10 @@ export const getImportedScanners = () => {
     '',
     PacketSource.Server,
     (packet, _) =>
-      packet.PacketSize == 144 &&
+      packet.PacketSize == 168 &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 2) == 129,
   )
-  const limsaLominsaWeathers = [3, 1, 2, 4, 7]
+  const limsaLominsaWeathers = [3, 1, 2, 4, 7, 15]
   RegisterScanner(
     'WeatherChange',
     '',
