@@ -146,16 +146,32 @@ export const getImportedScanners = () => {
     },
   ) // GP equals 10000
   //=================
+  // Floats
+  // Rotation, YalmDistanceX(0), X, Y, Z, Unk
   RegisterScanner(
     'UpdatePositionHandler',
     'Please move your character.',
     PacketSource.Client,
-    (packet, _) =>
-      packet.PacketSize == 56 &&
-      packet.SourceActor == packet.TargetActor &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4) == 0 &&
-      BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 8) != bigIntZero &&
-      BitConverter.ToUInt32(packet.Data, packet.Data.length - 4) == 0,
+    (packet, _) => {
+      if (packet.PacketSize !== 56 || packet.SourceActor !== packet.TargetActor)
+        return false
+
+      const r = BitConverter.ToSingle(packet.Data, Offsets.IpcData)
+      const d = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4)
+      const x = BitConverter.ToSingle(packet.Data, Offsets.IpcData + 8)
+      const y = BitConverter.ToSingle(packet.Data, Offsets.IpcData + 12)
+      const z = BitConverter.ToSingle(packet.Data, Offsets.IpcData + 16)
+
+      return (
+        r !== 0 &&
+        r > -Math.PI &&
+        r < Math.PI &&
+        d === 0 &&
+        x !== 0 &&
+        y !== 0 &&
+        z !== 0
+      )
+    },
   )
   //=================
   RegisterScanner(
@@ -203,15 +219,6 @@ export const getImportedScanners = () => {
         BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x08) &&
       packet.SourceActor ==
         BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x18),
-  )
-  //=================
-  RegisterScanner(
-    'ChatHandler',
-    'Please /say your message in-game:',
-    PacketSource.Client,
-    (packet, parameters) =>
-      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(parameters[0])),
-    ['Please enter a message to /say in-game:'],
   )
   //=================
   RegisterScanner(
@@ -302,7 +309,12 @@ export const getImportedScanners = () => {
       BitConverter.ToSingle(packet.Data, Offsets.IpcData + 4) == 20.0,
   )
   //=================
-  var actorMoveCenter = new Vector3(-85, 19, 0)
+  // Aetheryte is higher than ground
+  var limsaLominsaAetheryte = new Vector3(
+    -84.031494,
+    20.767456 - 2,
+    0.015197754,
+  )
   var inRange = (diff: Vector3, range: Vector3) => {
     return (
       Math.abs(diff.X) < range.X &&
@@ -331,8 +343,8 @@ export const getImportedScanners = () => {
         1000
 
       return inRange(
-        new Vector3(x, y, z).minus(actorMoveCenter),
-        new Vector3(15, 2, 15),
+        new Vector3(x, y, z).minus(limsaLominsaAetheryte),
+        new Vector3(20, 2, 20),
       )
     },
   )
@@ -376,7 +388,7 @@ export const getImportedScanners = () => {
       var z = BitConverter.ToSingle(packet.Data, Offsets.IpcData + 16)
 
       return inRange(
-        new Vector3(x, y, z).minus(actorMoveCenter),
+        new Vector3(x, y, z).minus(limsaLominsaAetheryte),
         new Vector3(15, 2, 15),
       )
     },
@@ -802,6 +814,15 @@ export const getImportedScanners = () => {
       packet.Data[Offsets.IpcData + 2] == 4 &&
       packet.Data[Offsets.IpcData + 3] == 0 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 12) == 0,
+  )
+  //=================
+  RegisterScanner(
+    'ChatHandler',
+    'Please /say your message in-game:',
+    PacketSource.Client,
+    (packet, parameters) =>
+      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(parameters[0])),
+    ['Please enter a message to /say in-game:'],
   )
   //=================
   RegisterScanner(
