@@ -5,7 +5,7 @@ import { DeucalionOptions } from '../interface.mjs'
 import { join } from 'path'
 
 export const getDefaultDeucalion = () => {
-  const dir = fileURLToPath(new URL('../deucalion/1.4.0', import.meta.url))
+  const dir = fileURLToPath(new URL('../deucalion/1.5.0', import.meta.url))
   return {
     dll: join(dir, 'deucalion.dll'),
     shasum: readFileSync(join(dir, 'deucalion.sha256sum'), 'utf-8').trim(),
