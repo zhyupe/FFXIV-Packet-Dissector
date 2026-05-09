@@ -775,8 +775,8 @@ export const getImportedScanners = () => {
     'Please summon that retainer.',
     PacketSource.Server,
     (packet, parameters) =>
-      packet.PacketSize > 624 &&
-      IncludesBytes(packet.Data.subarray(588, 588 + 36), retainerBytes),
+      packet.PacketSize > 646 &&
+      IncludesBytes(packet.Data.subarray(610, 610 + 36), retainerBytes),
   )
   //================
   RegisterScanner(
