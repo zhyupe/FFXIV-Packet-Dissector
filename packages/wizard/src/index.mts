@@ -35,18 +35,20 @@ import { ScannerRunner } from './scanner/scanner.mjs'
   process.stdin.setRawMode(true)
   process.stdin.resume()
   process.stdin.on('keypress', (str, key) => {
-    switch (str) {
-      case '\u0003': // ctrl-c
-        capture.stop().then(() => {
-          process.exit()
-        })
-        break
-      case 'w':
-        runner.output()
-        break
-      case 's':
-        runner.next()
-        break
+    if (key.ctrl) {
+      switch (key.name) {
+        case 'c': // ctrl-c
+          capture.stop().then(() => {
+            process.exit()
+          })
+          break
+        case 's':
+          runner.output()
+          break
+        case 'd':
+          runner.next()
+          break
+      }
     }
   })
 

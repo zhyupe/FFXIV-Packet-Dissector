@@ -4,13 +4,13 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
     }
   },
   "scripts": {
     "build": "tsdown src/index.mts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.mjs"
   },
   "dependencies": {
     "pcap": "workspace:^"
