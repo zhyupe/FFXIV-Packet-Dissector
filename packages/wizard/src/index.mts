@@ -1,9 +1,10 @@
+import { emitKeypressEvents } from 'node:readline'
+import { fileURLToPath } from 'node:url'
 import { CaptureInterface } from 'pcap'
-import { ScannerRunner } from './scanner/scanner.mjs'
-import { getScanners } from './scanner/index.mjs'
-import { fileURLToPath } from 'url'
 import { getGameVersion } from './game.mjs'
-import { emitKeypressEvents } from 'readline'
+import { getScanners } from './scanner/index.mjs'
+import { ScannerRunner } from './scanner/scanner.mjs'
+
 ;(async () => {
   const version = getGameVersion() ?? 'unk'
   console.log('Version', version)

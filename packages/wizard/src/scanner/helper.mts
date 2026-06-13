@@ -44,10 +44,10 @@ export const Offsets = {
 export const IncludesBytes = (source: Buffer, search: Buffer) => {
   if (search == null) return false
 
-  for (var i = 0; i < source.length - search.length; ++i) {
-    var result = true
-    for (var j = 0; j < search.length; ++j) {
-      if (search[j] != source[i + j]) {
+  for (let i = 0; i < source.length - search.length; ++i) {
+    let result = true
+    for (let j = 0; j < search.length; ++j) {
+      if (search[j] !== source[i + j]) {
         result = false
         break
       }
@@ -62,7 +62,11 @@ export const IncludesBytes = (source: Buffer, search: Buffer) => {
 }
 
 export class Vector3 {
-  constructor(public X: number, public Y: number, public Z: number) { }
+  constructor(
+    public X: number,
+    public Y: number,
+    public Z: number,
+  ) {}
 
   minus(v: Vector3) {
     return new Vector3(this.X - v.X, this.Y - v.Y, this.Z - v.Z)

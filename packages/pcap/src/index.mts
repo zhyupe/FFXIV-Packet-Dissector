@@ -1,21 +1,21 @@
-import { EventEmitter } from 'events'
-import {
-  DeucalionOptions,
-  DeucalionPacket,
-  Logger,
-} from './interface.mjs'
+import { EventEmitter } from 'node:events'
 import { Deucalion } from './deucalion/protocol.mjs'
+import {
+  getDefaultDeucalion,
+  listenAbortEvents,
+  verifyDeucalion,
+} from './deucalion/utils.mjs'
+import type { DeucalionOptions, DeucalionPacket, Logger } from './interface.mjs'
 import { getXIVPID, injectDll } from './process.mjs'
-import { getDefaultDeucalion, listenAbortEvents, verifyDeucalion } from './deucalion/utils.mjs'
-
 
 const logger: Logger = (payload) => console[payload.type](payload.message)
-
 
 export class CaptureInterface extends EventEmitter {
   private deucalion?: Deucalion
 
-  constructor(private readonly options: DeucalionOptions = getDefaultDeucalion()) {
+  constructor(
+    private readonly options: DeucalionOptions = getDefaultDeucalion(),
+  ) {
     super()
 
     verifyDeucalion(options)

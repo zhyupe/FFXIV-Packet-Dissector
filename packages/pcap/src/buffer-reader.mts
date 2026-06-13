@@ -1,4 +1,4 @@
-import { Position3 } from './interface.mjs'
+import type { Position3 } from './interface.mjs'
 
 type BufferFnProperties = Pick<
   Buffer,

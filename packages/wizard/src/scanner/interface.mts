@@ -1,6 +1,6 @@
-import { PacketSource } from './helper.mjs'
-import { Answers } from 'inquirer'
-import { DeucalionPacket } from 'pcap'
+import type { Answers } from 'inquirer'
+import type { DeucalionPacket } from 'pcap'
+import type { PacketSource } from './helper.mjs'
 
 export interface OpcodeResult {
   source: PacketSource

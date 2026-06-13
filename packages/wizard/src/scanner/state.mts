@@ -1,9 +1,9 @@
-import { Answers } from 'inquirer'
-import { OpcodeResult, Scanner, ScannerPrompt } from './interface.mjs'
-import { mkdirSync, readFileSync, writeFileSync } from 'fs'
-import { join } from 'path'
-import { DeucalionPacket } from 'pcap'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
+import type { Answers } from 'inquirer'
+import type { DeucalionPacket } from 'pcap'
 import { hex, PacketSource } from './helper.mjs'
+import type { OpcodeResult, Scanner, ScannerPrompt } from './interface.mjs'
 
 export interface StateOptions {
   outDir: string
@@ -11,7 +11,10 @@ export interface StateOptions {
 }
 
 export class StateManager {
-  constructor(private scanners: Scanner[], private options: StateOptions) {
+  constructor(
+    private scanners: Scanner[],
+    private options: StateOptions,
+  ) {
     this.#readState()
     this.readyPromise = this.nextScanner().then(() => {
       this.ready = true

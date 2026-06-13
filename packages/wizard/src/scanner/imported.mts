@@ -1,15 +1,17 @@
+/** biome-ignore-all lint/suspicious/noDoubleEquals: Migrate C# file */
+
 import { input, number } from '@inquirer/prompts'
 import {
   BitConverter,
   Encoding,
+  hex,
   IncludesBytes,
+  int,
   Offsets,
   PacketSource,
   Vector3,
-  hex,
-  int,
 } from './helper.mjs'
-import { Scanner, ScannerPrompt } from './interface.mjs'
+import type { Scanner, ScannerPrompt } from './interface.mjs'
 
 interface ImportedPacket {
   PacketSize: number
@@ -129,7 +131,7 @@ export const getImportedScanners = () => {
     'PlayerStats',
     'Switch back to the job you entered HP for.',
     PacketSource.Server,
-    (packet, parameters, { context }) => {
+    (packet, _, { context }) => {
       if (packet.PacketSize !== 176) {
         return false
       }
@@ -468,7 +470,7 @@ export const getImportedScanners = () => {
       if (packet.PacketSize != 136 || packet.SourceActor != packet.TargetActor)
         return false
 
-      for (var i = 0; i < 24; i++) {
+      for (let i = 0; i < 24; i++) {
         if (
           BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x04 + 4 * i) !=
           0
@@ -598,8 +600,11 @@ export const getImportedScanners = () => {
     (packet, _) => {
       if (packet.PacketSize != 208) return false
 
-      for (var i = 0; i < 22; ++i) {
-        var itemId = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8 * i)
+      for (let i = 0; i < 22; ++i) {
+        const itemId = BitConverter.ToUInt32(
+          packet.Data,
+          Offsets.IpcData + 8 * i,
+        )
         if (itemId == 0) {
           break
         }
@@ -774,7 +779,7 @@ export const getImportedScanners = () => {
     'NpcSpawn',
     'Please summon that retainer.',
     PacketSource.Server,
-    (packet, parameters) =>
+    (packet) =>
       packet.PacketSize > 646 &&
       IncludesBytes(packet.Data.subarray(610, 610 + 36), retainerBytes),
   )
@@ -783,7 +788,7 @@ export const getImportedScanners = () => {
     'ItemMarketBoardInfo',
     'Please put any item on sale for a unit price of 123456 and summon the retainer again',
     PacketSource.Server,
-    (packet, parameters) =>
+    (packet) =>
       packet.PacketSize == 64 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10) == 123456,
   )
@@ -882,7 +887,7 @@ export const getImportedScanners = () => {
 
       var allInRange = true
 
-      for (var i = 1; i < 10; i++)
+      for (let i = 1; i < 10; i++)
         if (
           packet.Data[Offsets.IpcData + i] > 4 ||
           packet.Data[Offsets.IpcData + i] < 1
@@ -956,7 +961,7 @@ export const getImportedScanners = () => {
     'SystemLogMessage',
     'Please go to first boss room and touch any coral formation.',
     PacketSource.Server,
-    (packet, parameters) =>
+    (packet) =>
       packet.PacketSize == 56 &&
       [2034, 2035].includes(
         BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4),

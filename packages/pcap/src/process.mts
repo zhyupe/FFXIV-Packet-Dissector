@@ -1,10 +1,13 @@
+import { exec } from 'node:child_process'
 import dllInject from '@ffxiv-teamcraft/dll-inject'
-import { exec } from 'child_process'
-import { ErrorCodes } from './interface.mjs';
+import { ErrorCodes } from './interface.mjs'
 
 const { getPIDByName, injectPID } = dllInject
 
-async function getXIVPIDFromTasklist(): Promise<{ name: string; pid: number } | null> {
+async function getXIVPIDFromTasklist(): Promise<{
+  name: string
+  pid: number
+} | null> {
   return new Promise<{ name: string; pid: number } | null>(
     (resolve, reject) => {
       exec('tasklist', (err, stdout) => {
@@ -22,6 +25,8 @@ async function getXIVPIDFromTasklist(): Promise<{ name: string; pid: number } | 
                   pid: +match[2],
                 }
               }
+
+              return null
             })
             .find(Boolean) || null,
         )

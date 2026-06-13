@@ -1,16 +1,16 @@
+import type { EventEmitter } from 'node:events'
 import {
   createReadStream,
   createWriteStream,
   open,
-  ReadStream,
-  WriteStream,
-} from 'fs'
-import { EventEmitter } from 'events'
+  type ReadStream,
+  type WriteStream,
+} from 'node:fs'
 import { BufferReader } from '../buffer-reader.mjs'
 import {
-  DeucalionPacket,
-  DeucalionPayload,
-  Logger,
+  type DeucalionPacket,
+  type DeucalionPayload,
+  type Logger,
   Origin,
 } from '../interface.mjs'
 
@@ -87,21 +87,18 @@ export class Deucalion {
     })
   }
 
-  public stop() {
-    return new Promise<void>(async (resolve) => {
-      try {
-        await this.closeStreams()
-      } catch (err: any) {
-        if (!err.message.includes('EBADF')) {
-          this.logger({
-            type: 'error',
-            message: err,
-          })
-        }
+  public async stop() {
+    try {
+      await this.closeStreams()
+    } catch (err: any) {
+      if (!err.message.includes('EBADF')) {
+        this.logger({
+          type: 'error',
+          message: err,
+        })
       }
-      this.emitter.emit('closed')
-      resolve()
-    })
+    }
+    this.emitter.emit('closed')
   }
 
   private send(data: Buffer) {

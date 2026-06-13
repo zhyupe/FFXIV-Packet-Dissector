@@ -1,7 +1,7 @@
-import { execSync } from 'child_process'
-import { createHash } from 'crypto'
-import { existsSync, readFileSync } from 'fs'
-import { dirname, join } from 'path'
+import { execSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
+import { existsSync, readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
 import iconv from 'iconv-lite'
 
 function getGameExecutable() {

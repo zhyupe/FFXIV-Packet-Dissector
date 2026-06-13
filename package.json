@@ -1,9 +1,4 @@
 {
   "name": "ffxiv-packet-dissector",
-  "private": true,
-  "prettier": {
-    "singleQuote": true,
-    "semi": false,
-    "trailingComma": "all"
-  }
+  "private": true
 }

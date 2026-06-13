@@ -1,7 +1,7 @@
-import { DeucalionPacket } from 'pcap'
-import { Writable } from 'stream'
-import { Scanner } from './interface.mjs'
-import { StateManager, StateOptions } from './state.mjs'
+import { Writable } from 'node:stream'
+import type { DeucalionPacket } from 'pcap'
+import type { Scanner } from './interface.mjs'
+import { StateManager, type StateOptions } from './state.mjs'
 
 export class ScannerRunner extends Writable {
   #state: StateManager

@@ -1,8 +1,8 @@
-import { createHash } from 'crypto'
-import { readFileSync } from 'fs'
-import { fileURLToPath } from 'url'
-import { DeucalionOptions } from '../interface.mjs'
-import { join } from 'path'
+import { createHash } from 'node:crypto'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import type { DeucalionOptions } from '../interface.mjs'
 
 export const getDefaultDeucalion = () => {
   const dir = fileURLToPath(new URL('../deucalion/1.5.0', import.meta.url))

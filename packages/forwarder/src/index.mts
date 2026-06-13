@@ -1,5 +1,5 @@
-import { Socket, createSocket } from 'dgram'
-import { CaptureInterface, DeucalionPacket, Origin } from 'pcap'
+import { createSocket, type Socket } from 'node:dgram'
+import { CaptureInterface, type DeucalionPacket, Origin } from 'pcap'
 
 const bundleMagic = Buffer.from([
   0x52, 0x52, 0xa0, 0x41, 0xff, 0x5d, 0x46, 0xe2,
