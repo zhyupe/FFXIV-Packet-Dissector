@@ -7,5 +7,9 @@ import type { OpcodeMap } from './opcode-map.type'
 export const CN_5_1: OpcodeMap = {
   0x00de: [{ type: NormalizedOpcode.ActorControl }],
   0x01c3: [{ type: NormalizedOpcode.ActorControlSelf }],
+  0x0265: [{ type: NormalizedOpcode.ContentFinderNotifyPop }],
+  0x0315: [{ type: NormalizedOpcode.ClientTrigger }],
+  0x0318: [{ type: NormalizedOpcode.InventoryTransactionFinish }],
   0x0382: [{ type: NormalizedOpcode.ActorGauge }],
+  0x03ac: [{ type: NormalizedOpcode.ActorControlTarget }],
 }

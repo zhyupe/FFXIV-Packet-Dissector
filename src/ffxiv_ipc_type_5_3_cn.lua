@@ -2,40 +2,40 @@
 
 local M = {}
 M.types = {
+  [0x0094] = {
+    [0] = {
+      name = "ffxiv_ipc_examine",
+      length = 656,
+    },
+  },
   [0x00a5] = {
     [0] = {
       name = "ffxiv_ipc_actor_cast",
       length = 32,
     },
   },
-  [0x0312] = {
+  [0x00b5] = {
     [0] = {
-      name = "ffxiv_ipc_actor_control",
-      length = 24,
+      name = "ffxiv_ipc_player_spawn",
+      length = 628,
     },
   },
-  [0x02b0] = {
+  [0x00ca] = {
     [0] = {
-      name = "ffxiv_ipc_actor_control_self",
+      name = "ffxiv_ipc_currency_crystal_info",
       length = 32,
     },
   },
-  [0x02c6] = {
+  [0x00cf] = {
     [0] = {
-      name = "ffxiv_ipc_actor_control_target",
-      length = 32,
+      name = "ffxiv_ipc_item_info",
+      length = 64,
     },
   },
-  [0x02f2] = {
+  [0x00d8] = {
     [0] = {
-      name = "ffxiv_ipc_actor_gauge",
-      length = 16,
-    },
-  },
-  [0x02dc] = {
-    [0] = {
-      name = "ffxiv_ipc_actor_move",
-      length = 16,
+      name = "ffxiv_ipc_update_hp_mp_tp",
+      length = 8,
     },
   },
   [0x00f8] = {
@@ -44,28 +44,10 @@ M.types = {
       length = 24,
     },
   },
-  [0x0300] = {
+  [0x0130] = {
     [0] = {
-      name = "ffxiv_ipc_effect16",
-      length = 1212,
-    },
-  },
-  [0x024a] = {
-    [0] = {
-      name = "ffxiv_ipc_effect24",
-      length = 1788,
-    },
-  },
-  [0x027b] = {
-    [0] = {
-      name = "ffxiv_ipc_effect32",
-      length = 2364,
-    },
-  },
-  [0x01a8] = {
-    [0] = {
-      name = "ffxiv_ipc_effect8",
-      length = 636,
+      name = "ffxiv_ipc_ward_land_info",
+      length = 8,
     },
   },
   [0x0141] = {
@@ -80,15 +62,93 @@ M.types = {
       length = 0,
     },
   },
+  [0x0165] = {
+    [0] = {
+      name = "ffxiv_ipc_update_inventory_slot",
+      length = 64,
+    },
+  },
+  [0x0181] = {
+    [0] = {
+      name = "ffxiv_ipc_update_position_instance",
+      length = 40,
+    },
+  },
+  [0x0186] = {
+    [0] = {
+      name = "ffxiv_ipc_player_stats",
+      length = 224,
+    },
+  },
+  [0x019f] = {
+    [0] = {
+      name = "ffxiv_ipc_inventory_action_ack",
+      length = 16,
+    },
+  },
+  [0x01b4] = {
+    [0] = {
+      name = "ffxiv_ipc_retainer_information",
+      length = 73,
+    },
+  },
+  [0x01ba] = {
+    [0] = {
+      name = "ffxiv_ipc_object_spawn",
+      length = 64,
+    },
+  },
+  [0x01d3] = {
+    [0] = {
+      name = "ffxiv_ipc_npc_spawn",
+      length = 636,
+    },
+  },
+  [0x0234] = {
+    [0] = {
+      name = "ffxiv_ipc_container_info",
+      length = 16,
+    },
+  },
   [0x023a] = {
     [0] = {
       name = "ffxiv_ipc_company_submersible_status",
       length = 0,
     },
   },
-  [0x0234] = {
+  [0x0294] = {
     [0] = {
-      name = "ffxiv_ipc_container_info",
+      name = "ffxiv_ipc_init_zone",
+      length = 96,
+    },
+  },
+  [0x02b0] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_control_self",
+      length = 32,
+    },
+  },
+  [0x02c3] = {
+    [0] = {
+      name = "ffxiv_ipc_update_class_info",
+      length = 16,
+    },
+  },
+  [0x02c6] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_control_target",
+      length = 32,
+    },
+  },
+  [0x02dc] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_move",
+      length = 16,
+    },
+  },
+  [0x02f2] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_gauge",
       length = 16,
     },
   },
@@ -98,64 +158,22 @@ M.types = {
       length = 32,
     },
   },
-  [0x00ca] = {
+  [0x0312] = {
     [0] = {
-      name = "ffxiv_ipc_currency_crystal_info",
-      length = 32,
+      name = "ffxiv_ipc_actor_control",
+      length = 24,
     },
   },
-  [0x03d2] = {
+  [0x0360] = {
     [0] = {
-      name = "ffxiv_ipc_effect",
-      length = 124,
+      name = "ffxiv_ipc_status_effect_list",
+      length = 384,
     },
   },
   [0x037c] = {
     [0] = {
       name = "ffxiv_ipc_effect_result",
       length = 26,
-    },
-  },
-  [0x0094] = {
-    [0] = {
-      name = "ffxiv_ipc_examine",
-      length = 656,
-    },
-  },
-  [0x00bc] = {
-    [0] = {
-      name = "ffxiv_ipc_faux_hollow_handler",
-      length = 32,
-    },
-  },
-  [0x0122] = {
-    [0] = {
-      name = "ffxiv_ipc_faux_hollow_init",
-      length = 96,
-    },
-  },
-  [0x010a] = {
-    [0] = {
-      name = "ffxiv_ipc_faux_hollow_status",
-      length = 144,
-    },
-  },
-  [0x0065] = {
-    [0] = {
-      name = "ffxiv_ipc_group_message",
-      length = 57,
-    },
-  },
-  [0x0294] = {
-    [0] = {
-      name = "ffxiv_ipc_init_zone",
-      length = 96,
-    },
-  },
-  [0x019f] = {
-    [0] = {
-      name = "ffxiv_ipc_inventory_action_ack",
-      length = 16,
     },
   },
   [0x038f] = {
@@ -170,82 +188,10 @@ M.types = {
       length = 16,
     },
   },
-  [0x01d3] = {
+  [0x03d2] = {
     [0] = {
-      name = "ffxiv_ipc_npc_spawn",
-      length = 636,
-    },
-  },
-  [0x016f] = {
-    [0] = {
-      name = "ffxiv_ipc_ping",
-      length = 8,
-    },
-  },
-  [0x00b5] = {
-    [0] = {
-      name = "ffxiv_ipc_player_spawn",
-      length = 628,
-    },
-  },
-  [0x0186] = {
-    [0] = {
-      name = "ffxiv_ipc_player_stats",
-      length = 224,
-    },
-  },
-  [0x00bb] = {
-    [0] = {
-      name = "ffxiv_ipc_public_message",
-      length = 48,
-    },
-  },
-  [0x01b4] = {
-    [0] = {
-      name = "ffxiv_ipc_retainer_information",
-      length = 73,
-    },
-  },
-  [0x0360] = {
-    [0] = {
-      name = "ffxiv_ipc_status_effect_list",
-      length = 384,
-    },
-  },
-  [0x02c3] = {
-    [0] = {
-      name = "ffxiv_ipc_update_class_info",
-      length = 16,
-    },
-  },
-  [0x00d8] = {
-    [0] = {
-      name = "ffxiv_ipc_update_hp_mp_tp",
-      length = 8,
-    },
-  },
-  [0x0165] = {
-    [0] = {
-      name = "ffxiv_ipc_update_inventory_slot",
-      length = 64,
-    },
-  },
-  [0x00cf] = {
-    [0] = {
-      name = "ffxiv_ipc_item_info",
-      length = 64,
-    },
-  },
-  [0x0181] = {
-    [0] = {
-      name = "ffxiv_ipc_update_position_instance",
-      length = 40,
-    },
-  },
-  [0x0130] = {
-    [0] = {
-      name = "ffxiv_ipc_ward_land_info",
-      length = 8,
+      name = "ffxiv_ipc_effect",
+      length = 124,
     },
   },
 }

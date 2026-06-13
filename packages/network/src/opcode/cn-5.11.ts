@@ -6,6 +6,11 @@ import type { OpcodeMap } from './opcode-map.type'
 
 export const CN_5_11: OpcodeMap = {
   0x00c1: [{ type: NormalizedOpcode.ActorControl }],
+  0x00fa: [{ type: NormalizedOpcode.EventPlay }],
+  0x010b: [{ type: NormalizedOpcode.ActorControlTarget }],
   0x011f: [{ type: NormalizedOpcode.ActorControlSelf }],
+  0x01de: [{ type: NormalizedOpcode.ClientTrigger }],
   0x026c: [{ type: NormalizedOpcode.ActorGauge }],
+  0x02f0: [{ type: NormalizedOpcode.RetainerInformation }],
+  0x0377: [{ type: NormalizedOpcode.ContentFinderNotifyPop }],
 }

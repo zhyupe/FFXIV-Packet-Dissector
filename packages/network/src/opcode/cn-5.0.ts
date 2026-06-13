@@ -5,7 +5,11 @@ import { NormalizedOpcode } from './normalized-opcode.enum'
 import type { OpcodeMap } from './opcode-map.type'
 
 export const CN_5_0: OpcodeMap = {
+  0x013a: [{ type: NormalizedOpcode.ClientTrigger }],
   0x0142: [{ type: NormalizedOpcode.ActorControl }],
   0x0143: [{ type: NormalizedOpcode.ActorControlSelf }],
   0x016d: [{ type: NormalizedOpcode.ActorGauge }],
+  0x01a3: [{ type: NormalizedOpcode.InventoryTransactionFinish }],
+  0x01a7: [{ type: NormalizedOpcode.InventoryActionAck }],
+  0x024d: [{ type: NormalizedOpcode.ActorControlTarget }],
 }

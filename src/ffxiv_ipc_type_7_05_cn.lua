@@ -2,9 +2,27 @@
 
 local M = {}
 M.types = {
+  [0x0069] = {
+    [0] = {
+      name = "ffxiv_ipc_company_airship_status",
+      length = 0,
+    },
+  },
+  [0x0073] = {
+    [0] = {
+      name = "ffxiv_ipc_inventory_transaction",
+      length = 36,
+    },
+  },
   [0x007b] = {
     [0] = {
       name = "ffxiv_ipc_actor_control_self",
+      length = 32,
+    },
+  },
+  [0x007d] = {
+    [0] = {
+      name = "ffxiv_ipc_content_finder_notify_pop",
       length = 32,
     },
   },
@@ -14,10 +32,32 @@ M.types = {
       length = 24,
     },
   },
+  [0x008b] = {
+    [0] = {
+      name = "ffxiv_ipc_object_spawn",
+      length = 64,
+    },
+  },
+  [0x0096] = {
+    [0] = {
+      name = "ffxiv_ipc_examine",
+      length = 656,
+    },
+  },
   [0x00a4] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn",
       length = 636,
+    },
+    [1] = {
+      name = "ffxiv_ipc_update_position_instance",
+      length = 40,
+    },
+  },
+  [0x00ab] = {
+    [0] = {
+      name = "ffxiv_ipc_inventory_transaction_finish",
+      length = 16,
     },
   },
   [0x00db] = {
@@ -44,10 +84,34 @@ M.types = {
       length = 8,
     },
   },
+  [0x01b5] = {
+    [0] = {
+      name = "ffxiv_ipc_ce_director",
+      length = 16,
+    },
+  },
   [0x01d4] = {
     [0] = {
       name = "ffxiv_ipc_ward_land_info",
       length = 8,
+    },
+  },
+  [0x01d6] = {
+    [0] = {
+      name = "ffxiv_ipc_item_info",
+      length = 64,
+    },
+  },
+  [0x0242] = {
+    [0] = {
+      name = "ffxiv_ipc_fate_info",
+      length = 24,
+    },
+  },
+  [0x0265] = {
+    [0] = {
+      name = "ffxiv_ipc_update_inventory_slot",
+      length = 64,
     },
   },
   [0x027b] = {
@@ -62,6 +126,48 @@ M.types = {
       length = 16,
     },
   },
+  [0x0286] = {
+    [0] = {
+      name = "ffxiv_ipc_inventory_action_ack",
+      length = 16,
+    },
+  },
+  [0x0287] = {
+    [0] = {
+      name = "ffxiv_ipc_client_trigger",
+      length = 32,
+    },
+  },
+  [0x02a0] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_control_target",
+      length = 32,
+    },
+  },
+  [0x02ae] = {
+    [0] = {
+      name = "ffxiv_ipc_currency_crystal_info",
+      length = 32,
+    },
+  },
+  [0x02af] = {
+    [0] = {
+      name = "ffxiv_ipc_effect_result",
+      length = 26,
+    },
+  },
+  [0x02be] = {
+    [0] = {
+      name = "ffxiv_ipc_container_info",
+      length = 16,
+    },
+  },
+  [0x02e4] = {
+    [0] = {
+      name = "ffxiv_ipc_company_submersible_status",
+      length = 0,
+    },
+  },
   [0x02f0] = {
     [0] = {
       name = "ffxiv_ipc_update_class_info",
@@ -72,6 +178,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_init_zone",
       length = 96,
+    },
+  },
+  [0x0339] = {
+    [0] = {
+      name = "ffxiv_ipc_retainer_information",
+      length = 73,
     },
   },
   [0x033d] = {
