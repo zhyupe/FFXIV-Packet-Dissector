@@ -68,15 +68,15 @@ M.types = {
       length = 636,
     },
   },
-  [0x3E6] = {
+  [0x03e6] = {
     [0] = {
       name = "ffxiv_ipc_boss_status_effect_list",
       length = 744,
     },
   },
-  [0x36A] = {
+  [0x036a] = {
     [0] = {
-      name = "ffxiv_ipc_cedirector",
+      name = "ffxiv_ipc_ce_director",
       length = 16,
     },
   },
@@ -134,7 +134,7 @@ M.types = {
       length = 656,
     },
   },
-  [0x2B4] = {
+  [0x02b4] = {
     [0] = {
       name = "ffxiv_ipc_fate_info",
       length = 24,

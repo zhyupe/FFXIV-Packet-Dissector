@@ -302,12 +302,12 @@ M.forward.client_trigger_fish_bait_type = {
 }
 M.reverse.client_trigger_fish_bait_type = makeValString(M.forward.client_trigger_fish_bait_type)
 
-M.forward.cfnotify_type = {
+M.forward.cf_notify_type = {
   Cancelled = 3,
   Matched = 4,
   Enter = 6,
 }
-M.reverse.cfnotify_type = makeValString(M.forward.cfnotify_type)
+M.reverse.cf_notify_type = makeValString(M.forward.cf_notify_type)
 
 M.forward.content_finder_flags = {
   None = 0,
@@ -362,24 +362,6 @@ M.forward.ensemble_assistant = {
 }
 M.reverse.ensemble_assistant = makeValString(M.forward.ensemble_assistant)
 
-M.forward.ensemble_assistant = {
-  On = 1,
-  Off = 0,
-}
-M.reverse.ensemble_assistant = makeValString(M.forward.ensemble_assistant)
-
-M.forward.ensemble_assistant = {
-  On = 1,
-  Off = 0,
-}
-M.reverse.ensemble_assistant = makeValString(M.forward.ensemble_assistant)
-
-M.forward.ensemble_assistant = {
-  On = 1,
-  Off = 0,
-}
-M.reverse.ensemble_assistant = makeValString(M.forward.ensemble_assistant)
-
 M.forward.fish_event_type = {
   Cast = 1,
   Hook = 2,
@@ -402,59 +384,6 @@ M.forward.public_message_type = {
   Say = 10,
 }
 M.reverse.public_message_type = makeValString(M.forward.public_message_type)
-
-M.forward.item_quality = {
-  NormalQuality = 0,
-  HighQuality = 1,
-  Collectables = 8,
-}
-M.reverse.item_quality = makeValString(M.forward.item_quality)
-
-M.forward.item_location = {
-  Inventory0 = 0,
-  Inventory1 = 1,
-  Inventory2 = 2,
-  Inventory3 = 3,
-  ArmouryEquipped = 1000,
-  Currency = 2000,
-  Crystal = 2001,
-  ArmouryOffHand = 3200,
-  ArmouryHead = 3201,
-  ArmouryBody = 3202,
-  ArmouryHands = 3203,
-  ArmouryWaist = 3204,
-  ArmouryLegs = 3205,
-  ArmouryFeet = 3206,
-  ArmouryEars = 3207,
-  ArmouryNeck = 3208,
-  ArmouryWrists = 3209,
-  ArmouryRightRing = 3210,
-  ArmouryLeftRing = 3211,
-  ArmouryRing = 3300,
-  SoulCrystal = 3400,
-  ArmouryMainHand = 3500,
-  Saddlebag0 = 4000,
-  Saddlebag1 = 4001,
-}
-M.reverse.item_location = makeValString(M.forward.item_location)
-
-M.forward.item_armoury_position = {
-  MainHand = 0,
-  OffHand = 1,
-  Head = 2,
-  Body = 3,
-  Hands = 4,
-  Waist = 5,
-  Legs = 6,
-  Feet = 7,
-  Ears = 8,
-  Neck = 9,
-  Wrists = 10,
-  RightRing = 11,
-  LeftRing = 12,
-  SoulCrystal = 13,
-}
-M.reverse.item_armoury_position = makeValString(M.forward.item_armoury_position)
 
 M.forward.item_quality = {
   NormalQuality = 0,

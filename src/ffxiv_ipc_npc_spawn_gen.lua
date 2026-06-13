@@ -23,21 +23,21 @@ local npc_spawn_fields = {
   craft_tool_model        = ProtoField.uint64("ffxiv_ipc_npc_spawn.craft_tool_model", "craftToolModel", base.DEC),
   u14                     = ProtoField.uint32("ffxiv_ipc_npc_spawn.u14", "u14", base.DEC),
   u15                     = ProtoField.uint32("ffxiv_ipc_npc_spawn.u15", "u15", base.DEC),
-  b_npcbase               = ProtoField.uint32("ffxiv_ipc_npc_spawn.b_npcbase", "bNPCBase", base.DEC),
-  b_npcname               = ProtoField.uint32("ffxiv_ipc_npc_spawn.b_npcname", "bNPCName", base.DEC, db.BNpcName),
+  b_npc_base              = ProtoField.uint32("ffxiv_ipc_npc_spawn.b_npc_base", "bNPCBase", base.DEC),
+  b_npc_name              = ProtoField.uint32("ffxiv_ipc_npc_spawn.b_npc_name", "bNPCName", base.DEC, db.BNpcName),
   level_id                = ProtoField.uint32("ffxiv_ipc_npc_spawn.level_id", "levelId", base.DEC),
   u19                     = ProtoField.uint32("ffxiv_ipc_npc_spawn.u19", "u19", base.DEC),
   director_id             = ProtoField.uint32("ffxiv_ipc_npc_spawn.director_id", "directorId", base.DEC),
   spawner_id              = ProtoField.uint32("ffxiv_ipc_npc_spawn.spawner_id", "spawnerId", base.DEC),
   parent_actor_id         = ProtoField.uint32("ffxiv_ipc_npc_spawn.parent_actor_id", "parentActorId", base.DEC),
-  h_pmax                  = ProtoField.uint32("ffxiv_ipc_npc_spawn.h_pmax", "hPMax", base.DEC),
-  h_pcurr                 = ProtoField.uint32("ffxiv_ipc_npc_spawn.h_pcurr", "hPCurr", base.DEC),
+  h_p_max                 = ProtoField.uint32("ffxiv_ipc_npc_spawn.h_p_max", "hPMax", base.DEC),
+  h_p_curr                = ProtoField.uint32("ffxiv_ipc_npc_spawn.h_p_curr", "hPCurr", base.DEC),
   display_flags           = ProtoField.uint32("ffxiv_ipc_npc_spawn.display_flags", "displayFlags", base.DEC),
   fate_id                 = ProtoField.uint16("ffxiv_ipc_npc_spawn.fate_id", "fateID", base.DEC),
-  m_pcurr                 = ProtoField.uint16("ffxiv_ipc_npc_spawn.m_pcurr", "mPCurr", base.DEC),
-  t_pcurr                 = ProtoField.uint16("ffxiv_ipc_npc_spawn.t_pcurr", "tPCurr", base.DEC),
-  m_pmax                  = ProtoField.uint16("ffxiv_ipc_npc_spawn.m_pmax", "mPMax", base.DEC),
-  t_pmax                  = ProtoField.uint16("ffxiv_ipc_npc_spawn.t_pmax", "tPMax", base.DEC),
+  m_p_curr                = ProtoField.uint16("ffxiv_ipc_npc_spawn.m_p_curr", "mPCurr", base.DEC),
+  t_p_curr                = ProtoField.uint16("ffxiv_ipc_npc_spawn.t_p_curr", "tPCurr", base.DEC),
+  m_p_max                 = ProtoField.uint16("ffxiv_ipc_npc_spawn.m_p_max", "mPMax", base.DEC),
+  t_p_max                 = ProtoField.uint16("ffxiv_ipc_npc_spawn.t_p_max", "tPMax", base.DEC),
   model_chara             = ProtoField.uint16("ffxiv_ipc_npc_spawn.model_chara", "modelChara", base.DEC),
   rotation                = ProtoField.uint16("ffxiv_ipc_npc_spawn.rotation", "rotation", base.DEC),
   active_minion           = ProtoField.uint16("ffxiv_ipc_npc_spawn.active_minion", "activeMinion", base.DEC),
@@ -73,7 +73,7 @@ local npc_spawn_fields = {
   nickname                = ProtoField.string("ffxiv_ipc_npc_spawn.nickname", "Nickname", base.UNICODE),
   look                    = ProtoField.string("ffxiv_ipc_npc_spawn.look", "Look", base.UNICODE),
   fc_tag                  = ProtoField.string("ffxiv_ipc_npc_spawn.fc_tag", "fcTag", base.UNICODE),
-  b_npcpart_slot          = ProtoField.uint8("ffxiv_ipc_npc_spawn.b_npcpart_slot", "bNPCPartSlot", base.DEC),
+  b_npc_part_slot         = ProtoField.uint8("ffxiv_ipc_npc_spawn.b_npc_part_slot", "bNPCPartSlot", base.DEC),
   unk32                   = ProtoField.uint8("ffxiv_ipc_npc_spawn.unk32", "unk32", base.DEC),
   unk33                   = ProtoField.uint16("ffxiv_ipc_npc_spawn.unk33", "unk33", base.DEC),
 }
@@ -176,19 +176,19 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   local u15_val  = u15_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.u15, u15_tvbr, u15_val)
 
-  -- dissect the b_npcbase field
-  local b_npcbase_tvbr = tvbuf:range(64, 4)
-  local b_npcbase_val  = b_npcbase_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.b_npcbase, b_npcbase_tvbr, b_npcbase_val)
+  -- dissect the b_npc_base field
+  local b_npc_base_tvbr = tvbuf:range(64, 4)
+  local b_npc_base_val  = b_npc_base_tvbr:le_uint()
+  tree:add_le(npc_spawn_fields.b_npc_base, b_npc_base_tvbr, b_npc_base_val)
 
-  -- dissect the b_npcname field
-  local b_npcname_tvbr = tvbuf:range(68, 4)
-  local b_npcname_val  = b_npcname_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.b_npcname, b_npcname_tvbr, b_npcname_val)
+  -- dissect the b_npc_name field
+  local b_npc_name_tvbr = tvbuf:range(68, 4)
+  local b_npc_name_val  = b_npc_name_tvbr:le_uint()
+  tree:add_le(npc_spawn_fields.b_npc_name, b_npc_name_tvbr, b_npc_name_val)
 
-  local b_npcname_display = ", bNPCName: " .. (db.BNpcName[b_npcname_val] or "(unknown)")
-  pktinfo.cols.info:append(b_npcname_display)
-  tree:append_text(b_npcname_display)
+  local b_npc_name_display = ", bNPCName: " .. (db.BNpcName[b_npc_name_val] or "(unknown)")
+  pktinfo.cols.info:append(b_npc_name_display)
+  tree:append_text(b_npc_name_display)
 
   -- dissect the level_id field
   local level_id_tvbr = tvbuf:range(72, 4)
@@ -215,15 +215,15 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   local parent_actor_id_val  = parent_actor_id_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.parent_actor_id, parent_actor_id_tvbr, parent_actor_id_val)
 
-  -- dissect the h_pmax field
-  local h_pmax_tvbr = tvbuf:range(92, 4)
-  local h_pmax_val  = h_pmax_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.h_pmax, h_pmax_tvbr, h_pmax_val)
+  -- dissect the h_p_max field
+  local h_p_max_tvbr = tvbuf:range(92, 4)
+  local h_p_max_val  = h_p_max_tvbr:le_uint()
+  tree:add_le(npc_spawn_fields.h_p_max, h_p_max_tvbr, h_p_max_val)
 
-  -- dissect the h_pcurr field
-  local h_pcurr_tvbr = tvbuf:range(96, 4)
-  local h_pcurr_val  = h_pcurr_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.h_pcurr, h_pcurr_tvbr, h_pcurr_val)
+  -- dissect the h_p_curr field
+  local h_p_curr_tvbr = tvbuf:range(96, 4)
+  local h_p_curr_val  = h_p_curr_tvbr:le_uint()
+  tree:add_le(npc_spawn_fields.h_p_curr, h_p_curr_tvbr, h_p_curr_val)
 
   -- dissect the display_flags field
   local display_flags_tvbr = tvbuf:range(100, 4)
@@ -235,25 +235,25 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   local fate_id_val  = fate_id_tvbr:le_uint()
   tree:add_le(npc_spawn_fields.fate_id, fate_id_tvbr, fate_id_val)
 
-  -- dissect the m_pcurr field
-  local m_pcurr_tvbr = tvbuf:range(106, 2)
-  local m_pcurr_val  = m_pcurr_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.m_pcurr, m_pcurr_tvbr, m_pcurr_val)
+  -- dissect the m_p_curr field
+  local m_p_curr_tvbr = tvbuf:range(106, 2)
+  local m_p_curr_val  = m_p_curr_tvbr:le_uint()
+  tree:add_le(npc_spawn_fields.m_p_curr, m_p_curr_tvbr, m_p_curr_val)
 
-  -- dissect the t_pcurr field
-  local t_pcurr_tvbr = tvbuf:range(108, 2)
-  local t_pcurr_val  = t_pcurr_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.t_pcurr, t_pcurr_tvbr, t_pcurr_val)
+  -- dissect the t_p_curr field
+  local t_p_curr_tvbr = tvbuf:range(108, 2)
+  local t_p_curr_val  = t_p_curr_tvbr:le_uint()
+  tree:add_le(npc_spawn_fields.t_p_curr, t_p_curr_tvbr, t_p_curr_val)
 
-  -- dissect the m_pmax field
-  local m_pmax_tvbr = tvbuf:range(110, 2)
-  local m_pmax_val  = m_pmax_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.m_pmax, m_pmax_tvbr, m_pmax_val)
+  -- dissect the m_p_max field
+  local m_p_max_tvbr = tvbuf:range(110, 2)
+  local m_p_max_val  = m_p_max_tvbr:le_uint()
+  tree:add_le(npc_spawn_fields.m_p_max, m_p_max_tvbr, m_p_max_val)
 
-  -- dissect the t_pmax field
-  local t_pmax_tvbr = tvbuf:range(112, 2)
-  local t_pmax_val  = t_pmax_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.t_pmax, t_pmax_tvbr, t_pmax_val)
+  -- dissect the t_p_max field
+  local t_p_max_tvbr = tvbuf:range(112, 2)
+  local t_p_max_val  = t_p_max_tvbr:le_uint()
+  tree:add_le(npc_spawn_fields.t_p_max, t_p_max_tvbr, t_p_max_val)
 
   -- dissect the model_chara field
   local model_chara_tvbr = tvbuf:range(114, 2)
@@ -470,10 +470,10 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   local fc_tag_val  = fc_tag_tvbr:string(ENC_UTF_8)
   tree:add(npc_spawn_fields.fc_tag, fc_tag_tvbr, fc_tag_val)
 
-  -- dissect the b_npcpart_slot field
-  local b_npcpart_slot_tvbr = tvbuf:range(632, 1)
-  local b_npcpart_slot_val  = b_npcpart_slot_tvbr:le_uint()
-  tree:add_le(npc_spawn_fields.b_npcpart_slot, b_npcpart_slot_tvbr, b_npcpart_slot_val)
+  -- dissect the b_npc_part_slot field
+  local b_npc_part_slot_tvbr = tvbuf:range(632, 1)
+  local b_npc_part_slot_val  = b_npc_part_slot_tvbr:le_uint()
+  tree:add_le(npc_spawn_fields.b_npc_part_slot, b_npc_part_slot_tvbr, b_npc_part_slot_val)
 
   -- dissect the unk32 field
   local unk32_tvbr = tvbuf:range(633, 1)

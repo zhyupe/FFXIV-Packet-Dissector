@@ -8,37 +8,37 @@ M.types = {
       length = 32,
     },
   },
-  [0x02BB] = {
+  [0x02bb] = {
     [0] = {
       name = "ffxiv_ipc_actor_control",
       length = 24,
     },
   },
-  [0x030C] = {
+  [0x030c] = {
     [0] = {
       name = "ffxiv_ipc_actor_control_self",
       length = 32,
     },
   },
-  [0x00BF] = {
+  [0x00bf] = {
     [0] = {
       name = "ffxiv_ipc_actor_control_target",
       length = 32,
     },
   },
-  [0x01BC] = {
+  [0x01bc] = {
     [0] = {
       name = "ffxiv_ipc_actor_gauge",
       length = 16,
     },
   },
-  [0x01B7] = {
+  [0x01b7] = {
     [0] = {
       name = "ffxiv_ipc_actor_move",
       length = 16,
     },
   },
-  [0x038A] = {
+  [0x038a] = {
     [0] = {
       name = "ffxiv_ipc_actor_set_pos",
       length = 24,
@@ -50,7 +50,7 @@ M.types = {
       length = 1212,
     },
   },
-  [0x01E4] = {
+  [0x01e4] = {
     [0] = {
       name = "ffxiv_ipc_effect24",
       length = 1788,
@@ -62,7 +62,7 @@ M.types = {
       length = 2364,
     },
   },
-  [0x012A] = {
+  [0x012a] = {
     [0] = {
       name = "ffxiv_ipc_effect8",
       length = 636,
@@ -70,11 +70,11 @@ M.types = {
   },
   [0x0129] = {
     [0] = {
-      name = "ffxiv_ipc_cedirector",
+      name = "ffxiv_ipc_ce_director",
       length = 16,
     },
   },
-  [0x00A2] = {
+  [0x00a2] = {
     [0] = {
       name = "ffxiv_ipc_client_trigger",
       length = 32,
@@ -92,13 +92,13 @@ M.types = {
       length = 0,
     },
   },
-  [0x02B3] = {
+  [0x02b3] = {
     [0] = {
       name = "ffxiv_ipc_container_info",
       length = 16,
     },
   },
-  [0x02B1] = {
+  [0x02b1] = {
     [0] = {
       name = "ffxiv_ipc_content_finder_notify_pop",
       length = 32,
@@ -116,13 +116,13 @@ M.types = {
       length = 124,
     },
   },
-  [0x03B7] = {
+  [0x03b7] = {
     [0] = {
       name = "ffxiv_ipc_effect_result",
       length = 26,
     },
   },
-  [0x012C] = {
+  [0x012c] = {
     [0] = {
       name = "ffxiv_ipc_examine",
       length = 656,
@@ -140,7 +140,7 @@ M.types = {
       length = 16,
     },
   },
-  [0x033B] = {
+  [0x033b] = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction",
       length = 36,
@@ -152,7 +152,7 @@ M.types = {
       length = 16,
     },
   },
-  [0x03C0] = {
+  [0x03c0] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn",
       length = 636,
@@ -164,13 +164,13 @@ M.types = {
       length = 8,
     },
   },
-  [0x030A] = {
+  [0x030a] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
       length = 628,
     },
   },
-  [0x025B] = {
+  [0x025b] = {
     [0] = {
       name = "ffxiv_ipc_player_stats",
       length = 224,
@@ -194,13 +194,13 @@ M.types = {
       length = 16,
     },
   },
-  [0x01CB] = {
+  [0x01cb] = {
     [0] = {
       name = "ffxiv_ipc_update_hp_mp_tp",
       length = 8,
     },
   },
-  [0x02F4] = {
+  [0x02f4] = {
     [0] = {
       name = "ffxiv_ipc_update_inventory_slot",
       length = 64,

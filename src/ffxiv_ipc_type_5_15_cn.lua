@@ -2,7 +2,7 @@
 
 local M = {}
 M.types = {
-  [0x032C] = {
+  [0x032c] = {
     [0] = {
       name = "ffxiv_ipc_actor_cast",
       length = 32,
@@ -62,7 +62,7 @@ M.types = {
       length = 2364,
     },
   },
-  [0x01B1] = {
+  [0x01b1] = {
     [0] = {
       name = "ffxiv_ipc_effect8",
       length = 636,
@@ -74,13 +74,13 @@ M.types = {
       length = 744,
     },
   },
-  [0x025F] = {
+  [0x025f] = {
     [0] = {
       name = "ffxiv_ipc_client_trigger",
       length = 32,
     },
   },
-  [0x028A] = {
+  [0x028a] = {
     [0] = {
       name = "ffxiv_ipc_container_info",
       length = 16,
@@ -92,7 +92,7 @@ M.types = {
       length = 32,
     },
   },
-  [0x023E] = {
+  [0x023e] = {
     [0] = {
       name = "ffxiv_ipc_effect",
       length = 124,
@@ -104,7 +104,7 @@ M.types = {
       length = 26,
     },
   },
-  [0x00BD] = {
+  [0x00bd] = {
     [0] = {
       name = "ffxiv_ipc_examine",
       length = 656,
@@ -164,7 +164,7 @@ M.types = {
       length = 640,
     },
   },
-  [0x029D] = {
+  [0x029d] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
       length = 628,
@@ -200,19 +200,19 @@ M.types = {
       length = 384,
     },
   },
-  [0x03C5] = {
+  [0x03c5] = {
     [0] = {
       name = "ffxiv_ipc_update_class_info",
       length = 16,
     },
   },
-  [0x034A] = {
+  [0x034a] = {
     [0] = {
       name = "ffxiv_ipc_update_hp_mp_tp",
       length = 8,
     },
   },
-  [0x013C] = {
+  [0x013c] = {
     [0] = {
       name = "ffxiv_ipc_update_inventory_slot",
       length = 64,

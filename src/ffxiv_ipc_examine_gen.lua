@@ -13,8 +13,8 @@ local examine_fields = {
   grand_company      = ProtoField.int8("ffxiv_ipc_examine.grand_company", "grandCompany", base.DEC),
   grand_company_rank = ProtoField.int8("ffxiv_ipc_examine.grand_company_rank", "grandCompanyRank", base.DEC),
   unknown_a          = ProtoField.bytes("ffxiv_ipc_examine.unknown_a", "unknownA", base.NONE),
-  u6_from_pspawn     = ProtoField.uint32("ffxiv_ipc_examine.u6_from_pspawn", "u6_fromPSpawn", base.DEC),
-  u7_from_pspawn     = ProtoField.uint32("ffxiv_ipc_examine.u7_from_pspawn", "u7_fromPSpawn", base.DEC),
+  u6_from_p_spawn    = ProtoField.uint32("ffxiv_ipc_examine.u6_from_p_spawn", "u6_fromPSpawn", base.DEC),
+  u7_from_p_spawn    = ProtoField.uint32("ffxiv_ipc_examine.u7_from_p_spawn", "u7_fromPSpawn", base.DEC),
   padding1           = ProtoField.bytes("ffxiv_ipc_examine.padding1", "padding1", base.NONE),
   main_weapon_model  = ProtoField.uint64("ffxiv_ipc_examine.main_weapon_model", "mainWeaponModel", base.DEC),
   sec_weapon_model   = ProtoField.uint64("ffxiv_ipc_examine.sec_weapon_model", "secWeaponModel", base.DEC),
@@ -72,15 +72,15 @@ function ffxiv_ipc_examine.dissector(tvbuf, pktinfo, root)
   local unknown_a_val  = unknown_a_tvbr:raw(10)
   tree:add(examine_fields.unknown_a, unknown_a_tvbr, unknown_a_val)
 
-  -- dissect the u6_from_pspawn field
-  local u6_from_pspawn_tvbr = tvbuf:range(16, 4)
-  local u6_from_pspawn_val  = u6_from_pspawn_tvbr:le_uint()
-  tree:add_le(examine_fields.u6_from_pspawn, u6_from_pspawn_tvbr, u6_from_pspawn_val)
+  -- dissect the u6_from_p_spawn field
+  local u6_from_p_spawn_tvbr = tvbuf:range(16, 4)
+  local u6_from_p_spawn_val  = u6_from_p_spawn_tvbr:le_uint()
+  tree:add_le(examine_fields.u6_from_p_spawn, u6_from_p_spawn_tvbr, u6_from_p_spawn_val)
 
-  -- dissect the u7_from_pspawn field
-  local u7_from_pspawn_tvbr = tvbuf:range(20, 4)
-  local u7_from_pspawn_val  = u7_from_pspawn_tvbr:le_uint()
-  tree:add_le(examine_fields.u7_from_pspawn, u7_from_pspawn_tvbr, u7_from_pspawn_val)
+  -- dissect the u7_from_p_spawn field
+  local u7_from_p_spawn_tvbr = tvbuf:range(20, 4)
+  local u7_from_p_spawn_val  = u7_from_p_spawn_tvbr:le_uint()
+  tree:add_le(examine_fields.u7_from_p_spawn, u7_from_p_spawn_tvbr, u7_from_p_spawn_val)
 
   -- dissect the padding1 field
   local padding1_tvbr = tvbuf:range(24, 8)

@@ -2,6 +2,7 @@
 
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
+
 local label_data0_type = {
   [21] = "Status",
   [23] = "Status",

@@ -92,7 +92,7 @@ M.types = {
       length = 32,
     },
   },
-  [0x00FD] = {
+  [0x00fd] = {
     [0] = {
       name = "ffxiv_ipc_container_info",
       length = 16,
@@ -170,7 +170,7 @@ M.types = {
       length = 57,
     },
   },
-  [0x015B] = {
+  [0x015b] = {
     [0] = {
       name = "ffxiv_ipc_init_zone",
       length = 96,
@@ -248,13 +248,13 @@ M.types = {
       length = 8,
     },
   },
-  [0x01AD] = {
+  [0x01ad] = {
     [0] = {
       name = "ffxiv_ipc_update_inventory_slot",
       length = 64,
     },
   },
-  [0x030B] = {
+  [0x030b] = {
     [0] = {
       name = "ffxiv_ipc_item_info",
       length = 64,

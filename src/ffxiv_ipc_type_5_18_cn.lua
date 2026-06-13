@@ -2,13 +2,13 @@
 
 local M = {}
 M.types = {
-  [0x008C] = {
+  [0x008c] = {
     [0] = {
       name = "ffxiv_ipc_actor_cast",
       length = 32,
     },
   },
-  [0x03CC] = {
+  [0x03cc] = {
     [0] = {
       name = "ffxiv_ipc_actor_control",
       length = 24,
@@ -20,13 +20,13 @@ M.types = {
       length = 32,
     },
   },
-  [0x03DB] = {
+  [0x03db] = {
     [0] = {
       name = "ffxiv_ipc_actor_gauge",
       length = 16,
     },
   },
-  [0x02D8] = {
+  [0x02d8] = {
     [0] = {
       name = "ffxiv_ipc_actor_move",
       length = 16,
@@ -44,13 +44,13 @@ M.types = {
       length = 1212,
     },
   },
-  [0x01E5] = {
+  [0x01e5] = {
     [0] = {
       name = "ffxiv_ipc_effect24",
       length = 1788,
     },
   },
-  [0x01B2] = {
+  [0x01b2] = {
     [0] = {
       name = "ffxiv_ipc_effect32",
       length = 2364,
@@ -74,7 +74,7 @@ M.types = {
       length = 32,
     },
   },
-  [0x026F] = {
+  [0x026f] = {
     [0] = {
       name = "ffxiv_ipc_container_info",
       length = 16,
@@ -86,7 +86,7 @@ M.types = {
       length = 32,
     },
   },
-  [0x00D5] = {
+  [0x00d5] = {
     [0] = {
       name = "ffxiv_ipc_effect",
       length = 124,
@@ -98,7 +98,7 @@ M.types = {
       length = 26,
     },
   },
-  [0x038D] = {
+  [0x038d] = {
     [0] = {
       name = "ffxiv_ipc_examine",
       length = 656,
@@ -116,7 +116,7 @@ M.types = {
       length = 16,
     },
   },
-  [0x028B] = {
+  [0x028b] = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction",
       length = 36,
@@ -158,19 +158,19 @@ M.types = {
       length = 224,
     },
   },
-  [0x02AE] = {
+  [0x02ae] = {
     [0] = {
       name = "ffxiv_ipc_public_message",
       length = 48,
     },
   },
-  [0x00B5] = {
+  [0x00b5] = {
     [0] = {
       name = "ffxiv_ipc_retainer_information",
       length = 73,
     },
   },
-  [0x021F] = {
+  [0x021f] = {
     [0] = {
       name = "ffxiv_ipc_status_effect_list",
       length = 384,
@@ -200,13 +200,13 @@ M.types = {
       length = 16,
     },
   },
-  [0x01F6] = {
+  [0x01f6] = {
     [0] = {
       name = "ffxiv_ipc_update_hp_mp_tp",
       length = 8,
     },
   },
-  [0x01A7] = {
+  [0x01a7] = {
     [0] = {
       name = "ffxiv_ipc_update_inventory_slot",
       length = 64,

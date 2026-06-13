@@ -2,6 +2,7 @@
 
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
+
 local label_param11_command_id = {
   [701] = "Type",
   [809] = "Fate",

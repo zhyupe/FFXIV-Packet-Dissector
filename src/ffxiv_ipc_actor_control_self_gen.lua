@@ -2,6 +2,7 @@
 
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
+
 local label_unknown0_type = {
   [521] = "JobLevel",
 }
