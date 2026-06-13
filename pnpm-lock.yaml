@@ -12,6 +12,9 @@ catalogs:
     '@types/node':
       specifier: ^20.10.3
       version: 20.19.24
+    reflect-metadata:
+      specifier: ^0.2.2
+      version: 0.2.2
     tsdown:
       specifier: ^0.22.2
       version: 0.22.2
@@ -31,6 +34,31 @@ importers:
       pcap:
         specifier: workspace:^
         version: link:../pcap
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 20.19.24
+      tsdown:
+        specifier: 'catalog:'
+        version: 0.22.2(tsx@4.22.4)(typescript@6.0.3)
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/network:
+    dependencies:
+      change-case:
+        specifier: ^5.4.4
+        version: 5.4.4
+      prettier:
+        specifier: ^3.5.2
+        version: 3.8.4
+      reflect-metadata:
+        specifier: 'catalog:'
+        version: 0.2.2
+      tsx:
+        specifier: ^4.19.3
+        version: 4.22.4
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -589,6 +617,9 @@ packages:
     resolution: {integrity: sha512-tixWYgm5ZoOD+3g6UTea91eow5z6AAHaho3g0V9CNSNb45gM8SmflpAc+GRd1InC4AqN/07Unrgp56Y94N9hJQ==}
     engines: {node: '>=20.19.0'}
 
+  change-case@5.4.4:
+    resolution: {integrity: sha512-HRQyTk2/YPEkt9TnUPbOpr64Uw3KOicFWPVBb+xiHvd6eBx/qPr9xqfBFDT8P2vWsvvz4jbEkfDe71W3VyNu2w==}
+
   chardet@2.1.1:
     resolution: {integrity: sha512-PsezH1rqdV9VvyNhxxOW32/d75r01NY7TQCmOqomRo15ZSOKbpTFVsfjghxo6JloQUCGnH4k1LGu0R4yCLlWQQ==}
 
@@ -766,6 +797,11 @@ packages:
     deprecated: No longer maintained. Please contact the author of the relevant native addon; alternatives are available.
     hasBin: true
 
+  prettier@3.8.4:
+    resolution: {integrity: sha512-N2MylSdi48+5N/6S5j+maeHbUSIzzZ5uOcX5Hm4QpV8Dkb1HFjfAKTKX6yNPJQD9AhcT3ifHNB66tWTTJDi11Q==}
+    engines: {node: '>=14'}
+    hasBin: true
+
   pump@3.0.3:
     resolution: {integrity: sha512-todwxLMY7/heScKmntwQG8CXVkWUOdYxIvY2s0VWAAMh/nd8SoYiRaKjlr7+iCs984f2P8zvrfWcDDYVb73NfA==}
 
@@ -779,6 +815,9 @@ packages:
   readable-stream@3.6.2:
     resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==}
     engines: {node: '>= 6'}
+
+  reflect-metadata@0.2.2:
+    resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
 
   resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
@@ -1312,6 +1351,8 @@ snapshots:
 
   cac@7.0.0: {}
 
+  change-case@5.4.4: {}
+
   chardet@2.1.1: {}
 
   chownr@1.1.4: {}
@@ -1473,6 +1514,8 @@ snapshots:
       tar-fs: 2.1.4
       tunnel-agent: 0.6.0
 
+  prettier@3.8.4: {}
+
   pump@3.0.3:
     dependencies:
       end-of-stream: 1.4.5
@@ -1492,6 +1535,8 @@ snapshots:
       inherits: 2.0.4
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
+
+  reflect-metadata@0.2.2: {}
 
   resolve-pkg-maps@1.0.0: {}
 
