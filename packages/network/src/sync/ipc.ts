@@ -41,17 +41,10 @@ function readIPCs() {
   return map
 }
 
-function generateNormalizedOpcodeFile(opcodes: string[]) {
-  return `
-export enum NormalizedOpcode {
-${opcodes.map((item) => `  ${item} = '${item}',`).join('\n')}
-}
-`
-}
-
 function generateIPCIndexFile(
   ipcs: ReturnType<typeof readIPCs>,
   exports: string[],
+  packetMapExports: string[],
   commonFiles: string[],
 ) {
   return `
@@ -66,7 +59,7 @@ function packetMapTypeConstraint<T extends Partial<Record<NormalizedOpcode, Stru
 }
 
 export const PacketMap = packetMapTypeConstraint({
-${exports.map((item) => `  [NormalizedOpcode.${item}]: ${item},`).join('\n')}
+${packetMapExports.map((item) => `  [NormalizedOpcode.${item}]: ${item},`).join('\n')}
 })
 
 export {
@@ -77,22 +70,19 @@ ${commonFiles.map((item) => `export * from './common/${item}'`).join('\n')}
 `
 }
 
-export async function syncIPCs() {
+export async function syncIPCs(opcodeTypes: string[]) {
   const ipcs = readIPCs()
   const exports = ([] as string[]).concat(...ipcs.map((item) => item.exports))
   exports.sort()
-
-  await writeCode(
-    `opcode/normalized-opcode.enum.ts`,
-    generateNormalizedOpcodeFile(exports),
-  )
+  const opcodeTypeSet = new Set(opcodeTypes)
+  const packetMapExports = exports.filter((item) => opcodeTypeSet.has(item))
 
   const commonFiles = readdirSync(join(ipcRoot, 'common'))
     .filter(fileFilter)
     .map((item) => item.substr(0, item.length - 3))
   await writeCode(
     `definitions/ipc/index.ts`,
-    generateIPCIndexFile(ipcs, exports, commonFiles),
+    generateIPCIndexFile(ipcs, exports, packetMapExports, commonFiles),
   )
 
   formatCode(`definitions/ipc/index.ts`)

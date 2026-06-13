@@ -142,12 +142,38 @@ ${vs.map((v) => `  '${v}': ${k}_${v.replace(/\./g, '_')},`).join('\n')}
 `
 }
 
-export async function syncOpcodes(opcodeTypes: string[]) {
+function generateNormalizedOpcodeFile(opcodes: string[]) {
+  return `
+export enum NormalizedOpcode {
+${opcodes.map((item) => `  ${item} = '${item}',`).join('\n')}
+}
+`
+}
+
+export async function syncOpcodes() {
   mkdirSync(cacheDir, { recursive: true })
 
-  const cnVersions = JSON.parse(
+  const cnVersions: string[] = JSON.parse(
     await request(urls.opcodeVersions, join(cacheDir, 'opcode-versions.cache')),
   )
+  const latestVersion = cnVersions.at(-1)
+  if (!latestVersion) {
+    throw new Error('No opcode versions found')
+  }
+
+  const latestTable: Record<string, string> = JSON.parse(
+    await request(
+      urls.opcodeJson(latestVersion),
+      join(cacheDir, `opcode-${latestVersion}.cache`),
+    ),
+  )
+  const opcodeTypes = Object.keys(latestTable).sort()
+
+  await writeCode(
+    `opcode/normalized-opcode.enum.ts`,
+    generateNormalizedOpcodeFile(opcodeTypes),
+  )
+
   for (const version of cnVersions) {
     const table = JSON.parse(
       await request(
@@ -163,4 +189,5 @@ export async function syncOpcodes(opcodeTypes: string[]) {
 
   await writeCode(`opcode/index.ts`, generateIndexFile())
   await formatCode('opcode')
+  return opcodeTypes
 }

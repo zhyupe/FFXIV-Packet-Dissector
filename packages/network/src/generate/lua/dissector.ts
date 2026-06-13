@@ -1,5 +1,7 @@
 import { existsSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { CNOpcode, type OpcodeMap } from '@/opcode'
+import type { OpcodeItem } from '@/opcode/opcode-item.type'
 import { snakeCase } from '../utils'
 import { type Pair, table, tableValue } from './table'
 
@@ -79,14 +81,6 @@ const renderOpcodeKey = (opcode: string | number) => {
   return Number.isFinite(opcodeNumber)
     ? `[0x${opcodeNumber.toString(16).padStart(4, '0')}]`
     : `[${opcode}]`
-}
-
-type IPCTypeValue = string | number
-
-type IPCTypeEntry = {
-  name: string
-  type: IPCTypeValue
-  length: number
 }
 
 class DissectorFile {
@@ -336,7 +330,6 @@ ${indent}local ${fieldKey}_val  = ${fieldKey}_tvbr:${item.tvb_method || tvbMetho
 export class DissectorRenderer {
   enums: Record<string, Pair<number | string>[]> = {}
   ipcLength: Record<string, number> = {}
-  ipcTypes: Record<string, IPCTypeEntry[]> = {}
 
   output: string
   constructor() {
@@ -361,27 +354,6 @@ export class DissectorRenderer {
     this.ipcLength[name] = length
   }
 
-  registerType(obj: IPCSchema) {
-    let { name, type, version = 'unknown', length } = obj
-    if (!name || !type) return
-
-    length ||= getPacketLength(obj)
-
-    if (typeof type === 'object') {
-      Object.entries(type).forEach(([version, type]) => {
-        this.registerType({ ...obj, type, version, length })
-      })
-      return
-    }
-
-    this.ipcTypes[version] ??= []
-    this.ipcTypes[version].push({
-      name: name.replace(/ /g, ''),
-      type,
-      length,
-    })
-  }
-
   handleIPCSchema(obj: IPCSchema) {
     if (obj.children) {
       for (const child of obj.children) {
@@ -390,14 +362,12 @@ export class DissectorRenderer {
     }
 
     if (obj.name) {
-      this.registerType(obj)
       new DissectorFile(obj.name, this).handleSchema(obj)
     }
 
     if (obj.aliases?.length) {
       for (const alias of obj.aliases) {
         const aliasObj = Object.freeze({ ...obj, ...alias })
-        this.registerType(aliasObj)
         new DissectorFile(aliasObj.name, this).handleSchema(aliasObj)
       }
     }
@@ -441,9 +411,9 @@ return M
   }
 
   commitOpcodes() {
-    for (const [version, opcodes] of Object.entries(this.ipcTypes)) {
+    for (const [version, opcodes] of Object.entries(CNOpcode)) {
       this.commit(
-        `ffxiv_ipc_type_${version.replace(/\./g, '_')}.lua`,
+        `ffxiv_ipc_type_${version.replace(/\./g, '_')}_cn.lua`,
         this.#renderOpcodes(opcodes),
       )
     }
@@ -456,18 +426,34 @@ return M
     )
   }
 
-  #renderOpcodes(ipcTypes: IPCTypeEntry[]) {
+  #getOpcodeItemType(item: OpcodeItem | string) {
+    return typeof item === 'string' ? item : item.type
+  }
+
+  #renderOpcodes(opcodeMap: OpcodeMap) {
     const typesObject: Record<
       string,
       Array<{ name: string; length: number }>
     > = {}
-    for (const { name, type, length } of ipcTypes) {
-      const key = renderOpcodeKey(type)
-      typesObject[key] ??= []
-      typesObject[key].push({
-        name: `ffxiv_ipc_${snakeCase(name)}`,
-        length,
-      })
+    for (const [opcode, config] of Object.entries(opcodeMap)) {
+      if (!config) continue
+
+      const types = (Array.isArray(config) ? config : [config])
+        .map((item) => {
+          const type = this.#getOpcodeItemType(item)
+          return {
+            name: `ffxiv_ipc_${snakeCase(type)}`,
+            length:
+              typeof item === 'string' || typeof item.size !== 'number'
+                ? this.ipcLength[type]
+                : item.size,
+          }
+        })
+        .filter((item) => typeof item.length === 'number')
+
+      if (!types.length) continue
+
+      typesObject[renderOpcodeKey(opcode)] = types
     }
 
     return `local M = {}
@@ -499,7 +485,7 @@ return M`
 }
 
 const getPacketLength = ({ fields }: IPCSchema) => {
-  if (!fields || !fields.length) return 0
+  if (!fields?.length) return 0
 
   return fields.reduce(
     (length, item) => Math.max(length, item.offset + (item.length || 0)),

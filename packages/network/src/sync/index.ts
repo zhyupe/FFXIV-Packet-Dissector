@@ -2,8 +2,8 @@ import { syncIPCs } from './ipc'
 import { syncOpcodes } from './opcode'
 
 async function main() {
-  const exports = await syncIPCs()
-  await syncOpcodes(exports)
+  const opcodeTypes = await syncOpcodes()
+  await syncIPCs(opcodeTypes)
 }
 
 void main()
