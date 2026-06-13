@@ -9,7 +9,7 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.mts --format esm",
+    "build": "tsdown src/index.mts",
     "start": "node dist/index.js"
   },
   "dependencies": {
@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@types/node": "catalog:",
-    "tsup": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:"
   }
 }

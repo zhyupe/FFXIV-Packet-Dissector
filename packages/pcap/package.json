@@ -9,7 +9,7 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.mts --format esm --dts"
+    "build": "tsdown src/index.mts --dts"
   },
   "dependencies": {
     "@ffxiv-teamcraft/dll-inject": "^0.0.11"
@@ -17,7 +17,7 @@
   "devDependencies": {
     "@tsconfig/node20": "catalog:",
     "@types/node": "catalog:",
-    "tsup": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:"
   }
 }

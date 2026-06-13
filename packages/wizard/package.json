@@ -9,7 +9,7 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.mts --format esm",
+    "build": "tsdown src/index.mts",
     "start": "tsx src/index.mts"
   },
   "dependencies": {
@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/inquirer": "^9.0.7",
     "@types/node": "catalog:",
-    "tsup": "catalog:",
+    "tsdown": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"
   }
