@@ -96,197 +96,197 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
   tree:add_le(player_spawn_fields.u1b, u1b_tvbr, u1b_val)
 
   -- dissect the current_world_id field
-  local current_world_id_tvbr = tvbuf:range(4, 2)
+  local current_world_id_tvbr = tvbuf:range(20, 2)
   local current_world_id_val  = current_world_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.current_world_id, current_world_id_tvbr, current_world_id_val)
 
   -- dissect the home_world_id field
-  local home_world_id_tvbr = tvbuf:range(6, 2)
+  local home_world_id_tvbr = tvbuf:range(22, 2)
   local home_world_id_val  = home_world_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.home_world_id, home_world_id_tvbr, home_world_id_val)
 
   -- dissect the gm_rank field
-  local gm_rank_tvbr = tvbuf:range(8, 1)
+  local gm_rank_tvbr = tvbuf:range(24, 1)
   local gm_rank_val  = gm_rank_tvbr:le_uint()
   tree:add_le(player_spawn_fields.gm_rank, gm_rank_tvbr, gm_rank_val)
 
   -- dissect the u3c field
-  local u3c_tvbr = tvbuf:range(9, 1)
+  local u3c_tvbr = tvbuf:range(25, 1)
   local u3c_val  = u3c_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u3c, u3c_tvbr, u3c_val)
 
   -- dissect the u4 field
-  local u4_tvbr = tvbuf:range(10, 1)
+  local u4_tvbr = tvbuf:range(26, 1)
   local u4_val  = u4_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u4, u4_tvbr, u4_val)
 
   -- dissect the online_status field
-  local online_status_tvbr = tvbuf:range(11, 1)
+  local online_status_tvbr = tvbuf:range(27, 1)
   local online_status_val  = online_status_tvbr:le_uint()
   tree:add_le(player_spawn_fields.online_status, online_status_tvbr, online_status_val)
 
   -- dissect the pose field
-  local pose_tvbr = tvbuf:range(12, 1)
+  local pose_tvbr = tvbuf:range(28, 1)
   local pose_val  = pose_tvbr:le_uint()
   tree:add_le(player_spawn_fields.pose, pose_tvbr, pose_val)
 
   -- dissect the u5a field
-  local u5a_tvbr = tvbuf:range(13, 1)
+  local u5a_tvbr = tvbuf:range(29, 1)
   local u5a_val  = u5a_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u5a, u5a_tvbr, u5a_val)
 
   -- dissect the u5b field
-  local u5b_tvbr = tvbuf:range(14, 1)
+  local u5b_tvbr = tvbuf:range(30, 1)
   local u5b_val  = u5b_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u5b, u5b_tvbr, u5b_val)
 
   -- dissect the u5c field
-  local u5c_tvbr = tvbuf:range(15, 1)
+  local u5c_tvbr = tvbuf:range(31, 1)
   local u5c_val  = u5c_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u5c, u5c_tvbr, u5c_val)
 
   -- dissect the target_id field
-  local target_id_tvbr = tvbuf:range(16, 8)
+  local target_id_tvbr = tvbuf:range(32, 8)
   local target_id_val  = target_id_tvbr:le_uint64()
   tree:add_le(player_spawn_fields.target_id, target_id_tvbr, target_id_val)
 
   -- dissect the u6 field
-  local u6_tvbr = tvbuf:range(24, 4)
+  local u6_tvbr = tvbuf:range(40, 4)
   local u6_val  = u6_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u6, u6_tvbr, u6_val)
 
   -- dissect the u7 field
-  local u7_tvbr = tvbuf:range(28, 4)
+  local u7_tvbr = tvbuf:range(44, 4)
   local u7_val  = u7_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u7, u7_tvbr, u7_val)
 
   -- dissect the main_weapon_model field
-  local main_weapon_model_tvbr = tvbuf:range(32, 8)
+  local main_weapon_model_tvbr = tvbuf:range(48, 8)
   local main_weapon_model_val  = main_weapon_model_tvbr:le_uint64()
   tree:add_le(player_spawn_fields.main_weapon_model, main_weapon_model_tvbr, main_weapon_model_val)
 
   -- dissect the sec_weapon_model field
-  local sec_weapon_model_tvbr = tvbuf:range(40, 8)
+  local sec_weapon_model_tvbr = tvbuf:range(56, 8)
   local sec_weapon_model_val  = sec_weapon_model_tvbr:le_uint64()
   tree:add_le(player_spawn_fields.sec_weapon_model, sec_weapon_model_tvbr, sec_weapon_model_val)
 
   -- dissect the craft_tool_model field
-  local craft_tool_model_tvbr = tvbuf:range(48, 8)
+  local craft_tool_model_tvbr = tvbuf:range(64, 8)
   local craft_tool_model_val  = craft_tool_model_tvbr:le_uint64()
   tree:add_le(player_spawn_fields.craft_tool_model, craft_tool_model_tvbr, craft_tool_model_val)
 
   -- dissect the u14 field
-  local u14_tvbr = tvbuf:range(56, 4)
+  local u14_tvbr = tvbuf:range(72, 4)
   local u14_val  = u14_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u14, u14_tvbr, u14_val)
 
   -- dissect the u15 field
-  local u15_tvbr = tvbuf:range(60, 4)
+  local u15_tvbr = tvbuf:range(76, 4)
   local u15_val  = u15_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u15, u15_tvbr, u15_val)
 
   -- dissect the b_npcbase field
-  local b_npcbase_tvbr = tvbuf:range(64, 4)
+  local b_npcbase_tvbr = tvbuf:range(80, 4)
   local b_npcbase_val  = b_npcbase_tvbr:le_uint()
   tree:add_le(player_spawn_fields.b_npcbase, b_npcbase_tvbr, b_npcbase_val)
 
   -- dissect the b_npcname field
-  local b_npcname_tvbr = tvbuf:range(68, 4)
+  local b_npcname_tvbr = tvbuf:range(84, 4)
   local b_npcname_val  = b_npcname_tvbr:le_uint()
   tree:add_le(player_spawn_fields.b_npcname, b_npcname_tvbr, b_npcname_val)
 
   -- dissect the u18 field
-  local u18_tvbr = tvbuf:range(72, 4)
+  local u18_tvbr = tvbuf:range(88, 4)
   local u18_val  = u18_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u18, u18_tvbr, u18_val)
 
   -- dissect the u19 field
-  local u19_tvbr = tvbuf:range(76, 4)
+  local u19_tvbr = tvbuf:range(92, 4)
   local u19_val  = u19_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u19, u19_tvbr, u19_val)
 
   -- dissect the director_id field
-  local director_id_tvbr = tvbuf:range(80, 4)
+  local director_id_tvbr = tvbuf:range(96, 4)
   local director_id_val  = director_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.director_id, director_id_tvbr, director_id_val)
 
   -- dissect the owner_id field
-  local owner_id_tvbr = tvbuf:range(84, 4)
+  local owner_id_tvbr = tvbuf:range(100, 4)
   local owner_id_val  = owner_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.owner_id, owner_id_tvbr, owner_id_val)
 
   -- dissect the u22 field
-  local u22_tvbr = tvbuf:range(88, 4)
+  local u22_tvbr = tvbuf:range(104, 4)
   local u22_val  = u22_tvbr:le_uint()
   tree:add_le(player_spawn_fields.u22, u22_tvbr, u22_val)
 
   -- dissect the h_pmax field
-  local h_pmax_tvbr = tvbuf:range(92, 4)
+  local h_pmax_tvbr = tvbuf:range(108, 4)
   local h_pmax_val  = h_pmax_tvbr:le_uint()
   tree:add_le(player_spawn_fields.h_pmax, h_pmax_tvbr, h_pmax_val)
 
   -- dissect the h_pcurr field
-  local h_pcurr_tvbr = tvbuf:range(96, 4)
+  local h_pcurr_tvbr = tvbuf:range(112, 4)
   local h_pcurr_val  = h_pcurr_tvbr:le_uint()
   tree:add_le(player_spawn_fields.h_pcurr, h_pcurr_tvbr, h_pcurr_val)
 
   -- dissect the display_flags field
-  local display_flags_tvbr = tvbuf:range(100, 4)
+  local display_flags_tvbr = tvbuf:range(116, 4)
   local display_flags_val  = display_flags_tvbr:le_uint()
   tree:add_le(player_spawn_fields.display_flags, display_flags_tvbr, display_flags_val)
 
   -- dissect the fate_id field
-  local fate_id_tvbr = tvbuf:range(104, 2)
+  local fate_id_tvbr = tvbuf:range(120, 2)
   local fate_id_val  = fate_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.fate_id, fate_id_tvbr, fate_id_val)
 
   -- dissect the m_pcurr field
-  local m_pcurr_tvbr = tvbuf:range(106, 2)
+  local m_pcurr_tvbr = tvbuf:range(122, 2)
   local m_pcurr_val  = m_pcurr_tvbr:le_uint()
   tree:add_le(player_spawn_fields.m_pcurr, m_pcurr_tvbr, m_pcurr_val)
 
   -- dissect the t_pcurr field
-  local t_pcurr_tvbr = tvbuf:range(108, 2)
+  local t_pcurr_tvbr = tvbuf:range(124, 2)
   local t_pcurr_val  = t_pcurr_tvbr:le_uint()
   tree:add_le(player_spawn_fields.t_pcurr, t_pcurr_tvbr, t_pcurr_val)
 
   -- dissect the m_pmax field
-  local m_pmax_tvbr = tvbuf:range(110, 2)
+  local m_pmax_tvbr = tvbuf:range(126, 2)
   local m_pmax_val  = m_pmax_tvbr:le_uint()
   tree:add_le(player_spawn_fields.m_pmax, m_pmax_tvbr, m_pmax_val)
 
   -- dissect the t_pmax field
-  local t_pmax_tvbr = tvbuf:range(112, 2)
+  local t_pmax_tvbr = tvbuf:range(128, 2)
   local t_pmax_val  = t_pmax_tvbr:le_uint()
   tree:add_le(player_spawn_fields.t_pmax, t_pmax_tvbr, t_pmax_val)
 
   -- dissect the model_chara field
-  local model_chara_tvbr = tvbuf:range(114, 2)
+  local model_chara_tvbr = tvbuf:range(130, 2)
   local model_chara_val  = model_chara_tvbr:le_uint()
   tree:add_le(player_spawn_fields.model_chara, model_chara_tvbr, model_chara_val)
 
   -- dissect the rotation field
-  local rotation_tvbr = tvbuf:range(116, 2)
+  local rotation_tvbr = tvbuf:range(132, 2)
   local rotation_val  = rotation_tvbr:le_uint()
   tree:add_le(player_spawn_fields.rotation, rotation_tvbr, rotation_val)
 
   -- dissect the active_minion field
-  local active_minion_tvbr = tvbuf:range(118, 2)
+  local active_minion_tvbr = tvbuf:range(134, 2)
   local active_minion_val  = active_minion_tvbr:le_uint()
   tree:add_le(player_spawn_fields.active_minion, active_minion_tvbr, active_minion_val)
 
   -- dissect the spawn_index field
-  local spawn_index_tvbr = tvbuf:range(120, 1)
+  local spawn_index_tvbr = tvbuf:range(136, 1)
   local spawn_index_val  = spawn_index_tvbr:le_uint()
   tree:add_le(player_spawn_fields.spawn_index, spawn_index_tvbr, spawn_index_val)
 
   -- dissect the state field
-  local state_tvbr = tvbuf:range(121, 1)
+  local state_tvbr = tvbuf:range(137, 1)
   local state_val  = state_tvbr:le_uint()
   tree:add_le(player_spawn_fields.state, state_tvbr, state_val)
 
   -- dissect the persistent_emote field
-  local persistent_emote_tvbr = tvbuf:range(122, 1)
+  local persistent_emote_tvbr = tvbuf:range(138, 1)
   local persistent_emote_val  = persistent_emote_tvbr:le_uint()
   tree:add_le(player_spawn_fields.persistent_emote, persistent_emote_tvbr, persistent_emote_val)
 
