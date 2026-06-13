@@ -1,4 +1,5 @@
 import {
+  existsSync,
   mkdirSync,
   readdirSync,
   readFileSync,
@@ -175,6 +176,11 @@ export async function syncOpcodes() {
   )
 
   for (const version of cnVersions) {
+    const codeFile = `opcode/cn-${version}.ts`
+    if (existsSync(join(codePath, codeFile))) {
+      continue
+    }
+
     const table = JSON.parse(
       await request(
         urls.opcodeJson(version),
@@ -182,7 +188,7 @@ export async function syncOpcodes() {
       ),
     )
     await writeCode(
-      `opcode/cn-${version}.ts`,
+      codeFile,
       generateOpcodeFile('CN', version, table, opcodeTypes),
     )
   }
