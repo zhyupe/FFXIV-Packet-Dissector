@@ -12,7 +12,7 @@
     "build": "tsdown src/index.mts --dts"
   },
   "dependencies": {
-    "@ffxiv-teamcraft/dll-inject": "^0.0.17"
+    "dll-inject": "workspace:^"
   },
   "devDependencies": {
     "@tsconfig/node20": "catalog:",
