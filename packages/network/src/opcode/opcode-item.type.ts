@@ -1,4 +1,4 @@
-import { NormalizedOpcode } from './normalized-opcode.enum'
+import type { NormalizedOpcode } from './normalized-opcode.enum'
 
 export interface OpcodeItem {
   outgoing?: boolean

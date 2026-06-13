@@ -7,7 +7,7 @@
     "tsx": "^4.19.3"
   },
   "scripts": {
-    "sync": "tsx src/generate/sync/index.ts",
+    "sync": "tsx src/sync/index.ts",
     "generate": "tsx src/generate/index.ts",
     "build": "tsdown src/index.ts"
   },
