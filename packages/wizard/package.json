@@ -13,7 +13,7 @@
     "start": "tsx src/index.mts"
   },
   "dependencies": {
-    "@inquirer/prompts": "^5.3.8",
+    "@inquirer/prompts": "^8.5.2",
     "iconv-lite": "^0.6.3",
     "pcap": "workspace:^"
   },
