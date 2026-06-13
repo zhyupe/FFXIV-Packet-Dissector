@@ -17,6 +17,7 @@ import { PlayerSetup } from './player-setup'
 import { PlayerSpawn } from './player-spawn'
 import { PlayerStats } from './player-stats'
 import { BossStatusEffectList, StatusEffectList } from './status-effect-list'
+import { SubmarineStatusList } from './submarine'
 import { UpdateClassInfo } from './update-class-info'
 import { UpdateHpMpTp } from './update-hp-mp-tp'
 import { WardLandInfo } from './ward-land-info'
@@ -50,6 +51,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.PlayerSpawn]: PlayerSpawn,
   [NormalizedOpcode.PlayerStats]: PlayerStats,
   [NormalizedOpcode.StatusEffectList]: StatusEffectList,
+  [NormalizedOpcode.SubmarineStatusList]: SubmarineStatusList,
   [NormalizedOpcode.UpdateClassInfo]: UpdateClassInfo,
   [NormalizedOpcode.UpdateHpMpTp]: UpdateHpMpTp,
   [NormalizedOpcode.WardLandInfo]: WardLandInfo,
@@ -65,6 +67,7 @@ export * from './common/effect-entity'
 export * from './common/effect-header'
 export * from './common/position'
 export * from './common/status-effect'
+export * from './common/submarine'
 export * from './common/ward-land-item'
 export {
   ActorCast,
@@ -88,6 +91,7 @@ export {
   PlayerSpawn,
   PlayerStats,
   StatusEffectList,
+  SubmarineStatusList,
   UpdateClassInfo,
   UpdateHpMpTp,
   WardLandInfo,
