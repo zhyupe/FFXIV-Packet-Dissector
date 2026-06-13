@@ -1,4 +1,7 @@
 {
   "name": "ffxiv-packet-dissector",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@biomejs/biome": "2.5.0"
+  }
 }
