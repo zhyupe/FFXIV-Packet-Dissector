@@ -1,6 +1,14 @@
 packages:
   - packages/*
 
+catalog:
+  '@tsconfig/node20': ^20.1.4
+  '@types/node': ^20.10.3
+  reflect-metadata: ^0.2.2
+  tsup: ^8.5.1
+  tsx: ^4.22.4
+  typescript: ^6.0.3
+
 onlyBuiltDependencies:
   - '@ffxiv-teamcraft/dll-inject'
   - esbuild
