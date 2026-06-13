@@ -1,6 +1,6 @@
+import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
 import { field } from '@/struct/struct.decorator'
-import { FieldType } from '@/struct/field-type.enum'
 
 export class AddStatusEffectItem extends Struct {
   static byteLength = 16

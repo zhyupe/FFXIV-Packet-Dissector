@@ -1,8 +1,8 @@
-import { Struct, StructConstructor } from '@/struct/struct'
-import { field, child } from '@/struct/struct.decorator'
 import { FieldType } from '@/struct/field-type.enum'
-import { EffectHeader } from './common/effect-header'
+import { Struct, type StructConstructor } from '@/struct/struct'
+import { child, field } from '@/struct/struct.decorator'
 import { EffectEntity } from './common/effect-entity'
+import { EffectHeader } from './common/effect-header'
 
 export abstract class AoeEffect extends Struct {
   header!: EffectHeader

@@ -1,10 +1,10 @@
-import {
-  getFields,
-  getChildren,
-  FieldMetadata,
-  ChildMetadata,
-} from './struct.decorator'
 import { FieldType } from './field-type.enum'
+import {
+  type ChildMetadata,
+  type FieldMetadata,
+  getChildren,
+  getFields,
+} from './struct.decorator'
 
 export type StructConstructor<T extends Struct = Struct> = {
   new (buffer: Buffer): T

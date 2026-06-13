@@ -1,8 +1,8 @@
-import { Struct } from '@/struct/struct'
-import { field, child } from '@/struct/struct.decorator'
 import { FieldType } from '@/struct/field-type.enum'
-import { EffectHeader } from './common/effect-header'
+import { Struct } from '@/struct/struct'
+import { child, field } from '@/struct/struct.decorator'
 import { EffectEntity } from './common/effect-entity'
+import { EffectHeader } from './common/effect-header'
 
 export class Effect extends Struct {
   @field(FieldType.object, 0, 42)

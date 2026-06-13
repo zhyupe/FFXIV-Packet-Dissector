@@ -1,8 +1,8 @@
-import { Struct } from '@/struct/struct'
-import { field, child } from '@/struct/struct.decorator'
 import { FieldType } from '@/struct/field-type.enum'
-import { StatusEffect } from './status-effect'
+import { Struct } from '@/struct/struct'
+import { child, field } from '@/struct/struct.decorator'
 import { Position } from './position'
+import { StatusEffect } from './status-effect'
 
 export class Character extends Struct {
   @field(FieldType.uint, 0, 2)

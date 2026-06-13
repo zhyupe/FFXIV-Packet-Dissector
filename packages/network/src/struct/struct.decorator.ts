@@ -1,7 +1,7 @@
 import 'reflect-metadata'
-import { FieldType } from './field-type.enum'
-import { Struct, StructConstructor } from './struct'
+import type { FieldType } from './field-type.enum'
 import { fieldLength } from './helper'
+import type { Struct, StructConstructor } from './struct'
 
 export const fieldMetadataKey = Symbol('field')
 export const childrenMetadataKey = Symbol('children')
@@ -22,7 +22,7 @@ type Store<T> = Record<string, T | undefined>
 type Child = StructConstructor | ChildMetadata
 
 export function field(type: FieldType, offset?: number, length?: number) {
-  return function (target: Struct, propertyKey: string): void {
+  return (target: Struct, propertyKey: string): void => {
     let store: Store<FieldMetadata> = {}
     if (Reflect.hasOwnMetadata(fieldMetadataKey, target)) {
       store = Reflect.getMetadata(
@@ -52,7 +52,7 @@ export function getFields(target: Struct): Store<FieldMetadata> | undefined {
 }
 
 export function child(struct: Child) {
-  return function (target: Struct, propertyKey: string): void {
+  return (target: Struct, propertyKey: string): void => {
     let store: Store<Child> = {}
     if (Reflect.hasOwnMetadata(childrenMetadataKey, target)) {
       store = Reflect.getMetadata(childrenMetadataKey, target) as Store<Child>

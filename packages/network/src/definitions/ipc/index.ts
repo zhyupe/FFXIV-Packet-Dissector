@@ -37,7 +37,6 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.ActorGauge]: ActorGauge,
   [NormalizedOpcode.ActorMove]: ActorMove,
   [NormalizedOpcode.ActorSetPos]: ActorSetPos,
-  [NormalizedOpcode.AddStatusEffect]: AddStatusEffect,
   [NormalizedOpcode.AoeEffect16]: AoeEffect16,
   [NormalizedOpcode.AoeEffect24]: AoeEffect24,
   [NormalizedOpcode.AoeEffect32]: AoeEffect32,

@@ -245,10 +245,6 @@ export enum ClientLobbyIpcType {
   ReqEnterWorld,
 }
 
-export enum ServerChatIpcType {
+export enum ServerChatIpcType {}
 
-}
-
-export enum ClientChatIpcType {
-
-}
+export enum ClientChatIpcType {}
