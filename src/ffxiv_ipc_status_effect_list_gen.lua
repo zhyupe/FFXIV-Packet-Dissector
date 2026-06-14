@@ -2,26 +2,27 @@
 
 local db = require('ffxiv_db')
 
-local ffxiv_ipc_status_effect_list = Proto("ffxiv_ipc_status_effect_list", "FFXIV-IPC Status Effect List")
+local ffxiv_ipc_status_effect_list = Proto("ffxiv_ipc_status_effect_list", "FFXIV-IPC StatusEffectList")
 
 local status_effect_list_fields = {
-  class_id                = ProtoField.uint8("ffxiv_ipc_status_effect_list.class_id", "classId", base.DEC, db.ClassJob),
-  level1                  = ProtoField.uint8("ffxiv_ipc_status_effect_list.level1", "level1", base.DEC),
-  level                   = ProtoField.uint16("ffxiv_ipc_status_effect_list.level", "level", base.DEC),
-  current_hp              = ProtoField.uint32("ffxiv_ipc_status_effect_list.current_hp", "current_hp", base.DEC),
-  max_hp                  = ProtoField.uint32("ffxiv_ipc_status_effect_list.max_hp", "max_hp", base.DEC),
-  current_mp              = ProtoField.uint16("ffxiv_ipc_status_effect_list.current_mp", "current_mp", base.DEC),
-  max_mp                  = ProtoField.uint16("ffxiv_ipc_status_effect_list.max_mp", "max_mp", base.DEC),
-  current_tp              = ProtoField.uint16("ffxiv_ipc_status_effect_list.current_tp", "currentTp", base.DEC),
-  unknown1                = ProtoField.uint16("ffxiv_ipc_status_effect_list.unknown1", "unknown1", base.DEC),
-  padding                 = ProtoField.uint32("ffxiv_ipc_status_effect_list.padding", "padding", base.DEC),
+  class_id       = ProtoField.uint8("ffxiv_ipc_status_effect_list.class_id", "classId", base.DEC, db.ClassJob),
+  level1         = ProtoField.uint8("ffxiv_ipc_status_effect_list.level1", "level1", base.DEC),
+  level          = ProtoField.uint8("ffxiv_ipc_status_effect_list.level", "level", base.DEC),
+  level2         = ProtoField.uint8("ffxiv_ipc_status_effect_list.level2", "level2", base.DEC),
+  hp_cur         = ProtoField.uint32("ffxiv_ipc_status_effect_list.hp_cur", "hpCur", base.DEC),
+  hp_max         = ProtoField.uint32("ffxiv_ipc_status_effect_list.hp_max", "hpMax", base.DEC),
+  mp_cur         = ProtoField.uint16("ffxiv_ipc_status_effect_list.mp_cur", "mpCur", base.DEC),
+  mp_max         = ProtoField.uint16("ffxiv_ipc_status_effect_list.mp_max", "mpMax", base.DEC),
+  unknown1       = ProtoField.uint16("ffxiv_ipc_status_effect_list.unknown1", "unknown1", base.DEC),
+  damage_shield  = ProtoField.uint8("ffxiv_ipc_status_effect_list.damage_shield", "damageShield", base.DEC),
+  unknown2       = ProtoField.uint8("ffxiv_ipc_status_effect_list.unknown2", "unknown2", base.DEC),
 }
 
 ffxiv_ipc_status_effect_list.fields = status_effect_list_fields
 
 function ffxiv_ipc_status_effect_list.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_status_effect_list, tvbuf)
-  pktinfo.cols.info:set("Status Effect List")
+  pktinfo.cols.info:set("StatusEffectList")
 
   local len = tvbuf:len()
 
@@ -36,60 +37,65 @@ function ffxiv_ipc_status_effect_list.dissector(tvbuf, pktinfo, root)
   tree:add_le(status_effect_list_fields.level1, level1_tvbr, level1_val)
 
   -- dissect the level field
-  local level_tvbr = tvbuf:range(2, 2)
+  local level_tvbr = tvbuf:range(2, 1)
   local level_val  = level_tvbr:le_uint()
   tree:add_le(status_effect_list_fields.level, level_tvbr, level_val)
 
-  -- dissect the current_hp field
-  local current_hp_tvbr = tvbuf:range(4, 4)
-  local current_hp_val  = current_hp_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.current_hp, current_hp_tvbr, current_hp_val)
+  -- dissect the level2 field
+  local level2_tvbr = tvbuf:range(3, 1)
+  local level2_val  = level2_tvbr:le_uint()
+  tree:add_le(status_effect_list_fields.level2, level2_tvbr, level2_val)
 
-  -- dissect the max_hp field
-  local max_hp_tvbr = tvbuf:range(8, 4)
-  local max_hp_val  = max_hp_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.max_hp, max_hp_tvbr, max_hp_val)
+  -- dissect the hp_cur field
+  local hp_cur_tvbr = tvbuf:range(4, 4)
+  local hp_cur_val  = hp_cur_tvbr:le_uint()
+  tree:add_le(status_effect_list_fields.hp_cur, hp_cur_tvbr, hp_cur_val)
 
-  -- dissect the current_mp field
-  local current_mp_tvbr = tvbuf:range(12, 2)
-  local current_mp_val  = current_mp_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.current_mp, current_mp_tvbr, current_mp_val)
+  -- dissect the hp_max field
+  local hp_max_tvbr = tvbuf:range(8, 4)
+  local hp_max_val  = hp_max_tvbr:le_uint()
+  tree:add_le(status_effect_list_fields.hp_max, hp_max_tvbr, hp_max_val)
 
-  -- dissect the max_mp field
-  local max_mp_tvbr = tvbuf:range(14, 2)
-  local max_mp_val  = max_mp_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.max_mp, max_mp_tvbr, max_mp_val)
+  -- dissect the mp_cur field
+  local mp_cur_tvbr = tvbuf:range(12, 2)
+  local mp_cur_val  = mp_cur_tvbr:le_uint()
+  tree:add_le(status_effect_list_fields.mp_cur, mp_cur_tvbr, mp_cur_val)
 
-  -- dissect the current_tp field
-  local current_tp_tvbr = tvbuf:range(16, 2)
-  local current_tp_val  = current_tp_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.current_tp, current_tp_tvbr, current_tp_val)
+  -- dissect the mp_max field
+  local mp_max_tvbr = tvbuf:range(14, 2)
+  local mp_max_val  = mp_max_tvbr:le_uint()
+  tree:add_le(status_effect_list_fields.mp_max, mp_max_tvbr, mp_max_val)
 
   -- dissect the unknown1 field
-  local unknown1_tvbr = tvbuf:range(18, 2)
+  local unknown1_tvbr = tvbuf:range(16, 2)
   local unknown1_val  = unknown1_tvbr:le_uint()
   tree:add_le(status_effect_list_fields.unknown1, unknown1_tvbr, unknown1_val)
 
-  -- dissect status_effect_list_item
-  local status_effect_list_item_dissector = Dissector.get('ffxiv_ipc_status_effect_list_item')
-  local status_effect_list_item_pos = 20
-  local status_effect_list_item_len = 12
-  local status_effect_list_item_count = 30
+  -- dissect the damage_shield field
+  local damage_shield_tvbr = tvbuf:range(18, 1)
+  local damage_shield_val  = damage_shield_tvbr:le_uint()
+  tree:add_le(status_effect_list_fields.damage_shield, damage_shield_tvbr, damage_shield_val)
 
-  while status_effect_list_item_pos + status_effect_list_item_len <= len do
-    local status_effect_list_item_tvbr = tvbuf:range(status_effect_list_item_pos, 12)
-    status_effect_list_item_dissector:call(status_effect_list_item_tvbr:tvb(), pktinfo, root)
-    status_effect_list_item_pos = status_effect_list_item_pos + status_effect_list_item_len
-    status_effect_list_item_count = status_effect_list_item_count - 1
-    if status_effect_list_item_count <= 0 then
+  -- dissect the unknown2 field
+  local unknown2_tvbr = tvbuf:range(19, 1)
+  local unknown2_val  = unknown2_tvbr:le_uint()
+  tree:add_le(status_effect_list_fields.unknown2, unknown2_tvbr, unknown2_val)
+
+  -- dissect status_effects
+  local status_effects_dissector = Dissector.get('ffxiv_ipc_status_effect')
+  local status_effects_pos = 20
+  local status_effects_len = 12
+  local status_effects_count = 30
+
+  while status_effects_pos + status_effects_len <= len do
+    local status_effects_tvbr = tvbuf:range(status_effects_pos, 12)
+    status_effects_dissector:call(status_effects_tvbr:tvb(), pktinfo, root)
+    status_effects_pos = status_effects_pos + status_effects_len
+    status_effects_count = status_effects_count - 1
+    if status_effects_count <= 0 then
       break
     end
   end
-
-  -- dissect the padding field
-  local padding_tvbr = tvbuf:range(380, 4)
-  local padding_val  = padding_tvbr:le_uint()
-  tree:add_le(status_effect_list_fields.padding, padding_tvbr, padding_val)
 
   return len
 end

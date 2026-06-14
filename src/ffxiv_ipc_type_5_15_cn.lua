@@ -5,11 +5,11 @@ M.types = {
   [0x00b4] = {
     [0] = {
       name = "ffxiv_ipc_boss_status_effect_list",
-      length = 744,
+      length = 740,
     },
     [1] = {
       name = "ffxiv_ipc_status_effect_list",
-      length = 384,
+      length = 380,
     },
   },
   [0x00bd] = {
@@ -18,16 +18,34 @@ M.types = {
       length = 656,
     },
   },
+  [0x00ff] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect32",
+      length = 2360,
+    },
+  },
   [0x011e] = {
     [0] = {
       name = "ffxiv_ipc_retainer_information",
       length = 73,
     },
   },
+  [0x0128] = {
+    [0] = {
+      name = "ffxiv_ipc_npc_spawn2",
+      length = 624,
+    },
+  },
   [0x0131] = {
     [0] = {
       name = "ffxiv_ipc_currency_crystal_info",
       length = 32,
+    },
+  },
+  [0x0139] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect16",
+      length = 1208,
     },
   },
   [0x013c] = {
@@ -51,7 +69,13 @@ M.types = {
   [0x0184] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn",
-      length = 636,
+      length = 624,
+    },
+  },
+  [0x01b1] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect8",
+      length = 632,
     },
   },
   [0x0202] = {
@@ -69,7 +93,7 @@ M.types = {
   [0x023e] = {
     [0] = {
       name = "ffxiv_ipc_effect",
-      length = 124,
+      length = 120,
     },
   },
   [0x025f] = {
@@ -81,7 +105,7 @@ M.types = {
   [0x0261] = {
     [0] = {
       name = "ffxiv_ipc_actor_set_pos",
-      length = 24,
+      length = 20,
     },
   },
   [0x0268] = {
@@ -99,13 +123,13 @@ M.types = {
   [0x029d] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
-      length = 628,
+      length = 624,
     },
   },
   [0x032c] = {
     [0] = {
       name = "ffxiv_ipc_actor_cast",
-      length = 32,
+      length = 30,
     },
   },
   [0x0345] = {
@@ -132,16 +156,28 @@ M.types = {
       length = 24,
     },
   },
+  [0x0376] = {
+    [0] = {
+      name = "ffxiv_ipc_player_setup",
+      length = 1938,
+    },
+  },
   [0x0378] = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction_finish",
       length = 16,
     },
   },
+  [0x038b] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect24",
+      length = 1784,
+    },
+  },
   [0x039e] = {
     [0] = {
       name = "ffxiv_ipc_actor_move",
-      length = 16,
+      length = 12,
     },
   },
   [0x03c5] = {

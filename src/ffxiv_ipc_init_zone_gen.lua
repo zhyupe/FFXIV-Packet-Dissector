@@ -2,7 +2,7 @@
 
 local db = require('ffxiv_db')
 
-local ffxiv_ipc_init_zone = Proto("ffxiv_ipc_init_zone", "FFXIV-IPC Init Zone")
+local ffxiv_ipc_init_zone = Proto("ffxiv_ipc_init_zone", "FFXIV-IPC InitZone")
 
 local init_zone_fields = {
   server_id              = ProtoField.uint16("ffxiv_ipc_init_zone.server_id", "serverId", base.DEC),
@@ -38,7 +38,7 @@ ffxiv_ipc_init_zone.fields = init_zone_fields
 
 function ffxiv_ipc_init_zone.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_init_zone, tvbuf)
-  pktinfo.cols.info:set("Init Zone")
+  pktinfo.cols.info:set("InitZone")
 
   local len = tvbuf:len()
 
@@ -157,18 +157,18 @@ function ffxiv_ipc_init_zone.dissector(tvbuf, pktinfo, root)
   local unknown132_val  = unknown132_tvbr:le_uint()
   tree:add_le(init_zone_fields.unknown132, unknown132_tvbr, unknown132_val)
 
-  -- dissect position3
-  local position3_dissector = Dissector.get('ffxiv_ipc_position3')
-  local position3_pos = 68
-  local position3_len = 12
-  local position3_count = 1
+  -- dissect position
+  local position_dissector = Dissector.get('ffxiv_ipc_position')
+  local position_pos = 68
+  local position_len = 12
+  local position_count = 1
 
-  while position3_pos + position3_len <= len do
-    local position3_tvbr = tvbuf:range(position3_pos, 12)
-    position3_dissector:call(position3_tvbr:tvb(), pktinfo, root)
-    position3_pos = position3_pos + position3_len
-    position3_count = position3_count - 1
-    if position3_count <= 0 then
+  while position_pos + position_len <= len do
+    local position_tvbr = tvbuf:range(position_pos, 12)
+    position_dissector:call(position_tvbr:tvb(), pktinfo, root)
+    position_pos = position_pos + position_len
+    position_count = position_count - 1
+    if position_count <= 0 then
       break
     end
   end

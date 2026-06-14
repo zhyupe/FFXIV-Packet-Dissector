@@ -17,7 +17,13 @@ M.types = {
   [0x00aa] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn",
-      length = 636,
+      length = 624,
+    },
+  },
+  [0x00af] = {
+    [0] = {
+      name = "ffxiv_ipc_submarine_status_list",
+      length = 240,
     },
   },
   [0x00c3] = {
@@ -26,16 +32,34 @@ M.types = {
       length = 32,
     },
   },
+  [0x00c7] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect32",
+      length = 2360,
+    },
+  },
+  [0x00e1] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect24",
+      length = 1784,
+    },
+  },
+  [0x00ea] = {
+    [0] = {
+      name = "ffxiv_ipc_player_setup",
+      length = 1938,
+    },
+  },
   [0x00f1] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
-      length = 628,
+      length = 624,
     },
   },
   [0x0126] = {
     [0] = {
       name = "ffxiv_ipc_status_effect_list",
-      length = 384,
+      length = 380,
     },
   },
   [0x012e] = {
@@ -47,13 +71,13 @@ M.types = {
   [0x013a] = {
     [0] = {
       name = "ffxiv_ipc_actor_cast",
-      length = 32,
+      length = 30,
     },
   },
   [0x0142] = {
     [0] = {
       name = "ffxiv_ipc_player_stats",
-      length = 224,
+      length = 120,
     },
   },
   [0x0182] = {
@@ -77,13 +101,13 @@ M.types = {
   [0x0195] = {
     [0] = {
       name = "ffxiv_ipc_actor_move",
-      length = 16,
+      length = 12,
     },
   },
   [0x01aa] = {
     [0] = {
       name = "ffxiv_ipc_ward_land_info",
-      length = 8,
+      length = 2408,
     },
   },
   [0x01d2] = {
@@ -104,6 +128,12 @@ M.types = {
       length = 16,
     },
   },
+  [0x01e5] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect8",
+      length = 632,
+    },
+  },
   [0x0219] = {
     [0] = {
       name = "ffxiv_ipc_examine",
@@ -120,6 +150,12 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_ce_director",
       length = 16,
+    },
+  },
+  [0x02d5] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect16",
+      length = 1208,
     },
   },
   [0x02f9] = {
@@ -179,7 +215,7 @@ M.types = {
   [0x03b1] = {
     [0] = {
       name = "ffxiv_ipc_effect",
-      length = 124,
+      length = 120,
     },
   },
   [0x03c0] = {
@@ -191,7 +227,7 @@ M.types = {
   [0x03c6] = {
     [0] = {
       name = "ffxiv_ipc_actor_set_pos",
-      length = 24,
+      length = 20,
     },
   },
   [0x03c8] = {

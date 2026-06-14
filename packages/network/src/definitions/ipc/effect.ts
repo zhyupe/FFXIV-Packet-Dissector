@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, field } from '@/struct/struct.decorator'
+import { child, dissector, field } from '@/struct/struct.decorator'
 import { EffectEntity } from './common/effect-entity'
 import { EffectHeader } from './common/effect-header'
 
@@ -14,6 +14,7 @@ export class Effect extends Struct {
   entities!: EffectEntity[]
 
   @field(FieldType.uint, 112, 4)
+  @dissector({ base: 'hex' })
   effectTargetId!: number
 
   @field(FieldType.uint, 116, 4)

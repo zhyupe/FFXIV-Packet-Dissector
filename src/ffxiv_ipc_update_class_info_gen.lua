@@ -2,7 +2,7 @@
 
 local db = require('ffxiv_db')
 
-local ffxiv_ipc_update_class_info = Proto("ffxiv_ipc_update_class_info", "FFXIV-IPC Update ClassInfo")
+local ffxiv_ipc_update_class_info = Proto("ffxiv_ipc_update_class_info", "FFXIV-IPC UpdateClassInfo")
 
 local update_class_info_fields = {
   class_id         = ProtoField.uint8("ffxiv_ipc_update_class_info.class_id", "classId", base.DEC, db.ClassJob),
@@ -17,7 +17,7 @@ ffxiv_ipc_update_class_info.fields = update_class_info_fields
 
 function ffxiv_ipc_update_class_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_class_info, tvbuf)
-  pktinfo.cols.info:set("Update ClassInfo")
+  pktinfo.cols.info:set("UpdateClassInfo")
 
   local len = tvbuf:len()
 
@@ -25,10 +25,6 @@ function ffxiv_ipc_update_class_info.dissector(tvbuf, pktinfo, root)
   local class_id_tvbr = tvbuf:range(0, 1)
   local class_id_val  = class_id_tvbr:le_uint()
   tree:add_le(update_class_info_fields.class_id, class_id_tvbr, class_id_val)
-
-  local class_id_display = ", classId: " .. (db.ClassJob[class_id_val] or "(unknown)")
-  pktinfo.cols.info:append(class_id_display)
-  tree:append_text(class_id_display)
 
   -- dissect the level1 field
   local level1_tvbr = tvbuf:range(1, 1)

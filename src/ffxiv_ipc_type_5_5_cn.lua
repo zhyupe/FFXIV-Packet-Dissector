@@ -11,7 +11,7 @@ M.types = {
   [0x0085] = {
     [0] = {
       name = "ffxiv_ipc_effect",
-      length = 124,
+      length = 120,
     },
   },
   [0x008b] = {
@@ -35,13 +35,31 @@ M.types = {
   [0x00f0] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn",
-      length = 636,
+      length = 624,
+    },
+  },
+  [0x00f2] = {
+    [0] = {
+      name = "ffxiv_ipc_submarine_status_list",
+      length = 240,
+    },
+  },
+  [0x00ff] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect8",
+      length = 632,
+    },
+  },
+  [0x0110] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect16",
+      length = 1208,
     },
   },
   [0x0141] = {
     [0] = {
       name = "ffxiv_ipc_ward_land_info",
-      length = 8,
+      length = 2408,
     },
   },
   [0x0149] = {
@@ -74,10 +92,16 @@ M.types = {
       length = 8,
     },
   },
+  [0x01bf] = {
+    [0] = {
+      name = "ffxiv_ipc_player_setup",
+      length = 1938,
+    },
+  },
   [0x01cb] = {
     [0] = {
       name = "ffxiv_ipc_actor_move",
-      length = 16,
+      length = 12,
     },
     [1] = {
       name = "ffxiv_ipc_update_position_instance",
@@ -87,13 +111,13 @@ M.types = {
   [0x01e5] = {
     [0] = {
       name = "ffxiv_ipc_player_stats",
-      length = 224,
+      length = 120,
     },
   },
   [0x01e6] = {
     [0] = {
       name = "ffxiv_ipc_actor_cast",
-      length = 32,
+      length = 30,
     },
   },
   [0x01f6] = {
@@ -111,7 +135,7 @@ M.types = {
   [0x0287] = {
     [0] = {
       name = "ffxiv_ipc_status_effect_list",
-      length = 384,
+      length = 380,
     },
   },
   [0x02ba] = {
@@ -141,7 +165,7 @@ M.types = {
   [0x0323] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
-      length = 628,
+      length = 624,
     },
   },
   [0x032e] = {
@@ -195,7 +219,19 @@ M.types = {
   [0x03d1] = {
     [0] = {
       name = "ffxiv_ipc_actor_set_pos",
-      length = 24,
+      length = 20,
+    },
+  },
+  [0x03d5] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect32",
+      length = 2360,
+    },
+  },
+  [0x03dc] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect24",
+      length = 1784,
     },
   },
 }

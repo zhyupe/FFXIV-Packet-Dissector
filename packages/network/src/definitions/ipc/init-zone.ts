@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, field } from '@/struct/struct.decorator'
+import { child, dissector, field } from '@/struct/struct.decorator'
 import { Position } from './common/position'
 
 export class InitZone extends Struct {
@@ -8,12 +8,14 @@ export class InitZone extends Struct {
   serverId!: number
 
   @field(FieldType.uint, 2, 2)
+  @dissector({ db: 'TerritoryType' })
   zoneId!: number
 
   @field(FieldType.uint, 4, 2)
   unknown1!: number
 
   @field(FieldType.uint, 6, 2)
+  @dissector({ db: 'ContentFinderCondition' })
   Content!: number
 
   @field(FieldType.uint, 8, 4)

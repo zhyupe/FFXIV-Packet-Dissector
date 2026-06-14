@@ -3,9 +3,9 @@
 local ffxiv_ipc_update_hp_mp_tp = Proto("ffxiv_ipc_update_hp_mp_tp", "FFXIV-IPC UpdateHpMpTp")
 
 local update_hp_mp_tp_fields = {
-  hp = ProtoField.uint32("ffxiv_ipc_update_hp_mp_tp.hp", "HP", base.DEC),
-  mp = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.mp", "MP", base.DEC),
-  tp = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.tp", "TP", base.DEC),
+  hp = ProtoField.uint32("ffxiv_ipc_update_hp_mp_tp.hp", "hp", base.DEC),
+  mp = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.mp", "mp", base.DEC),
+  tp = ProtoField.uint16("ffxiv_ipc_update_hp_mp_tp.tp", "tp", base.DEC),
 }
 
 ffxiv_ipc_update_hp_mp_tp.fields = update_hp_mp_tp_fields

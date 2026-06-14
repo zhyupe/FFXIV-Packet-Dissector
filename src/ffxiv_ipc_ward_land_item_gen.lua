@@ -3,12 +3,10 @@
 local ffxiv_ipc_ward_land_item = Proto("ffxiv_ipc_ward_land_item", "FFXIV-IPC WardLandItem")
 
 local ward_land_item_fields = {
-  price   = ProtoField.uint32("ffxiv_ipc_ward_land_item.price", "Price", base.DEC),
-  type    = ProtoField.uint8("ffxiv_ipc_ward_land_item.type", "Type", base.HEX),
-  appeal1 = ProtoField.uint8("ffxiv_ipc_ward_land_item.appeal1", "Appeal1", base.DEC),
-  appeal2 = ProtoField.uint8("ffxiv_ipc_ward_land_item.appeal2", "Appeal2", base.DEC),
-  appeal3 = ProtoField.uint8("ffxiv_ipc_ward_land_item.appeal3", "Appeal3", base.DEC),
-  name    = ProtoField.string("ffxiv_ipc_ward_land_item.name", "Name", base.UNICODE),
+  price  = ProtoField.uint32("ffxiv_ipc_ward_land_item.price", "price", base.DEC),
+  type   = ProtoField.uint8("ffxiv_ipc_ward_land_item.type", "type", base.DEC),
+  appeal = ProtoField.bytes("ffxiv_ipc_ward_land_item.appeal", "appeal", base.NONE),
+  name   = ProtoField.string("ffxiv_ipc_ward_land_item.name", "name", base.UNICODE),
 }
 
 ffxiv_ipc_ward_land_item.fields = ward_land_item_fields
@@ -24,44 +22,20 @@ function ffxiv_ipc_ward_land_item.dissector(tvbuf, pktinfo, root)
   local price_val  = price_tvbr:le_uint()
   tree:add_le(ward_land_item_fields.price, price_tvbr, price_val)
 
-  local price_display = ", Price: " .. price_val
-  pktinfo.cols.info:append(price_display)
-  tree:append_text(price_display)
-
   -- dissect the type field
   local type_tvbr = tvbuf:range(4, 1)
   local type_val  = type_tvbr:le_uint()
   tree:add_le(ward_land_item_fields.type, type_tvbr, type_val)
 
-  local type_display = ", Type: " .. string.format('%02x', type_val)
-  pktinfo.cols.info:append(type_display)
-  tree:append_text(type_display)
-
-  -- dissect the appeal1 field
-  local appeal1_tvbr = tvbuf:range(5, 1)
-  local appeal1_val  = appeal1_tvbr:le_uint()
-  tree:add_le(ward_land_item_fields.appeal1, appeal1_tvbr, appeal1_val)
-
-  -- dissect the appeal2 field
-  local appeal2_tvbr = tvbuf:range(6, 1)
-  local appeal2_val  = appeal2_tvbr:le_uint()
-  tree:add_le(ward_land_item_fields.appeal2, appeal2_tvbr, appeal2_val)
-
-  -- dissect the appeal3 field
-  local appeal3_tvbr = tvbuf:range(7, 1)
-  local appeal3_val  = appeal3_tvbr:le_uint()
-  tree:add_le(ward_land_item_fields.appeal3, appeal3_tvbr, appeal3_val)
+  -- dissect the appeal field
+  local appeal_tvbr = tvbuf:range(5, 3)
+  local appeal_val  = appeal_tvbr:raw(5)
+  tree:add(ward_land_item_fields.appeal, appeal_tvbr, appeal_val)
 
   -- dissect the name field
-  if tvbuf:len() >= 40 then
-    local name_tvbr = tvbuf:range(8, 32)
-    local name_val  = name_tvbr:string(ENC_UTF_8)
-    tree:add(ward_land_item_fields.name, name_tvbr, name_val)
-
-    local name_display = ", Name: " .. name_val
-    pktinfo.cols.info:append(name_display)
-    tree:append_text(name_display)
-  end
+  local name_tvbr = tvbuf:range(8, 32)
+  local name_val  = name_tvbr:string(ENC_UTF_8)
+  tree:add(ward_land_item_fields.name, name_tvbr, name_val)
 
   return len
 end

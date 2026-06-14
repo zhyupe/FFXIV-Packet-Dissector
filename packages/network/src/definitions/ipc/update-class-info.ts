@@ -1,9 +1,10 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { field } from '@/struct/struct.decorator'
+import { dissector, field } from '@/struct/struct.decorator'
 
 export class UpdateClassInfo extends Struct {
   @field(FieldType.byte, 0)
+  @dissector({ db: 'ClassJob' })
   classId!: number
 
   @field(FieldType.byte, 1)

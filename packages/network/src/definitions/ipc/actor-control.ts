@@ -1,10 +1,12 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { field } from '@/struct/struct.decorator'
-import type { ActorControlType } from './common/actor-control-type.enum'
+import { dissector, field, ipcEnum } from '@/struct/struct.decorator'
+import { ActorControlType } from './common/actor-control-type.enum'
 
+@ipcEnum('ActorControlType', ActorControlType)
 export class ActorControl extends Struct {
   @field(FieldType.uint, 0, 2)
+  @dissector({ enum: 'ActorControlType' })
   type!: ActorControlType
 
   @field(FieldType.uint, 2, 2)
@@ -28,6 +30,7 @@ export class ActorControl extends Struct {
 
 export class ActorControlSelf extends Struct {
   @field(FieldType.uint, 0, 2)
+  @dissector({ enum: 'ActorControlType' })
   type!: ActorControlType
 
   @field(FieldType.uint, 2, 2)

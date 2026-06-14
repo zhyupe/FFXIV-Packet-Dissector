@@ -35,13 +35,13 @@ M.types = {
   [0x009b] = {
     [0] = {
       name = "ffxiv_ipc_actor_cast",
-      length = 32,
+      length = 30,
     },
   },
   [0x00a1] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
-      length = 628,
+      length = 624,
     },
   },
   [0x00b9] = {
@@ -74,6 +74,12 @@ M.types = {
       length = 16,
     },
   },
+  [0x011d] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect16",
+      length = 1208,
+    },
+  },
   [0x0127] = {
     [0] = {
       name = "ffxiv_ipc_actor_control_self",
@@ -89,7 +95,13 @@ M.types = {
   [0x0164] = {
     [0] = {
       name = "ffxiv_ipc_ward_land_info",
-      length = 8,
+      length = 2408,
+    },
+  },
+  [0x016e] = {
+    [0] = {
+      name = "ffxiv_ipc_npc_spawn2",
+      length = 624,
     },
   },
   [0x0199] = {
@@ -104,22 +116,34 @@ M.types = {
       length = 16,
     },
   },
+  [0x01b1] = {
+    [0] = {
+      name = "ffxiv_ipc_player_setup",
+      length = 1938,
+    },
+  },
+  [0x01cb] = {
+    [0] = {
+      name = "ffxiv_ipc_submarine_status_list",
+      length = 240,
+    },
+  },
   [0x01d1] = {
     [0] = {
       name = "ffxiv_ipc_actor_set_pos",
-      length = 24,
+      length = 20,
     },
   },
   [0x01d9] = {
     [0] = {
       name = "ffxiv_ipc_status_effect_list",
-      length = 384,
+      length = 380,
     },
   },
   [0x01eb] = {
     [0] = {
       name = "ffxiv_ipc_boss_status_effect_list",
-      length = 744,
+      length = 740,
     },
   },
   [0x01ec] = {
@@ -134,6 +158,12 @@ M.types = {
       length = 0,
     },
   },
+  [0x0260] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect8",
+      length = 632,
+    },
+  },
   [0x027f] = {
     [0] = {
       name = "ffxiv_ipc_update_hp_mp_tp",
@@ -143,13 +173,13 @@ M.types = {
   [0x02a0] = {
     [0] = {
       name = "ffxiv_ipc_actor_move",
-      length = 16,
+      length = 12,
     },
   },
   [0x02f4] = {
     [0] = {
       name = "ffxiv_ipc_effect",
-      length = 124,
+      length = 120,
     },
   },
   [0x0325] = {
@@ -161,7 +191,7 @@ M.types = {
   [0x032f] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn",
-      length = 636,
+      length = 624,
     },
     [1] = {
       name = "ffxiv_ipc_update_position_instance",
@@ -174,6 +204,12 @@ M.types = {
       length = 64,
     },
   },
+  [0x0351] = {
+    [0] = {
+      name = "ffxiv_ipc_actor_free_spawn",
+      length = 8,
+    },
+  },
   [0x0360] = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction_finish",
@@ -183,13 +219,25 @@ M.types = {
   [0x0377] = {
     [0] = {
       name = "ffxiv_ipc_player_stats",
-      length = 224,
+      length = 120,
     },
   },
   [0x037c] = {
     [0] = {
       name = "ffxiv_ipc_object_spawn",
       length = 64,
+    },
+  },
+  [0x03a0] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect24",
+      length = 1784,
+    },
+  },
+  [0x03b0] = {
+    [0] = {
+      name = "ffxiv_ipc_aoe_effect32",
+      length = 2360,
     },
   },
   [0x03b6] = {
