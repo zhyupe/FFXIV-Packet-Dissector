@@ -2,6 +2,15 @@ import { existsSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { CNOpcode, type OpcodeMap } from '@/opcode'
 import type { OpcodeItem } from '@/opcode/opcode-item.type'
+import { FieldType } from '@/struct/field-type.enum'
+import { fieldLength } from '@/struct/helper'
+import type { Struct, StructConstructor } from '@/struct/struct'
+import {
+  type ChildMetadata,
+  type FieldMetadata,
+  getChildren,
+  getFields,
+} from '@/struct/struct.decorator'
 import { snakeCase } from '../utils'
 import { type Pair, table, tableValue } from './table'
 
@@ -17,6 +26,18 @@ const typeDefaults: Record<string, Partial<IPCField>> = {
     base: 'UNICODE',
     add_le: false,
   },
+}
+
+const protoFieldType = ({ type, length }: IPCField) => {
+  if (type === 'uint') {
+    return `uint${(length ?? 4) * 8}`
+  }
+
+  if (type === 'int') {
+    return `int${(length ?? 4) * 8}`
+  }
+
+  return type
 }
 
 const tvbMethod = ({ type, offset }: IPCField) => {
@@ -82,6 +103,118 @@ const renderOpcodeKey = (opcode: string | number) => {
     ? `[0x${opcodeNumber.toString(16).padStart(4, '0')}]`
     : `[${opcode}]`
 }
+
+const fieldTypeMap: Record<FieldType, string> = {
+  [FieldType.string]: 'string',
+  [FieldType.int]: 'int',
+  [FieldType.uint]: 'uint',
+  [FieldType.bigint]: 'int64',
+  [FieldType.biguint]: 'uint64',
+  [FieldType.float]: 'float',
+  [FieldType.double]: 'double',
+  [FieldType.byte]: 'uint8',
+  [FieldType.bytes]: 'bytes',
+  [FieldType.array]: 'bytes',
+  [FieldType.object]: 'bytes',
+}
+
+const isStructConstructor = (
+  value: StructConstructor | ChildMetadata,
+): value is StructConstructor => typeof value === 'function'
+
+const structToIPCSchema = (
+  struct: StructConstructor,
+  name = struct.name,
+  seen = new Set<StructConstructor>(),
+): IPCSchema => {
+  const prototype = struct.prototype as Struct
+  const fields = getFields(prototype)
+  const children = getChildren(prototype)
+  const schemaChildren: IPCSchema[] = []
+
+  if (!fields) {
+    return {
+      name,
+      type: {},
+      version: '',
+      length: struct.byteLength ?? 0,
+      fields: [],
+    }
+  }
+
+  const ipcFields = Object.entries(fields).flatMap(([key, metadata]) => {
+    if (!metadata) return []
+
+    const child = children?.[key]
+    if (child && isStructConstructor(child)) {
+      const childName = child.name
+      const childLength = child.byteLength ?? metadata.length
+      if (!seen.has(child)) {
+        seen.add(child)
+        schemaChildren.push(structToIPCSchema(child, childName, seen))
+      }
+
+      return [
+        {
+          name: key,
+          child_name: childName,
+          type: 'children',
+          offset: metadata.offset,
+          length: metadata.length,
+          count:
+            metadata.type === FieldType.array && childLength
+              ? metadata.length && metadata.length / childLength
+              : 1,
+        } satisfies IPCField,
+      ]
+    }
+
+    return [fieldMetadataToIPCField(key, metadata, child)]
+  })
+
+  return {
+    name,
+    type: {},
+    version: '',
+    length: struct.byteLength ?? getPacketLength({ fields: ipcFields }),
+    fields: ipcFields,
+    children: schemaChildren,
+  }
+}
+
+const fieldMetadataToIPCField = (
+  name: string,
+  metadata: FieldMetadata,
+  child?: StructConstructor | ChildMetadata,
+): IPCField => {
+  if (!child || isStructConstructor(child)) {
+    return {
+      name,
+      type: fieldTypeMap[metadata.type],
+      offset: metadata.offset,
+      length: getFieldMetadataLength(metadata),
+    }
+  }
+
+  if (metadata.type === FieldType.array) {
+    return {
+      name,
+      type: 'bytes',
+      offset: metadata.offset,
+      length: metadata.length ?? child.byteLength,
+    }
+  }
+
+  return {
+    name,
+    type: fieldTypeMap[child.type],
+    offset: metadata.offset,
+    length: metadata.length ?? child.byteLength,
+  }
+}
+
+const getFieldMetadataLength = (metadata: FieldMetadata) =>
+  fieldLength(metadata.type, metadata.length)
 
 class DissectorFile {
   requires = {
@@ -181,7 +314,7 @@ class DissectorFile {
         .filter((item) => item.type !== 'children')
         .map(
           (item) =>
-            `  ${item.key}${' '.repeat(maxLength - item.key.length)} = ProtoField.${item.type}("ffxiv_ipc_${snakeName}.${
+            `  ${item.key}${' '.repeat(maxLength - item.key.length)} = ProtoField.${protoFieldType(item)}("ffxiv_ipc_${snakeName}.${
               item.key
             }", "${item.name}", base.${item.base || 'DEC'}${item.enum ? `, ${item.enum}` : ''}),`,
         ),
@@ -227,16 +360,18 @@ class DissectorFile {
     item: {
       /** Referenced struct name */
       name: string
+      child_name?: string
       /** Children struct count */
       count?: number
       /** Byte offset */
       offset: number
     },
   ) => {
-    const length = this.renderer.ipcLength[item.name.replace(/ /g, '')]
+    const childName = item.child_name ?? item.name
+    const length = this.renderer.ipcLength[childName.replace(/ /g, '')]
     if (!length) {
       throw new Error(
-        `Dissector '${item.name}' cannot be found. Please make sure the structure is placed in 'children' property, or loaded before this file`,
+        `Dissector '${childName}' cannot be found. Please make sure the structure is placed in 'children' property, or loaded before this file`,
       )
     }
 
@@ -245,7 +380,7 @@ class DissectorFile {
       : ''
 
     return `  -- dissect ${fieldKey}
-  local ${fieldKey}_dissector = Dissector.get('ffxiv_ipc_${snakeCase(item.name)}')
+  local ${fieldKey}_dissector = Dissector.get('ffxiv_ipc_${snakeCase(childName)}')
   local ${fieldKey}_pos = ${item.offset}
   local ${fieldKey}_len = ${length}
   ${count}
@@ -371,6 +506,10 @@ export class DissectorRenderer {
         new DissectorFile(aliasObj.name, this).handleSchema(aliasObj)
       }
     }
+  }
+
+  handleStruct(name: string, struct: StructConstructor) {
+    this.handleIPCSchema(structToIPCSchema(struct, name))
   }
 
   commitEnums() {

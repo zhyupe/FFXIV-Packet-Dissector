@@ -56,6 +56,11 @@ interface IPCField {
    */
   type: string
   /**
+   * Referenced child struct name when `type` is `children`.
+   * If omitted, `name` is used for legacy JSON schemas.
+   */
+  child_name?: string
+  /**
    * Enum name. Can be a Enum name declared in `IPCSchema.enums`, or `$Name` to use the database.
    * Example: `$Action`, `$Item`, `$World`, `ItemType`
    */

@@ -1,12 +1,12 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { PacketMap } from '@/definitions/ipc'
 import { kebabCase, root, writeCode } from '../utils'
 import { DissectorRenderer } from './dissector'
 
-export function generateFromJSON() {
+function handleJSONSchemas(renderer: DissectorRenderer) {
   const jsonRoot = join(root, 'tools/json')
   const files = readdirSync(jsonRoot)
-  const renderer = new DissectorRenderer()
 
   for (const file of files) {
     try {
@@ -21,6 +21,20 @@ export function generateFromJSON() {
       throw e
     }
   }
+}
+
+function handleDefinitionSchemas(renderer: DissectorRenderer) {
+  for (const [name, struct] of Object.entries(PacketMap)) {
+    if (!struct) continue
+
+    renderer.handleStruct(name, struct)
+  }
+}
+
+export function generateFromJSON() {
+  const renderer = new DissectorRenderer()
+  handleJSONSchemas(renderer)
+  handleDefinitionSchemas(renderer)
 
   renderer.commitEnums()
   renderer.commitOpcodes()
