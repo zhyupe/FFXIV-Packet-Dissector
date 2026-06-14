@@ -69,7 +69,7 @@ interface IPCField {
    * Displaying style in Wireshark. Must be a property of `base`.
    * Default: `DEC`
    */
-  base?: string
+  base?: 'HEX' | 'DEC' | 'NONE' | 'UNICODE' | string
   /**
    * Override the default method to convert tvbr to Lua varible, which is set to corresponding packet field.
    * Example: `string(ENC_UTF_8)` - Read a UTF-8 string (Can be used for almost all UGC in FF14)

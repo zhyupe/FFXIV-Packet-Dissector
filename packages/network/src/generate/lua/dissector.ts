@@ -9,6 +9,7 @@ import {
   type ChildMetadata,
   type FieldMetadata,
   getChildren,
+  getEnums,
   getFields,
 } from '@/struct/struct.decorator'
 import { snakeCase } from '../utils'
@@ -139,6 +140,7 @@ const structToIPCSchema = (
       version: '',
       length: struct.byteLength ?? 0,
       fields: [],
+      enums: getStructEnums(struct),
     }
   }
 
@@ -179,7 +181,21 @@ const structToIPCSchema = (
     length: struct.byteLength ?? getPacketLength({ fields: ipcFields }),
     fields: ipcFields,
     children: schemaChildren,
+    enums: getStructEnums(struct),
   }
+}
+
+const getStructEnums = (struct: StructConstructor): IPCEnum[] | undefined => {
+  const enums = getEnums(struct)
+  if (!enums?.length) return undefined
+
+  return enums.map(({ name, values }) => ({
+    name,
+    type: 'uint',
+    values: Object.entries(values)
+      .filter(([key]) => !/^\d+$/.test(key))
+      .map(([key, value]) => ({ key, value })),
+  }))
 }
 
 const fieldMetadataToIPCField = (
@@ -187,12 +203,15 @@ const fieldMetadataToIPCField = (
   metadata: FieldMetadata,
   child?: StructConstructor | ChildMetadata,
 ): IPCField => {
+  const dissector = fieldDissectorOptionsToIPCField(metadata)
+
   if (!child || isStructConstructor(child)) {
     return {
       name,
       type: fieldTypeMap[metadata.type],
       offset: metadata.offset,
       length: getFieldMetadataLength(metadata),
+      ...dissector,
     }
   }
 
@@ -202,6 +221,7 @@ const fieldMetadataToIPCField = (
       type: 'bytes',
       offset: metadata.offset,
       length: metadata.length ?? child.byteLength,
+      ...dissector,
     }
   }
 
@@ -210,6 +230,18 @@ const fieldMetadataToIPCField = (
     type: fieldTypeMap[child.type],
     offset: metadata.offset,
     length: metadata.length ?? child.byteLength,
+    ...dissector,
+  }
+}
+
+const fieldDissectorOptionsToIPCField = ({
+  dissector,
+}: FieldMetadata): Partial<IPCField> => {
+  if (!dissector) return {}
+
+  return {
+    enum: dissector.db ? `$${dissector.db}` : dissector.enum,
+    base: dissector.base?.toUpperCase(),
   }
 }
 
