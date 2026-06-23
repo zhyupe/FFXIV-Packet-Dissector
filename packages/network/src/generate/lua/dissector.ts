@@ -610,10 +610,15 @@ return M
     return typeof item === 'string' ? item : item.type
   }
 
+  #getOpcodeItemTitle(item: OpcodeItem | string) {
+    const type = this.#getOpcodeItemType(item)
+    return typeof item === 'string' || !item.title ? type : item.title
+  }
+
   #renderOpcodes(opcodeMap: OpcodeMap) {
     const typesObject: Record<
       string,
-      Array<{ name: string; length: number }>
+      Array<{ name: string; length: number; title: string }>
     > = {}
     for (const [opcode, config] of Object.entries(opcodeMap)) {
       if (!config) continue
@@ -627,6 +632,7 @@ return M
               typeof item === 'string' || typeof item.size !== 'number'
                 ? this.ipcLength[type]
                 : item.size,
+            title: this.#getOpcodeItemTitle(item),
           }
         })
         .filter((item) => typeof item.length === 'number')
@@ -647,13 +653,13 @@ function M.getDissector(typeNum, length)
 
   for k, v in pairs(types) do
     if v.length == length then
-      return Dissector.get(v.name)
+      return Dissector.get(v.name), v.title
     end
   end
 
   for k, v in pairs(types) do
     if v.length < length then
-      return Dissector.get(v.name)
+      return Dissector.get(v.name), v.title
     end
   end
 

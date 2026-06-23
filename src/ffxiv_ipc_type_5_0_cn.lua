@@ -6,42 +6,49 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_client_trigger",
       length = 32,
+      title = "ClientTrigger",
     },
   },
   [0x0142] = {
     [0] = {
       name = "ffxiv_ipc_actor_control",
       length = 24,
+      title = "ActorControl",
     },
   },
   [0x0143] = {
     [0] = {
       name = "ffxiv_ipc_actor_control_self",
       length = 32,
+      title = "ActorControlSelf",
     },
   },
   [0x016d] = {
     [0] = {
       name = "ffxiv_ipc_actor_gauge",
       length = 16,
+      title = "ActorGauge",
     },
   },
   [0x01a3] = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction_finish",
       length = 16,
+      title = "InventoryTransactionFinish",
     },
   },
   [0x01a7] = {
     [0] = {
       name = "ffxiv_ipc_inventory_action_ack",
       length = 16,
+      title = "InventoryActionAck",
     },
   },
   [0x024d] = {
     [0] = {
       name = "ffxiv_ipc_actor_control_target",
       length = 32,
+      title = "ActorControlTarget",
     },
   },
 }
@@ -54,13 +61,13 @@ function M.getDissector(typeNum, length)
 
   for k, v in pairs(types) do
     if v.length == length then
-      return Dissector.get(v.name)
+      return Dissector.get(v.name), v.title
     end
   end
 
   for k, v in pairs(types) do
     if v.length < length then
-      return Dissector.get(v.name)
+      return Dissector.get(v.name), v.title
     end
   end
 

@@ -6,256 +6,299 @@ M.types = {
     [0] = {
       name = "ffxiv_ipc_actor_gauge",
       length = 16,
+      title = "ActorGauge",
     },
   },
   [0x008f] = {
     [0] = {
       name = "ffxiv_ipc_company_airship_status",
       length = 0,
+      title = "CompanyAirshipStatus",
     },
   },
   [0x00b2] = {
     [0] = {
       name = "ffxiv_ipc_update_inventory_slot",
       length = 64,
+      title = "UpdateInventorySlot",
     },
   },
   [0x00c1] = {
     [0] = {
       name = "ffxiv_ipc_effect",
       length = 120,
+      title = "Effect",
     },
   },
   [0x00ce] = {
     [0] = {
       name = "ffxiv_ipc_examine",
       length = 656,
+      title = "Examine",
     },
   },
   [0x00d8] = {
     [0] = {
       name = "ffxiv_ipc_actor_control",
       length = 24,
+      title = "ActorControl",
     },
   },
   [0x00eb] = {
     [0] = {
       name = "ffxiv_ipc_fate_info",
       length = 24,
+      title = "FateInfo",
     },
   },
   [0x011e] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn",
       length = 624,
+      title = "NpcSpawn",
     },
   },
   [0x0120] = {
     [0] = {
       name = "ffxiv_ipc_aoe_effect32",
       length = 2360,
+      title = "AoeEffect32",
     },
   },
   [0x0125] = {
     [0] = {
       name = "ffxiv_ipc_container_info",
       length = 16,
+      title = "ContainerInfo",
     },
   },
   [0x012e] = {
     [0] = {
       name = "ffxiv_ipc_init_zone",
       length = 96,
+      title = "InitZone",
     },
   },
   [0x0167] = {
     [0] = {
       name = "ffxiv_ipc_update_hp_mp_tp",
       length = 8,
+      title = "UpdateHpMpTp",
     },
   },
   [0x018b] = {
     [0] = {
       name = "ffxiv_ipc_player_spawn",
       length = 624,
+      title = "PlayerSpawn",
     },
     [1] = {
       name = "ffxiv_ipc_update_position_instance",
       length = 40,
+      title = "UpdatePositionInstance",
     },
   },
   [0x01b8] = {
     [0] = {
       name = "ffxiv_ipc_object_spawn",
       length = 64,
+      title = "ObjectSpawn",
     },
   },
   [0x01f8] = {
     [0] = {
       name = "ffxiv_ipc_actor_set_pos",
       length = 20,
+      title = "ActorSetPos",
     },
   },
   [0x020e] = {
     [0] = {
       name = "ffxiv_ipc_effect_result",
       length = 26,
+      title = "EffectResult",
     },
   },
   [0x0214] = {
     [0] = {
       name = "ffxiv_ipc_content_finder_notify_pop",
       length = 32,
+      title = "ContentFinderNotifyPop",
     },
   },
   [0x0215] = {
     [0] = {
       name = "ffxiv_ipc_submarine_status_list",
       length = 240,
+      title = "SubmarineStatusList",
     },
   },
   [0x0228] = {
     [0] = {
       name = "ffxiv_ipc_company_submersible_status",
       length = 0,
+      title = "CompanySubmersibleStatus",
     },
   },
   [0x0229] = {
     [0] = {
       name = "ffxiv_ipc_ce_director",
       length = 16,
+      title = "CEDirector",
     },
   },
   [0x022c] = {
     [0] = {
       name = "ffxiv_ipc_item_info",
       length = 64,
+      title = "ItemInfo",
     },
   },
   [0x0243] = {
     [0] = {
       name = "ffxiv_ipc_aoe_effect24",
       length = 1784,
+      title = "AoeEffect24",
     },
   },
   [0x0254] = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction_finish",
       length = 16,
+      title = "InventoryTransactionFinish",
     },
   },
   [0x025c] = {
     [0] = {
       name = "ffxiv_ipc_actor_free_spawn",
       length = 8,
+      title = "ActorFreeSpawn",
     },
   },
   [0x0266] = {
     [0] = {
       name = "ffxiv_ipc_actor_move",
       length = 12,
+      title = "ActorMove",
     },
   },
   [0x0290] = {
     [0] = {
       name = "ffxiv_ipc_currency_crystal_info",
       length = 32,
+      title = "CurrencyCrystalInfo",
     },
   },
   [0x02a0] = {
     [0] = {
       name = "ffxiv_ipc_inventory_action_ack",
       length = 16,
+      title = "InventoryActionAck",
     },
   },
   [0x02bd] = {
     [0] = {
       name = "ffxiv_ipc_npc_spawn2",
       length = 624,
+      title = "NpcSpawn2",
     },
   },
   [0x02bf] = {
     [0] = {
       name = "ffxiv_ipc_player_stats",
       length = 120,
+      title = "PlayerStats",
     },
   },
   [0x02de] = {
     [0] = {
       name = "ffxiv_ipc_retainer_information",
       length = 73,
+      title = "RetainerInformation",
     },
   },
   [0x0318] = {
     [0] = {
       name = "ffxiv_ipc_ward_land_info",
       length = 2408,
+      title = "WardLandInfo",
     },
   },
   [0x0324] = {
     [0] = {
       name = "ffxiv_ipc_aoe_effect16",
       length = 1208,
+      title = "AoeEffect16",
     },
   },
   [0x0331] = {
     [0] = {
       name = "ffxiv_ipc_boss_status_effect_list",
       length = 740,
+      title = "BossStatusEffectList",
     },
   },
   [0x034f] = {
     [0] = {
       name = "ffxiv_ipc_client_trigger",
       length = 32,
+      title = "ClientTrigger",
     },
   },
   [0x035f] = {
     [0] = {
       name = "ffxiv_ipc_inventory_transaction",
       length = 36,
+      title = "InventoryTransaction",
     },
   },
   [0x036f] = {
     [0] = {
       name = "ffxiv_ipc_player_setup",
       length = 1938,
+      title = "PlayerSetup",
     },
   },
   [0x0379] = {
     [0] = {
       name = "ffxiv_ipc_update_class_info",
       length = 16,
+      title = "UpdateClassInfo",
     },
   },
   [0x0385] = {
     [0] = {
       name = "ffxiv_ipc_actor_cast",
       length = 30,
+      title = "ActorCast",
     },
   },
   [0x038a] = {
     [0] = {
       name = "ffxiv_ipc_actor_control_self",
       length = 32,
+      title = "ActorControlSelf",
     },
   },
   [0x03d6] = {
     [0] = {
       name = "ffxiv_ipc_aoe_effect8",
       length = 632,
+      title = "AoeEffect8",
     },
   },
   [0x03d7] = {
     [0] = {
       name = "ffxiv_ipc_status_effect_list",
       length = 380,
+      title = "StatusEffectList",
     },
   },
   [0x03e3] = {
     [0] = {
       name = "ffxiv_ipc_actor_control_target",
       length = 32,
+      title = "ActorControlTarget",
     },
   },
 }
@@ -268,13 +311,13 @@ function M.getDissector(typeNum, length)
 
   for k, v in pairs(types) do
     if v.length == length then
-      return Dissector.get(v.name)
+      return Dissector.get(v.name), v.title
     end
   end
 
   for k, v in pairs(types) do
     if v.length < length then
-      return Dissector.get(v.name)
+      return Dissector.get(v.name), v.title
     end
   end
 
