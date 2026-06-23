@@ -22,8 +22,6 @@ ffxiv_ipc_fellowship_detail.fields = fellowship_detail_fields
 
 function ffxiv_ipc_fellowship_detail.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_detail, tvbuf)
-  pktinfo.cols.info:set("FellowshipDetail")
-
   local len = tvbuf:len()
 
   -- dissect the unique_id field

@@ -13,8 +13,6 @@ ffxiv_ipc_actor_gauge.fields = actor_gauge_fields
 
 function ffxiv_ipc_actor_gauge.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_gauge, tvbuf)
-  pktinfo.cols.info:set("ActorGauge")
-
   local len = tvbuf:len()
 
   -- dissect the param1 field

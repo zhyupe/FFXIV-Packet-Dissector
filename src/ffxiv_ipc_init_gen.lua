@@ -12,8 +12,6 @@ ffxiv_ipc_init.fields = init_fields
 
 function ffxiv_ipc_init.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_init, tvbuf)
-  pktinfo.cols.info:set("Init")
-
   local len = tvbuf:len()
 
   -- dissect the unknown field

@@ -23,8 +23,6 @@ ffxiv_ipc_actor_control_target.fields = actor_control_target_fields
 
 function ffxiv_ipc_actor_control_target.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_control_target, tvbuf)
-  pktinfo.cols.info:set("Actor Control Target")
-
   local len = tvbuf:len()
 
   -- dissect the category field

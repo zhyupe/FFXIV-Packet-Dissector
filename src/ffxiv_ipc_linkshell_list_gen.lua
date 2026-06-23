@@ -9,8 +9,6 @@ ffxiv_ipc_linkshell_list.fields = linkshell_list_fields
 
 function ffxiv_ipc_linkshell_list.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_linkshell_list, tvbuf)
-  pktinfo.cols.info:set("Linkshell List")
-
   local len = tvbuf:len()
 
   -- dissect linkshell_item

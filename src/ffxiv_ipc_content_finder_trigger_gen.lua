@@ -22,8 +22,6 @@ ffxiv_ipc_content_finder_trigger.fields = content_finder_trigger_fields
 
 function ffxiv_ipc_content_finder_trigger.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_trigger, tvbuf)
-  pktinfo.cols.info:set("Content Finder Trigger")
-
   local len = tvbuf:len()
 
   -- dissect the roulette field

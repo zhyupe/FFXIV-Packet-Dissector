@@ -28,8 +28,6 @@ ffxiv_ipc_garden_status.fields = garden_status_fields
 
 function ffxiv_ipc_garden_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_garden_status, tvbuf)
-  pktinfo.cols.info:set("Garden Status")
-
   local len = tvbuf:len()
 
   -- dissect the type field

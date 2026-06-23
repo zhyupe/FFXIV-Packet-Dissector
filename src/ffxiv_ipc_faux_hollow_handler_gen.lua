@@ -17,8 +17,6 @@ ffxiv_ipc_faux_hollow_handler.fields = faux_hollow_handler_fields
 
 function ffxiv_ipc_faux_hollow_handler.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_faux_hollow_handler, tvbuf)
-  pktinfo.cols.info:set("Faux Hollow Handler")
-
   local len = tvbuf:len()
 
   -- dissect the unknown1 field

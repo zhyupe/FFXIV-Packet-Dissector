@@ -17,8 +17,6 @@ ffxiv_ipc_treasure_info.fields = treasure_info_fields
 
 function ffxiv_ipc_treasure_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_treasure_info, tvbuf)
-  pktinfo.cols.info:set("Treasure Info")
-
   local len = tvbuf:len()
 
   -- dissect the treasure_id field

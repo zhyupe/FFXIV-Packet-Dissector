@@ -11,8 +11,6 @@ ffxiv_ipc_examine_item_materia.fields = examine_item_materia_fields
 
 function ffxiv_ipc_examine_item_materia.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_examine_item_materia, tvbuf)
-  pktinfo.cols.info:set("ExamineItemMateria")
-
   local len = tvbuf:len()
 
   -- dissect the materia_id field

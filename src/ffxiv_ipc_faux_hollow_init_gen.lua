@@ -19,8 +19,6 @@ ffxiv_ipc_faux_hollow_init.fields = faux_hollow_init_fields
 
 function ffxiv_ipc_faux_hollow_init.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_faux_hollow_init, tvbuf)
-  pktinfo.cols.info:set("Faux Hollow Init")
-
   local len = tvbuf:len()
 
   -- dissect the unknown1 field

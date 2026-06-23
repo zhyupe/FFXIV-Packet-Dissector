@@ -56,8 +56,6 @@ ffxiv_ipc_actor_control_self.fields = actor_control_self_fields
 
 function ffxiv_ipc_actor_control_self.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_control_self, tvbuf)
-  pktinfo.cols.info:set("ActorControlSelf")
-
   local len = tvbuf:len()
 
   -- dissect the type field

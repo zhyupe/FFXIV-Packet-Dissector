@@ -11,8 +11,6 @@ ffxiv_ipc_company_board.fields = company_board_fields
 
 function ffxiv_ipc_company_board.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_board, tvbuf)
-  pktinfo.cols.info:set("Company Board")
-
   local len = tvbuf:len()
 
   -- dissect the unknown field

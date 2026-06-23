@@ -56,8 +56,6 @@ ffxiv_ipc_npc_spawn.fields = npc_spawn_fields
 
 function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_npc_spawn, tvbuf)
-  pktinfo.cols.info:set("NpcSpawn")
-
   local len = tvbuf:len()
 
   -- dissect the title field

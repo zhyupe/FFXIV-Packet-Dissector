@@ -13,8 +13,6 @@ ffxiv_ipc_inventory_action_ack.fields = inventory_action_ack_fields
 
 function ffxiv_ipc_inventory_action_ack.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_inventory_action_ack, tvbuf)
-  pktinfo.cols.info:set("Inventory Action Ack")
-
   local len = tvbuf:len()
 
   -- dissect the sequence field

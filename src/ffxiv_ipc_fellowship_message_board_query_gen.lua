@@ -14,8 +14,6 @@ ffxiv_ipc_fellowship_message_board_query.fields = fellowship_message_board_query
 
 function ffxiv_ipc_fellowship_message_board_query.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_message_board_query, tvbuf)
-  pktinfo.cols.info:set("FellowshipMessageBoardQuery")
-
   local len = tvbuf:len()
 
   -- dissect the id1 field

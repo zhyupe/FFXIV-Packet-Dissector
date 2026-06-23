@@ -14,8 +14,6 @@ ffxiv_ipc_actor_set_pos.fields = actor_set_pos_fields
 
 function ffxiv_ipc_actor_set_pos.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_set_pos, tvbuf)
-  pktinfo.cols.info:set("ActorSetPos")
-
   local len = tvbuf:len()
 
   -- dissect the r16 field

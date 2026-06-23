@@ -11,8 +11,6 @@ ffxiv_ipc_faux_hollow_block.fields = faux_hollow_block_fields
 
 function ffxiv_ipc_faux_hollow_block.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_faux_hollow_block, tvbuf)
-  pktinfo.cols.info:set("FauxHollowBlock")
-
   local len = tvbuf:len()
 
   -- dissect the row field

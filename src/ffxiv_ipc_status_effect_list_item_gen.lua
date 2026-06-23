@@ -15,8 +15,6 @@ ffxiv_ipc_status_effect_list_item.fields = status_effect_list_item_fields
 
 function ffxiv_ipc_status_effect_list_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_status_effect_list_item, tvbuf)
-  pktinfo.cols.info:set("StatusEffectListItem")
-
   local len = tvbuf:len()
 
   -- dissect the effect_id field

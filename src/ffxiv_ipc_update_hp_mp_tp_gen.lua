@@ -12,8 +12,6 @@ ffxiv_ipc_update_hp_mp_tp.fields = update_hp_mp_tp_fields
 
 function ffxiv_ipc_update_hp_mp_tp.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_hp_mp_tp, tvbuf)
-  pktinfo.cols.info:set("UpdateHpMpTp")
-
   local len = tvbuf:len()
 
   -- dissect the hp field

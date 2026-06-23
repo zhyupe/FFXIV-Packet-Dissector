@@ -39,8 +39,6 @@ ffxiv_ipc_item_info.fields = item_info_fields
 
 function ffxiv_ipc_item_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_item_info, tvbuf)
-  pktinfo.cols.info:set("ItemInfo")
-
   local len = tvbuf:len()
 
   -- dissect the index field

@@ -20,8 +20,6 @@ ffxiv_ipc_content_finder_member_status.fields = content_finder_member_status_fie
 
 function ffxiv_ipc_content_finder_member_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_member_status, tvbuf)
-  pktinfo.cols.info:set("Content Finder Member Status")
-
   local len = tvbuf:len()
 
   -- dissect the content_id field

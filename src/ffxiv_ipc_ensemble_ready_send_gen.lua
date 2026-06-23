@@ -14,8 +14,6 @@ ffxiv_ipc_ensemble_ready_send.fields = ensemble_ready_send_fields
 
 function ffxiv_ipc_ensemble_ready_send.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_ensemble_ready_send, tvbuf)
-  pktinfo.cols.info:set("Ensemble Ready Send")
-
   local len = tvbuf:len()
 
   -- dissect the bpm field

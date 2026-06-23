@@ -10,8 +10,6 @@ ffxiv_ipc_byte_padding.fields = byte_padding_fields
 
 function ffxiv_ipc_byte_padding.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_byte_padding, tvbuf)
-  pktinfo.cols.info:set("BytePadding")
-
   local len = tvbuf:len()
 
   -- dissect the padding field

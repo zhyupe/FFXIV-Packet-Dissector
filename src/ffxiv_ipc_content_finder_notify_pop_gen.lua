@@ -26,8 +26,6 @@ ffxiv_ipc_content_finder_notify_pop.fields = content_finder_notify_pop_fields
 
 function ffxiv_ipc_content_finder_notify_pop.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_notify_pop, tvbuf)
-  pktinfo.cols.info:set("Content Finder Notify Pop")
-
   local len = tvbuf:len()
 
   -- dissect the unknown1 field

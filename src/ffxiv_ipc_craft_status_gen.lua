@@ -22,8 +22,6 @@ ffxiv_ipc_craft_status.fields = craft_status_fields
 
 function ffxiv_ipc_craft_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_craft_status, tvbuf)
-  pktinfo.cols.info:set("CraftStatus")
-
   local len = tvbuf:len()
 
   -- dissect the character_id field

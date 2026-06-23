@@ -12,8 +12,6 @@ ffxiv_ipc_fellowship_list.fields = fellowship_list_fields
 
 function ffxiv_ipc_fellowship_list.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_list, tvbuf)
-  pktinfo.cols.info:set("FellowshipList")
-
   local len = tvbuf:len()
 
   -- dissect the id field

@@ -10,8 +10,6 @@ ffxiv_ipc_perform_note.fields = perform_note_fields
 
 function ffxiv_ipc_perform_note.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_perform_note, tvbuf)
-  pktinfo.cols.info:set("PerformNote")
-
   local len = tvbuf:len()
 
   -- dissect the length field

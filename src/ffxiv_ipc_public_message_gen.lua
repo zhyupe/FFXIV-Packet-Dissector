@@ -19,8 +19,6 @@ ffxiv_ipc_public_message.fields = public_message_fields
 
 function ffxiv_ipc_public_message.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_public_message, tvbuf)
-  pktinfo.cols.info:set("Public Message")
-
   local len = tvbuf:len()
 
   -- dissect the unique_id field

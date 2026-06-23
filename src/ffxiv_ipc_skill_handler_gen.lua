@@ -28,8 +28,6 @@ ffxiv_ipc_skill_handler.fields = skill_handler_fields
 
 function ffxiv_ipc_skill_handler.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_skill_handler, tvbuf)
-  pktinfo.cols.info:set("Skill Handler")
-
   local len = tvbuf:len()
 
   -- dissect the pad_0000 field

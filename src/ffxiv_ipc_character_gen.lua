@@ -22,8 +22,6 @@ ffxiv_ipc_character.fields = character_fields
 
 function ffxiv_ipc_character.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_character, tvbuf)
-  pktinfo.cols.info:set("Character")
-
   local len = tvbuf:len()
 
   -- dissect the title field

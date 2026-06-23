@@ -18,8 +18,6 @@ ffxiv_ipc_effect_entity.fields = effect_entity_fields
 
 function ffxiv_ipc_effect_entity.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_effect_entity, tvbuf)
-  pktinfo.cols.info:set("EffectEntity")
-
   local len = tvbuf:len()
 
   -- dissect the type field

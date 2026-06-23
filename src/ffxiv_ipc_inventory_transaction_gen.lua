@@ -21,8 +21,6 @@ ffxiv_ipc_inventory_transaction.fields = inventory_transaction_fields
 
 function ffxiv_ipc_inventory_transaction.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_inventory_transaction, tvbuf)
-  pktinfo.cols.info:set("Inventory Transaction")
-
   local len = tvbuf:len()
 
   -- dissect the sequence field

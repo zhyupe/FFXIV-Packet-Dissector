@@ -9,8 +9,6 @@ ffxiv_ipc_company_submersible_status.fields = company_submersible_status_fields
 
 function ffxiv_ipc_company_submersible_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_submersible_status, tvbuf)
-  pktinfo.cols.info:set("CompanySubmersibleStatus")
-
   local len = tvbuf:len()
 
   -- dissect company_submersible_status_item

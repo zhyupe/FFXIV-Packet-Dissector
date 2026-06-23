@@ -19,8 +19,6 @@ ffxiv_ipc_effect_result.fields = effect_result_fields
 
 function ffxiv_ipc_effect_result.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_effect_result, tvbuf)
-  pktinfo.cols.info:set("Effect Result")
-
   local len = tvbuf:len()
 
   -- dissect the last_buff_packet_id field

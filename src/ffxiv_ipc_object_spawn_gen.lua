@@ -29,8 +29,6 @@ ffxiv_ipc_object_spawn.fields = object_spawn_fields
 
 function ffxiv_ipc_object_spawn.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_object_spawn, tvbuf)
-  pktinfo.cols.info:set("Object Spawn")
-
   local len = tvbuf:len()
 
   -- dissect the spawn_index field

@@ -19,8 +19,6 @@ ffxiv_ipc_content_finder_notify.fields = content_finder_notify_fields
 
 function ffxiv_ipc_content_finder_notify.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_notify, tvbuf)
-  pktinfo.cols.info:set("Content Finder Notify")
-
   local len = tvbuf:len()
 
   -- dissect the type field

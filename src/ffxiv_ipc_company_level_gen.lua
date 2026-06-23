@@ -10,8 +10,6 @@ ffxiv_ipc_company_level.fields = company_level_fields
 
 function ffxiv_ipc_company_level.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_level, tvbuf)
-  pktinfo.cols.info:set("Company Level")
-
   local len = tvbuf:len()
 
   -- dissect the captain field

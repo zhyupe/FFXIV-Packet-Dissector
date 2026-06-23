@@ -9,8 +9,6 @@ ffxiv_ipc_fellowship_joined.fields = fellowship_joined_fields
 
 function ffxiv_ipc_fellowship_joined.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_joined, tvbuf)
-  pktinfo.cols.info:set("FellowshipJoined")
-
   local len = tvbuf:len()
 
   -- dissect fellowship_joined_item

@@ -11,8 +11,6 @@ ffxiv_ipc_server_notice_short.fields = server_notice_short_fields
 
 function ffxiv_ipc_server_notice_short.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_server_notice_short, tvbuf)
-  pktinfo.cols.info:set("Server Notice Short")
-
   local len = tvbuf:len()
 
   -- dissect the padding field

@@ -14,8 +14,6 @@ ffxiv_ipc_company_info.fields = company_info_fields
 
 function ffxiv_ipc_company_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_info, tvbuf)
-  pktinfo.cols.info:set("Company Info")
-
   local len = tvbuf:len()
 
   -- dissect the credits field

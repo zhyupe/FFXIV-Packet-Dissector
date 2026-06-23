@@ -13,8 +13,6 @@ ffxiv_ipc_item_count.fields = item_count_fields
 
 function ffxiv_ipc_item_count.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_item_count, tvbuf)
-  pktinfo.cols.info:set("ItemCount")
-
   local len = tvbuf:len()
 
   -- dissect the index field

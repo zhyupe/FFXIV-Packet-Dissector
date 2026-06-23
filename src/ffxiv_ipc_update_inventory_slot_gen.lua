@@ -39,8 +39,6 @@ ffxiv_ipc_update_inventory_slot.fields = update_inventory_slot_fields
 
 function ffxiv_ipc_update_inventory_slot.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_inventory_slot, tvbuf)
-  pktinfo.cols.info:set("Update Inventory Slot")
-
   local len = tvbuf:len()
 
   -- dissect the index field

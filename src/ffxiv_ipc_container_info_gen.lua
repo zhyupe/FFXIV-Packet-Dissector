@@ -15,8 +15,6 @@ ffxiv_ipc_container_info.fields = container_info_fields
 
 function ffxiv_ipc_container_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_container_info, tvbuf)
-  pktinfo.cols.info:set("Container Info")
-
   local len = tvbuf:len()
 
   -- dissect the container_sequence field

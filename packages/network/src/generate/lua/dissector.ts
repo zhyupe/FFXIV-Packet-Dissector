@@ -372,8 +372,6 @@ class DissectorFile {
       '',
       `function ffxiv_ipc_${snakeName}.dissector(tvbuf, pktinfo, root)`,
       `  local tree = root:add(ffxiv_ipc_${snakeName}, tvbuf)`,
-      `  pktinfo.cols.info:set("${obj.name}")`,
-      '',
       `  local len = tvbuf:len()`,
       '',
       fieldContent,

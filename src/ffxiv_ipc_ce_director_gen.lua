@@ -17,8 +17,6 @@ ffxiv_ipc_ce_director.fields = ce_director_fields
 
 function ffxiv_ipc_ce_director.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_ce_director, tvbuf)
-  pktinfo.cols.info:set("CEDirector")
-
   local len = tvbuf:len()
 
   -- dissect the time_start field

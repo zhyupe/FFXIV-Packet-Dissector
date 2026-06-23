@@ -84,8 +84,6 @@ ffxiv_ipc_boss_npc_spawn.fields = boss_npc_spawn_fields
 
 function ffxiv_ipc_boss_npc_spawn.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_boss_npc_spawn, tvbuf)
-  pktinfo.cols.info:set("Boss Npc Spawn")
-
   local len = tvbuf:len()
 
   -- dissect the gimmick_id field

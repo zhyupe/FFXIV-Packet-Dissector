@@ -19,8 +19,6 @@ ffxiv_ipc_client_action.fields = client_action_fields
 
 function ffxiv_ipc_client_action.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_client_action, tvbuf)
-  pktinfo.cols.info:set("ClientAction")
-
   local len = tvbuf:len()
 
   -- dissect the unknown1 field

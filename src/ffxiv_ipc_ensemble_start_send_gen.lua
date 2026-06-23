@@ -14,8 +14,6 @@ ffxiv_ipc_ensemble_start_send.fields = ensemble_start_send_fields
 
 function ffxiv_ipc_ensemble_start_send.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_ensemble_start_send, tvbuf)
-  pktinfo.cols.info:set("Ensemble Start Send")
-
   local len = tvbuf:len()
 
   -- dissect the bpm field

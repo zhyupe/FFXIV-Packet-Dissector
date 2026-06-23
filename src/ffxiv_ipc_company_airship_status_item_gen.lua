@@ -18,8 +18,6 @@ ffxiv_ipc_company_airship_status_item.fields = company_airship_status_item_field
 
 function ffxiv_ipc_company_airship_status_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_airship_status_item, tvbuf)
-  pktinfo.cols.info:set("CompanyAirshipStatusItem")
-
   local len = tvbuf:len()
 
   -- dissect the return_time field

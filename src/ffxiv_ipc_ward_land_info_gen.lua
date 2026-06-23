@@ -14,8 +14,6 @@ ffxiv_ipc_ward_land_info.fields = ward_land_info_fields
 
 function ffxiv_ipc_ward_land_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_ward_land_info, tvbuf)
-  pktinfo.cols.info:set("WardLandInfo")
-
   local len = tvbuf:len()
 
   -- dissect the section field

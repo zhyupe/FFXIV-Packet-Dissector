@@ -13,8 +13,6 @@ ffxiv_ipc_inventory_transaction_finish.fields = inventory_transaction_finish_fie
 
 function ffxiv_ipc_inventory_transaction_finish.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_inventory_transaction_finish, tvbuf)
-  pktinfo.cols.info:set("Inventory Transaction Finish")
-
   local len = tvbuf:len()
 
   -- dissect the sequence_id0 field

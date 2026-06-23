@@ -15,8 +15,6 @@ ffxiv_ipc_mail_letter_notification.fields = mail_letter_notification_fields
 
 function ffxiv_ipc_mail_letter_notification.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_mail_letter_notification, tvbuf)
-  pktinfo.cols.info:set("Mail Letter Notification")
-
   local len = tvbuf:len()
 
   -- dissect the sendback_count field

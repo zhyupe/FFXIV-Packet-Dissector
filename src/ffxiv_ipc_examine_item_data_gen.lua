@@ -17,8 +17,6 @@ ffxiv_ipc_examine_item_data.fields = examine_item_data_fields
 
 function ffxiv_ipc_examine_item_data.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_examine_item_data, tvbuf)
-  pktinfo.cols.info:set("ExamineItemData")
-
   local len = tvbuf:len()
 
   -- dissect the catalog_id field

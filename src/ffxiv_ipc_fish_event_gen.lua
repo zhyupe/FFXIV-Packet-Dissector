@@ -28,8 +28,6 @@ ffxiv_ipc_fish_event.fields = fish_event_fields
 
 function ffxiv_ipc_fish_event.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fish_event, tvbuf)
-  pktinfo.cols.info:set("Fish Event")
-
   local len = tvbuf:len()
 
   -- dissect the user_id field

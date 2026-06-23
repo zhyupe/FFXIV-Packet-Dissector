@@ -11,8 +11,6 @@ ffxiv_ipc_ping_handler.fields = ping_handler_fields
 
 function ffxiv_ipc_ping_handler.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_ping_handler, tvbuf)
-  pktinfo.cols.info:set("PingHandler")
-
   local len = tvbuf:len()
 
   -- dissect the sequence field

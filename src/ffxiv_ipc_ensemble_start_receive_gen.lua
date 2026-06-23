@@ -14,8 +14,6 @@ ffxiv_ipc_ensemble_start_receive.fields = ensemble_start_receive_fields
 
 function ffxiv_ipc_ensemble_start_receive.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_ensemble_start_receive, tvbuf)
-  pktinfo.cols.info:set("Ensemble Start Receive")
-
   local len = tvbuf:len()
 
   -- dissect the bpm field

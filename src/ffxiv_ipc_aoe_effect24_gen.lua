@@ -11,8 +11,6 @@ ffxiv_ipc_aoe_effect24.fields = aoe_effect24_fields
 
 function ffxiv_ipc_aoe_effect24.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_aoe_effect24, tvbuf)
-  pktinfo.cols.info:set("AoeEffect24")
-
   local len = tvbuf:len()
 
   -- dissect header

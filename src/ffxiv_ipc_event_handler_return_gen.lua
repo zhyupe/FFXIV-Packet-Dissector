@@ -19,8 +19,6 @@ ffxiv_ipc_event_handler_return.fields = event_handler_return_fields
 
 function ffxiv_ipc_event_handler_return.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_event_handler_return, tvbuf)
-  pktinfo.cols.info:set("Event Handler Return")
-
   local len = tvbuf:len()
 
   -- dissect the event_id field

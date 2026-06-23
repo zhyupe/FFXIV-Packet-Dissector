@@ -19,8 +19,6 @@ ffxiv_ipc_fellowship_message_board_item.fields = fellowship_message_board_item_f
 
 function ffxiv_ipc_fellowship_message_board_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_message_board_item, tvbuf)
-  pktinfo.cols.info:set("FellowshipMessageBoardItem")
-
   local len = tvbuf:len()
 
   -- dissect the unique_id field

@@ -17,8 +17,6 @@ ffxiv_ipc_update_class_info.fields = update_class_info_fields
 
 function ffxiv_ipc_update_class_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_class_info, tvbuf)
-  pktinfo.cols.info:set("UpdateClassInfo")
-
   local len = tvbuf:len()
 
   -- dissect the class_id field

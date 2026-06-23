@@ -14,8 +14,6 @@ ffxiv_ipc_fellowship_joined_item.fields = fellowship_joined_item_fields
 
 function ffxiv_ipc_fellowship_joined_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_joined_item, tvbuf)
-  pktinfo.cols.info:set("FellowshipJoinedItem")
-
   local len = tvbuf:len()
 
   -- dissect the unique_id field

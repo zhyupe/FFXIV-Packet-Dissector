@@ -28,8 +28,6 @@ ffxiv_ipc_examine.fields = examine_fields
 
 function ffxiv_ipc_examine.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_examine, tvbuf)
-  pktinfo.cols.info:set("Examine")
-
   local len = tvbuf:len()
 
   -- dissect the unknown0 field

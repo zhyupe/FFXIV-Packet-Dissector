@@ -19,8 +19,6 @@ ffxiv_ipc_faux_hollow_status.fields = faux_hollow_status_fields
 
 function ffxiv_ipc_faux_hollow_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_faux_hollow_status, tvbuf)
-  pktinfo.cols.info:set("Faux Hollow Status")
-
   local len = tvbuf:len()
 
   -- dissect the unknown1 field

@@ -13,8 +13,6 @@ ffxiv_ipc_fellowship_member_set_group_handler.fields = fellowship_member_set_gro
 
 function ffxiv_ipc_fellowship_member_set_group_handler.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_member_set_group_handler, tvbuf)
-  pktinfo.cols.info:set("FellowshipMemberSetGroupHandler")
-
   local len = tvbuf:len()
 
   -- dissect the id field

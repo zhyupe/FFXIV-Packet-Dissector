@@ -23,8 +23,6 @@ ffxiv_ipc_effect_header.fields = effect_header_fields
 
 function ffxiv_ipc_effect_header.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_effect_header, tvbuf)
-  pktinfo.cols.info:set("EffectHeader")
-
   local len = tvbuf:len()
 
   -- dissect the animation_target_id field

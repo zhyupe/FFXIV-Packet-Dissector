@@ -46,8 +46,6 @@ ffxiv_ipc_player_setup.fields = player_setup_fields
 
 function ffxiv_ipc_player_setup.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_player_setup, tvbuf)
-  pktinfo.cols.info:set("PlayerSetup")
-
   local len = tvbuf:len()
 
   -- dissect the content_id field

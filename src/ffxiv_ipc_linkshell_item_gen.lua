@@ -20,8 +20,6 @@ ffxiv_ipc_linkshell_item.fields = linkshell_item_fields
 
 function ffxiv_ipc_linkshell_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_linkshell_item, tvbuf)
-  pktinfo.cols.info:set("LinkshellItem")
-
   local len = tvbuf:len()
 
   -- dissect the id field

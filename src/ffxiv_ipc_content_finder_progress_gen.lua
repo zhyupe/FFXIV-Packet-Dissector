@@ -20,8 +20,6 @@ ffxiv_ipc_content_finder_progress.fields = content_finder_progress_fields
 
 function ffxiv_ipc_content_finder_progress.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_progress, tvbuf)
-  pktinfo.cols.info:set("Content Finder Progress")
-
   local len = tvbuf:len()
 
   -- dissect the unknown1 field

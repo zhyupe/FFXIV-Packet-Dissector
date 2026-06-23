@@ -21,8 +21,6 @@ ffxiv_ipc_currency_crystal_info.fields = currency_crystal_info_fields
 
 function ffxiv_ipc_currency_crystal_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_currency_crystal_info, tvbuf)
-  pktinfo.cols.info:set("CurrencyCrystalInfo")
-
   local len = tvbuf:len()
 
   -- dissect the container_sequence field

@@ -13,8 +13,6 @@ ffxiv_ipc_status_effect.fields = status_effect_fields
 
 function ffxiv_ipc_status_effect.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_status_effect, tvbuf)
-  pktinfo.cols.info:set("StatusEffect")
-
   local len = tvbuf:len()
 
   -- dissect the id field

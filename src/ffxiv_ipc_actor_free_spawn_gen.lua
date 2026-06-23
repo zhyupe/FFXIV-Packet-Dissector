@@ -11,8 +11,6 @@ ffxiv_ipc_actor_free_spawn.fields = actor_free_spawn_fields
 
 function ffxiv_ipc_actor_free_spawn.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_free_spawn, tvbuf)
-  pktinfo.cols.info:set("ActorFreeSpawn")
-
   local len = tvbuf:len()
 
   -- dissect the unknown field

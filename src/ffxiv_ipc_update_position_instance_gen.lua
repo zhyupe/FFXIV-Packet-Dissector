@@ -19,8 +19,6 @@ ffxiv_ipc_update_position_instance.fields = update_position_instance_fields
 
 function ffxiv_ipc_update_position_instance.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_position_instance, tvbuf)
-  pktinfo.cols.info:set("UpdatePositionInstance")
-
   local len = tvbuf:len()
 
   -- dissect the unknown0 field

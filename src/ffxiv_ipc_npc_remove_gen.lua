@@ -11,8 +11,6 @@ ffxiv_ipc_npc_remove.fields = npc_remove_fields
 
 function ffxiv_ipc_npc_remove.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_npc_remove, tvbuf)
-  pktinfo.cols.info:set("NpcRemove")
-
   local len = tvbuf:len()
 
   -- dissect the unknown field

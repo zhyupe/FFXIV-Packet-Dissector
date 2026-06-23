@@ -40,8 +40,6 @@ ffxiv_ipc_effect24.fields = effect24_fields
 
 function ffxiv_ipc_effect24.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_effect24, tvbuf)
-  pktinfo.cols.info:set("Effect24")
-
   local len = tvbuf:len()
 
   -- dissect effect_header

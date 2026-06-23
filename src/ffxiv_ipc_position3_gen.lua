@@ -12,8 +12,6 @@ ffxiv_ipc_position3.fields = position3_fields
 
 function ffxiv_ipc_position3.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_position3, tvbuf)
-  pktinfo.cols.info:set("POSITION3")
-
   local len = tvbuf:len()
 
   -- dissect the x field

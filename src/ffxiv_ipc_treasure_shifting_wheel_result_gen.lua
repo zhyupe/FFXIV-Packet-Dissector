@@ -27,8 +27,6 @@ ffxiv_ipc_treasure_shifting_wheel_result.fields = treasure_shifting_wheel_result
 
 function ffxiv_ipc_treasure_shifting_wheel_result.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_treasure_shifting_wheel_result, tvbuf)
-  pktinfo.cols.info:set("Treasure Shifting Wheel Result")
-
   local len = tvbuf:len()
 
   -- dissect the start_pos field

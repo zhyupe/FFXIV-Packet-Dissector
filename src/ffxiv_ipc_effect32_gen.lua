@@ -48,8 +48,6 @@ ffxiv_ipc_effect32.fields = effect32_fields
 
 function ffxiv_ipc_effect32.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_effect32, tvbuf)
-  pktinfo.cols.info:set("Effect32")
-
   local len = tvbuf:len()
 
   -- dissect effect_header

@@ -29,8 +29,6 @@ ffxiv_ipc_submarine_status_item.fields = submarine_status_item_fields
 
 function ffxiv_ipc_submarine_status_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_submarine_status_item, tvbuf)
-  pktinfo.cols.info:set("SubmarineStatusItem")
-
   local len = tvbuf:len()
 
   -- dissect the status field

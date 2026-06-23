@@ -13,8 +13,6 @@ ffxiv_ipc_content_finder_duty_info.fields = content_finder_duty_info_fields
 
 function ffxiv_ipc_content_finder_duty_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_duty_info, tvbuf)
-  pktinfo.cols.info:set("Content Finder Duty Info")
-
   local len = tvbuf:len()
 
   -- dissect the penalty_time field

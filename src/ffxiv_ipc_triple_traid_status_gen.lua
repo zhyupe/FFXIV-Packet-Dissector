@@ -13,8 +13,6 @@ ffxiv_ipc_triple_traid_status.fields = triple_traid_status_fields
 
 function ffxiv_ipc_triple_traid_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_triple_traid_status, tvbuf)
-  pktinfo.cols.info:set("Triple Traid Status")
-
   local len = tvbuf:len()
 
   -- dissect the traid_id field

@@ -13,8 +13,6 @@ ffxiv_ipc_ward_land_item.fields = ward_land_item_fields
 
 function ffxiv_ipc_ward_land_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_ward_land_item, tvbuf)
-  pktinfo.cols.info:set("WardLandItem")
-
   local len = tvbuf:len()
 
   -- dissect the price field

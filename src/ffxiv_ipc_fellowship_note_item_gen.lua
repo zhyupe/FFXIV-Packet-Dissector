@@ -10,8 +10,6 @@ ffxiv_ipc_fellowship_note_item.fields = fellowship_note_item_fields
 
 function ffxiv_ipc_fellowship_note_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_note_item, tvbuf)
-  pktinfo.cols.info:set("FellowshipNoteItem")
-
   local len = tvbuf:len()
 
   -- dissect the content field

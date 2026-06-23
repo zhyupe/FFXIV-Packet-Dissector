@@ -18,8 +18,6 @@ ffxiv_ipc_fate_info.fields = fate_info_fields
 
 function ffxiv_ipc_fate_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fate_info, tvbuf)
-  pktinfo.cols.info:set("Fate Info")
-
   local len = tvbuf:len()
 
   -- dissect the fate field

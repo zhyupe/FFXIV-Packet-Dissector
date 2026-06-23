@@ -13,8 +13,6 @@ ffxiv_ipc_fellowship_message_board.fields = fellowship_message_board_fields
 
 function ffxiv_ipc_fellowship_message_board.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_message_board, tvbuf)
-  pktinfo.cols.info:set("FellowshipMessageBoard")
-
   local len = tvbuf:len()
 
   -- dissect the id field

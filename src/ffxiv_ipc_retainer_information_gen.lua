@@ -26,8 +26,6 @@ ffxiv_ipc_retainer_information.fields = retainer_information_fields
 
 function ffxiv_ipc_retainer_information.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_retainer_information, tvbuf)
-  pktinfo.cols.info:set("Retainer Information")
-
   local len = tvbuf:len()
 
   -- dissect the unique_id field

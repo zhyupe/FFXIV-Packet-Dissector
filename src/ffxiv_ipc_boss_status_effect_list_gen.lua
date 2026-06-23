@@ -20,8 +20,6 @@ ffxiv_ipc_boss_status_effect_list.fields = boss_status_effect_list_fields
 
 function ffxiv_ipc_boss_status_effect_list.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_boss_status_effect_list, tvbuf)
-  pktinfo.cols.info:set("BossStatusEffectList")
-
   local len = tvbuf:len()
 
   -- dissect status_effects2

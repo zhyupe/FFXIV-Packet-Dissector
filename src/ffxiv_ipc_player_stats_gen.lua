@@ -39,8 +39,6 @@ ffxiv_ipc_player_stats.fields = player_stats_fields
 
 function ffxiv_ipc_player_stats.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_player_stats, tvbuf)
-  pktinfo.cols.info:set("PlayerStats")
-
   local len = tvbuf:len()
 
   -- dissect the strength field

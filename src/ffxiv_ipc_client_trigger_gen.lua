@@ -34,8 +34,6 @@ ffxiv_ipc_client_trigger.fields = client_trigger_fields
 
 function ffxiv_ipc_client_trigger.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_client_trigger, tvbuf)
-  pktinfo.cols.info:set("Client Trigger")
-
   local len = tvbuf:len()
 
   -- dissect the command_id field

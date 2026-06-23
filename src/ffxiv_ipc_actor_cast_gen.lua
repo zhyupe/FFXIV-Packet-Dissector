@@ -21,8 +21,6 @@ ffxiv_ipc_actor_cast.fields = actor_cast_fields
 
 function ffxiv_ipc_actor_cast.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_cast, tvbuf)
-  pktinfo.cols.info:set("ActorCast")
-
   local len = tvbuf:len()
 
   -- dissect the action field

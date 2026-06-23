@@ -18,8 +18,6 @@ ffxiv_ipc_fate_position.fields = fate_position_fields
 
 function ffxiv_ipc_fate_position.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fate_position, tvbuf)
-  pktinfo.cols.info:set("Fate Position")
-
   local len = tvbuf:len()
 
   -- dissect the fate field

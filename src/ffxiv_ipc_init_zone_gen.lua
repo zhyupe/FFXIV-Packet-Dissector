@@ -38,8 +38,6 @@ ffxiv_ipc_init_zone.fields = init_zone_fields
 
 function ffxiv_ipc_init_zone.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_init_zone, tvbuf)
-  pktinfo.cols.info:set("InitZone")
-
   local len = tvbuf:len()
 
   -- dissect the server_id field

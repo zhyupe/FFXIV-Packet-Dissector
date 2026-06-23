@@ -12,8 +12,6 @@ ffxiv_ipc_company_level_item.fields = company_level_item_fields
 
 function ffxiv_ipc_company_level_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_level_item, tvbuf)
-  pktinfo.cols.info:set("Company Level Item")
-
   local len = tvbuf:len()
 
   -- dissect the members field
