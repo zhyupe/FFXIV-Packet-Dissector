@@ -1,5 +1,5 @@
 import { exec } from 'node:child_process'
-import dllInject from '@ffxiv-teamcraft/dll-inject'
+import dllInject from 'dll-inject'
 import { ErrorCodes } from './interface.mjs'
 
 const { getPIDByName, injectPID } = dllInject
