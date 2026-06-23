@@ -582,10 +582,19 @@ return M
   }
 
   commitOpcodes() {
-    for (const [version, opcodes] of Object.entries(CNOpcode)) {
+    const entries = Object.entries(CNOpcode)
+    for (const [version, opcodes] of entries) {
       this.commit(
         `ffxiv_ipc_type_${version.replace(/\./g, '_')}_cn.lua`,
         this.#renderOpcodes(opcodes),
+      )
+    }
+
+    const latestVersion = entries.at(-1)?.[0].replace(/\./g, '_')
+    if (latestVersion) {
+      this.commit(
+        'ffxiv_ipc_type_latest.lua',
+        `local M = require("ffxiv_ipc_type_${latestVersion}_cn")\nreturn M`,
       )
     }
   }
