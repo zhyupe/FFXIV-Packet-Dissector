@@ -8,6 +8,7 @@ import type { OpcodeResult, Scanner, ScannerPrompt } from './interface.mjs'
 export interface StateOptions {
   outDir: string
   version: string
+  onPromptStateChange?: (active: boolean) => void
 }
 
 export class StateManager {
@@ -130,6 +131,22 @@ export class StateManager {
     console.log('Written opcode.json')
   }
 
+  skip() {
+    if (this.finished) {
+      return
+    }
+
+    void this.nextScanner()
+  }
+
+  stop() {
+    if (this.finished) {
+      return
+    }
+
+    this.finished = true
+  }
+
   #getRecognizedSet(source: PacketSource) {
     if (source === PacketSource.Client) {
       return this.#recognizedClientOpcodes
@@ -201,16 +218,22 @@ export class StateManager {
       }
     }
 
-    await prompts(answers as T)
-    console.log(name, answers)
-    this.#scannerAnswer = answers
+    this.options.onPromptStateChange?.(true)
 
-    for (const [key, value] of Object.entries(answers)) {
-      if (key[0] === '$') {
-        this.#context[key] = value
-      } else {
-        this.#context[`${prefix}${key}`] = value
+    try {
+      await prompts(answers as T)
+      console.log(name, answers)
+      this.#scannerAnswer = answers
+
+      for (const [key, value] of Object.entries(answers)) {
+        if (key[0] === '$') {
+          this.#context[key] = value
+        } else {
+          this.#context[`${prefix}${key}`] = value
+        }
       }
+    } finally {
+      this.options.onPromptStateChange?.(false)
     }
   }
 }

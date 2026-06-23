@@ -8,11 +8,15 @@ import { ScannerRunner } from './scanner/scanner.mjs'
 ;(async () => {
   const version = getGameVersion() ?? 'unk'
   console.log('Version', version)
+  let promptActive = false
   const runner = new ScannerRunner(getScanners(), {
     version,
     outDir: fileURLToPath(new URL('../out', import.meta.url)),
     onFinish: () => {
       capture?.stop()
+    },
+    onPromptStateChange: (active) => {
+      promptActive = active
     },
   })
 
@@ -30,25 +34,43 @@ import { ScannerRunner } from './scanner/scanner.mjs'
     runner.output()
   })
 
-  // listen key press
+  const stop = () => {
+    runner.stop()
+  }
+
+  const skip = () => {
+    runner.skip()
+  }
+
+  const write = () => {
+    runner.output()
+  }
+
+  const isFunctionKey = (key: { name?: string }) =>
+    key.name === 'f6' || key.name === 'f7' || key.name === 'f8'
+
+  console.log('Controls: F6 skip, F7 write, F8 stop')
+
   emitKeypressEvents(process.stdin)
-  process.stdin.setRawMode(true)
+  if (process.stdin.isTTY) {
+    process.stdin.setRawMode(true)
+  }
   process.stdin.resume()
-  process.stdin.on('keypress', (str, key) => {
-    if (key.ctrl) {
-      switch (key.name) {
-        case 'c': // ctrl-c
-          capture.stop().then(() => {
-            process.exit()
-          })
-          break
-        case 's':
-          runner.output()
-          break
-        case 'd':
-          runner.next()
-          break
-      }
+  process.stdin.on('keypress', (_str, key) => {
+    if (promptActive) {
+      return
+    }
+
+    switch (key.name) {
+      case 'f6':
+        skip()
+        break
+      case 'f7':
+        write()
+        break
+      case 'f8':
+        stop()
+        break
     }
   })
 

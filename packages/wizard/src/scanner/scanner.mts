@@ -6,6 +6,7 @@ import { StateManager, type StateOptions } from './state.mjs'
 export class ScannerRunner extends Writable {
   #state: StateManager
   #promise: Promise<any> | null = null
+  #finishedNotified = false
 
   public get finished() {
     return this.#state.finished
@@ -24,13 +25,22 @@ export class ScannerRunner extends Writable {
     this.#state = new StateManager(scanners, options)
   }
 
+  #notifyFinished() {
+    if (this.#finishedNotified) {
+      return
+    }
+
+    this.#finishedNotified = true
+    this.options.onFinish()
+  }
+
   async _write(
     packet: DeucalionPacket,
     _: any,
     callback: (error?: Error) => void,
   ) {
     if (this.finished) {
-      this.options.onFinish()
+      this.#notifyFinished()
       return callback()
     }
 
@@ -46,7 +56,7 @@ export class ScannerRunner extends Writable {
     if (ret === true) {
       await this.next()
     } else if (this.finished) {
-      this.options.onFinish()
+      this.#notifyFinished()
     }
 
     if (this.#promise) {
@@ -58,6 +68,15 @@ export class ScannerRunner extends Writable {
 
   output() {
     this.#state.output()
+  }
+
+  skip() {
+    this.#state.skip()
+  }
+
+  stop() {
+    this.#state.stop()
+    this.#notifyFinished()
   }
 
   async next() {
