@@ -74,3 +74,11 @@ export class Vector3 {
 }
 
 export const hex = (value: number) => `0x${value.toString(16).padStart(4, '0')}`
+
+export const inRange = (diff: Vector3, range: Vector3) => {
+  return (
+    Math.abs(diff.X) < range.X &&
+    Math.abs(diff.Y) < range.Y &&
+    Math.abs(diff.Z) < range.Z
+  )
+}

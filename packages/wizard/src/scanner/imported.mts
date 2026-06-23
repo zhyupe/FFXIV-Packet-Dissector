@@ -2,10 +2,22 @@
 
 import { input, number } from '@inquirer/prompts'
 import {
+  basicSynthesis,
+  darkMatter,
+  desynthResult,
+  limsaLominsaAetheryte,
+  limsaLominsaFishes,
+  limsaLominsaMarket,
+  whmDia,
+  whmDiaStatus,
+  whmHoly,
+} from './constants.mjs'
+import {
   BitConverter,
   Encoding,
   hex,
   IncludesBytes,
+  inRange,
   int,
   Offsets,
   PacketSource,
@@ -14,6 +26,7 @@ import {
 import type { Scanner, ScannerPrompt } from './interface.mjs'
 
 interface ImportedPacket {
+  /** Includes Header(32 bytes) */
   PacketSize: number
   Data: Buffer
   SourceActor: number
@@ -127,9 +140,6 @@ export const getImportedScanners = () => {
     ['Please enter your the level for any crafter job:'],
   )
   //=================
-  const basicSynthesis = [
-    100001, 100015, 100030, 100045, 100060, 100075, 100090, 100105,
-  ]
   RegisterScanner(
     'EventPlay32',
     'Use Trial Synthesis from any recipes, and use Basic Synthesis',
@@ -327,20 +337,6 @@ export const getImportedScanners = () => {
       BitConverter.ToSingle(packet.Data, Offsets.IpcData + 4) == 20.0,
   )
   //=================
-  // Aetheryte is higher than ground
-  var limsaLominsaAetheryte = new Vector3(
-    -84.031494,
-    20.767456 - 2,
-    0.015197754,
-  )
-  var limsaLominsaMarket = new Vector3(-213.61108, 16, 51.80432)
-  var inRange = (diff: Vector3, range: Vector3) => {
-    return (
-      Math.abs(diff.X) < range.X &&
-      Math.abs(diff.Y) < range.Y &&
-      Math.abs(diff.Z) < range.Z
-    )
-  }
   RegisterScanner(
     'ActorMove',
     "Please wait. (Teleport to Limsa Lominsa Lower Decks if you haven't)",
@@ -412,6 +408,58 @@ export const getImportedScanners = () => {
   )
   //=================
   RegisterScanner(
+    'WorldVisitQueue',
+    'Visit another world.',
+    PacketSource.Server,
+    (packet, _) => {
+      if (packet.Data.length != Offsets.IpcData + 16) return false
+
+      var status = BitConverter.ToUInt32(packet.Data, Offsets.IpcData)
+      var order = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4)
+      var time = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8)
+
+      return status === 3 && order === 0 && time === 0
+    },
+  )
+  RegisterScanner(
+    'PrepareZoning',
+    'Waiting',
+    PacketSource.Server,
+    (packet, _) => {
+      if (packet.PacketSize != 48) return false
+
+      var logMessage = BitConverter.ToUInt32(packet.Data, Offsets.IpcData)
+      var targetZone = BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4)
+      var animation = BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 6)
+      var fadeOutTime = packet.Data[Offsets.IpcData + 10]
+
+      return (
+        logMessage == 0 &&
+        targetZone == 0x81 &&
+        animation == 0x70 &&
+        fadeOutTime == 0x1b &&
+        packet.SourceActor == packet.TargetActor
+      )
+    },
+  )
+  RegisterScanner(
+    'ContainerInfo',
+    'Please wait.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 48 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) == 2001,
+  )
+  RegisterScanner(
+    'ItemInfo',
+    'Please open your chocobo saddlebag.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 96 &&
+      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 8) == 4000,
+  )
+  //=================
+  RegisterScanner(
     'ActorSetPos',
     'Teleport to Martet (Aethernet Shard).',
     PacketSource.Server,
@@ -429,9 +477,199 @@ export const getImportedScanners = () => {
     },
   )
   //=================
-  const darkMatter = [5594, 5595, 5596, 5597, 5598, 10386, 17837, 33916]
-  var isDarkMatter = (itemId: number) => darkMatter.includes(itemId)
+  RegisterScanner(
+    'PlaceFieldMarker',
+    'Please target The Market Aethernet Shard and type /waymark A <t>',
+    PacketSource.Server,
+    (packet, _) => {
+      if (
+        packet.PacketSize !== 48 ||
+        packet.SourceActor !== packet.TargetActor
+      ) {
+        return false
+      }
 
+      const marker = packet.Data[Offsets.IpcData]
+      const isSet = packet.Data[Offsets.IpcData + 0x01]
+      const x =
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x04) / 1000
+      const y =
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x08) / 1000
+      const z =
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x0c) / 1000
+
+      return (
+        marker === 0 &&
+        isSet === 1 &&
+        inRange(
+          new Vector3(x, y, z).minus(limsaLominsaMarket),
+          new Vector3(0.5, 1, 0.5),
+        )
+      )
+    },
+  )
+  //=================
+  RegisterScanner(
+    'PlaceFieldMarkerPreset',
+    'Please type /waymark clear',
+    PacketSource.Server,
+    (packet, _) => {
+      if (packet.PacketSize != 136 || packet.SourceActor != packet.TargetActor)
+        return false
+
+      for (let i = 0; i < 24; i++) {
+        if (
+          BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x04 + 4 * i) !=
+          0
+        )
+          return false
+      }
+
+      return true
+    },
+  )
+  //=================
+  RegisterScanner(
+    'EffectResult',
+    'Switch to Fisher and enable snagging.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 128 &&
+      packet.SourceActor == packet.TargetActor &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) ==
+        packet.SourceActor &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 12) ==
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) &&
+      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x1e) == 761,
+  )
+  //=================
+  RegisterScanner(
+    'EventStart',
+    'Please begin fishing and put your rod away immediately.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 56 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) == 0x150001,
+  )
+  RegisterScanner(
+    'EventPlay',
+    '',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 72 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) == 0x150001,
+  )
+  RegisterScanner(
+    'EventFinish',
+    '',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 48 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) == 0x150001 &&
+      packet.Data[Offsets.IpcData + 4] == 0x14 &&
+      packet.Data[Offsets.IpcData + 5] == 0x01,
+  )
+  //=================
+  RegisterScanner(
+    'EventPlay4',
+    'Please cast your line and catch a fish at Limsa Lominsa.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 80 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x1c) == 284,
+  )
+  RegisterScanner(
+    'UpdateInventorySlot',
+    'Waiting for the fish appears in your inventory.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 96 &&
+      // ContainerId is Inventory 1,2,3,4
+      [1, 2, 3, 4].includes(
+        BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x08),
+      ) &&
+      limsaLominsaFishes.includes(
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10),
+      ),
+  )
+  //=================
+  RegisterScanner(
+    // 'DesynthResult',
+    'ResumeEventScene16',
+    'Please desynth the fish (You can also purchase a Merlthor Goby, Lominsan Anchovy or Harbor Herring from marketboard). If you got items other than Fine Sand and Allagan Tin Piece, please desynth again.',
+    PacketSource.Server,
+    (packet, _) =>
+      (packet.PacketSize == 104 || packet.PacketSize == 136) &&
+      limsaLominsaFishes.includes(
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x08) % 1000000,
+      ) &&
+      desynthResult.includes(
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x0c) % 1000000,
+      ),
+  )
+  //=================
+  let inventoryModifyHandlerId = 0
+  RegisterScanner(
+    'InventoryModifyHandler',
+    'Please drop the Fine Sand or Allagan Tin Piece.',
+    PacketSource.Client,
+    (packet, _, comment) => {
+      var match =
+        packet.PacketSize == 80 &&
+        desynthResult.includes(
+          BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x18),
+        )
+      if (!match) return false
+
+      inventoryModifyHandlerId = BitConverter.ToUInt32(
+        packet.Data,
+        Offsets.IpcData,
+      )
+
+      var baseOffset = BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4)
+      comment.Text = `Base offset: ${hex(baseOffset)}`
+      return true
+    },
+  )
+  RegisterScanner(
+    'InventoryActionAck',
+    'Please wait.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 48 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
+        inventoryModifyHandlerId,
+  )
+  RegisterScanner(
+    'InventoryTransaction',
+    'Please wait.',
+    PacketSource.Server,
+    (packet, _) => {
+      var match =
+        packet.PacketSize == 80 &&
+        desynthResult.includes(
+          BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x18),
+        )
+      if (!match) return false
+
+      inventoryModifyHandlerId = BitConverter.ToUInt32(
+        packet.Data,
+        Offsets.IpcData,
+      )
+      return true
+    },
+  )
+  RegisterScanner(
+    'InventoryTransactionFinish',
+    'Please wait.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 48 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
+        inventoryModifyHandlerId,
+  )
+  //=================
+  var isDarkMatter = (itemId: number) => darkMatter.includes(itemId)
   RegisterScanner(
     'MarketBoardSearchResult',
     'Please click "Catalysts" on the market board.',
@@ -505,7 +743,6 @@ export const getImportedScanners = () => {
       packet.PacketSize == 48 &&
       isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData)),
   )
-
   //=================
   let retainerBytes: Buffer
   RegisterScanner(
@@ -540,255 +777,6 @@ export const getImportedScanners = () => {
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10) == 123456,
   )
   //=================
-  RegisterScanner(
-    'PrepareZoning',
-    "Please teleport to The Aftcastle (Adventurers' Guild in Limsa Lominsa Upper Decks).",
-    PacketSource.Server,
-    (packet, _) => {
-      if (packet.PacketSize != 48) return false
-
-      var logMessage = BitConverter.ToUInt32(packet.Data, Offsets.IpcData)
-      var targetZone = BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4)
-      var animation = BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 6)
-      var fadeOutTime = packet.Data[Offsets.IpcData + 10]
-
-      return (
-        logMessage == 0 &&
-        targetZone == 128 &&
-        animation == 112 &&
-        fadeOutTime == 15 &&
-        packet.SourceActor == packet.TargetActor
-      )
-    },
-  )
-  //=================
-  RegisterScanner(
-    'ContainerInfo',
-    'Please wait.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 48 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) == 2001,
-  )
-  RegisterScanner(
-    'ItemInfo',
-    'Please open your chocobo saddlebag.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 96 &&
-      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 8) == 4000,
-  )
-  //=================
-  RegisterScanner(
-    'PlaceFieldMarker',
-    'Please target The Aftcastle Aethernet Shard and type /waymark A <t>',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 48 &&
-      packet.SourceActor == packet.TargetActor &&
-      BitConverter.ToUInt16(packet.Data, Offsets.IpcData) == 0x0100 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x04) == 0x3edc &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x08) == 0x9c70,
-  )
-  //=================
-  RegisterScanner(
-    'PlaceFieldMarkerPreset',
-    'Please type /waymark clear',
-    PacketSource.Server,
-    (packet, _) => {
-      if (packet.PacketSize != 136 || packet.SourceActor != packet.TargetActor)
-        return false
-
-      for (let i = 0; i < 24; i++) {
-        if (
-          BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x04 + 4 * i) !=
-          0
-        )
-          return false
-      }
-
-      return true
-    },
-  )
-  //=================
-  RegisterScanner(
-    'EffectResult',
-    'Switch to Fisher and enable snagging.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 128 &&
-      packet.SourceActor == packet.TargetActor &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) ==
-        packet.SourceActor &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 12) ==
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) &&
-      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x1e) == 761,
-  )
-  //=================
-  RegisterScanner(
-    'EventStart',
-    'Please begin fishing and put your rod away immediately.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 56 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) == 0x150001,
-  )
-  RegisterScanner(
-    'EventPlay',
-    '',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 72 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) == 0x150001,
-  )
-  RegisterScanner(
-    'EventFinish',
-    '',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 48 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) == 0x150001 &&
-      packet.Data[Offsets.IpcData + 4] == 0x14 &&
-      packet.Data[Offsets.IpcData + 5] == 0x01,
-  )
-  //=================
-  RegisterScanner(
-    'EventPlay4',
-    'Please cast your line and catch a fish at Limsa Lominsa.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 80 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x1c) == 284,
-  )
-  //=================
-  const limsaLominsaFishes = [4869, 4870, 4776, 4871, 4872, 4874, 4876]
-  const desynthResult = [5267, 5823]
-  RegisterScanner(
-    // 'DesynthResult',
-    'ResumeEventScene16',
-    'Please desynth the fish (You can also purchase a Merlthor Goby, Lominsan Anchovy or Harbor Herring from marketboard). If you got items other than Fine Sand and Allagan Tin Piece, please desynth again.',
-    PacketSource.Server,
-    (packet, _) =>
-      (packet.PacketSize == 104 || packet.PacketSize == 136) &&
-      limsaLominsaFishes.includes(
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x08) % 1000000,
-      ) &&
-      desynthResult.includes(
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x0c) % 1000000,
-      ),
-  )
-  //=================
-  RegisterScanner(
-    'FreeCompanyInfo',
-    'Load a zone. (If you are running scanners by order, suggest teleporting to Limsa Lominsa Lower Decks)',
-    PacketSource.Server,
-    (packet, { $fcRank }) => {
-      return (
-        packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 45] == $fcRank
-      )
-    },
-    async (v) => {
-      v.$fcRank = await number({
-        message: 'Please enter your Free Company rank:',
-      })
-    },
-  )
-  RegisterScanner(
-    'FreeCompanyDialog',
-    'Open your Free Company window (press G or ;)',
-    PacketSource.Server,
-    (packet, _, { context }) => {
-      return (
-        packet.PacketSize == 112 &&
-        packet.Data[Offsets.IpcData + 0x31] == context.$fcRank
-      )
-    },
-  )
-  RegisterScanner(
-    'WorldVisitQueue',
-    'Visit another world.',
-    PacketSource.Server,
-    (packet, _) => {
-      if (packet.Data.length != Offsets.IpcData + 16) return false
-
-      var status = BitConverter.ToUInt32(packet.Data, Offsets.IpcData)
-      var order = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4)
-      var time = BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8)
-
-      return status === 3 && order === 0 && time === 0
-    },
-  )
-  //=================
-  const scannerItemId = 4850 // Honey
-  RegisterScanner(
-    'UpdateInventorySlot',
-    'Please purchase a Honey from Tradecraft Supplier (2 gil).',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 96 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10) ==
-        scannerItemId,
-  )
-  //=================
-  let inventoryModifyHandlerId = 0
-  RegisterScanner(
-    'InventoryModifyHandler',
-    'Please drop the Honey.',
-    PacketSource.Client,
-    (packet, _, comment) => {
-      var match =
-        packet.PacketSize == 80 &&
-        BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x18) ==
-          scannerItemId
-      if (!match) return false
-
-      inventoryModifyHandlerId = BitConverter.ToUInt32(
-        packet.Data,
-        Offsets.IpcData,
-      )
-
-      var baseOffset = BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4)
-      comment.Text = `Base offset: ${hex(baseOffset)}`
-      return true
-    },
-  )
-  RegisterScanner(
-    'InventoryActionAck',
-    'Please wait.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 48 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
-        inventoryModifyHandlerId,
-  )
-  RegisterScanner(
-    'InventoryTransaction',
-    'Please wait.',
-    PacketSource.Server,
-    (packet, _) => {
-      var match =
-        packet.PacketSize == 80 &&
-        BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 0x18) ==
-          scannerItemId
-      if (!match) return false
-
-      inventoryModifyHandlerId = BitConverter.ToUInt32(
-        packet.Data,
-        Offsets.IpcData,
-      )
-      return true
-    },
-  )
-  RegisterScanner(
-    'InventoryTransactionFinish',
-    'Please wait.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 48 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
-        inventoryModifyHandlerId,
-  )
-  //=================
   /*
   const cityCount = 8
   RegisterScanner(
@@ -813,6 +801,33 @@ export const getImportedScanners = () => {
   */
   //=================
   RegisterScanner(
+    'FreeCompanyInfo',
+    'Load a zone. (If you are running scanners by order, suggest teleporting to your FC house)',
+    PacketSource.Server,
+    (packet, { $fcRank }) => {
+      return (
+        packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 45] == $fcRank
+      )
+    },
+    async (v) => {
+      v.$fcRank = await number({
+        message: 'Please enter your Free Company rank:',
+      })
+    },
+  )
+  RegisterScanner(
+    'FreeCompanyDialog',
+    'Open your Free Company window (press G or ;)',
+    PacketSource.Server,
+    (packet, _, { context }) => {
+      return (
+        packet.PacketSize == 112 &&
+        packet.Data[Offsets.IpcData + 0x31] == context.$fcRank
+      )
+    },
+  )
+  //=================
+  RegisterScanner(
     'ObjectSpawn',
     'Please enter a furnished house. (Suggest teleporting to your FC house)',
     PacketSource.Server,
@@ -822,153 +837,6 @@ export const getImportedScanners = () => {
       packet.Data[Offsets.IpcData + 2] == 4 &&
       packet.Data[Offsets.IpcData + 3] == 0 &&
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 12) == 0,
-  )
-  //=================
-  RegisterScanner(
-    'ChatHandler',
-    'Please /say your message in-game:',
-    PacketSource.Client,
-    (packet, parameters) =>
-      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(parameters[0])),
-    ['Please enter a message to /say in-game:'],
-  )
-  //=================
-  RegisterScanner(
-    'BattleTalk2',
-    'Please enter Thornmarch (Hard) trial and attack the enmny with auto attack (For let them said the first dialog)',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize >= 64 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) == 33804,
-  )
-  //=================
-  RegisterScanner(
-    'EffectResultBasic',
-    'Switch to White Mage, and auto attack on an enemy.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 56 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) ==
-        packet.SourceActor,
-  )
-  //=================
-  RegisterScanner(
-    'Effect',
-    'Cast Dia on an enemy. Then wait for a damage tick.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 156 &&
-      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 8) == 16532,
-  )
-  //=================
-  RegisterScanner(
-    'StatusEffectList',
-    'Please wait...',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 416 &&
-      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 20) == 1871,
-  )
-  //=================
-  RegisterScanner(
-    'ActorGauge',
-    'Wait for gauge changes, then clear the lilies.',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 48 &&
-      packet.Data[Offsets.IpcData] == 24 &&
-      packet.Data[Offsets.IpcData + 5] == 0 &&
-      packet.Data[Offsets.IpcData + 6] > 0,
-  )
-  //=================
-  RegisterScanner(
-    'CFPreferredRole',
-    'Please wait, this may take some time...',
-    PacketSource.Server,
-    (packet, _) => {
-      if (packet.PacketSize != 48) return false
-
-      var allInRange = true
-
-      for (let i = 1; i < 10; i++)
-        if (
-          packet.Data[Offsets.IpcData + i] > 4 ||
-          packet.Data[Offsets.IpcData + i] < 1
-        )
-          allInRange = false
-
-      return allInRange
-    },
-  )
-  //=================
-  RegisterScanner(
-    'CFNotify',
-    'Please enter the "Sastasha" as an undersized party.', // CFNotifyPop
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 72 &&
-      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 28) == 4,
-  )
-  //=================
-  RegisterScanner(
-    'UpdatePositionInstance',
-    'Please move your character in an/the instance.',
-    PacketSource.Client,
-    (packet, _) =>
-      packet.PacketSize == 72 &&
-      packet.SourceActor == packet.TargetActor &&
-      BitConverter.ToUInt64(packet.Data, Offsets.IpcData) != bigIntZero &&
-      BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x08) !=
-        bigIntZero &&
-      BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x10) !=
-        bigIntZero &&
-      BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x18) !=
-        bigIntZero &&
-      BitConverter.ToUInt32(packet.Data, packet.Data.length - 4) == 0,
-  )
-  //=================
-  const whmHoly = [139, 25860]
-  var isHolyPacket = (packet: any, packetSize: number) =>
-    packet.PacketSize == packetSize &&
-    whmHoly.includes(BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 8))
-
-  RegisterScanner(
-    'AoeEffect8',
-    'Attack multiple enemies with Holy.',
-    PacketSource.Server,
-    (packet, _) => isHolyPacket(packet, 668),
-  )
-  //=================
-  RegisterScanner(
-    'AoeEffect16',
-    'Attack multiple enemies (>8) with Holy.',
-    PacketSource.Server,
-    (packet, _) => isHolyPacket(packet, 1244),
-  )
-  //=================
-  RegisterScanner(
-    'AoeEffect24',
-    'Attack multiple enemies (>16) with Holy.',
-    PacketSource.Server,
-    (packet, _) => isHolyPacket(packet, 1820),
-  )
-  //=================
-  RegisterScanner(
-    'AoeEffect32',
-    'Attack multiple enemies (>24) with Holy.',
-    PacketSource.Server,
-    (packet, _) => isHolyPacket(packet, 2396),
-  )
-  //=================
-  RegisterScanner(
-    'SystemLogMessage',
-    'Please go to first boss room and touch any coral formation.',
-    PacketSource.Server,
-    (packet) =>
-      packet.PacketSize == 56 &&
-      [2034, 2035].includes(
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4),
-      ),
   )
   //=================
   RegisterScanner(
@@ -1058,6 +926,152 @@ export const getImportedScanners = () => {
     [
       'Please enter the experience from the first sector (first destination in log, not the ones next to report rank and items):',
     ],
+  )
+  //=================
+  RegisterScanner(
+    'ChatHandler',
+    'Please /say your message in-game:',
+    PacketSource.Client,
+    (packet, parameters) =>
+      IncludesBytes(packet.Data, Encoding.UTF8.GetBytes(parameters[0])),
+    ['Please enter a message to /say in-game:'],
+  )
+  //=================
+  RegisterScanner(
+    'BattleTalk2',
+    'Please enter Thornmarch (Hard) trial and attack the enmny with auto attack (For let them said the first dialog)',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize >= 64 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 16) == 33804,
+  )
+  //=================
+  RegisterScanner(
+    'UpdatePositionInstance',
+    'Please move your character in an/the instance.',
+    PacketSource.Client,
+    (packet, _) =>
+      packet.PacketSize == 72 &&
+      packet.SourceActor == packet.TargetActor &&
+      BitConverter.ToUInt64(packet.Data, Offsets.IpcData) != bigIntZero &&
+      BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x08) !=
+        bigIntZero &&
+      BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x10) !=
+        bigIntZero &&
+      BitConverter.ToUInt64(packet.Data, Offsets.IpcData + 0x18) !=
+        bigIntZero &&
+      BitConverter.ToUInt32(packet.Data, packet.Data.length - 4) == 0,
+  )
+  //=================
+  RegisterScanner(
+    'EffectResultBasic',
+    'Switch to White Mage, and auto attack on an enemy.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 56 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) ==
+        packet.SourceActor,
+  )
+  //=================
+  RegisterScanner(
+    'Effect',
+    'Cast Dia on an enemy. Then wait for a damage tick.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 156 &&
+      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 8) == whmDia,
+  )
+  //=================
+  RegisterScanner(
+    'StatusEffectList',
+    'Please wait...',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 416 &&
+      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 20) == whmDiaStatus,
+  )
+  //=================
+  RegisterScanner(
+    'ActorGauge',
+    'Wait for gauge changes, then clear the lilies.',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 48 &&
+      packet.Data[Offsets.IpcData] == 24 &&
+      packet.Data[Offsets.IpcData + 5] == 0 &&
+      packet.Data[Offsets.IpcData + 6] > 0,
+  )
+  //=================
+  RegisterScanner(
+    'CFPreferredRole',
+    'Please wait, this may take some time...',
+    PacketSource.Server,
+    (packet, _) => {
+      if (packet.PacketSize != 48) return false
+
+      var allInRange = true
+
+      for (let i = 1; i < 10; i++)
+        if (
+          packet.Data[Offsets.IpcData + i] > 4 ||
+          packet.Data[Offsets.IpcData + i] < 1
+        )
+          allInRange = false
+
+      return allInRange
+    },
+  )
+  //=================
+  RegisterScanner(
+    'CFNotify',
+    'Please enter the "Sastasha" as an undersized party.', // CFNotifyPop
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 72 &&
+      BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 28) == 4,
+  )
+  //=================
+  var isHolyPacket = (packet: any, packetSize: number) =>
+    packet.PacketSize == packetSize &&
+    whmHoly.includes(BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 8))
+
+  RegisterScanner(
+    'AoeEffect8',
+    'Attack multiple enemies with Holy.',
+    PacketSource.Server,
+    (packet, _) => isHolyPacket(packet, 668),
+  )
+  //=================
+  RegisterScanner(
+    'AoeEffect16',
+    'Attack multiple enemies (>8) with Holy.',
+    PacketSource.Server,
+    (packet, _) => isHolyPacket(packet, 1244),
+  )
+  //=================
+  RegisterScanner(
+    'AoeEffect24',
+    'Attack multiple enemies (>16) with Holy.',
+    PacketSource.Server,
+    (packet, _) => isHolyPacket(packet, 1820),
+  )
+  //=================
+  RegisterScanner(
+    'AoeEffect32',
+    'Attack multiple enemies (>24) with Holy.',
+    PacketSource.Server,
+    (packet, _) => isHolyPacket(packet, 2396),
+  )
+  //=================
+  RegisterScanner(
+    'SystemLogMessage',
+    'Please go to first boss room and touch any coral formation.',
+    PacketSource.Server,
+    (packet) =>
+      packet.PacketSize == 56 &&
+      [2034, 2035].includes(
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4),
+      ),
   )
   //=================
   /*
