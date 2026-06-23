@@ -303,6 +303,8 @@ M.types = {
   [0x02b3] = {
     [0] = {
       title = "PlaceFieldMarker",
+      name = "ffxiv_ipc_place_field_marker",
+      length = 16,
     },
   },
   [0x02be] = {

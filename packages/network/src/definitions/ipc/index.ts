@@ -13,6 +13,7 @@ import { AoeEffect8, AoeEffect16, AoeEffect24, AoeEffect32 } from './aoe-effect'
 import { Effect } from './effect'
 import { InitZone } from './init-zone'
 import { NpcSpawn, NpcSpawn2 } from './npc-spawn'
+import { PlaceFieldMarker } from './place-field-marker'
 import { PlayerSetup } from './player-setup'
 import { PlayerSpawn } from './player-spawn'
 import { PlayerStats } from './player-stats'
@@ -47,6 +48,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.InitZone]: InitZone,
   [NormalizedOpcode.NpcSpawn]: NpcSpawn,
   [NormalizedOpcode.NpcSpawn2]: NpcSpawn2,
+  [NormalizedOpcode.PlaceFieldMarker]: PlaceFieldMarker,
   [NormalizedOpcode.PlayerSetup]: PlayerSetup,
   [NormalizedOpcode.PlayerSpawn]: PlayerSpawn,
   [NormalizedOpcode.PlayerStats]: PlayerStats,
@@ -87,6 +89,7 @@ export {
   InitZone,
   NpcSpawn,
   NpcSpawn2,
+  PlaceFieldMarker,
   PlayerSetup,
   PlayerSpawn,
   PlayerStats,
