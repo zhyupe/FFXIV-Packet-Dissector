@@ -119,7 +119,7 @@ interface IPCField {
  */
 type IPCFieldCondition = {
   value: any
-} & Pick<IPCField, 'label' | 'enum'>
+} & Pick<IPCField, 'label' | 'enum' | 'base'>
 
 interface IPCSchema {
   /**

@@ -19,6 +19,15 @@ export interface FieldDissectorOptions {
   enum?: string
   db?: string
   base?: 'hex' | 'dec' | 'HEX' | 'DEC'
+  condition?: Record<string, FieldDissectorCondition[]>
+}
+
+export interface FieldDissectorCondition {
+  value: any
+  label?: string
+  enum?: string
+  db?: string
+  base?: 'hex' | 'dec' | 'HEX' | 'DEC'
 }
 
 export interface ChildMetadata {

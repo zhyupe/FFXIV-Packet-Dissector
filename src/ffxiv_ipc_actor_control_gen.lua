@@ -20,23 +20,23 @@ local label_data3_type = {
   [23] = "ActorId",
 }
 
-local ffxiv_ipc_actor_control = Proto("ffxiv_ipc_actor_control", "FFXIV-IPC Actor Control")
+local ffxiv_ipc_actor_control = Proto("ffxiv_ipc_actor_control", "FFXIV-IPC ActorControl")
 
 local actor_control_fields = {
-  type    = ProtoField.uint16("ffxiv_ipc_actor_control.type", "Type", base.DEC, enum.reverse.actor_control_type),
-  unknown = ProtoField.uint16("ffxiv_ipc_actor_control.unknown", "Unknown", base.DEC),
-  data0   = ProtoField.uint32("ffxiv_ipc_actor_control.data0", "Data0", base.DEC),
-  data1   = ProtoField.uint32("ffxiv_ipc_actor_control.data1", "Data1", base.DEC),
-  data2   = ProtoField.uint32("ffxiv_ipc_actor_control.data2", "Data2", base.DEC),
-  data3   = ProtoField.uint32("ffxiv_ipc_actor_control.data3", "Data3", base.DEC),
-  data4   = ProtoField.uint32("ffxiv_ipc_actor_control.data4", "Data4", base.DEC),
+  type     = ProtoField.uint16("ffxiv_ipc_actor_control.type", "type", base.DEC, enum.reverse.actor_control_type),
+  category = ProtoField.uint16("ffxiv_ipc_actor_control.category", "category", base.DEC),
+  data0    = ProtoField.uint32("ffxiv_ipc_actor_control.data0", "data0", base.DEC),
+  data1    = ProtoField.uint32("ffxiv_ipc_actor_control.data1", "data1", base.DEC),
+  data2    = ProtoField.uint32("ffxiv_ipc_actor_control.data2", "data2", base.DEC),
+  data3    = ProtoField.uint32("ffxiv_ipc_actor_control.data3", "data3", base.DEC),
+  data4    = ProtoField.uint32("ffxiv_ipc_actor_control.data4", "data4", base.DEC),
 }
 
 ffxiv_ipc_actor_control.fields = actor_control_fields
 
 function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_control, tvbuf)
-  pktinfo.cols.info:set("Actor Control")
+  pktinfo.cols.info:set("ActorControl")
 
   local len = tvbuf:len()
 
@@ -45,19 +45,15 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   local type_val  = type_tvbr:le_uint()
   tree:add_le(actor_control_fields.type, type_tvbr, type_val)
 
-  local type_display = ", Type: " .. (enum.reverse.actor_control_type[type_val] or "(unknown)")
-  pktinfo.cols.info:append(type_display)
-  tree:append_text(type_display)
-
-  -- dissect the unknown field
-  local unknown_tvbr = tvbuf:range(2, 2)
-  local unknown_val  = unknown_tvbr:le_uint()
-  tree:add_le(actor_control_fields.unknown, unknown_tvbr, unknown_val)
+  -- dissect the category field
+  local category_tvbr = tvbuf:range(2, 2)
+  local category_val  = category_tvbr:le_uint()
+  tree:add_le(actor_control_fields.category, category_tvbr, category_val)
 
   -- dissect the data0 field
   local data0_tvbr = tvbuf:range(4, 4)
   local data0_val  = data0_tvbr:le_uint()
-  local data0_label_key = "Data0"
+  local data0_label_key = "data0"
   local data0_label_val = data0_val
   if type_val == 21 then
     data0_label_key = "Status"
@@ -76,7 +72,7 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   -- dissect the data1 field
   local data1_tvbr = tvbuf:range(8, 4)
   local data1_val  = data1_tvbr:le_uint()
-  local data1_label_key = "Data1"
+  local data1_label_key = "data1"
   local data1_label_val = data1_val
   if type_val == 23 then
     data1_label_key = "Type"
@@ -88,7 +84,7 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   -- dissect the data2 field
   local data2_tvbr = tvbuf:range(12, 4)
   local data2_val  = data2_tvbr:le_uint()
-  local data2_label_key = "Data2"
+  local data2_label_key = "data2"
   local data2_label_val = data2_val
   if type_val == 23 then
     data2_label_key = "Value"
@@ -98,10 +94,11 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   -- dissect the data3 field
   local data3_tvbr = tvbuf:range(16, 4)
   local data3_val  = data3_tvbr:le_uint()
-  local data3_label_key = "Data3"
+  local data3_label_key = "data3"
   local data3_label_val = data3_val
   if type_val == 23 then
     data3_label_key = "ActorId"
+    data3_label_val = string.format('%08x', data3_val)
   end
   tree:add_le(actor_control_fields.data3, data3_tvbr, data3_val, data3_label_key .. ": " .. data3_label_val)
 

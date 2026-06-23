@@ -242,6 +242,18 @@ const fieldDissectorOptionsToIPCField = ({
   return {
     enum: dissector.db ? `$${dissector.db}` : dissector.enum,
     base: dissector.base?.toUpperCase(),
+    condition: dissector.condition
+      ? Object.fromEntries(
+          Object.entries(dissector.condition).map(([key, values]) => [
+            key,
+            values.map((value) => ({
+              ...value,
+              enum: value.db ? `$${value.db}` : value.enum,
+              base: value.base?.toUpperCase(),
+            })),
+          ]),
+        )
+      : undefined,
   }
 }
 
@@ -470,6 +482,8 @@ ${indent}local ${fieldKey}_val  = ${fieldKey}_tvbr:${item.tvb_method || tvbMetho
 
           if (modifier.enum) {
             content += `\n${indent}  ${labelValVar} = (${this.#resolveEnum(modifier.enum)}[${fieldKey}_val] or "Unknown") .. " (" .. ${fieldKey}_val .. ")"`
+          } else if (modifier.base === 'HEX') {
+            content += `\n${indent}  ${labelValVar} = string.format('%0${(item.length ?? 1) * 2}x', ${fieldKey}_val)`
           }
           isFirst = false
         }
