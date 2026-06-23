@@ -124,7 +124,23 @@ export const getImportedScanners = () => {
       packet.PacketSize == 48 &&
       BitConverter.ToUInt16(packet.Data, Offsets.IpcData + 4) ==
         int.Parse(parameters[0]),
-    ['Please enter your the level for another job:'],
+    ['Please enter your the level for any crafter job:'],
+  )
+  //=================
+  const basicSynthesis = [
+    100001, 100015, 100030, 100045, 100060, 100075, 100090, 100105,
+  ]
+  RegisterScanner(
+    'EventPlay32',
+    'Use Trial Synthesis from any recipes, and use Basic Synthesis',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 320 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
+        packet.SourceActor &&
+      basicSynthesis.includes(
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 44),
+      ),
   )
   //=================
   RegisterScanner(
@@ -317,6 +333,7 @@ export const getImportedScanners = () => {
     20.767456 - 2,
     0.015197754,
   )
+  var limsaLominsaMarket = new Vector3(-213.61108, 16, 51.80432)
   var inRange = (diff: Vector3, range: Vector3) => {
     return (
       Math.abs(diff.X) < range.X &&
@@ -377,24 +394,7 @@ export const getImportedScanners = () => {
                 (packet, _) => packet.PacketSize == 40 &&
                                packet.SourceActor == packet.TargetActor);
             */
-  //=================
-  RegisterScanner(
-    'ActorSetPos',
-    'Please wait, this may take some time. You can also teleport to another Aethernet Shard in the same map and then teleport back.',
-    PacketSource.Server,
-    (packet, _) => {
-      if (packet.PacketSize != 56) return false
 
-      var x = BitConverter.ToSingle(packet.Data, Offsets.IpcData + 8)
-      var y = BitConverter.ToSingle(packet.Data, Offsets.IpcData + 12)
-      var z = BitConverter.ToSingle(packet.Data, Offsets.IpcData + 16)
-
-      return inRange(
-        new Vector3(x, y, z).minus(limsaLominsaAetheryte),
-        new Vector3(15, 2, 15),
-      )
-    },
-  )
   //=================
   RegisterScanner(
     'HousingWardInfo',
@@ -409,6 +409,135 @@ export const getImportedScanners = () => {
     [
       "Please enter the name of whoever owns the first house in the ward (if it's an FC, their shortname):",
     ],
+  )
+  //=================
+  RegisterScanner(
+    'ActorSetPos',
+    'Teleport to Martet (Aethernet Shard).',
+    PacketSource.Server,
+    (packet, _) => {
+      if (packet.PacketSize != 56) return false
+
+      var x = BitConverter.ToSingle(packet.Data, Offsets.IpcData + 8)
+      var y = BitConverter.ToSingle(packet.Data, Offsets.IpcData + 12)
+      var z = BitConverter.ToSingle(packet.Data, Offsets.IpcData + 16)
+
+      return inRange(
+        new Vector3(x, y, z).minus(limsaLominsaMarket),
+        new Vector3(10, 2, 10),
+      )
+    },
+  )
+  //=================
+  const darkMatter = [5594, 5595, 5596, 5597, 5598, 10386, 17837, 33916]
+  var isDarkMatter = (itemId: number) => darkMatter.includes(itemId)
+
+  RegisterScanner(
+    'MarketBoardSearchResult',
+    'Please click "Catalysts" on the market board.',
+    PacketSource.Server,
+    (packet, _) => {
+      if (packet.PacketSize != 208) return false
+
+      for (let i = 0; i < 22; ++i) {
+        const itemId = BitConverter.ToUInt32(
+          packet.Data,
+          Offsets.IpcData + 8 * i,
+        )
+        if (itemId == 0) {
+          break
+        }
+
+        if (itemId == darkMatter[6]) {
+          return true
+        }
+      }
+
+      return false
+    },
+  )
+  RegisterScanner(
+    'MarketBoardRequestItemListingInfo',
+    'Please open the market board listings for any Dark Matter.',
+    PacketSource.Client,
+    (packet, _) =>
+      packet.PacketSize == 40 &&
+      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData)),
+  )
+  RegisterScanner(
+    'MarketBoardItemListingCount',
+    '',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize === 40 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) === 0 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4) <= 100,
+  )
+  RegisterScanner(
+    'MarketBoardItemListingHistory',
+    '',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 1000 &&
+      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData)),
+  )
+  RegisterScanner(
+    'MarketBoardItemListing',
+    '',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize > 1400 &&
+      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x2c)),
+  )
+  RegisterScanner(
+    'MarketBoardPurchaseHandler',
+    'Please purchase any Dark Matter',
+    PacketSource.Client,
+    (packet, _) =>
+      packet.PacketSize == 72 &&
+      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10)),
+  )
+  RegisterScanner(
+    'MarketBoardPurchase',
+    '',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 48 &&
+      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData)),
+  )
+
+  //=================
+  let retainerBytes: Buffer
+  RegisterScanner(
+    'RetainerInformation',
+    'Please use the Summoning Bell.',
+    PacketSource.Server,
+    (packet, parameters) => {
+      retainerBytes ??= Encoding.UTF8.GetBytes(parameters[0])
+      return (
+        packet.PacketSize == 112 &&
+        IncludesBytes(packet.Data.subarray(73, 73 + 32), retainerBytes)
+      )
+    },
+    ["Please enter one of your retainers' names:"],
+  )
+  //=================
+  RegisterScanner(
+    'NpcSpawn',
+    'Please summon that retainer.',
+    PacketSource.Server,
+    (packet) =>
+      packet.PacketSize > 646 &&
+      IncludesBytes(packet.Data.subarray(610, 610 + 36), retainerBytes),
+  )
+  //================
+  RegisterScanner(
+    'ItemMarketBoardInfo',
+    'Please put any item on sale for a unit price of 123456 and summon the retainer again',
+    PacketSource.Server,
+    (packet) =>
+      packet.PacketSize == 64 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10) == 123456,
   )
   //=================
   RegisterScanner(
@@ -590,83 +719,6 @@ export const getImportedScanners = () => {
     },
   )
   //=================
-  const darkMatter = [5594, 5595, 5596, 5597, 5598, 10386, 17837, 33916]
-  var isDarkMatter = (itemId: number) => darkMatter.includes(itemId)
-
-  RegisterScanner(
-    'MarketBoardSearchResult',
-    'Please click "Catalysts" on the market board.',
-    PacketSource.Server,
-    (packet, _) => {
-      if (packet.PacketSize != 208) return false
-
-      for (let i = 0; i < 22; ++i) {
-        const itemId = BitConverter.ToUInt32(
-          packet.Data,
-          Offsets.IpcData + 8 * i,
-        )
-        if (itemId == 0) {
-          break
-        }
-
-        if (itemId == darkMatter[6]) {
-          return true
-        }
-      }
-
-      return false
-    },
-  )
-  RegisterScanner(
-    'MarketBoardRequestItemListingInfo',
-    'Please open the market board listings for any Dark Matter.',
-    PacketSource.Client,
-    (packet, _) =>
-      packet.PacketSize == 40 &&
-      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData)),
-  )
-  RegisterScanner(
-    'MarketBoardItemListingCount',
-    '',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize === 40 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) === 0 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4) <= 100,
-  )
-  RegisterScanner(
-    'MarketBoardItemListingHistory',
-    '',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 1000 &&
-      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData)),
-  )
-  RegisterScanner(
-    'MarketBoardItemListing',
-    '',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize > 1400 &&
-      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x2c)),
-  )
-  RegisterScanner(
-    'MarketBoardPurchaseHandler',
-    'Please purchase any Dark Matter',
-    PacketSource.Client,
-    (packet, _) =>
-      packet.PacketSize == 72 &&
-      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10)),
-  )
-  RegisterScanner(
-    'MarketBoardPurchase',
-    '',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 48 &&
-      isDarkMatter(BitConverter.ToUInt32(packet.Data, Offsets.IpcData)),
-  )
-  //=================
   const scannerItemId = 4850 // Honey
   RegisterScanner(
     'UpdateInventorySlot',
@@ -759,55 +811,6 @@ export const getImportedScanners = () => {
     },
   )
   */
-  //=================
-  let retainerBytes: Buffer
-  RegisterScanner(
-    'RetainerInformation',
-    'Please use the Summoning Bell.',
-    PacketSource.Server,
-    (packet, parameters) => {
-      retainerBytes ??= Encoding.UTF8.GetBytes(parameters[0])
-      return (
-        packet.PacketSize == 112 &&
-        IncludesBytes(packet.Data.subarray(73, 73 + 32), retainerBytes)
-      )
-    },
-    ["Please enter one of your retainers' names:"],
-  )
-  //=================
-  RegisterScanner(
-    'NpcSpawn',
-    'Please summon that retainer.',
-    PacketSource.Server,
-    (packet) =>
-      packet.PacketSize > 646 &&
-      IncludesBytes(packet.Data.subarray(610, 610 + 36), retainerBytes),
-  )
-  //================
-  RegisterScanner(
-    'ItemMarketBoardInfo',
-    'Please put any item on sale for a unit price of 123456 and summon the retainer again',
-    PacketSource.Server,
-    (packet) =>
-      packet.PacketSize == 64 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10) == 123456,
-  )
-  //=================
-  const basicSynthesis = [
-    100001, 100015, 100030, 100045, 100060, 100075, 100090, 100105,
-  ]
-  RegisterScanner(
-    'EventPlay32',
-    'Use Trial Synthesis from any recipes, and use Basic Synthesis',
-    PacketSource.Server,
-    (packet, _) =>
-      packet.PacketSize == 320 &&
-      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) ==
-        packet.SourceActor &&
-      basicSynthesis.includes(
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 44),
-      ),
-  )
   //=================
   RegisterScanner(
     'ObjectSpawn',
