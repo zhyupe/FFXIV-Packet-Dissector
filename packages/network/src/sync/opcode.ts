@@ -7,7 +7,7 @@ import {
   writeFileSync,
 } from 'node:fs'
 import { join } from 'node:path'
-import { codePath, formatCode, writeCode } from './utils'
+import { codePath, formatCode, readCode, writeCode } from './utils'
 
 const urls = {
   opcodeVersions:
@@ -18,11 +18,13 @@ const urls = {
 
 const cacheDir = join(__dirname, 'cache')
 
-async function request(url: string, cacheFile: string, cacheTime = 3600e3) {
+async function request(url: string, cacheName: string, cacheTime = 3600e3) {
+  const cacheFile = join(cacheDir, `${cacheName}.cache`)
   try {
     const stat = statSync(cacheFile)
     if (Date.now() - stat.mtimeMs < cacheTime) {
-      return readFileSync(cacheFile, 'utf-8')
+      const text = readFileSync(cacheFile, 'utf-8')
+      return JSON.parse(text)
     }
   } catch {
     //
@@ -37,7 +39,7 @@ async function request(url: string, cacheFile: string, cacheTime = 3600e3) {
   const body = await res.text()
 
   writeFileSync(cacheFile, body)
-  return body
+  return JSON.parse(body)
 }
 
 function generateOpcodeFile(
@@ -154,24 +156,36 @@ ${opcodes.map((item) => `  ${item} = '${item}',`).join('\n')}
 export async function syncOpcodes() {
   mkdirSync(cacheDir, { recursive: true })
 
-  const cnVersions: string[] = JSON.parse(
-    await request(urls.opcodeVersions, join(cacheDir, 'opcode-versions.cache')),
+  const cnVersions: string[] = await request(
+    urls.opcodeVersions,
+    'opcode-versions',
   )
   const latestVersion = cnVersions.at(-1)
   if (!latestVersion) {
     throw new Error('No opcode versions found')
   }
 
-  const latestTable: Record<string, string> = JSON.parse(
-    await request(
-      urls.opcodeJson(latestVersion),
-      join(cacheDir, `opcode-${latestVersion}.cache`),
-    ),
+  const latestTable: Record<string, string> = await request(
+    urls.opcodeJson(latestVersion),
+    `opcode-${latestVersion}`,
   )
-  const opcodeTypes = Object.keys(latestTable).sort()
 
-  await writeCode(
-    `opcode/normalized-opcode.enum.ts`,
+  const opcodeTypeSet = new Set(Object.keys(latestTable))
+  try {
+    const existed = readCode('opcode/normalized-opcode.enum.ts')
+    const matches = existed.matchAll(/(\w+) = ['"](\w+)['"]/g)
+
+    for (const match of matches) {
+      if (match[1] !== match[2]) continue
+      opcodeTypeSet.add(match[1])
+    }
+  } catch {
+    //
+  }
+
+  const opcodeTypes = Array.from(opcodeTypeSet).sort()
+  writeCode(
+    'opcode/normalized-opcode.enum.ts',
     generateNormalizedOpcodeFile(opcodeTypes),
   )
 
@@ -181,19 +195,11 @@ export async function syncOpcodes() {
       continue
     }
 
-    const table = JSON.parse(
-      await request(
-        urls.opcodeJson(version),
-        join(cacheDir, `opcode-${version}.cache`),
-      ),
-    )
-    await writeCode(
-      codeFile,
-      generateOpcodeFile('CN', version, table, opcodeTypes),
-    )
+    const table = await request(urls.opcodeJson(version), `opcode-${version}`)
+    writeCode(codeFile, generateOpcodeFile('CN', version, table, opcodeTypes))
   }
 
-  await writeCode(`opcode/index.ts`, generateIndexFile())
+  writeCode(`opcode/index.ts`, generateIndexFile())
   await formatCode('opcode')
   return opcodeTypes
 }
