@@ -618,24 +618,28 @@ return M
   #renderOpcodes(opcodeMap: OpcodeMap) {
     const typesObject: Record<
       string,
-      Array<{ name: string; length: number; title: string }>
+      Array<{ name?: string; length?: number; title: string }>
     > = {}
     for (const [opcode, config] of Object.entries(opcodeMap)) {
       if (!config) continue
 
-      const types = (Array.isArray(config) ? config : [config])
-        .map((item) => {
-          const type = this.#getOpcodeItemType(item)
-          return {
-            name: `ffxiv_ipc_${snakeCase(type)}`,
-            length:
-              typeof item === 'string' || typeof item.size !== 'number'
-                ? this.ipcLength[type]
-                : item.size,
-            title: this.#getOpcodeItemTitle(item),
-          }
-        })
-        .filter((item) => typeof item.length === 'number')
+      const types = (Array.isArray(config) ? config : [config]).map((item) => {
+        const type = this.#getOpcodeItemType(item)
+        const length =
+          typeof item === 'string' || typeof item.size !== 'number'
+            ? this.ipcLength[type]
+            : item.size
+        const entry: { name?: string; length?: number; title: string } = {
+          title: this.#getOpcodeItemTitle(item),
+        }
+
+        if (typeof length === 'number') {
+          entry.name = `ffxiv_ipc_${snakeCase(type)}`
+          entry.length = length
+        }
+
+        return entry
+      })
 
       if (!types.length) continue
 
@@ -651,19 +655,24 @@ function M.getDissector(typeNum, length)
     return nil
   end
 
+  local title = nil
+  if types[0] ~= nil then
+    title = types[0].title
+  end
+
   for k, v in pairs(types) do
-    if v.length == length then
+    if v.name ~= nil and v.length ~= nil and v.length == length then
       return Dissector.get(v.name), v.title
     end
   end
 
   for k, v in pairs(types) do
-    if v.length < length then
+    if v.name ~= nil and v.length ~= nil and v.length < length then
       return Dissector.get(v.name), v.title
     end
   end
 
-  return nil
+  return nil, title
 end
 
 return M`

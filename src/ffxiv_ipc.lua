@@ -70,24 +70,32 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
     pktinfo.cols.protocol:set("FFXIV")
 
     if string.find(tostring(pktinfo.cols.info), "^IPC") == nil then
-        pktinfo.cols.info:set("IPC")
+        pktinfo.cols.info:set("IPC(" .. string.format('%04x', type_val) .. ")")
     end
 
     local tvb = data_tvbr:tvb()
 
     local dissector, title = ipc_type.getDissector(type_val, tvb:len())
+    if title ~= nil then
+        tree:add(ipc_hdr_fields.title, title)
+        tree:append_text(", " .. title)
+    end
+
     if dissector ~= nil then
         tree:add(ipc_hdr_fields.is_unknown, false)
         if title ~= nil then
-            tree:add(ipc_hdr_fields.title, title)
-            tree:append_text(", " .. title)
             pktinfo.cols.info:append(": " .. title)
         end
         dissector:call(tvb, pktinfo, root)
     else
         tree:add(ipc_hdr_fields.is_unknown, true)
-        tree:append_text(", Unknown")
-        pktinfo.cols.info:append(": Unknown (" .. string.format('%04x', type_val) .. ")")
+        if title ~= nil then
+            tree:append_text(", Unknown payload")
+            pktinfo.cols.info:append(": " .. title .. " (Unknown payload)")
+        else
+            tree:append_text(", Unknown")
+            pktinfo.cols.info:append(": Unknown")
+        end
         data:call(tvb, pktinfo, root)
     end
 

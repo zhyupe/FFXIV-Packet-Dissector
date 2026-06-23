@@ -4,289 +4,469 @@ local M = {}
 M.types = {
   [0x007d] = {
     [0] = {
+      title = "ActorSetPos",
       name = "ffxiv_ipc_actor_set_pos",
       length = 20,
-      title = "ActorSetPos",
     },
   },
   [0x008d] = {
     [0] = {
+      title = "AoeEffect24",
       name = "ffxiv_ipc_aoe_effect24",
       length = 1784,
-      title = "AoeEffect24",
     },
   },
   [0x0093] = {
     [0] = {
+      title = "UpdateInventorySlot",
       name = "ffxiv_ipc_update_inventory_slot",
       length = 64,
-      title = "UpdateInventorySlot",
+    },
+  },
+  [0x00a4] = {
+    [0] = {
+      title = "FreeCompanyInfo",
     },
   },
   [0x00c0] = {
     [0] = {
+      title = "WardLandInfo",
       name = "ffxiv_ipc_ward_land_info",
       length = 2408,
-      title = "WardLandInfo",
     },
   },
   [0x00d0] = {
     [0] = {
+      title = "ContainerInfo",
       name = "ffxiv_ipc_container_info",
       length = 16,
-      title = "ContainerInfo",
+    },
+  },
+  [0x00d9] = {
+    [0] = {
+      title = "EventStart",
+    },
+  },
+  [0x00da] = {
+    [0] = {
+      title = "ItemMarketBoardInfo",
     },
   },
   [0x00f6] = {
     [0] = {
+      title = "ActorControl",
       name = "ffxiv_ipc_actor_control",
       length = 24,
-      title = "ActorControl",
+    },
+  },
+  [0x00fe] = {
+    [0] = {
+      title = "SystemLogMessage",
     },
   },
   [0x010a] = {
     [0] = {
+      title = "ActorCast",
       name = "ffxiv_ipc_actor_cast",
       length = 30,
-      title = "ActorCast",
+    },
+  },
+  [0x010d] = {
+    [0] = {
+      title = "StatusEffectList3",
     },
   },
   [0x013b] = {
     [0] = {
+      title = "PlayerStats",
       name = "ffxiv_ipc_player_stats",
       length = 120,
-      title = "PlayerStats",
+    },
+  },
+  [0x013c] = {
+    [0] = {
+      title = "AirshipStatusList",
+    },
+  },
+  [0x013d] = {
+    [0] = {
+      title = "UpdatePositionHandler",
     },
   },
   [0x014c] = {
     [0] = {
+      title = "PlayerSpawn",
       name = "ffxiv_ipc_player_spawn",
       length = 624,
-      title = "PlayerSpawn",
+    },
+  },
+  [0x014d] = {
+    [0] = {
+      title = "InventoryModifyHandler",
+    },
+  },
+  [0x015f] = {
+    [0] = {
+      title = "ResumeEventScene16",
     },
   },
   [0x0169] = {
     [0] = {
+      title = "CompanySubmersibleStatus",
       name = "ffxiv_ipc_company_submersible_status",
       length = 0,
-      title = "CompanySubmersibleStatus",
     },
   },
   [0x0175] = {
     [0] = {
+      title = "AoeEffect8",
       name = "ffxiv_ipc_aoe_effect8",
       length = 632,
-      title = "AoeEffect8",
+    },
+  },
+  [0x0176] = {
+    [0] = {
+      title = "EventPlay4",
     },
   },
   [0x0181] = {
     [0] = {
+      title = "SubmarineStatusList",
       name = "ffxiv_ipc_submarine_status_list",
       length = 240,
-      title = "SubmarineStatusList",
+    },
+  },
+  [0x0183] = {
+    [0] = {
+      title = "CFPreferredRole",
+    },
+  },
+  [0x018b] = {
+    [0] = {
+      title = "FreeCompanyDialog",
     },
   },
   [0x018f] = {
     [0] = {
+      title = "Effect",
       name = "ffxiv_ipc_effect",
       length = 120,
-      title = "Effect",
     },
   },
   [0x0197] = {
     [0] = {
+      title = "CompanyAirshipStatus",
       name = "ffxiv_ipc_company_airship_status",
       length = 0,
-      title = "CompanyAirshipStatus",
     },
   },
   [0x019b] = {
     [0] = {
+      title = "InventoryTransactionFinish",
       name = "ffxiv_ipc_inventory_transaction_finish",
       length = 16,
-      title = "InventoryTransactionFinish",
     },
   },
   [0x01a0] = {
     [0] = {
+      title = "PlayerSetup",
       name = "ffxiv_ipc_player_setup",
       length = 1938,
-      title = "PlayerSetup",
+    },
+  },
+  [0x01ab] = {
+    [0] = {
+      title = "SetSearchInfoHandler",
     },
   },
   [0x01b0] = {
     [0] = {
+      title = "UpdatePositionInstance",
       name = "ffxiv_ipc_update_position_instance",
       length = 40,
-      title = "UpdatePositionInstance",
+    },
+  },
+  [0x01d5] = {
+    [0] = {
+      title = "SubmarineExplorationResult",
     },
   },
   [0x01da] = {
     [0] = {
+      title = "RetainerInformation",
       name = "ffxiv_ipc_retainer_information",
       length = 73,
-      title = "RetainerInformation",
     },
   },
   [0x01e8] = {
     [0] = {
+      title = "AoeEffect16",
       name = "ffxiv_ipc_aoe_effect16",
       length = 1208,
-      title = "AoeEffect16",
+    },
+  },
+  [0x01ec] = {
+    [0] = {
+      title = "MarketBoardItemListing",
     },
   },
   [0x01f9] = {
     [0] = {
+      title = "CurrencyCrystalInfo",
       name = "ffxiv_ipc_currency_crystal_info",
       length = 32,
-      title = "CurrencyCrystalInfo",
+    },
+  },
+  [0x020c] = {
+    [0] = {
+      title = "Logout",
+    },
+  },
+  [0x0246] = {
+    [0] = {
+      title = "Playtime",
     },
   },
   [0x025d] = {
     [0] = {
+      title = "CEDirector",
       name = "ffxiv_ipc_ce_director",
       length = 16,
-      title = "CEDirector",
+    },
+  },
+  [0x0264] = {
+    [0] = {
+      title = "PlaceFieldMarkerPreset",
     },
   },
   [0x026f] = {
     [0] = {
+      title = "NpcSpawn2",
       name = "ffxiv_ipc_npc_spawn2",
       length = 624,
-      title = "NpcSpawn2",
+    },
+  },
+  [0x0285] = {
+    [0] = {
+      title = "MarketBoardItemListingHistory",
+    },
+  },
+  [0x028e] = {
+    [0] = {
+      title = "EventFinish",
     },
   },
   [0x02a6] = {
     [0] = {
+      title = "EffectResult",
       name = "ffxiv_ipc_effect_result",
       length = 26,
-      title = "EffectResult",
+    },
+  },
+  [0x02a9] = {
+    [0] = {
+      title = "ResumeEventScene32",
     },
   },
   [0x02aa] = {
     [0] = {
+      title = "ActorMove",
       name = "ffxiv_ipc_actor_move",
       length = 12,
-      title = "ActorMove",
+    },
+  },
+  [0x02b8] = {
+    [0] = {
+      title = "AirshipStatus",
     },
   },
   [0x02c1] = {
     [0] = {
+      title = "UpdateClassInfo",
       name = "ffxiv_ipc_update_class_info",
       length = 16,
-      title = "UpdateClassInfo",
+    },
+  },
+  [0x02d5] = {
+    [0] = {
+      title = "MarketBoardItemListingCount",
+    },
+  },
+  [0x02d6] = {
+    [0] = {
+      title = "EventPlay",
+    },
+  },
+  [0x02e7] = {
+    [0] = {
+      title = "ChatHandler",
+    },
+  },
+  [0x02f4] = {
+    [0] = {
+      title = "PrepareZoning",
     },
   },
   [0x0309] = {
     [0] = {
+      title = "ActorControlTarget",
       name = "ffxiv_ipc_actor_control_target",
       length = 32,
-      title = "ActorControlTarget",
     },
   },
   [0x030c] = {
     [0] = {
+      title = "ObjectSpawn",
       name = "ffxiv_ipc_object_spawn",
       length = 64,
-      title = "ObjectSpawn",
+    },
+  },
+  [0x0312] = {
+    [0] = {
+      title = "UpdateSearchInfo",
     },
   },
   [0x0315] = {
     [0] = {
+      title = "ClientTrigger",
       name = "ffxiv_ipc_client_trigger",
       length = 32,
-      title = "ClientTrigger",
     },
   },
   [0x031a] = {
     [0] = {
+      title = "NpcSpawn",
       name = "ffxiv_ipc_npc_spawn",
       length = 624,
-      title = "NpcSpawn",
+    },
+  },
+  [0x031b] = {
+    [0] = {
+      title = "EffectResultBasic",
     },
   },
   [0x0325] = {
     [0] = {
+      title = "ActorControlSelf",
       name = "ffxiv_ipc_actor_control_self",
       length = 32,
-      title = "ActorControlSelf",
+    },
+  },
+  [0x032a] = {
+    [0] = {
+      title = "PlaceFieldMarker",
     },
   },
   [0x0333] = {
     [0] = {
+      title = "ActorGauge",
       name = "ffxiv_ipc_actor_gauge",
       length = 16,
-      title = "ActorGauge",
     },
   },
   [0x0336] = {
     [0] = {
+      title = "ContentFinderNotifyPop",
       name = "ffxiv_ipc_content_finder_notify_pop",
       length = 32,
-      title = "ContentFinderNotifyPop",
+    },
+  },
+  [0x0346] = {
+    [0] = {
+      title = "MarketBoardPurchase",
     },
   },
   [0x035d] = {
     [0] = {
+      title = "ItemInfo",
       name = "ffxiv_ipc_item_info",
       length = 64,
-      title = "ItemInfo",
     },
   },
   [0x0360] = {
     [0] = {
+      title = "BossStatusEffectList",
       name = "ffxiv_ipc_boss_status_effect_list",
       length = 740,
-      title = "BossStatusEffectList",
+    },
+  },
+  [0x0364] = {
+    [0] = {
+      title = "MarketBoardSearchResult",
     },
   },
   [0x0367] = {
     [0] = {
+      title = "UpdateHpMpTp",
       name = "ffxiv_ipc_update_hp_mp_tp",
       length = 8,
-      title = "UpdateHpMpTp",
     },
   },
   [0x0372] = {
     [0] = {
+      title = "Examine",
       name = "ffxiv_ipc_examine",
       length = 656,
-      title = "Examine",
+    },
+  },
+  [0x038e] = {
+    [0] = {
+      title = "StatusEffectList2",
     },
   },
   [0x0392] = {
     [0] = {
+      title = "AoeEffect32",
       name = "ffxiv_ipc_aoe_effect32",
       length = 2360,
-      title = "AoeEffect32",
+    },
+  },
+  [0x039a] = {
+    [0] = {
+      title = "SubmarineProgressionStatus",
+    },
+  },
+  [0x03aa] = {
+    [0] = {
+      title = "AirshipExplorationResult",
+    },
+  },
+  [0x03b0] = {
+    [0] = {
+      title = "MarketBoardPurchaseHandler",
     },
   },
   [0x03b3] = {
     [0] = {
+      title = "InventoryActionAck",
       name = "ffxiv_ipc_inventory_action_ack",
       length = 16,
-      title = "InventoryActionAck",
     },
   },
   [0x03b5] = {
     [0] = {
+      title = "StatusEffectList",
       name = "ffxiv_ipc_status_effect_list",
       length = 380,
-      title = "StatusEffectList",
+    },
+  },
+  [0x03b9] = {
+    [0] = {
+      title = "ExamineSearchInfo",
     },
   },
   [0x03e0] = {
     [0] = {
+      title = "InventoryTransaction",
       name = "ffxiv_ipc_inventory_transaction",
       length = 36,
-      title = "InventoryTransaction",
     },
   },
   [0x03e1] = {
     [0] = {
+      title = "InitZone",
       name = "ffxiv_ipc_init_zone",
       length = 96,
-      title = "InitZone",
     },
   },
 }
@@ -297,19 +477,24 @@ function M.getDissector(typeNum, length)
     return nil
   end
 
+  local title = nil
+  if types[0] ~= nil then
+    title = types[0].title
+  end
+
   for k, v in pairs(types) do
-    if v.length == length then
+    if v.name ~= nil and v.length ~= nil and v.length == length then
       return Dissector.get(v.name), v.title
     end
   end
 
   for k, v in pairs(types) do
-    if v.length < length then
+    if v.name ~= nil and v.length ~= nil and v.length < length then
       return Dissector.get(v.name), v.title
     end
   end
 
-  return nil
+  return nil, title
 end
 
 return M
