@@ -2,24 +2,24 @@
 
 local db = require('ffxiv_db')
 
-local ffxiv_ipc_content_finder_notify_pop = Proto("ffxiv_ipc_content_finder_notify_pop", "FFXIV-IPC Content Finder Notify Pop")
+local ffxiv_ipc_content_finder_notify_pop = Proto("ffxiv_ipc_content_finder_notify_pop", "FFXIV-IPC ContentFinderNotifyPop")
 
 local content_finder_notify_pop_fields = {
-  unknown1       = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.unknown1", "Unknown1", base.DEC),
-  roulette       = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.roulette", "Roulette", base.DEC),
-  flags          = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.flags", "Flags", base.DEC),
-  unknown3       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown3", "Unknown3", base.DEC),
-  unknown4       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown4", "Unknown4", base.DEC),
-  unknown5       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown5", "Unknown5", base.DEC),
-  content        = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.content", "Content", base.DEC, db.ContentFinderCondition),
-  unknown6       = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.unknown6", "Unknown6", base.DEC),
-  unknown7       = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.unknown7", "Unknown7", base.DEC),
-  require_tank   = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.require_tank", "RequireTank", base.DEC),
-  unknown8       = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.unknown8", "Unknown8", base.DEC),
-  require_health = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.require_health", "RequireHealth", base.DEC),
-  unknown9       = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.unknown9", "Unknown9", base.DEC),
-  require_dps    = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.require_dps", "RequireDPS", base.DEC),
-  unknown10      = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.unknown10", "Unknown10", base.DEC),
+  unknown1       = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.unknown1", "unknown1", base.DEC),
+  roulette       = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.roulette", "roulette", base.DEC),
+  flags          = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.flags", "flags", base.DEC),
+  unknown3       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown3", "unknown3", base.DEC),
+  unknown4       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown4", "unknown4", base.DEC),
+  unknown5       = ProtoField.uint32("ffxiv_ipc_content_finder_notify_pop.unknown5", "unknown5", base.DEC),
+  content        = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.content", "content", base.DEC, db.ContentFinderCondition),
+  unknown6       = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.unknown6", "unknown6", base.DEC),
+  unknown7       = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.unknown7", "unknown7", base.DEC),
+  require_tank   = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.require_tank", "requireTank", base.DEC),
+  unknown8       = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.unknown8", "unknown8", base.DEC),
+  require_health = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.require_health", "requireHealth", base.DEC),
+  unknown9       = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.unknown9", "unknown9", base.DEC),
+  require_dps    = ProtoField.uint8("ffxiv_ipc_content_finder_notify_pop.require_dps", "requireDps", base.DEC),
+  unknown10      = ProtoField.uint16("ffxiv_ipc_content_finder_notify_pop.unknown10", "unknown10", base.DEC),
 }
 
 ffxiv_ipc_content_finder_notify_pop.fields = content_finder_notify_pop_fields

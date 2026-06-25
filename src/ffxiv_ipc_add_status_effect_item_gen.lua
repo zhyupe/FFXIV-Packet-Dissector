@@ -5,12 +5,12 @@ local db = require('ffxiv_db')
 local ffxiv_ipc_add_status_effect_item = Proto("ffxiv_ipc_add_status_effect_item", "FFXIV-IPC AddStatusEffectItem")
 
 local add_status_effect_item_fields = {
-  status       = ProtoField.uint16("ffxiv_ipc_add_status_effect_item.status", "Status", base.DEC, db.Status),
-  status_extra = ProtoField.uint16("ffxiv_ipc_add_status_effect_item.status_extra", "StatusExtra", base.DEC),
-  unknown1     = ProtoField.uint16("ffxiv_ipc_add_status_effect_item.unknown1", "Unknown1", base.DEC),
-  duration     = ProtoField.float("ffxiv_ipc_add_status_effect_item.duration", "Duration", base.DEC),
-  actor_id     = ProtoField.uint32("ffxiv_ipc_add_status_effect_item.actor_id", "ActorID", base.HEX),
-  unknown2     = ProtoField.uint16("ffxiv_ipc_add_status_effect_item.unknown2", "Unknown2", base.DEC),
+  status       = ProtoField.uint16("ffxiv_ipc_add_status_effect_item.status", "status", base.DEC, db.Status),
+  status_extra = ProtoField.uint16("ffxiv_ipc_add_status_effect_item.status_extra", "statusExtra", base.DEC),
+  unknown1     = ProtoField.uint16("ffxiv_ipc_add_status_effect_item.unknown1", "unknown1", base.DEC),
+  duration     = ProtoField.float("ffxiv_ipc_add_status_effect_item.duration", "duration", base.DEC),
+  actor_id     = ProtoField.uint32("ffxiv_ipc_add_status_effect_item.actor_id", "actorId", base.HEX),
+  unknown2     = ProtoField.uint16("ffxiv_ipc_add_status_effect_item.unknown2", "unknown2", base.DEC),
 }
 
 ffxiv_ipc_add_status_effect_item.fields = add_status_effect_item_fields
@@ -24,7 +24,7 @@ function ffxiv_ipc_add_status_effect_item.dissector(tvbuf, pktinfo, root)
   local status_val  = status_tvbr:le_uint()
   tree:add_le(add_status_effect_item_fields.status, status_tvbr, status_val)
 
-  local status_display = ", Status: " .. (db.Status[status_val] or "(unknown)")
+  local status_display = ", status: " .. (db.Status[status_val] or "(unknown)")
   pktinfo.cols.info:append(status_display)
   tree:append_text(status_display)
 

@@ -22,7 +22,7 @@ export const tableContent = <T>(
   rawValue = false,
   prefix = '',
 ) => {
-  return `{\n${array.map(({ key, value }) => `${prefix}  ${tableKey(key)} = ${tableValue(value, rawValue, prefix + '  ')},`).join('\n')}\n${prefix}}`
+  return `{\n${array.map(({ key, value }) => `${prefix}  ${tableKey(key)} = ${tableValue(value, rawValue, `${prefix}  `)},`).join('\n')}\n${prefix}}`
 }
 
 export const tableKey = (key: string | number) => {

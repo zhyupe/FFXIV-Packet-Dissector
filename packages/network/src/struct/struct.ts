@@ -22,7 +22,7 @@ export abstract class Struct {
     }
 
     const children = getChildren(this)
-    const struct = children && children[key]
+    const struct = children?.[key]
 
     if (!struct) {
       throw new Error(

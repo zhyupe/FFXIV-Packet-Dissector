@@ -10,12 +10,12 @@ export function fieldLength(type: FieldType, length = 0): number {
       return 4
     case FieldType.byte:
       return 1
-    case FieldType.int:
-    case FieldType.uint:
-    case FieldType.array:
-    case FieldType.string:
-    case FieldType.bytes:
-    case FieldType.object:
+    // case FieldType.int:
+    // case FieldType.uint:
+    // case FieldType.array:
+    // case FieldType.string:
+    // case FieldType.bytes:
+    // case FieldType.object:
     default:
       return length
   }

@@ -25,7 +25,7 @@ M.types = {
     [0] = {
       title = "EffectResult",
       name = "ffxiv_ipc_effect_result",
-      length = 26,
+      length = 42,
     },
   },
   [0x00ae] = {

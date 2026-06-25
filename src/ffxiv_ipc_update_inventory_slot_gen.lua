@@ -3,36 +3,36 @@
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
 
-local ffxiv_ipc_update_inventory_slot = Proto("ffxiv_ipc_update_inventory_slot", "FFXIV-IPC Update Inventory Slot")
+local ffxiv_ipc_update_inventory_slot = Proto("ffxiv_ipc_update_inventory_slot", "FFXIV-IPC UpdateInventorySlot")
 
 local update_inventory_slot_fields = {
-  index              = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.index", "Index", base.DEC),
-  unknown0           = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.unknown0", "Unknown0", base.DEC),
-  container_id       = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.container_id", "ContainerId", base.DEC, enum.reverse.item_location),
-  slot               = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.slot", "Slot", base.DEC),
-  quantity           = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.quantity", "Quantity", base.DEC),
-  catalog_id         = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.catalog_id", "CatalogId", base.DEC, db.Item),
-  reserved_flag      = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.reserved_flag", "ReservedFlag", base.DEC),
-  signature_id       = ProtoField.uint64("ffxiv_ipc_update_inventory_slot.signature_id", "SignatureId", base.DEC),
-  quality            = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.quality", "Quality", base.DEC, enum.reverse.item_quality),
-  attribute2         = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.attribute2", "Attribute2", base.DEC),
-  condition          = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.condition", "Condition", base.DEC),
-  spiritbond         = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.spiritbond", "Spiritbond", base.DEC),
-  stain              = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.stain", "Stain", base.DEC),
-  glamour_catalog_id = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.glamour_catalog_id", "GlamourCatalogId", base.DEC, db.Item),
-  unknown6           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.unknown6", "Unknown6", base.DEC),
-  materia1           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia1", "Materia1", base.DEC),
-  materia2           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia2", "Materia2", base.DEC),
-  materia3           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia3", "Materia3", base.DEC),
-  materia4           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia4", "Materia4", base.DEC),
-  materia5           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia5", "Materia5", base.DEC),
-  materia1_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia1_tier", "Materia1Tier", base.DEC),
-  materia2_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia2_tier", "Materia2Tier", base.DEC),
-  materia3_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia3_tier", "Materia3Tier", base.DEC),
-  materia4_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia4_tier", "Materia4Tier", base.DEC),
-  materia5_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia5_tier", "Materia5Tier", base.DEC),
-  unknown10          = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.unknown10", "Unknown10", base.DEC),
-  unknown11          = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.unknown11", "Unknown11", base.DEC),
+  index              = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.index", "index", base.DEC),
+  unknown0           = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.unknown0", "unknown0", base.DEC),
+  container_id       = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.container_id", "containerId", base.DEC, enum.reverse.item_location),
+  slot               = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.slot", "slot", base.DEC),
+  quantity           = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.quantity", "quantity", base.DEC),
+  catalog_id         = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.catalog_id", "catalogId", base.DEC, db.Item),
+  reserved_flag      = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.reserved_flag", "reservedFlag", base.DEC),
+  signature_id       = ProtoField.uint64("ffxiv_ipc_update_inventory_slot.signature_id", "signatureId", base.DEC),
+  quality            = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.quality", "quality", base.DEC, enum.reverse.item_quality),
+  attribute2         = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.attribute2", "attribute2", base.DEC),
+  condition          = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.condition", "condition", base.DEC),
+  spiritbond         = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.spiritbond", "spiritbond", base.DEC),
+  stain              = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.stain", "stain", base.DEC),
+  glamour_catalog_id = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.glamour_catalog_id", "glamourCatalogId", base.DEC, db.Item),
+  unknown6           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.unknown6", "unknown6", base.DEC),
+  materia1           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia1", "materia1", base.DEC),
+  materia2           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia2", "materia2", base.DEC),
+  materia3           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia3", "materia3", base.DEC),
+  materia4           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia4", "materia4", base.DEC),
+  materia5           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia5", "materia5", base.DEC),
+  materia1_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia1_tier", "materia1Tier", base.DEC),
+  materia2_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia2_tier", "materia2Tier", base.DEC),
+  materia3_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia3_tier", "materia3Tier", base.DEC),
+  materia4_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia4_tier", "materia4Tier", base.DEC),
+  materia5_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia5_tier", "materia5Tier", base.DEC),
+  unknown10          = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.unknown10", "unknown10", base.DEC),
+  unknown11          = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.unknown11", "unknown11", base.DEC),
 }
 
 ffxiv_ipc_update_inventory_slot.fields = update_inventory_slot_fields
@@ -66,7 +66,7 @@ function ffxiv_ipc_update_inventory_slot.dissector(tvbuf, pktinfo, root)
   local quantity_val  = quantity_tvbr:le_uint()
   tree:add_le(update_inventory_slot_fields.quantity, quantity_tvbr, quantity_val)
 
-  local quantity_display = ", Quantity: " .. quantity_val
+  local quantity_display = ", quantity: " .. quantity_val
   pktinfo.cols.info:append(quantity_display)
   tree:append_text(quantity_display)
 
@@ -75,7 +75,7 @@ function ffxiv_ipc_update_inventory_slot.dissector(tvbuf, pktinfo, root)
   local catalog_id_val  = catalog_id_tvbr:le_uint()
   tree:add_le(update_inventory_slot_fields.catalog_id, catalog_id_tvbr, catalog_id_val)
 
-  local catalog_id_display = ", CatalogId: " .. (db.Item[catalog_id_val] or "(unknown)")
+  local catalog_id_display = ", catalogId: " .. (db.Item[catalog_id_val] or "(unknown)")
   pktinfo.cols.info:append(catalog_id_display)
   tree:append_text(catalog_id_display)
 
@@ -94,7 +94,7 @@ function ffxiv_ipc_update_inventory_slot.dissector(tvbuf, pktinfo, root)
   local quality_val  = quality_tvbr:le_uint()
   tree:add_le(update_inventory_slot_fields.quality, quality_tvbr, quality_val)
 
-  local quality_display = ", Quality: " .. (enum.reverse.item_quality[quality_val] or "(unknown)")
+  local quality_display = ", quality: " .. (enum.reverse.item_quality[quality_val] or "(unknown)")
   pktinfo.cols.info:append(quality_display)
   tree:append_text(quality_display)
 

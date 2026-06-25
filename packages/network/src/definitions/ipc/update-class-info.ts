@@ -4,7 +4,7 @@ import { dissector, field } from '@/struct/struct.decorator'
 
 export class UpdateClassInfo extends Struct {
   @field(FieldType.byte, 0)
-  @dissector({ db: 'ClassJob' })
+  @dissector({ db: 'ClassJob', append: 'enum' })
   classId!: number
 
   @field(FieldType.byte, 1)

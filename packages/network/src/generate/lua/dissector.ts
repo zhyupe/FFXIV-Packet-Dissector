@@ -11,6 +11,7 @@ import {
   getChildren,
   getEnums,
   getFields,
+  getStructIf,
 } from '@/struct/struct.decorator'
 import { snakeCase } from '../utils'
 import { type Pair, table, tableValue } from './table'
@@ -182,6 +183,7 @@ const structToIPCSchema = (
     fields: ipcFields,
     children: schemaChildren,
     enums: getStructEnums(struct),
+    if: getStructIf(struct),
   }
 }
 
@@ -242,6 +244,11 @@ const fieldDissectorOptionsToIPCField = ({
   return {
     enum: dissector.db ? `$${dissector.db}` : dissector.enum,
     base: dissector.base?.toUpperCase(),
+    append: dissector.append,
+    append_name: dissector.append_name,
+    check_length: dissector.check_length,
+    tvb_method: dissector.tvb_method,
+    add_le: dissector.add_le,
     condition: dissector.condition
       ? Object.fromEntries(
           Object.entries(dissector.condition).map(([key, values]) => [
@@ -691,7 +698,7 @@ return M`
   }
 }
 
-const getPacketLength = ({ fields }: IPCSchema) => {
+const getPacketLength = ({ fields }: Pick<IPCSchema, 'fields'>) => {
   if (!fields?.length) return 0
 
   return fields.reduce(

@@ -1,4 +1,5 @@
 import { Origin } from 'pcap'
+
 export { Origin as PacketSource }
 
 export const Encoding = {

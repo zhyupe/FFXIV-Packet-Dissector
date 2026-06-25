@@ -16,7 +16,7 @@ export class InitZone extends Struct {
 
   @field(FieldType.uint, 6, 2)
   @dissector({ db: 'ContentFinderCondition' })
-  Content!: number
+  content!: number
 
   @field(FieldType.uint, 8, 4)
   unknown3!: number
@@ -75,7 +75,7 @@ export class InitZone extends Struct {
   @field(FieldType.uint, 64, 4)
   unknown132!: number
 
-  @field(FieldType.object, 68, 12)
+  @field(FieldType.object, 68, Position.byteLength)
   @child(Position)
   position!: Position
 

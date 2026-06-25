@@ -10,17 +10,92 @@ import { ActorMove } from './actor-move'
 import { ActorSetPos } from './actor-set-pos'
 import { AddStatusEffect } from './add-status-effect'
 import { AoeEffect8, AoeEffect16, AoeEffect24, AoeEffect32 } from './aoe-effect'
-import { Effect } from './effect'
+import { CEDirector } from './ce-director'
+import { ClientAction } from './client-action'
+import { ClientTrigger } from './client-trigger'
+import {
+  CompanyAirshipStatus,
+  CompanyAirshipStatusItem,
+} from './company-airship-status'
+import { CompanyBoard } from './company-board'
+import { CompanyInfo } from './company-info'
+import { CompanyLevel, CompanyLevelItem } from './company-level'
+import {
+  CompanySubmersibleStatus,
+  CompanySubmersibleStatusItem,
+} from './company-submersible-status'
+import { ContainerInfo } from './container-info'
+import { ContentFinderDutyInfo } from './content-finder-duty-info'
+import { ContentFinderMemberStatus } from './content-finder-member-status'
+import {
+  ContentFinderNotify,
+  ContentFinderNotifyInstance,
+} from './content-finder-notify'
+import { ContentFinderNotifyPop } from './content-finder-notify-pop'
+import { ContentFinderProgress } from './content-finder-progress'
+import { ContentFinderTrigger } from './content-finder-trigger'
+import { ContentFinderTriggerRouttle } from './content-finder-trigger-routtle'
+import { CraftStatus } from './craft-status'
+import { CurrencyCrystalInfo } from './currency-crystal-info'
+import { Effect, Effect8, Effect16, Effect24, Effect32 } from './effect'
+import { AddStatusEffectItem, EffectResult } from './effect-result'
+import { EnsembleReadyReceive } from './ensemble-ready-receive'
+import { EnsembleReadySend } from './ensemble-ready-send'
+import { EnsembleStartReceive } from './ensemble-start-receive'
+import { EnsembleStartSend } from './ensemble-start-send'
+import { EventHandlerReturn } from './event-handler-return'
+import { Examine, ExamineItemData, ExamineItemMateria } from './examine'
+import { FateInfo } from './fate-info'
+import { FatePosition } from './fate-position'
+import { FauxHollowHandler } from './faux-hollow-handler'
+import { FauxHollowInit } from './faux-hollow-init'
+import { FauxHollowStatus } from './faux-hollow-status'
+import { FellowshipDetail, FellowshipNoteItem } from './fellowship-detail'
+import { FellowshipInfo } from './fellowship-info'
+import { FellowshipInfoQuery } from './fellowship-info-query'
+import { FellowshipJoined, FellowshipJoinedItem } from './fellowship-joined'
+import { FellowshipList } from './fellowship-list'
+import { FellowshipMember, FellowshipMemberItem } from './fellowship-member'
+import { FellowshipMemberSetGroupHandler } from './fellowship-member-set-group-handler'
+import { FellowshipMessageBoard } from './fellowship-message-board'
+import { FellowshipMessageBoardQuery } from './fellowship-message-board-query'
+import { FishEvent } from './fish-event'
+import { GardenStatus } from './garden-status'
+import { GroupMessage } from './group-message'
+import { Init } from './init'
 import { InitZone } from './init-zone'
+import { InventoryActionAck } from './inventory-action-ack'
+import { InventoryTransaction } from './inventory-transaction'
+import { InventoryTransactionFinish } from './inventory-transaction-finish'
+import { ItemCount } from './item-count'
+import { LinkshellItem, LinkshellList } from './linkshell-list'
+import { MailLetterNotification } from './mail-letter-notification'
+import { NpcRemove } from './npc-remove'
 import { NpcSpawn, NpcSpawn2 } from './npc-spawn'
+import { ObjectSpawn } from './object-spawn'
+import { PerformNote } from './perform-note'
+import { Ping, PingHandler } from './ping'
 import { PlaceFieldMarker } from './place-field-marker'
 import { PlayerSetup } from './player-setup'
 import { PlayerSpawn } from './player-spawn'
+import { PlayerStateFlags } from './player-state-flags'
 import { PlayerStats } from './player-stats'
+import { PublicMessage } from './public-message'
+import { RetainerInformation } from './retainer-information'
+import { ServerNotice, ServerNoticeShort } from './server-notice'
+import { SetOnlineStatus } from './set-online-status'
+import { SkillHandler } from './skill-handler'
 import { BossStatusEffectList, StatusEffectList } from './status-effect-list'
 import { SubmarineStatusList } from './submarine'
+import { TreasureInfo } from './treasure-info'
+import { TreasureShiftingWheelResult } from './treasure-shifting-wheel-result'
+import { TripleTraid } from './triple-traid'
+import { TripleTraidInfo } from './triple-traid-info'
+import { TripleTraidStatus } from './triple-traid-status'
 import { UpdateClassInfo } from './update-class-info'
 import { UpdateHpMpTp } from './update-hp-mp-tp'
+import { ItemInfo, UpdateInventorySlot } from './update-inventory-slot'
+import { UpdatePositionInstance } from './update-position-instance'
 import { WardLandInfo } from './ward-land-info'
 
 function packetMapTypeConstraint<
@@ -44,18 +119,36 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.AoeEffect32]: AoeEffect32,
   [NormalizedOpcode.AoeEffect8]: AoeEffect8,
   [NormalizedOpcode.BossStatusEffectList]: BossStatusEffectList,
+  [NormalizedOpcode.CEDirector]: CEDirector,
+  [NormalizedOpcode.ClientTrigger]: ClientTrigger,
+  [NormalizedOpcode.CompanyAirshipStatus]: CompanyAirshipStatus,
+  [NormalizedOpcode.CompanySubmersibleStatus]: CompanySubmersibleStatus,
+  [NormalizedOpcode.ContainerInfo]: ContainerInfo,
+  [NormalizedOpcode.ContentFinderNotifyPop]: ContentFinderNotifyPop,
+  [NormalizedOpcode.CurrencyCrystalInfo]: CurrencyCrystalInfo,
   [NormalizedOpcode.Effect]: Effect,
+  [NormalizedOpcode.EffectResult]: EffectResult,
+  [NormalizedOpcode.Examine]: Examine,
+  [NormalizedOpcode.FateInfo]: FateInfo,
   [NormalizedOpcode.InitZone]: InitZone,
+  [NormalizedOpcode.InventoryActionAck]: InventoryActionAck,
+  [NormalizedOpcode.InventoryTransaction]: InventoryTransaction,
+  [NormalizedOpcode.InventoryTransactionFinish]: InventoryTransactionFinish,
+  [NormalizedOpcode.ItemInfo]: ItemInfo,
   [NormalizedOpcode.NpcSpawn]: NpcSpawn,
   [NormalizedOpcode.NpcSpawn2]: NpcSpawn2,
+  [NormalizedOpcode.ObjectSpawn]: ObjectSpawn,
   [NormalizedOpcode.PlaceFieldMarker]: PlaceFieldMarker,
   [NormalizedOpcode.PlayerSetup]: PlayerSetup,
   [NormalizedOpcode.PlayerSpawn]: PlayerSpawn,
   [NormalizedOpcode.PlayerStats]: PlayerStats,
+  [NormalizedOpcode.RetainerInformation]: RetainerInformation,
   [NormalizedOpcode.StatusEffectList]: StatusEffectList,
   [NormalizedOpcode.SubmarineStatusList]: SubmarineStatusList,
   [NormalizedOpcode.UpdateClassInfo]: UpdateClassInfo,
   [NormalizedOpcode.UpdateHpMpTp]: UpdateHpMpTp,
+  [NormalizedOpcode.UpdateInventorySlot]: UpdateInventorySlot,
+  [NormalizedOpcode.UpdatePositionInstance]: UpdatePositionInstance,
   [NormalizedOpcode.WardLandInfo]: WardLandInfo,
 })
 
@@ -67,6 +160,7 @@ export * from './common/add-status-effect-item'
 export * from './common/character'
 export * from './common/effect-entity'
 export * from './common/effect-header'
+export * from './common/faux-hollow'
 export * from './common/position'
 export * from './common/status-effect'
 export * from './common/submarine'
@@ -80,22 +174,106 @@ export {
   ActorMove,
   ActorSetPos,
   AddStatusEffect,
+  AddStatusEffectItem,
   AoeEffect8,
   AoeEffect16,
   AoeEffect24,
   AoeEffect32,
   BossStatusEffectList,
+  CEDirector,
+  ClientAction,
+  ClientTrigger,
+  CompanyAirshipStatus,
+  CompanyAirshipStatusItem,
+  CompanyBoard,
+  CompanyInfo,
+  CompanyLevel,
+  CompanyLevelItem,
+  CompanySubmersibleStatus,
+  CompanySubmersibleStatusItem,
+  ContainerInfo,
+  ContentFinderDutyInfo,
+  ContentFinderMemberStatus,
+  ContentFinderNotify,
+  ContentFinderNotifyInstance,
+  ContentFinderNotifyPop,
+  ContentFinderProgress,
+  ContentFinderTrigger,
+  ContentFinderTriggerRouttle,
+  CraftStatus,
+  CurrencyCrystalInfo,
   Effect,
+  Effect8,
+  Effect16,
+  Effect24,
+  Effect32,
+  EffectResult,
+  EnsembleReadyReceive,
+  EnsembleReadySend,
+  EnsembleStartReceive,
+  EnsembleStartSend,
+  EventHandlerReturn,
+  Examine,
+  ExamineItemData,
+  ExamineItemMateria,
+  FateInfo,
+  FatePosition,
+  FauxHollowHandler,
+  FauxHollowInit,
+  FauxHollowStatus,
+  FellowshipDetail,
+  FellowshipInfo,
+  FellowshipInfoQuery,
+  FellowshipJoined,
+  FellowshipJoinedItem,
+  FellowshipList,
+  FellowshipMember,
+  FellowshipMemberItem,
+  FellowshipMemberSetGroupHandler,
+  FellowshipMessageBoard,
+  FellowshipMessageBoardQuery,
+  FellowshipNoteItem,
+  FishEvent,
+  GardenStatus,
+  GroupMessage,
+  Init,
   InitZone,
+  InventoryActionAck,
+  InventoryTransaction,
+  InventoryTransactionFinish,
+  ItemCount,
+  ItemInfo,
+  LinkshellItem,
+  LinkshellList,
+  MailLetterNotification,
+  NpcRemove,
   NpcSpawn,
   NpcSpawn2,
+  ObjectSpawn,
+  PerformNote,
+  Ping,
+  PingHandler,
   PlaceFieldMarker,
   PlayerSetup,
   PlayerSpawn,
+  PlayerStateFlags,
   PlayerStats,
+  PublicMessage,
+  RetainerInformation,
+  ServerNotice,
+  ServerNoticeShort,
+  SetOnlineStatus,
+  SkillHandler,
   StatusEffectList,
   SubmarineStatusList,
+  TreasureInfo,
+  TreasureShiftingWheelResult,
+  TripleTraid,
+  TripleTraidInfo,
+  TripleTraidStatus,
   UpdateClassInfo,
   UpdateHpMpTp,
+  UpdateInventorySlot,
+  UpdatePositionInstance,
   WardLandInfo,
 }

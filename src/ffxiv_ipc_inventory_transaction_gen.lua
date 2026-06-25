@@ -3,18 +3,18 @@
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
 
-local ffxiv_ipc_inventory_transaction = Proto("ffxiv_ipc_inventory_transaction", "FFXIV-IPC Inventory Transaction")
+local ffxiv_ipc_inventory_transaction = Proto("ffxiv_ipc_inventory_transaction", "FFXIV-IPC InventoryTransaction")
 
 local inventory_transaction_fields = {
-  sequence          = ProtoField.uint32("ffxiv_ipc_inventory_transaction.sequence", "Sequence", base.DEC),
-  type              = ProtoField.uint32("ffxiv_ipc_inventory_transaction.type", "Type", base.DEC),
-  owner_id          = ProtoField.uint32("ffxiv_ipc_inventory_transaction.owner_id", "OwnerId", base.HEX),
-  storage_id        = ProtoField.uint32("ffxiv_ipc_inventory_transaction.storage_id", "StorageId", base.DEC, enum.reverse.item_location),
-  slot_id           = ProtoField.uint32("ffxiv_ipc_inventory_transaction.slot_id", "SlotId", base.DEC),
-  stack_size        = ProtoField.uint32("ffxiv_ipc_inventory_transaction.stack_size", "StackSize", base.DEC),
-  catalog_id        = ProtoField.uint32("ffxiv_ipc_inventory_transaction.catalog_id", "CatalogId", base.DEC, db.Item),
-  some_actor_id     = ProtoField.uint32("ffxiv_ipc_inventory_transaction.some_actor_id", "SomeActorId", base.HEX),
-  target_storage_id = ProtoField.uint32("ffxiv_ipc_inventory_transaction.target_storage_id", "TargetStorageId", base.HEX),
+  sequence          = ProtoField.uint32("ffxiv_ipc_inventory_transaction.sequence", "sequence", base.DEC),
+  type              = ProtoField.uint32("ffxiv_ipc_inventory_transaction.type", "type", base.DEC),
+  owner_id          = ProtoField.uint32("ffxiv_ipc_inventory_transaction.owner_id", "ownerId", base.HEX),
+  storage_id        = ProtoField.uint32("ffxiv_ipc_inventory_transaction.storage_id", "storageId", base.DEC, enum.reverse.item_location),
+  slot_id           = ProtoField.uint32("ffxiv_ipc_inventory_transaction.slot_id", "slotId", base.DEC),
+  stack_size        = ProtoField.uint32("ffxiv_ipc_inventory_transaction.stack_size", "stackSize", base.DEC),
+  catalog_id        = ProtoField.uint32("ffxiv_ipc_inventory_transaction.catalog_id", "catalogId", base.DEC, db.Item),
+  some_actor_id     = ProtoField.uint32("ffxiv_ipc_inventory_transaction.some_actor_id", "someActorId", base.HEX),
+  target_storage_id = ProtoField.uint32("ffxiv_ipc_inventory_transaction.target_storage_id", "targetStorageId", base.HEX),
 }
 
 ffxiv_ipc_inventory_transaction.fields = inventory_transaction_fields
@@ -43,7 +43,7 @@ function ffxiv_ipc_inventory_transaction.dissector(tvbuf, pktinfo, root)
   local storage_id_val  = storage_id_tvbr:le_uint()
   tree:add_le(inventory_transaction_fields.storage_id, storage_id_tvbr, storage_id_val)
 
-  local storage_id_display = ", StorageId: " .. (enum.reverse.item_location[storage_id_val] or "(unknown)")
+  local storage_id_display = ", storageId: " .. (enum.reverse.item_location[storage_id_val] or "(unknown)")
   pktinfo.cols.info:append(storage_id_display)
   tree:append_text(storage_id_display)
 
@@ -57,7 +57,7 @@ function ffxiv_ipc_inventory_transaction.dissector(tvbuf, pktinfo, root)
   local stack_size_val  = stack_size_tvbr:le_uint()
   tree:add_le(inventory_transaction_fields.stack_size, stack_size_tvbr, stack_size_val)
 
-  local stack_size_display = ", StackSize: " .. stack_size_val
+  local stack_size_display = ", stackSize: " .. stack_size_val
   pktinfo.cols.info:append(stack_size_display)
   tree:append_text(stack_size_display)
 
@@ -66,7 +66,7 @@ function ffxiv_ipc_inventory_transaction.dissector(tvbuf, pktinfo, root)
   local catalog_id_val  = catalog_id_tvbr:le_uint()
   tree:add_le(inventory_transaction_fields.catalog_id, catalog_id_tvbr, catalog_id_val)
 
-  local catalog_id_display = ", CatalogId: " .. (db.Item[catalog_id_val] or "(unknown)")
+  local catalog_id_display = ", catalogId: " .. (db.Item[catalog_id_val] or "(unknown)")
   pktinfo.cols.info:append(catalog_id_display)
   tree:append_text(catalog_id_display)
 

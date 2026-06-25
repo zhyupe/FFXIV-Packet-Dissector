@@ -2,7 +2,7 @@
 
 local enum = require('ffxiv_enum')
 
-local ffxiv_ipc_container_info = Proto("ffxiv_ipc_container_info", "FFXIV-IPC Container Info")
+local ffxiv_ipc_container_info = Proto("ffxiv_ipc_container_info", "FFXIV-IPC ContainerInfo")
 
 local container_info_fields = {
   container_sequence = ProtoField.uint32("ffxiv_ipc_container_info.container_sequence", "containerSequence", base.DEC),

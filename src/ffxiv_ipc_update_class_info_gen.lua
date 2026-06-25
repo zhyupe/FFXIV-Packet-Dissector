@@ -24,6 +24,10 @@ function ffxiv_ipc_update_class_info.dissector(tvbuf, pktinfo, root)
   local class_id_val  = class_id_tvbr:le_uint()
   tree:add_le(update_class_info_fields.class_id, class_id_tvbr, class_id_val)
 
+  local class_id_display = ", classId: " .. (db.ClassJob[class_id_val] or "(unknown)")
+  pktinfo.cols.info:append(class_id_display)
+  tree:append_text(class_id_display)
+
   -- dissect the level1 field
   local level1_tvbr = tvbuf:range(1, 1)
   local level1_val  = level1_tvbr:le_uint()

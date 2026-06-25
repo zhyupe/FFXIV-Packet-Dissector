@@ -16,7 +16,7 @@ local label_param12_command_id = {
   [813] = "Sync",
 }
 
-local ffxiv_ipc_client_trigger = Proto("ffxiv_ipc_client_trigger", "FFXIV-IPC Client Trigger")
+local ffxiv_ipc_client_trigger = Proto("ffxiv_ipc_client_trigger", "FFXIV-IPC ClientTrigger")
 
 local client_trigger_fields = {
   command_id = ProtoField.uint16("ffxiv_ipc_client_trigger.command_id", "commandId", base.HEX, enum.reverse.client_trigger_command_id),

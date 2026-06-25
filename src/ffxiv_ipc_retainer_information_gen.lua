@@ -3,23 +3,23 @@
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
 
-local ffxiv_ipc_retainer_information = Proto("ffxiv_ipc_retainer_information", "FFXIV-IPC Retainer Information")
+local ffxiv_ipc_retainer_information = Proto("ffxiv_ipc_retainer_information", "FFXIV-IPC RetainerInformation")
 
 local retainer_information_fields = {
-  unique_id       = ProtoField.uint64("ffxiv_ipc_retainer_information.unique_id", "UniqueID", base.HEX),
-  character_id    = ProtoField.uint32("ffxiv_ipc_retainer_information.character_id", "CharacterID", base.HEX),
-  user_server     = ProtoField.uint16("ffxiv_ipc_retainer_information.user_server", "UserServer", base.DEC, db.World),
-  type            = ProtoField.uint8("ffxiv_ipc_retainer_information.type", "Type", base.DEC, enum.reverse.public_message_type),
-  inventory_count = ProtoField.uint8("ffxiv_ipc_retainer_information.inventory_count", "InventoryCount", base.DEC),
-  gold            = ProtoField.uint32("ffxiv_ipc_retainer_information.gold", "Gold", base.DEC),
-  selling_count   = ProtoField.uint8("ffxiv_ipc_retainer_information.selling_count", "SellingCount", base.DEC),
-  market          = ProtoField.uint8("ffxiv_ipc_retainer_information.market", "Market", base.DEC),
-  class_job       = ProtoField.uint8("ffxiv_ipc_retainer_information.class_job", "ClassJob", base.DEC, db.ClassJob),
-  level           = ProtoField.uint8("ffxiv_ipc_retainer_information.level", "Level", base.DEC),
-  sell_end_time   = ProtoField.uint32("ffxiv_ipc_retainer_information.sell_end_time", "SellEndTime", base.DEC),
-  adv_end_time    = ProtoField.uint32("ffxiv_ipc_retainer_information.adv_end_time", "AdvEndTime", base.DEC),
-  reserved        = ProtoField.uint8("ffxiv_ipc_retainer_information.reserved", "Reserved", base.DEC),
-  nickname        = ProtoField.string("ffxiv_ipc_retainer_information.nickname", "Nickname", base.UNICODE),
+  unique_id       = ProtoField.uint64("ffxiv_ipc_retainer_information.unique_id", "uniqueId", base.HEX),
+  character_id    = ProtoField.uint32("ffxiv_ipc_retainer_information.character_id", "characterId", base.HEX),
+  user_server     = ProtoField.uint16("ffxiv_ipc_retainer_information.user_server", "userServer", base.DEC, db.World),
+  type            = ProtoField.uint8("ffxiv_ipc_retainer_information.type", "type", base.DEC, enum.reverse.public_message_type),
+  inventory_count = ProtoField.uint8("ffxiv_ipc_retainer_information.inventory_count", "inventoryCount", base.DEC),
+  gold            = ProtoField.uint32("ffxiv_ipc_retainer_information.gold", "gold", base.DEC),
+  selling_count   = ProtoField.uint8("ffxiv_ipc_retainer_information.selling_count", "sellingCount", base.DEC),
+  market          = ProtoField.uint8("ffxiv_ipc_retainer_information.market", "market", base.DEC),
+  class_job       = ProtoField.uint8("ffxiv_ipc_retainer_information.class_job", "classJob", base.DEC, db.ClassJob),
+  level           = ProtoField.uint8("ffxiv_ipc_retainer_information.level", "level", base.DEC),
+  sell_end_time   = ProtoField.uint32("ffxiv_ipc_retainer_information.sell_end_time", "sellEndTime", base.DEC),
+  adv_end_time    = ProtoField.uint32("ffxiv_ipc_retainer_information.adv_end_time", "advEndTime", base.DEC),
+  reserved        = ProtoField.uint8("ffxiv_ipc_retainer_information.reserved", "reserved", base.DEC),
+  nickname        = ProtoField.string("ffxiv_ipc_retainer_information.nickname", "nickname", base.UNICODE),
 }
 
 ffxiv_ipc_retainer_information.fields = retainer_information_fields

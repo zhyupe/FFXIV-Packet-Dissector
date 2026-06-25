@@ -8,7 +8,7 @@ export class WardLandInfo extends Struct {
   section!: number
 
   @field(FieldType.uint, 4, 2)
-  @dissector({ db: 'TerritoryType' })
+  @dissector({ db: 'TerritoryType', append: 'enum' })
   territoryType!: number
 
   @field(FieldType.uint, 6, 2)

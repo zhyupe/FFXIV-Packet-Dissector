@@ -3,15 +3,15 @@
 local ffxiv_ipc_company_airship_status_item = Proto("ffxiv_ipc_company_airship_status_item", "FFXIV-IPC CompanyAirshipStatusItem")
 
 local company_airship_status_item_fields = {
-  return_time  = ProtoField.uint32("ffxiv_ipc_company_airship_status_item.return_time", "ReturnTime", base.DEC),
-  max_distance = ProtoField.uint16("ffxiv_ipc_company_airship_status_item.max_distance", "MaxDistance", base.DEC),
-  name         = ProtoField.string("ffxiv_ipc_company_airship_status_item.name", "Name", base.UNICODE),
-  dest1        = ProtoField.uint8("ffxiv_ipc_company_airship_status_item.dest1", "Dest1", base.DEC),
-  dest2        = ProtoField.uint8("ffxiv_ipc_company_airship_status_item.dest2", "Dest2", base.DEC),
-  dest3        = ProtoField.uint8("ffxiv_ipc_company_airship_status_item.dest3", "Dest3", base.DEC),
-  dest4        = ProtoField.uint8("ffxiv_ipc_company_airship_status_item.dest4", "Dest4", base.DEC),
-  dest5        = ProtoField.uint8("ffxiv_ipc_company_airship_status_item.dest5", "Dest5", base.DEC),
-  unknown3     = ProtoField.uint16("ffxiv_ipc_company_airship_status_item.unknown3", "Unknown3", base.DEC),
+  return_time  = ProtoField.uint32("ffxiv_ipc_company_airship_status_item.return_time", "returnTime", base.DEC),
+  max_distance = ProtoField.uint16("ffxiv_ipc_company_airship_status_item.max_distance", "maxDistance", base.DEC),
+  name         = ProtoField.string("ffxiv_ipc_company_airship_status_item.name", "name", base.UNICODE),
+  dest1        = ProtoField.uint8("ffxiv_ipc_company_airship_status_item.dest1", "dest1", base.DEC),
+  dest2        = ProtoField.uint8("ffxiv_ipc_company_airship_status_item.dest2", "dest2", base.DEC),
+  dest3        = ProtoField.uint8("ffxiv_ipc_company_airship_status_item.dest3", "dest3", base.DEC),
+  dest4        = ProtoField.uint8("ffxiv_ipc_company_airship_status_item.dest4", "dest4", base.DEC),
+  dest5        = ProtoField.uint8("ffxiv_ipc_company_airship_status_item.dest5", "dest5", base.DEC),
+  unknown3     = ProtoField.uint16("ffxiv_ipc_company_airship_status_item.unknown3", "unknown3", base.DEC),
 }
 
 ffxiv_ipc_company_airship_status_item.fields = company_airship_status_item_fields
@@ -36,7 +36,7 @@ function ffxiv_ipc_company_airship_status_item.dissector(tvbuf, pktinfo, root)
     local name_val  = name_tvbr:string(ENC_UTF_8)
     tree:add(company_airship_status_item_fields.name, name_tvbr, name_val)
 
-    local name_display = ", Name: " .. name_val
+    local name_display = ", name: " .. name_val
     pktinfo.cols.info:append(name_display)
     tree:append_text(name_display)
   end

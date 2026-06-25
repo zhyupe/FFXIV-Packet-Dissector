@@ -5,23 +5,20 @@ local db = require('ffxiv_db')
 local ffxiv_ipc_examine = Proto("ffxiv_ipc_examine", "FFXIV-IPC Examine")
 
 local examine_fields = {
-  unknown0           = ProtoField.uint16("ffxiv_ipc_examine.unknown0", "Unknown0", base.DEC),
-  class_job          = ProtoField.int8("ffxiv_ipc_examine.class_job", "ClassJob", base.DEC, db.ClassJob),
-  level              = ProtoField.int8("ffxiv_ipc_examine.level", "Level", base.DEC),
+  unknown0           = ProtoField.uint16("ffxiv_ipc_examine.unknown0", "unknown0", base.DEC),
+  class_job          = ProtoField.int8("ffxiv_ipc_examine.class_job", "classJob", base.DEC, db.ClassJob),
+  level              = ProtoField.int8("ffxiv_ipc_examine.level", "level", base.DEC),
   padding            = ProtoField.uint16("ffxiv_ipc_examine.padding", "padding", base.DEC),
-  title              = ProtoField.uint16("ffxiv_ipc_examine.title", "Title", base.DEC, db.TitleMasculine),
+  title              = ProtoField.uint16("ffxiv_ipc_examine.title", "title", base.DEC, db.TitleMasculine),
   grand_company      = ProtoField.int8("ffxiv_ipc_examine.grand_company", "grandCompany", base.DEC),
   grand_company_rank = ProtoField.int8("ffxiv_ipc_examine.grand_company_rank", "grandCompanyRank", base.DEC),
-  unknown_a          = ProtoField.bytes("ffxiv_ipc_examine.unknown_a", "unknownA", base.NONE),
-  u6_from_p_spawn    = ProtoField.uint32("ffxiv_ipc_examine.u6_from_p_spawn", "u6_fromPSpawn", base.DEC),
-  u7_from_p_spawn    = ProtoField.uint32("ffxiv_ipc_examine.u7_from_p_spawn", "u7_fromPSpawn", base.DEC),
-  padding1           = ProtoField.bytes("ffxiv_ipc_examine.padding1", "padding1", base.NONE),
+  u6_from_p_spawn    = ProtoField.uint32("ffxiv_ipc_examine.u6_from_p_spawn", "u6FromPSpawn", base.DEC),
+  u7_from_p_spawn    = ProtoField.uint32("ffxiv_ipc_examine.u7_from_p_spawn", "u7FromPSpawn", base.DEC),
   main_weapon_model  = ProtoField.uint64("ffxiv_ipc_examine.main_weapon_model", "mainWeaponModel", base.DEC),
   sec_weapon_model   = ProtoField.uint64("ffxiv_ipc_examine.sec_weapon_model", "secWeaponModel", base.DEC),
   unknown2           = ProtoField.uint16("ffxiv_ipc_examine.unknown2", "unknown2", base.DEC),
-  world              = ProtoField.uint16("ffxiv_ipc_examine.world", "World", base.DEC, db.World),
-  unknown30          = ProtoField.bytes("ffxiv_ipc_examine.unknown30", "unknown30", base.NONE),
-  nickname           = ProtoField.string("ffxiv_ipc_examine.nickname", "Nickname", base.UNICODE),
+  world              = ProtoField.uint16("ffxiv_ipc_examine.world", "world", base.DEC, db.World),
+  nickname           = ProtoField.string("ffxiv_ipc_examine.nickname", "nickname", base.UNICODE),
 }
 
 ffxiv_ipc_examine.fields = examine_fields
@@ -65,11 +62,6 @@ function ffxiv_ipc_examine.dissector(tvbuf, pktinfo, root)
   local grand_company_rank_val  = grand_company_rank_tvbr:le_int()
   tree:add_le(examine_fields.grand_company_rank, grand_company_rank_tvbr, grand_company_rank_val)
 
-  -- dissect the unknown_a field
-  local unknown_a_tvbr = tvbuf:range(10, 6)
-  local unknown_a_val  = unknown_a_tvbr:raw(10)
-  tree:add(examine_fields.unknown_a, unknown_a_tvbr, unknown_a_val)
-
   -- dissect the u6_from_p_spawn field
   local u6_from_p_spawn_tvbr = tvbuf:range(16, 4)
   local u6_from_p_spawn_val  = u6_from_p_spawn_tvbr:le_uint()
@@ -79,11 +71,6 @@ function ffxiv_ipc_examine.dissector(tvbuf, pktinfo, root)
   local u7_from_p_spawn_tvbr = tvbuf:range(20, 4)
   local u7_from_p_spawn_val  = u7_from_p_spawn_tvbr:le_uint()
   tree:add_le(examine_fields.u7_from_p_spawn, u7_from_p_spawn_tvbr, u7_from_p_spawn_val)
-
-  -- dissect the padding1 field
-  local padding1_tvbr = tvbuf:range(24, 8)
-  local padding1_val  = padding1_tvbr:raw(24)
-  tree:add(examine_fields.padding1, padding1_tvbr, padding1_val)
 
   -- dissect the main_weapon_model field
   local main_weapon_model_tvbr = tvbuf:range(32, 8)
@@ -104,11 +91,6 @@ function ffxiv_ipc_examine.dissector(tvbuf, pktinfo, root)
   local world_tvbr = tvbuf:range(50, 2)
   local world_val  = world_tvbr:le_uint()
   tree:add_le(examine_fields.world, world_tvbr, world_val)
-
-  -- dissect the unknown30 field
-  local unknown30_tvbr = tvbuf:range(52, 12)
-  local unknown30_val  = unknown30_tvbr:raw(52)
-  tree:add(examine_fields.unknown30, unknown30_tvbr, unknown30_val)
 
   -- dissect examine_item_data
   local examine_item_data_dissector = Dissector.get('ffxiv_ipc_examine_item_data')
@@ -132,7 +114,7 @@ function ffxiv_ipc_examine.dissector(tvbuf, pktinfo, root)
     local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
     tree:add(examine_fields.nickname, nickname_tvbr, nickname_val)
 
-    local nickname_display = ", Nickname: " .. nickname_val
+    local nickname_display = ", nickname: " .. nickname_val
     pktinfo.cols.info:append(nickname_display)
     tree:append_text(nickname_display)
   end

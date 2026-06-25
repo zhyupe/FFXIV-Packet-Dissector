@@ -92,7 +92,7 @@ M.types = {
     [0] = {
       title = "CompanySubmersibleStatus",
       name = "ffxiv_ipc_company_submersible_status",
-      length = 0,
+      length = 144,
     },
   },
   [0x0147] = {
@@ -132,7 +132,7 @@ M.types = {
     [0] = {
       title = "EffectResult",
       name = "ffxiv_ipc_effect_result",
-      length = 26,
+      length = 42,
     },
   },
   [0x01ab] = {
@@ -320,7 +320,7 @@ M.types = {
     [0] = {
       title = "CompanyAirshipStatus",
       name = "ffxiv_ipc_company_airship_status",
-      length = 0,
+      length = 144,
     },
   },
   [0x02c2] = {

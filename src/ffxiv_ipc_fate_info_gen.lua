@@ -2,16 +2,16 @@
 
 local db = require('ffxiv_db')
 
-local ffxiv_ipc_fate_info = Proto("ffxiv_ipc_fate_info", "FFXIV-IPC Fate Info")
+local ffxiv_ipc_fate_info = Proto("ffxiv_ipc_fate_info", "FFXIV-IPC FateInfo")
 
 local fate_info_fields = {
-  fate       = ProtoField.uint16("ffxiv_ipc_fate_info.fate", "Fate", base.DEC, db.Fate),
-  unknown0   = ProtoField.uint32("ffxiv_ipc_fate_info.unknown0", "Unknown0", base.DEC),
-  unknown1   = ProtoField.uint32("ffxiv_ipc_fate_info.unknown1", "Unknown1", base.DEC),
-  start_time = ProtoField.uint32("ffxiv_ipc_fate_info.start_time", "StartTime", base.DEC),
-  unknown3   = ProtoField.uint32("ffxiv_ipc_fate_info.unknown3", "Unknown3", base.DEC),
-  duration   = ProtoField.uint32("ffxiv_ipc_fate_info.duration", "Duration", base.DEC),
-  unknown5   = ProtoField.float("ffxiv_ipc_fate_info.unknown5", "Unknown5", base.DEC),
+  fate       = ProtoField.uint16("ffxiv_ipc_fate_info.fate", "fate", base.DEC, db.Fate),
+  unknown0   = ProtoField.uint16("ffxiv_ipc_fate_info.unknown0", "unknown0", base.DEC),
+  unknown1   = ProtoField.uint32("ffxiv_ipc_fate_info.unknown1", "unknown1", base.DEC),
+  start_time = ProtoField.uint32("ffxiv_ipc_fate_info.start_time", "startTime", base.DEC),
+  unknown3   = ProtoField.uint32("ffxiv_ipc_fate_info.unknown3", "unknown3", base.DEC),
+  duration   = ProtoField.uint32("ffxiv_ipc_fate_info.duration", "duration", base.DEC),
+  unknown5   = ProtoField.float("ffxiv_ipc_fate_info.unknown5", "unknown5", base.DEC),
 }
 
 ffxiv_ipc_fate_info.fields = fate_info_fields
@@ -25,7 +25,7 @@ function ffxiv_ipc_fate_info.dissector(tvbuf, pktinfo, root)
   local fate_val  = fate_tvbr:le_uint()
   tree:add_le(fate_info_fields.fate, fate_tvbr, fate_val)
 
-  local fate_display = ", Fate: " .. (db.Fate[fate_val] or "(unknown)")
+  local fate_display = ", fate: " .. (db.Fate[fate_val] or "(unknown)")
   pktinfo.cols.info:append(fate_display)
   tree:append_text(fate_display)
 

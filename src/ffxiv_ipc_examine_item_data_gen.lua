@@ -5,12 +5,12 @@ local db = require('ffxiv_db')
 local ffxiv_ipc_examine_item_data = Proto("ffxiv_ipc_examine_item_data", "FFXIV-IPC ExamineItemData")
 
 local examine_item_data_fields = {
-  catalog_id           = ProtoField.uint32("ffxiv_ipc_examine_item_data.catalog_id", "CatalogId", base.DEC, db.Item),
-  appearance           = ProtoField.uint32("ffxiv_ipc_examine_item_data.appearance", "Appearance", base.DEC, db.Item),
-  crafter_id           = ProtoField.uint64("ffxiv_ipc_examine_item_data.crafter_id", "CrafterId", base.DEC),
-  quality              = ProtoField.uint8("ffxiv_ipc_examine_item_data.quality", "Quality", base.DEC),
-  unknown              = ProtoField.uint8("ffxiv_ipc_examine_item_data.unknown", "Unknown", base.DEC),
-  unknown2             = ProtoField.uint16("ffxiv_ipc_examine_item_data.unknown2", "Unknown2", base.DEC),
+  catalog_id           = ProtoField.uint32("ffxiv_ipc_examine_item_data.catalog_id", "catalogId", base.DEC, db.Item),
+  appearance           = ProtoField.uint32("ffxiv_ipc_examine_item_data.appearance", "appearance", base.DEC, db.Item),
+  crafter_id           = ProtoField.uint64("ffxiv_ipc_examine_item_data.crafter_id", "crafterId", base.DEC),
+  quality              = ProtoField.uint8("ffxiv_ipc_examine_item_data.quality", "quality", base.DEC),
+  unknown              = ProtoField.uint8("ffxiv_ipc_examine_item_data.unknown", "unknown", base.DEC),
+  unknown2             = ProtoField.uint16("ffxiv_ipc_examine_item_data.unknown2", "unknown2", base.DEC),
 }
 
 ffxiv_ipc_examine_item_data.fields = examine_item_data_fields
@@ -24,7 +24,7 @@ function ffxiv_ipc_examine_item_data.dissector(tvbuf, pktinfo, root)
   local catalog_id_val  = catalog_id_tvbr:le_uint()
   tree:add_le(examine_item_data_fields.catalog_id, catalog_id_tvbr, catalog_id_val)
 
-  local catalog_id_display = ", CatalogId: " .. (db.Item[catalog_id_val] or "(unknown)")
+  local catalog_id_display = ", catalogId: " .. (db.Item[catalog_id_val] or "(unknown)")
   pktinfo.cols.info:append(catalog_id_display)
   tree:append_text(catalog_id_display)
 
@@ -33,7 +33,7 @@ function ffxiv_ipc_examine_item_data.dissector(tvbuf, pktinfo, root)
   local appearance_val  = appearance_tvbr:le_uint()
   tree:add_le(examine_item_data_fields.appearance, appearance_tvbr, appearance_val)
 
-  local appearance_display = ", Appearance: " .. (db.Item[appearance_val] or "(unknown)")
+  local appearance_display = ", appearance: " .. (db.Item[appearance_val] or "(unknown)")
   pktinfo.cols.info:append(appearance_display)
   tree:append_text(appearance_display)
 

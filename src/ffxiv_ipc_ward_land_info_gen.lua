@@ -26,6 +26,10 @@ function ffxiv_ipc_ward_land_info.dissector(tvbuf, pktinfo, root)
   local territory_type_val  = territory_type_tvbr:le_uint()
   tree:add_le(ward_land_info_fields.territory_type, territory_type_tvbr, territory_type_val)
 
+  local territory_type_display = ", territoryType: " .. (db.TerritoryType[territory_type_val] or "(unknown)")
+  pktinfo.cols.info:append(territory_type_display)
+  tree:append_text(territory_type_display)
+
   -- dissect the world field
   local world_tvbr = tvbuf:range(6, 2)
   local world_val  = world_tvbr:le_uint()

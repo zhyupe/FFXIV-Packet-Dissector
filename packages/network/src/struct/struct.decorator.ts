@@ -6,6 +6,7 @@ import type { Struct, StructConstructor } from './struct'
 export const fieldMetadataKey = Symbol('field')
 export const childrenMetadataKey = Symbol('children')
 export const enumMetadataKey = Symbol('enum')
+export const ifMetadataKey = Symbol('if')
 
 export interface FieldMetadata {
   type: FieldType
@@ -19,6 +20,11 @@ export interface FieldDissectorOptions {
   enum?: string
   db?: string
   base?: 'hex' | 'dec' | 'HEX' | 'DEC'
+  append?: 'enum' | 'hex' | 'val' | any
+  append_name?: boolean
+  check_length?: boolean
+  tvb_method?: string
+  add_le?: boolean
   condition?: Record<string, FieldDissectorCondition[]>
 }
 
@@ -127,4 +133,14 @@ export function getEnums(
   return Reflect.getMetadata(enumMetadataKey, target) as
     | EnumMetadata[]
     | undefined
+}
+
+export function ipcIf(fieldName: string) {
+  return (target: StructConstructor): void => {
+    Reflect.defineMetadata(ifMetadataKey, fieldName, target)
+  }
+}
+
+export function getStructIf(target: StructConstructor): string | undefined {
+  return Reflect.getMetadata(ifMetadataKey, target) as string | undefined
 }
