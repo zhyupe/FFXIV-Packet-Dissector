@@ -1,5 +1,7 @@
 local ffxiv_ipc = Proto("ffxiv_ipc", "FFXIV IPC")
 local ipc_type = require("ffxiv_ipc_type_latest")
+local CLIENT_IP = "127.0.0.11"
+local SERVER_IP = "127.0.0.12"
 
 local function makeValString(enumTable)
     local t = {}
@@ -7,6 +9,19 @@ local function makeValString(enumTable)
         t[num] = name
     end
     return t
+end
+
+local function getDirectionMark(pktinfo)
+    local src = tostring(pktinfo.net_src or "")
+    if src == CLIENT_IP then
+        return "C"
+    end
+
+    if src == SERVER_IP then
+        return "S"
+    end
+
+    return nil
 end
 
 local ipc_type_valstr = makeValString(ipc_type.types)
@@ -31,6 +46,7 @@ local data = Dissector.get("data")
 
 function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
     local tree = root:add(ffxiv_ipc, tvbuf)
+    local direction_mark = getDirectionMark(pktinfo)
 
     -- dissect the magic field
     local magic_tvbr = tvbuf:range(0, 2)
@@ -40,7 +56,11 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
     -- dissect the type field
     local type_tvbr = tvbuf:range(2, 2)
     local type_val = type_tvbr:le_uint()
-    tree:append_text(", Type: " .. string.format('%04x', type_val))
+    local type_text = string.format('%04x', type_val)
+    if direction_mark ~= nil then
+        type_text = direction_mark .. " " .. type_text
+    end
+    tree:append_text(", Type: " .. type_text)
     tree:add_le(ipc_hdr_fields.type, type_tvbr)
 
     -- dissect the unknown1 field
@@ -70,7 +90,11 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
     pktinfo.cols.protocol:set("FFXIV")
 
     if string.find(tostring(pktinfo.cols.info), "^IPC") == nil then
-        pktinfo.cols.info:set("IPC(" .. string.format('%04x', type_val) .. ")")
+        local info_text = string.format('%04x', type_val)
+        if direction_mark ~= nil then
+            info_text = direction_mark .. " " .. info_text
+        end
+        pktinfo.cols.info:set("IPC(" .. info_text .. ")")
     end
 
     local tvb = data_tvbr:tvb()
