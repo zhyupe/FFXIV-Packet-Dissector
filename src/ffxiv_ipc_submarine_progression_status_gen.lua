@@ -21,12 +21,12 @@ function ffxiv_ipc_submarine_progression_status.dissector(tvbuf, pktinfo, root)
 
   -- dissect the unlocked_sectors field
   local unlocked_sectors_tvbr = tvbuf:range(1, 15)
-  local unlocked_sectors_val  = unlocked_sectors_tvbr:raw(1)
+  local unlocked_sectors_val  = unlocked_sectors_tvbr:raw()
   tree:add(submarine_progression_status_fields.unlocked_sectors, unlocked_sectors_tvbr, unlocked_sectors_val)
 
   -- dissect the explored_sectors field
   local explored_sectors_tvbr = tvbuf:range(16, 15)
-  local explored_sectors_val  = explored_sectors_tvbr:raw(16)
+  local explored_sectors_val  = explored_sectors_tvbr:raw()
   tree:add(submarine_progression_status_fields.explored_sectors, explored_sectors_tvbr, explored_sectors_val)
 
   return len

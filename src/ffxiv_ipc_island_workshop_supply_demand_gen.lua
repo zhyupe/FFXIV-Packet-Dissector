@@ -26,7 +26,7 @@ function ffxiv_ipc_island_workshop_supply_demand.dissector(tvbuf, pktinfo, root)
 
   -- dissect the supply_demand field
   local supply_demand_tvbr = tvbuf:range(2)
-  local supply_demand_val  = supply_demand_tvbr:raw(2)
+  local supply_demand_val  = supply_demand_tvbr:raw()
   tree:add(island_workshop_supply_demand_fields.supply_demand, supply_demand_tvbr, supply_demand_val)
 
   return len

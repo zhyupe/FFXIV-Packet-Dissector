@@ -93,7 +93,7 @@ function ffxiv_ipc_market_board_listing.dissector(tvbuf, pktinfo, root)
 
   -- dissect the materia field
   local materia_tvbr = tvbuf:range(54, 10)
-  local materia_val  = materia_tvbr:raw(54)
+  local materia_val  = materia_tvbr:raw()
   tree:add(market_board_listing_fields.materia, materia_tvbr, materia_val)
 
   -- dissect the padding1 field

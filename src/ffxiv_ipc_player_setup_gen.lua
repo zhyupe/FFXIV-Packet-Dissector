@@ -50,7 +50,7 @@ function ffxiv_ipc_player_setup.dissector(tvbuf, pktinfo, root)
 
   -- dissect the content_id field
   local content_id_tvbr = tvbuf:range(0, 8)
-  local content_id_val  = content_id_tvbr:raw(0)
+  local content_id_val  = content_id_tvbr:raw()
   tree:add(player_setup_fields.content_id, content_id_tvbr, content_id_val)
 
   -- dissect the char_id field
@@ -190,12 +190,12 @@ function ffxiv_ipc_player_setup.dissector(tvbuf, pktinfo, root)
 
   -- dissect the exp field
   local exp_tvbr = tvbuf:range(168, 112)
-  local exp_val  = exp_tvbr:raw(168)
+  local exp_val  = exp_tvbr:raw()
   tree:add(player_setup_fields.exp, exp_tvbr, exp_val)
 
   -- dissect the level field
   local level_tvbr = tvbuf:range(308, 56)
-  local level_val  = level_tvbr:raw(308)
+  local level_val  = level_tvbr:raw()
   tree:add(player_setup_fields.level, level_tvbr, level_val)
 
   -- dissect the companion_name field
@@ -225,12 +225,12 @@ function ffxiv_ipc_player_setup.dissector(tvbuf, pktinfo, root)
 
   -- dissect the sightseeing_log field
   local sightseeing_log_tvbr = tvbuf:range(1692, 32)
-  local sightseeing_log_val  = sightseeing_log_tvbr:raw(1692)
+  local sightseeing_log_val  = sightseeing_log_tvbr:raw()
   tree:add(player_setup_fields.sightseeing_log, sightseeing_log_tvbr, sightseeing_log_val)
 
   -- dissect the orchestrion_list field
   local orchestrion_list_tvbr = tvbuf:range(1890, 48)
-  local orchestrion_list_val  = orchestrion_list_tvbr:raw(1890)
+  local orchestrion_list_val  = orchestrion_list_tvbr:raw()
   tree:add(player_setup_fields.orchestrion_list, orchestrion_list_tvbr, orchestrion_list_val)
 
   return len

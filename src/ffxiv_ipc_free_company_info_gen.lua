@@ -22,7 +22,7 @@ function ffxiv_ipc_free_company_info.dissector(tvbuf, pktinfo, root)
 
   -- dissect the unknown0 field
   local unknown0_tvbr = tvbuf:range(8, 37)
-  local unknown0_val  = unknown0_tvbr:raw(8)
+  local unknown0_val  = unknown0_tvbr:raw()
   tree:add(free_company_info_fields.unknown0, unknown0_tvbr, unknown0_val)
 
   -- dissect the rank field
@@ -32,7 +32,7 @@ function ffxiv_ipc_free_company_info.dissector(tvbuf, pktinfo, root)
 
   -- dissect the unknown1 field
   local unknown1_tvbr = tvbuf:range(46, 34)
-  local unknown1_val  = unknown1_tvbr:raw(46)
+  local unknown1_val  = unknown1_tvbr:raw()
   tree:add(free_company_info_fields.unknown1, unknown1_tvbr, unknown1_val)
 
   return len

@@ -30,7 +30,7 @@ function ffxiv_ipc_event_play4.dissector(tvbuf, pktinfo, root)
 
   -- dissect the entities field
   local entities_tvbr = tvbuf:range(28, 16)
-  local entities_val  = entities_tvbr:raw(28)
+  local entities_val  = entities_tvbr:raw()
   tree:add(event_play4_fields.entities, entities_tvbr, entities_val)
 
   return len

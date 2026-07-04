@@ -27,7 +27,7 @@ function ffxiv_ipc_ward_land_item.dissector(tvbuf, pktinfo, root)
 
   -- dissect the appeal field
   local appeal_tvbr = tvbuf:range(5, 3)
-  local appeal_val  = appeal_tvbr:raw(5)
+  local appeal_val  = appeal_tvbr:raw()
   tree:add(ward_land_item_fields.appeal, appeal_tvbr, appeal_val)
 
   -- dissect the name field

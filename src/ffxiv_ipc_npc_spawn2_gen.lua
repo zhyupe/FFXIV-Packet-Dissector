@@ -90,22 +90,22 @@ function ffxiv_ipc_npc_spawn2.dissector(tvbuf, pktinfo, root)
 
   -- dissect the target_id field
   local target_id_tvbr = tvbuf:range(16, 8)
-  local target_id_val  = target_id_tvbr:raw(16)
+  local target_id_val  = target_id_tvbr:raw()
   tree:add(npc_spawn2_fields.target_id, target_id_tvbr, target_id_val)
 
   -- dissect the main_weapon_model field
   local main_weapon_model_tvbr = tvbuf:range(32, 8)
-  local main_weapon_model_val  = main_weapon_model_tvbr:raw(32)
+  local main_weapon_model_val  = main_weapon_model_tvbr:raw()
   tree:add(npc_spawn2_fields.main_weapon_model, main_weapon_model_tvbr, main_weapon_model_val)
 
   -- dissect the sec_weapon_model field
   local sec_weapon_model_tvbr = tvbuf:range(40, 8)
-  local sec_weapon_model_val  = sec_weapon_model_tvbr:raw(40)
+  local sec_weapon_model_val  = sec_weapon_model_tvbr:raw()
   tree:add(npc_spawn2_fields.sec_weapon_model, sec_weapon_model_tvbr, sec_weapon_model_val)
 
   -- dissect the craft_tool_model field
   local craft_tool_model_tvbr = tvbuf:range(48, 8)
-  local craft_tool_model_val  = craft_tool_model_tvbr:raw(48)
+  local craft_tool_model_val  = craft_tool_model_tvbr:raw()
   tree:add(npc_spawn2_fields.craft_tool_model, craft_tool_model_tvbr, craft_tool_model_val)
 
   -- dissect the b_npc_base field
@@ -307,7 +307,7 @@ function ffxiv_ipc_npc_spawn2.dissector(tvbuf, pktinfo, root)
 
   -- dissect the models field
   local models_tvbr = tvbuf:range(516, 40)
-  local models_val  = models_tvbr:raw(516)
+  local models_val  = models_tvbr:raw()
   tree:add(npc_spawn2_fields.models, models_tvbr, models_val)
 
   -- dissect the nickname field
@@ -317,7 +317,7 @@ function ffxiv_ipc_npc_spawn2.dissector(tvbuf, pktinfo, root)
 
   -- dissect the look field
   local look_tvbr = tvbuf:range(588, 26)
-  local look_val  = look_tvbr:raw(588)
+  local look_val  = look_tvbr:raw()
   tree:add(npc_spawn2_fields.look, look_tvbr, look_val)
 
   -- dissect the fc_tag field

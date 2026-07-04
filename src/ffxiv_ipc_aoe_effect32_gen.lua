@@ -47,12 +47,12 @@ function ffxiv_ipc_aoe_effect32.dissector(tvbuf, pktinfo, root)
 
   -- dissect the effect_target_ids field
   local effect_target_ids_tvbr = tvbuf:range(2096, 256)
-  local effect_target_ids_val  = effect_target_ids_tvbr:raw(2096)
+  local effect_target_ids_val  = effect_target_ids_tvbr:raw()
   tree:add(aoe_effect32_fields.effect_target_ids, effect_target_ids_tvbr, effect_target_ids_val)
 
   -- dissect the effect_flags field
   local effect_flags_tvbr = tvbuf:range(2352, 8)
-  local effect_flags_val  = effect_flags_tvbr:raw(2352)
+  local effect_flags_val  = effect_flags_tvbr:raw()
   tree:add(aoe_effect32_fields.effect_flags, effect_flags_tvbr, effect_flags_val)
 
   return len

@@ -141,12 +141,12 @@ function ffxiv_ipc_airship_status.dissector(tvbuf, pktinfo, root)
 
   -- dissect the unlocked_sectors field
   local unlocked_sectors_tvbr = tvbuf:range(58, 4)
-  local unlocked_sectors_val  = unlocked_sectors_tvbr:raw(58)
+  local unlocked_sectors_val  = unlocked_sectors_tvbr:raw()
   tree:add(airship_status_fields.unlocked_sectors, unlocked_sectors_tvbr, unlocked_sectors_val)
 
   -- dissect the explored_sectors field
   local explored_sectors_tvbr = tvbuf:range(62, 4)
-  local explored_sectors_val  = explored_sectors_tvbr:raw(62)
+  local explored_sectors_val  = explored_sectors_tvbr:raw()
   tree:add(airship_status_fields.explored_sectors, explored_sectors_tvbr, explored_sectors_val)
 
   -- dissect the unknown1 field

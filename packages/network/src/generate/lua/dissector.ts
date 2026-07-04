@@ -42,11 +42,11 @@ const protoFieldType = ({ type, length }: IPCField) => {
   return type
 }
 
-const tvbMethod = ({ type, offset }: IPCField) => {
+const tvbMethod = ({ type }: IPCField) => {
   if (type === 'string') {
     return 'string(ENC_UTF_8)'
   } else if (type === 'bytes') {
-    return `raw(${offset})`
+    return 'raw()'
   } else if (type.startsWith('uint')) {
     return type === 'uint64' ? 'le_uint64()' : 'le_uint()'
   } else if (type.startsWith('int')) {
