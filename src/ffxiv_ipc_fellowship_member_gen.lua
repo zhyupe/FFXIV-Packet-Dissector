@@ -3,13 +3,13 @@
 local ffxiv_ipc_fellowship_member = Proto("ffxiv_ipc_fellowship_member", "FFXIV-IPC FellowshipMember")
 
 local fellowship_member_fields = {
-  id                     = ProtoField.uint64("ffxiv_ipc_fellowship_member.id", "ID", base.DEC),
-  unknown0               = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown0", "Unknown0", base.DEC),
-  unknown1               = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown1", "Unknown1", base.DEC),
-  unknown2               = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown2", "Unknown2", base.DEC),
-  unknown_time           = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown_time", "UnknownTime", base.DEC),
-  unknown3               = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown3", "Unknown3", base.DEC),
-  unknown4               = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown4", "Unknown4", base.DEC),
+  id                     = ProtoField.uint64("ffxiv_ipc_fellowship_member.id", "id", base.DEC),
+  unknown0               = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown0", "unknown0", base.DEC),
+  unknown1               = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown1", "unknown1", base.DEC),
+  unknown2               = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown2", "unknown2", base.DEC),
+  unknown_time           = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown_time", "unknownTime", base.DEC),
+  unknown3               = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown3", "unknown3", base.DEC),
+  unknown4               = ProtoField.uint32("ffxiv_ipc_fellowship_member.unknown4", "unknown4", base.DEC),
 }
 
 ffxiv_ipc_fellowship_member.fields = fellowship_member_fields

@@ -3,8 +3,8 @@
 local ffxiv_ipc_examine_item_materia = Proto("ffxiv_ipc_examine_item_materia", "FFXIV-IPC ExamineItemMateria")
 
 local examine_item_materia_fields = {
-  materia_id = ProtoField.uint16("ffxiv_ipc_examine_item_materia.materia_id", "MateriaId", base.DEC),
-  tier       = ProtoField.uint16("ffxiv_ipc_examine_item_materia.tier", "Tier", base.DEC),
+  materia_id = ProtoField.uint16("ffxiv_ipc_examine_item_materia.materia_id", "materiaId", base.DEC),
+  tier       = ProtoField.uint16("ffxiv_ipc_examine_item_materia.tier", "tier", base.DEC),
 }
 
 ffxiv_ipc_examine_item_materia.fields = examine_item_materia_fields

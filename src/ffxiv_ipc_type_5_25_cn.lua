@@ -29,6 +29,8 @@ M.types = {
   [0x00ad] = {
     [0] = {
       title = "MarketBoardItemListingCount",
+      name = "ffxiv_ipc_market_board_item_listing_count",
+      length = 8,
     },
   },
   [0x00b1] = {
@@ -107,6 +109,8 @@ M.types = {
   [0x017c] = {
     [0] = {
       title = "SystemLogMessage",
+      name = "ffxiv_ipc_system_log_message",
+      length = 16,
     },
   },
   [0x0185] = {
@@ -136,6 +140,8 @@ M.types = {
   [0x01ba] = {
     [0] = {
       title = "EventFinish",
+      name = "ffxiv_ipc_event_finish",
+      length = 4,
     },
   },
   [0x01d4] = {
@@ -176,6 +182,8 @@ M.types = {
   [0x021f] = {
     [0] = {
       title = "MarketBoardItemListing",
+      name = "ffxiv_ipc_market_board_item_listing",
+      length = 1444,
     },
   },
   [0x022b] = {
@@ -226,6 +234,8 @@ M.types = {
   [0x0297] = {
     [0] = {
       title = "EventPlay",
+      name = "ffxiv_ipc_event_play",
+      length = 32,
     },
   },
   [0x02a6] = {
@@ -245,6 +255,8 @@ M.types = {
   [0x02b9] = {
     [0] = {
       title = "MarketBoardSearchResult",
+      name = "ffxiv_ipc_market_board_search_result",
+      length = 176,
     },
   },
   [0x02d1] = {
@@ -271,11 +283,15 @@ M.types = {
   [0x02e2] = {
     [0] = {
       title = "EventStart",
+      name = "ffxiv_ipc_event_start",
+      length = 12,
     },
   },
   [0x02f1] = {
     [0] = {
       title = "InventoryModifyHandler",
+      name = "ffxiv_ipc_inventory_modify_handler",
+      length = 44,
     },
   },
   [0x0302] = {
@@ -295,6 +311,8 @@ M.types = {
   [0x0324] = {
     [0] = {
       title = "Playtime",
+      name = "ffxiv_ipc_playtime",
+      length = 4,
     },
   },
   [0x0342] = {
@@ -342,11 +360,15 @@ M.types = {
   [0x03b0] = {
     [0] = {
       title = "EventPlay4",
+      name = "ffxiv_ipc_event_play4",
+      length = 44,
     },
   },
   [0x03be] = {
     [0] = {
       title = "MarketBoardItemListingHistory",
+      name = "ffxiv_ipc_market_board_item_listing_history",
+      length = 964,
     },
   },
   [0x03da] = {

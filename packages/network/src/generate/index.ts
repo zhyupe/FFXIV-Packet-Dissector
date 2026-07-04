@@ -1,7 +1,7 @@
-import { generateFromJSON } from './lua/legacy'
+import { generateFromDefinitions } from './lua/definitions'
 
 async function main() {
-  generateFromJSON()
+  generateFromDefinitions()
 }
 
 main()

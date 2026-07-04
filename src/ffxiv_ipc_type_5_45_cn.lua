@@ -12,6 +12,8 @@ M.types = {
   [0x006b] = {
     [0] = {
       title = "AirshipExplorationResult",
+      name = "ffxiv_ipc_airship_exploration_result",
+      length = 284,
     },
   },
   [0x0070] = {
@@ -29,6 +31,8 @@ M.types = {
   [0x007b] = {
     [0] = {
       title = "Playtime",
+      name = "ffxiv_ipc_playtime",
+      length = 4,
     },
   },
   [0x007d] = {
@@ -55,6 +59,8 @@ M.types = {
   [0x0097] = {
     [0] = {
       title = "MarketBoardPurchaseHandler",
+      name = "ffxiv_ipc_market_board_purchase_handler",
+      length = 28,
     },
   },
   [0x009b] = {
@@ -88,11 +94,15 @@ M.types = {
   [0x00d8] = {
     [0] = {
       title = "SubmarineExplorationResult",
+      name = "ffxiv_ipc_submarine_exploration_result",
+      length = 288,
     },
   },
   [0x00d9] = {
     [0] = {
       title = "InventoryModifyHandler",
+      name = "ffxiv_ipc_inventory_modify_handler",
+      length = 44,
     },
   },
   [0x00dd] = {
@@ -112,6 +122,8 @@ M.types = {
   [0x011c] = {
     [0] = {
       title = "MarketBoardPurchase",
+      name = "ffxiv_ipc_market_board_purchase",
+      length = 12,
     },
   },
   [0x0131] = {
@@ -143,6 +155,8 @@ M.types = {
   [0x016a] = {
     [0] = {
       title = "AirshipStatusList",
+      name = "ffxiv_ipc_airship_status_list",
+      length = 158,
     },
   },
   [0x016c] = {
@@ -162,6 +176,8 @@ M.types = {
   [0x0180] = {
     [0] = {
       title = "PrepareZoning",
+      name = "ffxiv_ipc_prepare_zoning",
+      length = 16,
     },
   },
   [0x01a5] = {
@@ -181,11 +197,15 @@ M.types = {
   [0x01c3] = {
     [0] = {
       title = "MarketBoardItemListingCount",
+      name = "ffxiv_ipc_market_board_item_listing_count",
+      length = 8,
     },
   },
   [0x01c4] = {
     [0] = {
       title = "EventPlay4",
+      name = "ffxiv_ipc_event_play4",
+      length = 44,
     },
   },
   [0x01ca] = {
@@ -245,6 +265,8 @@ M.types = {
   [0x0257] = {
     [0] = {
       title = "SystemLogMessage",
+      name = "ffxiv_ipc_system_log_message",
+      length = 16,
     },
   },
   [0x0262] = {
@@ -262,6 +284,8 @@ M.types = {
   [0x0272] = {
     [0] = {
       title = "MarketBoardItemListing",
+      name = "ffxiv_ipc_market_board_item_listing",
+      length = 1444,
     },
   },
   [0x027b] = {
@@ -291,11 +315,15 @@ M.types = {
   [0x02d2] = {
     [0] = {
       title = "Logout",
+      name = "ffxiv_ipc_logout",
+      length = 8,
     },
   },
   [0x02de] = {
     [0] = {
       title = "SubmarineProgressionStatus",
+      name = "ffxiv_ipc_submarine_progression_status",
+      length = 31,
     },
   },
   [0x02f3] = {
@@ -313,6 +341,8 @@ M.types = {
   [0x0308] = {
     [0] = {
       title = "AirshipStatus",
+      name = "ffxiv_ipc_airship_status",
+      length = 72,
     },
   },
   [0x0322] = {
@@ -325,16 +355,22 @@ M.types = {
   [0x0325] = {
     [0] = {
       title = "MarketBoardItemListingHistory",
+      name = "ffxiv_ipc_market_board_item_listing_history",
+      length = 964,
     },
   },
   [0x0326] = {
     [0] = {
       title = "UpdatePositionHandler",
+      name = "ffxiv_ipc_update_position_handler",
+      length = 20,
     },
   },
   [0x034c] = {
     [0] = {
       title = "EventStart",
+      name = "ffxiv_ipc_event_start",
+      length = 12,
     },
   },
   [0x0353] = {
@@ -347,6 +383,8 @@ M.types = {
   [0x035a] = {
     [0] = {
       title = "EventPlay",
+      name = "ffxiv_ipc_event_play",
+      length = 32,
     },
   },
   [0x035b] = {
@@ -399,6 +437,8 @@ M.types = {
   [0x0398] = {
     [0] = {
       title = "MarketBoardSearchResult",
+      name = "ffxiv_ipc_market_board_search_result",
+      length = 176,
     },
   },
   [0x0399] = {
@@ -411,6 +451,8 @@ M.types = {
   [0x03a5] = {
     [0] = {
       title = "FreeCompanyDialog",
+      name = "ffxiv_ipc_free_company_dialog",
+      length = 79,
     },
   },
   [0x03a8] = {
@@ -428,11 +470,15 @@ M.types = {
     },
     [1] = {
       title = "EventFinish",
+      name = "ffxiv_ipc_event_finish",
+      length = 4,
     },
   },
   [0x03d4] = {
     [0] = {
       title = "FreeCompanyInfo",
+      name = "ffxiv_ipc_free_company_info",
+      length = 80,
     },
   },
   [0x03d5] = {

@@ -5,6 +5,8 @@ M.types = {
   [0x007a] = {
     [0] = {
       title = "EventPlay32",
+      name = "ffxiv_ipc_event_play32",
+      length = 156,
     },
   },
   [0x007b] = {
@@ -29,16 +31,22 @@ M.types = {
   [0x0089] = {
     [0] = {
       title = "MarketBoardPurchase",
+      name = "ffxiv_ipc_market_board_purchase",
+      length = 12,
     },
   },
   [0x008a] = {
     [0] = {
       title = "SubmarineExplorationResult",
+      name = "ffxiv_ipc_submarine_exploration_result",
+      length = 288,
     },
   },
   [0x00a7] = {
     [0] = {
       title = "Logout",
+      name = "ffxiv_ipc_logout",
+      length = 8,
     },
   },
   [0x00ad] = {
@@ -49,6 +57,8 @@ M.types = {
     },
     [1] = {
       title = "FreeCompanyInfo",
+      name = "ffxiv_ipc_free_company_info",
+      length = 80,
     },
   },
   [0x00b7] = {
@@ -151,11 +161,15 @@ M.types = {
   [0x013f] = {
     [0] = {
       title = "MarketBoardItemListingCount",
+      name = "ffxiv_ipc_market_board_item_listing_count",
+      length = 8,
     },
   },
   [0x014a] = {
     [0] = {
       title = "Playtime",
+      name = "ffxiv_ipc_playtime",
+      length = 4,
     },
   },
   [0x0150] = {
@@ -173,6 +187,8 @@ M.types = {
   [0x0163] = {
     [0] = {
       title = "SubmarineProgressionStatus",
+      name = "ffxiv_ipc_submarine_progression_status",
+      length = 31,
     },
   },
   [0x0167] = {
@@ -211,6 +227,8 @@ M.types = {
   [0x01a8] = {
     [0] = {
       title = "FreeCompanyDialog",
+      name = "ffxiv_ipc_free_company_dialog",
+      length = 79,
     },
   },
   [0x01b2] = {
@@ -233,6 +251,8 @@ M.types = {
   [0x01d7] = {
     [0] = {
       title = "EventPlay4",
+      name = "ffxiv_ipc_event_play4",
+      length = 44,
     },
   },
   [0x01f5] = {
@@ -269,6 +289,8 @@ M.types = {
   [0x0235] = {
     [0] = {
       title = "EventStart",
+      name = "ffxiv_ipc_event_start",
+      length = 12,
     },
   },
   [0x0239] = {
@@ -279,6 +301,8 @@ M.types = {
   [0x0244] = {
     [0] = {
       title = "ItemMarketBoardInfo",
+      name = "ffxiv_ipc_item_market_board_info",
+      length = 20,
     },
   },
   [0x024e] = {
@@ -304,6 +328,8 @@ M.types = {
   [0x0270] = {
     [0] = {
       title = "UpdatePositionHandler",
+      name = "ffxiv_ipc_update_position_handler",
+      length = 20,
     },
   },
   [0x027f] = {
@@ -316,6 +342,8 @@ M.types = {
   [0x0283] = {
     [0] = {
       title = "AirshipStatus",
+      name = "ffxiv_ipc_airship_status",
+      length = 72,
     },
   },
   [0x028d] = {
@@ -347,21 +375,29 @@ M.types = {
   [0x02b4] = {
     [0] = {
       title = "WeatherChange",
+      name = "ffxiv_ipc_weather_change",
+      length = 8,
     },
   },
   [0x02c1] = {
     [0] = {
       title = "MarketBoardItemListing",
+      name = "ffxiv_ipc_market_board_item_listing",
+      length = 1444,
     },
   },
   [0x02c6] = {
     [0] = {
       title = "EventFinish",
+      name = "ffxiv_ipc_event_finish",
+      length = 4,
     },
   },
   [0x02d1] = {
     [0] = {
       title = "MarketBoardSearchResult",
+      name = "ffxiv_ipc_market_board_search_result",
+      length = 176,
     },
   },
   [0x02d5] = {
@@ -381,6 +417,8 @@ M.types = {
   [0x02ed] = {
     [0] = {
       title = "MarketBoardItemListingHistory",
+      name = "ffxiv_ipc_market_board_item_listing_history",
+      length = 964,
     },
   },
   [0x02f0] = {
@@ -414,6 +452,8 @@ M.types = {
   [0x0305] = {
     [0] = {
       title = "PrepareZoning",
+      name = "ffxiv_ipc_prepare_zoning",
+      length = 16,
     },
   },
   [0x0308] = {
@@ -466,6 +506,8 @@ M.types = {
   [0x0369] = {
     [0] = {
       title = "IslandWorkshopSupplyDemand",
+      name = "ffxiv_ipc_island_workshop_supply_demand",
+      length = 2,
     },
   },
   [0x0376] = {
@@ -478,6 +520,8 @@ M.types = {
   [0x0378] = {
     [0] = {
       title = "SystemLogMessage",
+      name = "ffxiv_ipc_system_log_message",
+      length = 16,
     },
   },
   [0x0383] = {
@@ -507,6 +551,8 @@ M.types = {
   [0x03af] = {
     [0] = {
       title = "MarketBoardPurchaseHandler",
+      name = "ffxiv_ipc_market_board_purchase_handler",
+      length = 28,
     },
     [1] = {
       title = "WorldVisitQueue",
@@ -520,6 +566,8 @@ M.types = {
   [0x03b5] = {
     [0] = {
       title = "EventPlay",
+      name = "ffxiv_ipc_event_play",
+      length = 32,
     },
   },
   [0x03be] = {
@@ -540,16 +588,22 @@ M.types = {
     },
     [1] = {
       title = "InventoryModifyHandler",
+      name = "ffxiv_ipc_inventory_modify_handler",
+      length = 44,
     },
   },
   [0x03df] = {
     [0] = {
       title = "AirshipExplorationResult",
+      name = "ffxiv_ipc_airship_exploration_result",
+      length = 284,
     },
   },
   [0x03e4] = {
     [0] = {
       title = "AirshipStatusList",
+      name = "ffxiv_ipc_airship_status_list",
+      length = 158,
     },
   },
   [0x03e7] = {

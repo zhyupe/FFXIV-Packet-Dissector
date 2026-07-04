@@ -5,14 +5,14 @@ local db = require('ffxiv_db')
 local ffxiv_ipc_fellowship_message_board_item = Proto("ffxiv_ipc_fellowship_message_board_item", "FFXIV-IPC FellowshipMessageBoardItem")
 
 local fellowship_message_board_item_fields = {
-  unique_id   = ProtoField.uint64("ffxiv_ipc_fellowship_message_board_item.unique_id", "UniqueID", base.HEX),
-  time        = ProtoField.uint32("ffxiv_ipc_fellowship_message_board_item.time", "Time", base.DEC),
-  user_server = ProtoField.uint16("ffxiv_ipc_fellowship_message_board_item.user_server", "UserServer", base.DEC, db.server),
-  unknown0    = ProtoField.uint8("ffxiv_ipc_fellowship_message_board_item.unknown0", "Unknown0", base.DEC),
-  emotion     = ProtoField.uint8("ffxiv_ipc_fellowship_message_board_item.emotion", "Emotion", base.DEC),
-  index       = ProtoField.uint16("ffxiv_ipc_fellowship_message_board_item.index", "Index", base.DEC),
-  nickname    = ProtoField.string("ffxiv_ipc_fellowship_message_board_item.nickname", "Nickname", base.UNICODE),
-  content     = ProtoField.string("ffxiv_ipc_fellowship_message_board_item.content", "Content", base.UNICODE),
+  unique_id   = ProtoField.uint64("ffxiv_ipc_fellowship_message_board_item.unique_id", "uniqueId", base.HEX),
+  time        = ProtoField.uint32("ffxiv_ipc_fellowship_message_board_item.time", "time", base.DEC),
+  user_server = ProtoField.uint16("ffxiv_ipc_fellowship_message_board_item.user_server", "userServer", base.DEC, db.server),
+  unknown0    = ProtoField.uint8("ffxiv_ipc_fellowship_message_board_item.unknown0", "unknown0", base.DEC),
+  emotion     = ProtoField.uint8("ffxiv_ipc_fellowship_message_board_item.emotion", "emotion", base.DEC),
+  index       = ProtoField.uint16("ffxiv_ipc_fellowship_message_board_item.index", "index", base.DEC),
+  nickname    = ProtoField.string("ffxiv_ipc_fellowship_message_board_item.nickname", "nickname", base.UNICODE),
+  content     = ProtoField.string("ffxiv_ipc_fellowship_message_board_item.content", "content", base.UNICODE),
 }
 
 ffxiv_ipc_fellowship_message_board_item.fields = fellowship_message_board_item_fields

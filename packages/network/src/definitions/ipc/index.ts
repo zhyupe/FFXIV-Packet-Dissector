@@ -3,12 +3,21 @@
 import { NormalizedOpcode } from '@/opcode'
 import type { StructConstructor } from '@/struct/struct'
 import { ActorCast } from './actor-cast'
-import { ActorControl, ActorControlSelf } from './actor-control'
+import {
+  ActorControl,
+  ActorControlSelf,
+  ActorControlTarget,
+} from './actor-control'
 import { ActorFreeSpawn } from './actor-free-spawn'
 import { ActorGauge } from './actor-gauge'
 import { ActorMove } from './actor-move'
 import { ActorSetPos } from './actor-set-pos'
 import { AddStatusEffect } from './add-status-effect'
+import {
+  AirshipExplorationResult,
+  AirshipStatus,
+  AirshipStatusList,
+} from './airship'
 import { AoeEffect8, AoeEffect16, AoeEffect24, AoeEffect32 } from './aoe-effect'
 import { CEDirector } from './ce-director'
 import { ClientAction } from './client-action'
@@ -37,13 +46,16 @@ import { ContentFinderTrigger } from './content-finder-trigger'
 import { ContentFinderTriggerRouttle } from './content-finder-trigger-routtle'
 import { CraftStatus } from './craft-status'
 import { CurrencyCrystalInfo } from './currency-crystal-info'
-import { Effect, Effect8, Effect16, Effect24, Effect32 } from './effect'
+import { Effect } from './effect'
 import { AddStatusEffectItem, EffectResult } from './effect-result'
 import { EnsembleReadyReceive } from './ensemble-ready-receive'
 import { EnsembleReadySend } from './ensemble-ready-send'
 import { EnsembleStartReceive } from './ensemble-start-receive'
 import { EnsembleStartSend } from './ensemble-start-send'
+import { EventFinish } from './event-finish'
 import { EventHandlerReturn } from './event-handler-return'
+import { EventPlay, EventPlay4, EventPlay32 } from './event-play'
+import { EventStart } from './event-start'
 import { Examine, ExamineItemData, ExamineItemMateria } from './examine'
 import { FateInfo } from './fate-info'
 import { FatePosition } from './fate-position'
@@ -60,16 +72,30 @@ import { FellowshipMemberSetGroupHandler } from './fellowship-member-set-group-h
 import { FellowshipMessageBoard } from './fellowship-message-board'
 import { FellowshipMessageBoardQuery } from './fellowship-message-board-query'
 import { FishEvent } from './fish-event'
+import { FreeCompanyDialog } from './free-company-dialog'
+import { FreeCompanyInfo } from './free-company-info'
 import { GardenStatus } from './garden-status'
 import { GroupMessage } from './group-message'
 import { Init } from './init'
 import { InitZone } from './init-zone'
 import { InventoryActionAck } from './inventory-action-ack'
+import { InventoryModifyHandler } from './inventory-modify-handler'
 import { InventoryTransaction } from './inventory-transaction'
 import { InventoryTransactionFinish } from './inventory-transaction-finish'
+import { IslandWorkshopSupplyDemand } from './island-workshop-supply-demand'
 import { ItemCount } from './item-count'
 import { LinkshellItem, LinkshellList } from './linkshell-list'
+import { Logout } from './logout'
 import { MailLetterNotification } from './mail-letter-notification'
+import {
+  ItemMarketBoardInfo,
+  MarketBoardItemListing,
+  MarketBoardItemListingCount,
+  MarketBoardItemListingHistory,
+  MarketBoardPurchase,
+  MarketBoardPurchaseHandler,
+  MarketBoardSearchResult,
+} from './market-board'
 import { NpcRemove } from './npc-remove'
 import { NpcSpawn, NpcSpawn2 } from './npc-spawn'
 import { ObjectSpawn } from './object-spawn'
@@ -80,13 +106,20 @@ import { PlayerSetup } from './player-setup'
 import { PlayerSpawn } from './player-spawn'
 import { PlayerStateFlags } from './player-state-flags'
 import { PlayerStats } from './player-stats'
+import { Playtime } from './playtime'
+import { PrepareZoning } from './prepare-zoning'
 import { PublicMessage } from './public-message'
 import { RetainerInformation } from './retainer-information'
 import { ServerNotice, ServerNoticeShort } from './server-notice'
 import { SetOnlineStatus } from './set-online-status'
 import { SkillHandler } from './skill-handler'
 import { BossStatusEffectList, StatusEffectList } from './status-effect-list'
-import { SubmarineStatusList } from './submarine'
+import {
+  SubmarineExplorationResult,
+  SubmarineProgressionStatus,
+  SubmarineStatusList,
+} from './submarine'
+import { SystemLogMessage } from './system-log-message'
 import { TreasureInfo } from './treasure-info'
 import { TreasureShiftingWheelResult } from './treasure-shifting-wheel-result'
 import { TripleTraid } from './triple-traid'
@@ -95,8 +128,10 @@ import { TripleTraidStatus } from './triple-traid-status'
 import { UpdateClassInfo } from './update-class-info'
 import { UpdateHpMpTp } from './update-hp-mp-tp'
 import { ItemInfo, UpdateInventorySlot } from './update-inventory-slot'
+import { UpdatePositionHandler } from './update-position-handler'
 import { UpdatePositionInstance } from './update-position-instance'
 import { WardLandInfo } from './ward-land-info'
+import { WeatherChange } from './weather-change'
 
 function packetMapTypeConstraint<
   T extends Partial<Record<NormalizedOpcode, StructConstructor>>,
@@ -110,10 +145,14 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.ActorCast]: ActorCast,
   [NormalizedOpcode.ActorControl]: ActorControl,
   [NormalizedOpcode.ActorControlSelf]: ActorControlSelf,
+  [NormalizedOpcode.ActorControlTarget]: ActorControlTarget,
   [NormalizedOpcode.ActorFreeSpawn]: ActorFreeSpawn,
   [NormalizedOpcode.ActorGauge]: ActorGauge,
   [NormalizedOpcode.ActorMove]: ActorMove,
   [NormalizedOpcode.ActorSetPos]: ActorSetPos,
+  [NormalizedOpcode.AirshipExplorationResult]: AirshipExplorationResult,
+  [NormalizedOpcode.AirshipStatus]: AirshipStatus,
+  [NormalizedOpcode.AirshipStatusList]: AirshipStatusList,
   [NormalizedOpcode.AoeEffect16]: AoeEffect16,
   [NormalizedOpcode.AoeEffect24]: AoeEffect24,
   [NormalizedOpcode.AoeEffect32]: AoeEffect32,
@@ -128,13 +167,39 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.CurrencyCrystalInfo]: CurrencyCrystalInfo,
   [NormalizedOpcode.Effect]: Effect,
   [NormalizedOpcode.EffectResult]: EffectResult,
+  [NormalizedOpcode.EventFinish]: EventFinish,
+  [NormalizedOpcode.EventPlay]: EventPlay,
+  [NormalizedOpcode.EventPlay32]: EventPlay32,
+  [NormalizedOpcode.EventPlay4]: EventPlay4,
+  [NormalizedOpcode.EventStart]: EventStart,
   [NormalizedOpcode.Examine]: Examine,
   [NormalizedOpcode.FateInfo]: FateInfo,
+  [NormalizedOpcode.FellowshipInfo]: FellowshipInfo,
+  [NormalizedOpcode.FellowshipInfoQuery]: FellowshipInfoQuery,
+  [NormalizedOpcode.FellowshipList]: FellowshipList,
+  [NormalizedOpcode.FellowshipMember]: FellowshipMember,
+  [NormalizedOpcode.FellowshipMemberSetGroupHandler]:
+    FellowshipMemberSetGroupHandler,
+  [NormalizedOpcode.FellowshipMessageBoard]: FellowshipMessageBoard,
+  [NormalizedOpcode.FellowshipMessageBoardQuery]: FellowshipMessageBoardQuery,
+  [NormalizedOpcode.FreeCompanyDialog]: FreeCompanyDialog,
+  [NormalizedOpcode.FreeCompanyInfo]: FreeCompanyInfo,
   [NormalizedOpcode.InitZone]: InitZone,
   [NormalizedOpcode.InventoryActionAck]: InventoryActionAck,
+  [NormalizedOpcode.InventoryModifyHandler]: InventoryModifyHandler,
   [NormalizedOpcode.InventoryTransaction]: InventoryTransaction,
   [NormalizedOpcode.InventoryTransactionFinish]: InventoryTransactionFinish,
+  [NormalizedOpcode.IslandWorkshopSupplyDemand]: IslandWorkshopSupplyDemand,
   [NormalizedOpcode.ItemInfo]: ItemInfo,
+  [NormalizedOpcode.ItemMarketBoardInfo]: ItemMarketBoardInfo,
+  [NormalizedOpcode.Logout]: Logout,
+  [NormalizedOpcode.MarketBoardItemListing]: MarketBoardItemListing,
+  [NormalizedOpcode.MarketBoardItemListingCount]: MarketBoardItemListingCount,
+  [NormalizedOpcode.MarketBoardItemListingHistory]:
+    MarketBoardItemListingHistory,
+  [NormalizedOpcode.MarketBoardPurchase]: MarketBoardPurchase,
+  [NormalizedOpcode.MarketBoardPurchaseHandler]: MarketBoardPurchaseHandler,
+  [NormalizedOpcode.MarketBoardSearchResult]: MarketBoardSearchResult,
   [NormalizedOpcode.NpcSpawn]: NpcSpawn,
   [NormalizedOpcode.NpcSpawn2]: NpcSpawn2,
   [NormalizedOpcode.ObjectSpawn]: ObjectSpawn,
@@ -142,14 +207,21 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.PlayerSetup]: PlayerSetup,
   [NormalizedOpcode.PlayerSpawn]: PlayerSpawn,
   [NormalizedOpcode.PlayerStats]: PlayerStats,
+  [NormalizedOpcode.Playtime]: Playtime,
+  [NormalizedOpcode.PrepareZoning]: PrepareZoning,
   [NormalizedOpcode.RetainerInformation]: RetainerInformation,
   [NormalizedOpcode.StatusEffectList]: StatusEffectList,
+  [NormalizedOpcode.SubmarineExplorationResult]: SubmarineExplorationResult,
+  [NormalizedOpcode.SubmarineProgressionStatus]: SubmarineProgressionStatus,
   [NormalizedOpcode.SubmarineStatusList]: SubmarineStatusList,
+  [NormalizedOpcode.SystemLogMessage]: SystemLogMessage,
   [NormalizedOpcode.UpdateClassInfo]: UpdateClassInfo,
   [NormalizedOpcode.UpdateHpMpTp]: UpdateHpMpTp,
   [NormalizedOpcode.UpdateInventorySlot]: UpdateInventorySlot,
+  [NormalizedOpcode.UpdatePositionHandler]: UpdatePositionHandler,
   [NormalizedOpcode.UpdatePositionInstance]: UpdatePositionInstance,
   [NormalizedOpcode.WardLandInfo]: WardLandInfo,
+  [NormalizedOpcode.WeatherChange]: WeatherChange,
 })
 
 export * from './common/action-effect-display-type.enum'
@@ -169,12 +241,16 @@ export {
   ActorCast,
   ActorControl,
   ActorControlSelf,
+  ActorControlTarget,
   ActorFreeSpawn,
   ActorGauge,
   ActorMove,
   ActorSetPos,
   AddStatusEffect,
   AddStatusEffectItem,
+  AirshipExplorationResult,
+  AirshipStatus,
+  AirshipStatusList,
   AoeEffect8,
   AoeEffect16,
   AoeEffect24,
@@ -203,16 +279,17 @@ export {
   CraftStatus,
   CurrencyCrystalInfo,
   Effect,
-  Effect8,
-  Effect16,
-  Effect24,
-  Effect32,
   EffectResult,
   EnsembleReadyReceive,
   EnsembleReadySend,
   EnsembleStartReceive,
   EnsembleStartSend,
+  EventFinish,
   EventHandlerReturn,
+  EventPlay,
+  EventPlay4,
+  EventPlay32,
+  EventStart,
   Examine,
   ExamineItemData,
   ExamineItemMateria,
@@ -234,18 +311,30 @@ export {
   FellowshipMessageBoardQuery,
   FellowshipNoteItem,
   FishEvent,
+  FreeCompanyDialog,
+  FreeCompanyInfo,
   GardenStatus,
   GroupMessage,
   Init,
   InitZone,
   InventoryActionAck,
+  InventoryModifyHandler,
   InventoryTransaction,
   InventoryTransactionFinish,
+  IslandWorkshopSupplyDemand,
   ItemCount,
   ItemInfo,
+  ItemMarketBoardInfo,
   LinkshellItem,
   LinkshellList,
+  Logout,
   MailLetterNotification,
+  MarketBoardItemListing,
+  MarketBoardItemListingCount,
+  MarketBoardItemListingHistory,
+  MarketBoardPurchase,
+  MarketBoardPurchaseHandler,
+  MarketBoardSearchResult,
   NpcRemove,
   NpcSpawn,
   NpcSpawn2,
@@ -258,6 +347,8 @@ export {
   PlayerSpawn,
   PlayerStateFlags,
   PlayerStats,
+  Playtime,
+  PrepareZoning,
   PublicMessage,
   RetainerInformation,
   ServerNotice,
@@ -265,7 +356,10 @@ export {
   SetOnlineStatus,
   SkillHandler,
   StatusEffectList,
+  SubmarineExplorationResult,
+  SubmarineProgressionStatus,
   SubmarineStatusList,
+  SystemLogMessage,
   TreasureInfo,
   TreasureShiftingWheelResult,
   TripleTraid,
@@ -274,6 +368,8 @@ export {
   UpdateClassInfo,
   UpdateHpMpTp,
   UpdateInventorySlot,
+  UpdatePositionHandler,
   UpdatePositionInstance,
   WardLandInfo,
+  WeatherChange,
 }

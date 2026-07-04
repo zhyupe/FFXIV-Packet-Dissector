@@ -12,6 +12,8 @@ M.types = {
   [0x007e] = {
     [0] = {
       title = "UpdatePositionHandler",
+      name = "ffxiv_ipc_update_position_handler",
+      length = 20,
     },
   },
   [0x008c] = {
@@ -22,6 +24,8 @@ M.types = {
   [0x0094] = {
     [0] = {
       title = "SystemLogMessage",
+      name = "ffxiv_ipc_system_log_message",
+      length = 16,
     },
   },
   [0x00a6] = {
@@ -53,6 +57,8 @@ M.types = {
   [0x00c1] = {
     [0] = {
       title = "MarketBoardItemListingHistory",
+      name = "ffxiv_ipc_market_board_item_listing_history",
+      length = 964,
     },
   },
   [0x00e7] = {
@@ -121,6 +127,8 @@ M.types = {
   [0x0157] = {
     [0] = {
       title = "EventStart",
+      name = "ffxiv_ipc_event_start",
+      length = 12,
     },
   },
   [0x0159] = {
@@ -140,6 +148,8 @@ M.types = {
   [0x018b] = {
     [0] = {
       title = "EventPlay4",
+      name = "ffxiv_ipc_event_play4",
+      length = 44,
     },
   },
   [0x0192] = {
@@ -159,11 +169,15 @@ M.types = {
   [0x01a6] = {
     [0] = {
       title = "PrepareZoning",
+      name = "ffxiv_ipc_prepare_zoning",
+      length = 16,
     },
   },
   [0x01ad] = {
     [0] = {
       title = "EventFinish",
+      name = "ffxiv_ipc_event_finish",
+      length = 4,
     },
   },
   [0x01ba] = {
@@ -176,6 +190,8 @@ M.types = {
   [0x01cd] = {
     [0] = {
       title = "EventPlay",
+      name = "ffxiv_ipc_event_play",
+      length = 32,
     },
   },
   [0x01dd] = {
@@ -195,6 +211,8 @@ M.types = {
   [0x0215] = {
     [0] = {
       title = "MarketBoardItemListing",
+      name = "ffxiv_ipc_market_board_item_listing",
+      length = 1444,
     },
   },
   [0x0221] = {
@@ -266,6 +284,8 @@ M.types = {
   [0x02f5] = {
     [0] = {
       title = "MarketBoardItemListingCount",
+      name = "ffxiv_ipc_market_board_item_listing_count",
+      length = 8,
     },
   },
   [0x0306] = {
@@ -285,6 +305,8 @@ M.types = {
   [0x0364] = {
     [0] = {
       title = "InventoryModifyHandler",
+      name = "ffxiv_ipc_inventory_modify_handler",
+      length = 44,
     },
   },
   [0x0365] = {
@@ -349,11 +371,15 @@ M.types = {
   [0x03b7] = {
     [0] = {
       title = "MarketBoardSearchResult",
+      name = "ffxiv_ipc_market_board_search_result",
+      length = 176,
     },
   },
   [0x03c9] = {
     [0] = {
       title = "Playtime",
+      name = "ffxiv_ipc_playtime",
+      length = 4,
     },
   },
   [0x03db] = {

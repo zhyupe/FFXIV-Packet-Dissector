@@ -3,10 +3,10 @@
 local ffxiv_ipc_fellowship_message_board = Proto("ffxiv_ipc_fellowship_message_board", "FFXIV-IPC FellowshipMessageBoard")
 
 local fellowship_message_board_fields = {
-  id                            = ProtoField.uint64("ffxiv_ipc_fellowship_message_board.id", "ID", base.DEC),
-  unknown0                      = ProtoField.uint32("ffxiv_ipc_fellowship_message_board.unknown0", "Unknown0", base.DEC),
-  next_offset                   = ProtoField.uint16("ffxiv_ipc_fellowship_message_board.next_offset", "NextOffset", base.DEC),
-  current_offset                = ProtoField.uint16("ffxiv_ipc_fellowship_message_board.current_offset", "CurrentOffset", base.DEC),
+  id                            = ProtoField.uint64("ffxiv_ipc_fellowship_message_board.id", "id", base.DEC),
+  unknown0                      = ProtoField.uint32("ffxiv_ipc_fellowship_message_board.unknown0", "unknown0", base.DEC),
+  next_offset                   = ProtoField.uint16("ffxiv_ipc_fellowship_message_board.next_offset", "nextOffset", base.DEC),
+  current_offset                = ProtoField.uint16("ffxiv_ipc_fellowship_message_board.current_offset", "currentOffset", base.DEC),
 }
 
 ffxiv_ipc_fellowship_message_board.fields = fellowship_message_board_fields

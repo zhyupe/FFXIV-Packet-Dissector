@@ -3,11 +3,11 @@
 local ffxiv_ipc_fellowship_info_query = Proto("ffxiv_ipc_fellowship_info_query", "FFXIV-IPC FellowshipInfoQuery")
 
 local fellowship_info_query_fields = {
-  id       = ProtoField.uint64("ffxiv_ipc_fellowship_info_query.id", "ID", base.DEC),
-  unknown1 = ProtoField.uint32("ffxiv_ipc_fellowship_info_query.unknown1", "Unknown1", base.DEC),
-  unknown2 = ProtoField.uint32("ffxiv_ipc_fellowship_info_query.unknown2", "Unknown2", base.DEC),
-  limit    = ProtoField.uint32("ffxiv_ipc_fellowship_info_query.limit", "Limit", base.DEC),
-  unknown3 = ProtoField.uint32("ffxiv_ipc_fellowship_info_query.unknown3", "Unknown3", base.DEC),
+  id       = ProtoField.uint64("ffxiv_ipc_fellowship_info_query.id", "id", base.DEC),
+  unknown1 = ProtoField.uint32("ffxiv_ipc_fellowship_info_query.unknown1", "unknown1", base.DEC),
+  unknown2 = ProtoField.uint32("ffxiv_ipc_fellowship_info_query.unknown2", "unknown2", base.DEC),
+  limit    = ProtoField.uint32("ffxiv_ipc_fellowship_info_query.limit", "limit", base.DEC),
+  unknown3 = ProtoField.uint32("ffxiv_ipc_fellowship_info_query.unknown3", "unknown3", base.DEC),
 }
 
 ffxiv_ipc_fellowship_info_query.fields = fellowship_info_query_fields

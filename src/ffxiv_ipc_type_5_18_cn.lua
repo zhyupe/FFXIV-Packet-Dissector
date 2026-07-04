@@ -45,6 +45,8 @@ M.types = {
   [0x00cf] = {
     [0] = {
       title = "EventStart",
+      name = "ffxiv_ipc_event_start",
+      length = 12,
     },
   },
   [0x00d5] = {
@@ -57,6 +59,8 @@ M.types = {
   [0x00df] = {
     [0] = {
       title = "MarketBoardItemListingHistory",
+      name = "ffxiv_ipc_market_board_item_listing_history",
+      length = 964,
     },
   },
   [0x0116] = {
@@ -90,11 +94,15 @@ M.types = {
   [0x01c5] = {
     [0] = {
       title = "MarketBoardSearchResult",
+      name = "ffxiv_ipc_market_board_search_result",
+      length = 176,
     },
   },
   [0x01db] = {
     [0] = {
       title = "EventPlay",
+      name = "ffxiv_ipc_event_play",
+      length = 32,
     },
   },
   [0x01e5] = {
@@ -145,6 +153,8 @@ M.types = {
   [0x0231] = {
     [0] = {
       title = "MarketBoardItemListingCount",
+      name = "ffxiv_ipc_market_board_item_listing_count",
+      length = 8,
     },
   },
   [0x0233] = {
@@ -216,6 +226,8 @@ M.types = {
   [0x0291] = {
     [0] = {
       title = "InventoryModifyHandler",
+      name = "ffxiv_ipc_inventory_modify_handler",
+      length = 44,
     },
   },
   [0x02bf] = {
@@ -226,6 +238,8 @@ M.types = {
   [0x02c1] = {
     [0] = {
       title = "EventPlay4",
+      name = "ffxiv_ipc_event_play4",
+      length = 44,
     },
   },
   [0x02c6] = {
@@ -238,6 +252,8 @@ M.types = {
   [0x02d7] = {
     [0] = {
       title = "MarketBoardItemListing",
+      name = "ffxiv_ipc_market_board_item_listing",
+      length = 1444,
     },
   },
   [0x02d8] = {
@@ -257,6 +273,8 @@ M.types = {
   [0x0320] = {
     [0] = {
       title = "EventFinish",
+      name = "ffxiv_ipc_event_finish",
+      length = 4,
     },
   },
   [0x0346] = {
@@ -300,6 +318,8 @@ M.types = {
   [0x03bd] = {
     [0] = {
       title = "Playtime",
+      name = "ffxiv_ipc_playtime",
+      length = 4,
     },
   },
   [0x03cc] = {
@@ -319,6 +339,8 @@ M.types = {
   [0x03e7] = {
     [0] = {
       title = "SystemLogMessage",
+      name = "ffxiv_ipc_system_log_message",
+      length = 16,
     },
   },
 }

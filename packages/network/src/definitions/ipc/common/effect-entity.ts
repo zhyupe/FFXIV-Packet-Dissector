@@ -1,7 +1,11 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field } from '@/struct/struct.decorator'
+import { dissector, field, ipcEnum } from '@/struct/struct.decorator'
+import { ActionEffectType } from './action-effect-type.enum'
+import { ActionHitSeverityType } from './action-hit-severity-type.enum'
 
+@ipcEnum('ActionEffectType', ActionEffectType)
+@ipcEnum('ActionHitSeverityType', ActionHitSeverityType)
 export class EffectEntity extends Struct {
   static byteLength = 8
 

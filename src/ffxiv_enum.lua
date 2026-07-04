@@ -21,6 +21,16 @@ M.forward.actor_cast_skill_type = {
 }
 M.reverse.actor_cast_skill_type = makeValString(M.forward.actor_cast_skill_type)
 
+M.forward.actor_control144_marker = {
+  Marker_A = 0,
+  Marker_B = 1,
+  Marker_C = 2,
+  Marker_D = 3,
+  Marker_1 = 4,
+  Marker_2 = 5,
+}
+M.reverse.actor_control144_marker = makeValString(M.forward.actor_control144_marker)
+
 M.forward.actor_control_type = {
   ToggleWeapon = 0,
   AutoAttack = 1,
@@ -197,27 +207,50 @@ M.forward.actor_control_type = {
 }
 M.reverse.actor_control_type = makeValString(M.forward.actor_control_type)
 
-M.forward.actor_control144_category = {
-  Marker = 310,
+M.forward.action_effect_display_type = {
+  HideActionName = 0,
+  ShowActionName = 1,
+  ShowItemName = 2,
 }
-M.reverse.actor_control144_category = makeValString(M.forward.actor_control144_category)
+M.reverse.action_effect_display_type = makeValString(M.forward.action_effect_display_type)
 
-M.forward.actor_control144_marker = {
-  Marker_A = 0,
-  Marker_B = 1,
-  Marker_C = 2,
-  Marker_D = 3,
-  Marker_1 = 4,
-  Marker_2 = 5,
+M.forward.action_hit_severity_type = {
+  NormalDamage = 0,
+  CritHeal = 0,
+  CritDamage = 1,
+  NormalHeal = 1,
+  DirectHitDamage = 2,
+  CritDirectHitDamage = 3,
 }
-M.reverse.actor_control144_marker = makeValString(M.forward.actor_control144_marker)
+M.reverse.action_hit_severity_type = makeValString(M.forward.action_hit_severity_type)
 
-M.forward.client_action_type = {
-  Action = 8,
-  CraftAction = 9,
-  InvalidAction = 10,
+M.forward.action_effect_type = {
+  Nothing = 0,
+  Miss = 1,
+  FullResist = 2,
+  Damage = 3,
+  Heal = 4,
+  BlockedDamage = 5,
+  ParriedDamage = 6,
+  Invulnerable = 7,
+  NoEffectText = 8,
+  Unknown_0 = 9,
+  MpLoss = 10,
+  MpGain = 11,
+  TpLoss = 12,
+  TpGain = 13,
+  GpGain = 14,
+  StartActionCombo = 28,
+  Knockback = 33,
+  Mount = 38,
+  VFX = 59,
 }
-M.reverse.client_action_type = makeValString(M.forward.client_action_type)
+M.reverse.action_effect_type = makeValString(M.forward.action_effect_type)
+
+M.forward.client_trigger_fish_bait_type = {
+  Light = 6,
+}
+M.reverse.client_trigger_fish_bait_type = makeValString(M.forward.client_trigger_fish_bait_type)
 
 M.forward.client_trigger_command_id = {
   ToggleSheathe = 1,
@@ -299,94 +332,6 @@ M.forward.client_trigger_command_id = {
 }
 M.reverse.client_trigger_command_id = makeValString(M.forward.client_trigger_command_id)
 
-M.forward.client_trigger_fish_bait_type = {
-  Light = 6,
-}
-M.reverse.client_trigger_fish_bait_type = makeValString(M.forward.client_trigger_fish_bait_type)
-
-M.forward.cf_notify_type = {
-  Cancelled = 3,
-  Matched = 4,
-  Enter = 6,
-}
-M.reverse.cf_notify_type = makeValString(M.forward.cf_notify_type)
-
-M.forward.content_finder_flags = {
-  None = 0,
-  InProgress = 2,
-  Enter = 8192,
-}
-M.reverse.content_finder_flags = makeValString(M.forward.content_finder_flags)
-
-M.forward.action_effect_type = {
-  Nothing = 0,
-  Miss = 1,
-  FullResist = 2,
-  Damage = 3,
-  Heal = 4,
-  BlockedDamage = 5,
-  ParriedDamage = 6,
-  Invulnerable = 7,
-  NoEffectText = 8,
-  Unknown_0 = 9,
-  MpLoss = 10,
-  MpGain = 11,
-  TpLoss = 12,
-  TpGain = 13,
-  GpGain = 14,
-  StartActionCombo = 28,
-  Knockback = 33,
-  Mount = 38,
-  VFX = 59,
-}
-M.reverse.action_effect_type = makeValString(M.forward.action_effect_type)
-
-M.forward.action_hit_severity_type = {
-  NormalDamage = 0,
-  CritHeal = 0,
-  CritDamage = 1,
-  NormalHeal = 1,
-  DirectHitDamage = 2,
-  CritDirectHitDamage = 3,
-}
-M.reverse.action_hit_severity_type = makeValString(M.forward.action_hit_severity_type)
-
-M.forward.action_effect_display_type = {
-  HideActionName = 0,
-  ShowActionName = 1,
-  ShowItemName = 2,
-}
-M.reverse.action_effect_display_type = makeValString(M.forward.action_effect_display_type)
-
-M.forward.ensemble_assistant = {
-  On = 1,
-  Off = 0,
-}
-M.reverse.ensemble_assistant = makeValString(M.forward.ensemble_assistant)
-
-M.forward.fish_event_type = {
-  Cast = 1,
-  Hook = 2,
-  Finish = 3,
-  Bite = 5,
-}
-M.reverse.fish_event_type = makeValString(M.forward.fish_event_type)
-
-M.forward.group_message_type = {
-  Linkshell = 2,
-  FreeCompany = 3,
-  NoviceNetwork = 4,
-  Time = 333,
-}
-M.reverse.group_message_type = makeValString(M.forward.group_message_type)
-
-M.forward.public_message_type = {
-  Shout = 11,
-  Yell = 30,
-  Say = 10,
-}
-M.reverse.public_message_type = makeValString(M.forward.public_message_type)
-
 M.forward.item_quality = {
   NormalQuality = 0,
   HighQuality = 1,
@@ -421,23 +366,5 @@ M.forward.item_location = {
   Saddlebag1 = 4001,
 }
 M.reverse.item_location = makeValString(M.forward.item_location)
-
-M.forward.item_armoury_position = {
-  MainHand = 0,
-  OffHand = 1,
-  Head = 2,
-  Body = 3,
-  Hands = 4,
-  Waist = 5,
-  Legs = 6,
-  Feet = 7,
-  Ears = 8,
-  Neck = 9,
-  Wrists = 10,
-  RightRing = 11,
-  LeftRing = 12,
-  SoulCrystal = 13,
-}
-M.reverse.item_armoury_position = makeValString(M.forward.item_armoury_position)
 
 return M

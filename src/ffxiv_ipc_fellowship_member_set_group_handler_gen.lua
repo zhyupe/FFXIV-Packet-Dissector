@@ -3,10 +3,10 @@
 local ffxiv_ipc_fellowship_member_set_group_handler = Proto("ffxiv_ipc_fellowship_member_set_group_handler", "FFXIV-IPC FellowshipMemberSetGroupHandler")
 
 local fellowship_member_set_group_handler_fields = {
-  id       = ProtoField.uint64("ffxiv_ipc_fellowship_member_set_group_handler.id", "ID", base.DEC),
-  target   = ProtoField.uint64("ffxiv_ipc_fellowship_member_set_group_handler.target", "Target", base.DEC),
-  group    = ProtoField.uint32("ffxiv_ipc_fellowship_member_set_group_handler.group", "Group", base.DEC),
-  unknown3 = ProtoField.uint32("ffxiv_ipc_fellowship_member_set_group_handler.unknown3", "Unknown3", base.DEC),
+  id       = ProtoField.uint64("ffxiv_ipc_fellowship_member_set_group_handler.id", "id", base.DEC),
+  target   = ProtoField.uint64("ffxiv_ipc_fellowship_member_set_group_handler.target", "target", base.DEC),
+  group    = ProtoField.uint32("ffxiv_ipc_fellowship_member_set_group_handler.group", "group", base.DEC),
+  unknown3 = ProtoField.uint32("ffxiv_ipc_fellowship_member_set_group_handler.unknown3", "unknown3", base.DEC),
 }
 
 ffxiv_ipc_fellowship_member_set_group_handler.fields = fellowship_member_set_group_handler_fields

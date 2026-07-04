@@ -3,9 +3,9 @@
 local ffxiv_ipc_fellowship_list = Proto("ffxiv_ipc_fellowship_list", "FFXIV-IPC FellowshipList")
 
 local fellowship_list_fields = {
-  id                            = ProtoField.uint64("ffxiv_ipc_fellowship_list.id", "ID", base.DEC),
-  create_time                   = ProtoField.uint32("ffxiv_ipc_fellowship_list.create_time", "CreateTime", base.DEC),
-  join_time                     = ProtoField.uint32("ffxiv_ipc_fellowship_list.join_time", "JoinTime", base.DEC),
+  id                            = ProtoField.uint64("ffxiv_ipc_fellowship_list.id", "id", base.DEC),
+  create_time                   = ProtoField.uint32("ffxiv_ipc_fellowship_list.create_time", "createTime", base.DEC),
+  join_time                     = ProtoField.uint32("ffxiv_ipc_fellowship_list.join_time", "joinTime", base.DEC),
 }
 
 ffxiv_ipc_fellowship_list.fields = fellowship_list_fields

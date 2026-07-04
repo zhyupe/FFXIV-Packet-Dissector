@@ -541,15 +541,19 @@ export class DissectorRenderer {
   }
 
   handleIPCSchema(obj: IPCSchema) {
-    if (obj.children) {
-      for (const child of obj.children) {
-        new DissectorFile(child.name, this).handleSchema(child)
+    const handleSchemaTree = (schema: IPCSchema) => {
+      if (schema.children) {
+        for (const child of schema.children) {
+          handleSchemaTree(child)
+        }
+      }
+
+      if (schema.name) {
+        new DissectorFile(schema.name, this).handleSchema(schema)
       }
     }
 
-    if (obj.name) {
-      new DissectorFile(obj.name, this).handleSchema(obj)
-    }
+    handleSchemaTree(obj)
 
     if (obj.aliases?.length) {
       for (const alias of obj.aliases) {

@@ -17,6 +17,8 @@ M.types = {
   [0x00a4] = {
     [0] = {
       title = "EventFinish",
+      name = "ffxiv_ipc_event_finish",
+      length = 4,
     },
   },
   [0x00a5] = {
@@ -48,6 +50,8 @@ M.types = {
   [0x00cc] = {
     [0] = {
       title = "UpdatePositionHandler",
+      name = "ffxiv_ipc_update_position_handler",
+      length = 20,
     },
   },
   [0x00cf] = {
@@ -67,6 +71,8 @@ M.types = {
   [0x00f6] = {
     [0] = {
       title = "PrepareZoning",
+      name = "ffxiv_ipc_prepare_zoning",
+      length = 16,
     },
   },
   [0x00f8] = {
@@ -84,11 +90,15 @@ M.types = {
   [0x0118] = {
     [0] = {
       title = "EventPlay4",
+      name = "ffxiv_ipc_event_play4",
+      length = 44,
     },
   },
   [0x0127] = {
     [0] = {
       title = "InventoryModifyHandler",
+      name = "ffxiv_ipc_inventory_modify_handler",
+      length = 44,
     },
   },
   [0x0130] = {
@@ -108,6 +118,8 @@ M.types = {
   [0x014c] = {
     [0] = {
       title = "EventStart",
+      name = "ffxiv_ipc_event_start",
+      length = 12,
     },
   },
   [0x0159] = {
@@ -127,6 +139,8 @@ M.types = {
   [0x0176] = {
     [0] = {
       title = "EventPlay",
+      name = "ffxiv_ipc_event_play",
+      length = 32,
     },
   },
   [0x0181] = {
@@ -146,6 +160,8 @@ M.types = {
   [0x0187] = {
     [0] = {
       title = "MarketBoardItemListingHistory",
+      name = "ffxiv_ipc_market_board_item_listing_history",
+      length = 964,
     },
   },
   [0x019f] = {
@@ -184,6 +200,8 @@ M.types = {
   [0x01d1] = {
     [0] = {
       title = "MarketBoardItemListingCount",
+      name = "ffxiv_ipc_market_board_item_listing_count",
+      length = 8,
     },
   },
   [0x01d3] = {
@@ -196,11 +214,15 @@ M.types = {
   [0x01eb] = {
     [0] = {
       title = "MarketBoardSearchResult",
+      name = "ffxiv_ipc_market_board_search_result",
+      length = 176,
     },
   },
   [0x0217] = {
     [0] = {
       title = "Playtime",
+      name = "ffxiv_ipc_playtime",
+      length = 4,
     },
   },
   [0x0234] = {
@@ -246,6 +268,8 @@ M.types = {
   [0x02a4] = {
     [0] = {
       title = "MarketBoardItemListing",
+      name = "ffxiv_ipc_market_board_item_listing",
+      length = 1444,
     },
   },
   [0x02b0] = {
@@ -272,6 +296,8 @@ M.types = {
   [0x02d2] = {
     [0] = {
       title = "SystemLogMessage",
+      name = "ffxiv_ipc_system_log_message",
+      length = 16,
     },
   },
   [0x02dc] = {

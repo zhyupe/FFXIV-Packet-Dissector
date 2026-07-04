@@ -3,21 +3,43 @@
 local db = require('ffxiv_db')
 local enum = require('ffxiv_enum')
 
+local label_category_type = {
+  [521] = "JobLevel",
+}
 local label_data0_type = {
   [21] = "Status",
   [23] = "Status",
-  [116] = "Fate",
+  [310] = "Marker",
+  [320] = "Item",
+  [325] = "Bait",
+  [515] = "Achievement",
   [518] = "Achievement",
+  [521] = "ItemLevel",
+  [1204] = "TripleTriadCardId",
+  [1205] = "TriadId",
+  [2351] = "Fate",
+  [2353] = "Fate",
+  [2358] = "Fate",
+  [2366] = "Fate",
 }
 local label_data1_type = {
+  [7] = "Exp",
   [23] = "Type",
+  [125] = "NpcId",
   [300] = "Enabled",
+  [2366] = "Progress(%)",
 }
 local label_data2_type = {
+  [7] = "Bouns(%)",
   [23] = "Value",
+  [125] = "Radius",
 }
 local label_data3_type = {
   [23] = "ActorId",
+  [125] = "X",
+}
+local label_data4_type = {
+  [125] = "Y",
 }
 
 local ffxiv_ipc_actor_control = Proto("ffxiv_ipc_actor_control", "FFXIV-IPC ActorControl")
@@ -46,7 +68,12 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   -- dissect the category field
   local category_tvbr = tvbuf:range(2, 2)
   local category_val  = category_tvbr:le_uint()
-  tree:add_le(actor_control_fields.category, category_tvbr, category_val)
+  local category_label_key = "category"
+  local category_label_val = category_val
+  if type_val == 521 then
+    category_label_key = "JobLevel"
+  end
+  tree:add_le(actor_control_fields.category, category_tvbr, category_val, category_label_key .. ": " .. category_label_val)
 
   -- dissect the data0 field
   local data0_tvbr = tvbuf:range(4, 4)
@@ -59,11 +86,37 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   elseif type_val == 23 then
     data0_label_key = "Status"
     data0_label_val = (db.Status[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
-  elseif type_val == 116 then
-    data0_label_key = "Fate"
-    data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 310 then
+    data0_label_key = "Marker"
+    data0_label_val = (enum.reverse.actor_control144_marker[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 320 then
+    data0_label_key = "Item"
+    data0_label_val = (db.Item[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 325 then
+    data0_label_key = "Bait"
+    data0_label_val = (db.Item[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 515 then
+    data0_label_key = "Achievement"
   elseif type_val == 518 then
     data0_label_key = "Achievement"
+  elseif type_val == 521 then
+    data0_label_key = "ItemLevel"
+  elseif type_val == 1204 then
+    data0_label_key = "TripleTriadCardId"
+  elseif type_val == 1205 then
+    data0_label_key = "TriadId"
+  elseif type_val == 2351 then
+    data0_label_key = "Fate"
+    data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 2353 then
+    data0_label_key = "Fate"
+    data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 2358 then
+    data0_label_key = "Fate"
+    data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 2366 then
+    data0_label_key = "Fate"
+    data0_label_val = (db.Fate[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
   end
   tree:add_le(actor_control_fields.data0, data0_tvbr, data0_val, data0_label_key .. ": " .. data0_label_val)
 
@@ -72,10 +125,17 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   local data1_val  = data1_tvbr:le_uint()
   local data1_label_key = "data1"
   local data1_label_val = data1_val
-  if type_val == 23 then
+  if type_val == 7 then
+    data1_label_key = "Exp"
+  elseif type_val == 23 then
     data1_label_key = "Type"
+  elseif type_val == 125 then
+    data1_label_key = "NpcId"
+    data1_label_val = string.format('%08x', data1_val)
   elseif type_val == 300 then
     data1_label_key = "Enabled"
+  elseif type_val == 2366 then
+    data1_label_key = "Progress(%)"
   end
   tree:add_le(actor_control_fields.data1, data1_tvbr, data1_val, data1_label_key .. ": " .. data1_label_val)
 
@@ -84,8 +144,12 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   local data2_val  = data2_tvbr:le_uint()
   local data2_label_key = "data2"
   local data2_label_val = data2_val
-  if type_val == 23 then
+  if type_val == 7 then
+    data2_label_key = "Bouns(%)"
+  elseif type_val == 23 then
     data2_label_key = "Value"
+  elseif type_val == 125 then
+    data2_label_key = "Radius"
   end
   tree:add_le(actor_control_fields.data2, data2_tvbr, data2_val, data2_label_key .. ": " .. data2_label_val)
 
@@ -97,13 +161,20 @@ function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   if type_val == 23 then
     data3_label_key = "ActorId"
     data3_label_val = string.format('%08x', data3_val)
+  elseif type_val == 125 then
+    data3_label_key = "X"
   end
   tree:add_le(actor_control_fields.data3, data3_tvbr, data3_val, data3_label_key .. ": " .. data3_label_val)
 
   -- dissect the data4 field
   local data4_tvbr = tvbuf:range(20, 4)
   local data4_val  = data4_tvbr:le_uint()
-  tree:add_le(actor_control_fields.data4, data4_tvbr, data4_val)
+  local data4_label_key = "data4"
+  local data4_label_val = data4_val
+  if type_val == 125 then
+    data4_label_key = "Y"
+  end
+  tree:add_le(actor_control_fields.data4, data4_tvbr, data4_val, data4_label_key .. ": " .. data4_label_val)
 
   return len
 end

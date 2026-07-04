@@ -3,11 +3,11 @@
 local ffxiv_ipc_fellowship_message_board_query = Proto("ffxiv_ipc_fellowship_message_board_query", "FFXIV-IPC FellowshipMessageBoardQuery")
 
 local fellowship_message_board_query_fields = {
-  id1      = ProtoField.uint32("ffxiv_ipc_fellowship_message_board_query.id1", "ID1", base.DEC),
-  id2      = ProtoField.uint32("ffxiv_ipc_fellowship_message_board_query.id2", "ID2", base.DEC),
-  unknown1 = ProtoField.uint32("ffxiv_ipc_fellowship_message_board_query.unknown1", "Unknown1", base.DEC),
-  offset   = ProtoField.uint16("ffxiv_ipc_fellowship_message_board_query.offset", "Offset", base.DEC),
-  unknown2 = ProtoField.uint16("ffxiv_ipc_fellowship_message_board_query.unknown2", "Unknown2", base.DEC),
+  id1      = ProtoField.uint32("ffxiv_ipc_fellowship_message_board_query.id1", "id1", base.DEC),
+  id2      = ProtoField.uint32("ffxiv_ipc_fellowship_message_board_query.id2", "id2", base.DEC),
+  unknown1 = ProtoField.uint32("ffxiv_ipc_fellowship_message_board_query.unknown1", "unknown1", base.DEC),
+  offset   = ProtoField.uint16("ffxiv_ipc_fellowship_message_board_query.offset", "offset", base.DEC),
+  unknown2 = ProtoField.uint16("ffxiv_ipc_fellowship_message_board_query.unknown2", "unknown2", base.DEC),
 }
 
 ffxiv_ipc_fellowship_message_board_query.fields = fellowship_message_board_query_fields

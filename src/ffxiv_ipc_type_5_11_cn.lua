@@ -12,6 +12,8 @@ M.types = {
   [0x00fa] = {
     [0] = {
       title = "EventPlay",
+      name = "ffxiv_ipc_event_play",
+      length = 32,
     },
   },
   [0x010b] = {

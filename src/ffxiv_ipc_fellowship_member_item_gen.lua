@@ -5,17 +5,17 @@ local db = require('ffxiv_db')
 local ffxiv_ipc_fellowship_member_item = Proto("ffxiv_ipc_fellowship_member_item", "FFXIV-IPC FellowshipMemberItem")
 
 local fellowship_member_item_fields = {
-  unique_id    = ProtoField.uint64("ffxiv_ipc_fellowship_member_item.unique_id", "UniqueID", base.HEX),
-  time         = ProtoField.uint32("ffxiv_ipc_fellowship_member_item.time", "Time", base.DEC),
-  user_server  = ProtoField.uint16("ffxiv_ipc_fellowship_member_item.user_server", "UserServer", base.DEC, db.server),
-  user_server2 = ProtoField.uint16("ffxiv_ipc_fellowship_member_item.user_server2", "UserServer2", base.DEC, db.server),
-  unknown1     = ProtoField.uint16("ffxiv_ipc_fellowship_member_item.unknown1", "Unknown1", base.DEC),
-  level        = ProtoField.uint8("ffxiv_ipc_fellowship_member_item.level", "Level", base.DEC),
-  group        = ProtoField.uint8("ffxiv_ipc_fellowship_member_item.group", "Group", base.DEC),
-  unknown3     = ProtoField.uint16("ffxiv_ipc_fellowship_member_item.unknown3", "Unknown3", base.DEC),
-  unknown4     = ProtoField.uint8("ffxiv_ipc_fellowship_member_item.unknown4", "Unknown4", base.DEC),
-  nickname     = ProtoField.string("ffxiv_ipc_fellowship_member_item.nickname", "Nickname", base.UNICODE),
-  padding      = ProtoField.uint8("ffxiv_ipc_fellowship_member_item.padding", "Padding", base.DEC),
+  unique_id    = ProtoField.uint64("ffxiv_ipc_fellowship_member_item.unique_id", "uniqueId", base.HEX),
+  time         = ProtoField.uint32("ffxiv_ipc_fellowship_member_item.time", "time", base.DEC),
+  user_server  = ProtoField.uint16("ffxiv_ipc_fellowship_member_item.user_server", "userServer", base.DEC, db.server),
+  user_server2 = ProtoField.uint16("ffxiv_ipc_fellowship_member_item.user_server2", "userServer2", base.DEC, db.server),
+  unknown1     = ProtoField.uint16("ffxiv_ipc_fellowship_member_item.unknown1", "unknown1", base.DEC),
+  level        = ProtoField.uint8("ffxiv_ipc_fellowship_member_item.level", "level", base.DEC),
+  group        = ProtoField.uint8("ffxiv_ipc_fellowship_member_item.group", "group", base.DEC),
+  unknown3     = ProtoField.uint16("ffxiv_ipc_fellowship_member_item.unknown3", "unknown3", base.DEC),
+  unknown4     = ProtoField.uint8("ffxiv_ipc_fellowship_member_item.unknown4", "unknown4", base.DEC),
+  nickname     = ProtoField.string("ffxiv_ipc_fellowship_member_item.nickname", "nickname", base.UNICODE),
+  padding      = ProtoField.uint8("ffxiv_ipc_fellowship_member_item.padding", "padding", base.DEC),
 }
 
 ffxiv_ipc_fellowship_member_item.fields = fellowship_member_item_fields
