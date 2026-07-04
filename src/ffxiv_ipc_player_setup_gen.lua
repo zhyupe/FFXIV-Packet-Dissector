@@ -31,8 +31,8 @@ local player_setup_fields = {
   companion_favo_feed   = ProtoField.uint8("ffxiv_ipc_player_setup.companion_favo_feed", "companionFavoFeed", base.DEC),
   has_relic_book        = ProtoField.uint8("ffxiv_ipc_player_setup.has_relic_book", "hasRelicBook", base.DEC),
   relic_book_id         = ProtoField.uint8("ffxiv_ipc_player_setup.relic_book_id", "relicBookId", base.DEC),
-  exp                   = ProtoField.bytes("ffxiv_ipc_player_setup.exp", "exp", base.NONE),
-  level                 = ProtoField.bytes("ffxiv_ipc_player_setup.level", "level", base.NONE),
+  exp                   = ProtoField.uint32("ffxiv_ipc_player_setup.exp", "exp", base.DEC),
+  level                 = ProtoField.uint16("ffxiv_ipc_player_setup.level", "level", base.DEC),
   companion_name        = ProtoField.string("ffxiv_ipc_player_setup.companion_name", "companionName", base.UNICODE),
   companion_def_rank    = ProtoField.uint8("ffxiv_ipc_player_setup.companion_def_rank", "companionDefRank", base.DEC),
   companion_att_rank    = ProtoField.uint8("ffxiv_ipc_player_setup.companion_att_rank", "companionAttRank", base.DEC),
@@ -189,14 +189,36 @@ function ffxiv_ipc_player_setup.dissector(tvbuf, pktinfo, root)
   tree:add_le(player_setup_fields.relic_book_id, relic_book_id_tvbr, relic_book_id_val)
 
   -- dissect the exp field
-  local exp_tvbr = tvbuf:range(168, 112)
-  local exp_val  = exp_tvbr:raw()
-  tree:add(player_setup_fields.exp, exp_tvbr, exp_val)
+  local exp_pos = 168
+  local exp_len = 4
+  local exp_count = 28
+
+  while exp_pos + exp_len <= len do
+    local exp_tvbr = tvbuf:range(exp_pos, exp_len)
+    local exp_val  = exp_tvbr:le_uint()
+    tree:add_le(player_setup_fields.exp, exp_tvbr, exp_val)
+    exp_pos = exp_pos + exp_len
+    exp_count = exp_count - 1
+    if exp_count <= 0 then
+      break
+    end
+  end
 
   -- dissect the level field
-  local level_tvbr = tvbuf:range(308, 56)
-  local level_val  = level_tvbr:raw()
-  tree:add(player_setup_fields.level, level_tvbr, level_val)
+  local level_pos = 308
+  local level_len = 2
+  local level_count = 28
+
+  while level_pos + level_len <= len do
+    local level_tvbr = tvbuf:range(level_pos, level_len)
+    local level_val  = level_tvbr:le_uint()
+    tree:add_le(player_setup_fields.level, level_tvbr, level_val)
+    level_pos = level_pos + level_len
+    level_count = level_count - 1
+    if level_count <= 0 then
+      break
+    end
+  end
 
   -- dissect the companion_name field
   local companion_name_tvbr = tvbuf:range(538, 21)

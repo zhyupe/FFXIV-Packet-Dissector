@@ -218,11 +218,16 @@ const fieldMetadataToIPCField = (
   }
 
   if (metadata.type === FieldType.array) {
+    const itemLength = metadata.length && child.byteLength
+      ? metadata.length / child.byteLength
+      : undefined
+
     return {
       name,
-      type: 'bytes',
+      type: fieldTypeMap[child.type],
       offset: metadata.offset,
-      length: metadata.length ?? child.byteLength,
+      length: child.byteLength,
+      count: itemLength,
       ...dissector,
     }
   }
@@ -462,6 +467,34 @@ class DissectorFile {
       prefix += `${indent}if tvbuf:len() >= ${item.offset + (item.length || 0)} then\n`
       suffix = `\n${indent}end${suffix}`
       indent += '  '
+    }
+
+    const hasPrimitiveArray =
+      typeof item.count === 'number' && item.count > 1 && !!item.length
+
+    if (hasPrimitiveArray) {
+      const addMethod = item.add_le === false ? 'add' : 'add_le'
+      const length = item.length as number
+      const valueMethod = item.tvb_method || tvbMethod(item)
+
+      let content = `${indent}local ${fieldKey}_pos = ${item.offset}
+${indent}local ${fieldKey}_len = ${length}
+${indent}local ${fieldKey}_count = ${item.count}
+
+${indent}while ${fieldKey}_pos + ${fieldKey}_len <= len do
+${indent}  local ${fieldKey}_tvbr = tvbuf:range(${fieldKey}_pos, ${fieldKey}_len)
+${indent}  local ${fieldKey}_val  = ${fieldKey}_tvbr:${valueMethod}
+${indent}  tree:${addMethod}(${this.snakeName}_fields.${fieldKey}, ${fieldKey}_tvbr, ${fieldKey}_val)${
+        item.append ? itemAppend(item, `${indent}  `) : ''
+      }
+${indent}  ${fieldKey}_pos = ${fieldKey}_pos + ${fieldKey}_len
+${indent}  ${fieldKey}_count = ${fieldKey}_count - 1
+${indent}  if ${fieldKey}_count <= 0 then
+${indent}    break
+${indent}  end
+${indent}end`
+
+      return prefix + content + suffix
     }
 
     let content = `${indent}local ${fieldKey}_tvbr = tvbuf:range(${item.offset}${item.length ? `, ${item.length}` : ''})
@@ -706,7 +739,14 @@ const getPacketLength = ({ fields }: Pick<IPCSchema, 'fields'>) => {
   if (!fields?.length) return 0
 
   return fields.reduce(
-    (length, item) => Math.max(length, item.offset + (item.length || 0)),
+    (length, item) =>
+      Math.max(
+        length,
+        item.offset +
+          (item.type === 'children'
+            ? (item.length || 0)
+            : (item.length || 0) * (item.count || 1)),
+      ),
     0,
   )
 }

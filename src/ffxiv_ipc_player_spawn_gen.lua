@@ -46,7 +46,7 @@ local player_spawn_fields = {
   scale             = ProtoField.uint8("ffxiv_ipc_player_spawn.scale", "scale", base.DEC),
   elemental_level   = ProtoField.uint16("ffxiv_ipc_player_spawn.elemental_level", "elementalLevel", base.DEC),
   element           = ProtoField.uint16("ffxiv_ipc_player_spawn.element", "element", base.DEC),
-  models            = ProtoField.bytes("ffxiv_ipc_player_spawn.models", "models", base.NONE),
+  models            = ProtoField.int32("ffxiv_ipc_player_spawn.models", "models", base.DEC),
   nickname          = ProtoField.string("ffxiv_ipc_player_spawn.nickname", "nickname", base.UNICODE),
   look              = ProtoField.bytes("ffxiv_ipc_player_spawn.look", "look", base.NONE),
   fc_tag            = ProtoField.string("ffxiv_ipc_player_spawn.fc_tag", "fcTag", base.UNICODE),
@@ -306,9 +306,20 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
   end
 
   -- dissect the models field
-  local models_tvbr = tvbuf:range(516, 40)
-  local models_val  = models_tvbr:raw()
-  tree:add(player_spawn_fields.models, models_tvbr, models_val)
+  local models_pos = 516
+  local models_len = 4
+  local models_count = 10
+
+  while models_pos + models_len <= len do
+    local models_tvbr = tvbuf:range(models_pos, models_len)
+    local models_val  = models_tvbr:le_int()
+    tree:add_le(player_spawn_fields.models, models_tvbr, models_val)
+    models_pos = models_pos + models_len
+    models_count = models_count - 1
+    if models_count <= 0 then
+      break
+    end
+  end
 
   -- dissect the nickname field
   local nickname_tvbr = tvbuf:range(556, 32)

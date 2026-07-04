@@ -46,9 +46,20 @@ function ffxiv_ipc_aoe_effect16.dissector(tvbuf, pktinfo, root)
   end
 
   -- dissect the effect_target_ids field
-  local effect_target_ids_tvbr = tvbuf:range(1072, 128)
-  local effect_target_ids_val  = effect_target_ids_tvbr:raw()
-  tree:add(aoe_effect16_fields.effect_target_ids, effect_target_ids_tvbr, effect_target_ids_val)
+  local effect_target_ids_pos = 1072
+  local effect_target_ids_len = 8
+  local effect_target_ids_count = 16
+
+  while effect_target_ids_pos + effect_target_ids_len <= len do
+    local effect_target_ids_tvbr = tvbuf:range(effect_target_ids_pos, effect_target_ids_len)
+    local effect_target_ids_val  = effect_target_ids_tvbr:raw()
+    tree:add(aoe_effect16_fields.effect_target_ids, effect_target_ids_tvbr, effect_target_ids_val)
+    effect_target_ids_pos = effect_target_ids_pos + effect_target_ids_len
+    effect_target_ids_count = effect_target_ids_count - 1
+    if effect_target_ids_count <= 0 then
+      break
+    end
+  end
 
   -- dissect the effect_flags field
   local effect_flags_tvbr = tvbuf:range(1200, 8)

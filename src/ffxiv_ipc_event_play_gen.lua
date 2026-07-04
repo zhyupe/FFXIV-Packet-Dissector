@@ -3,7 +3,7 @@
 local ffxiv_ipc_event_play = Proto("ffxiv_ipc_event_play", "FFXIV-IPC EventPlay")
 
 local event_play_fields = {
-  entities = ProtoField.bytes("ffxiv_ipc_event_play.entities", "entities", base.NONE),
+  entities = ProtoField.uint32("ffxiv_ipc_event_play.entities", "entities", base.DEC),
 }
 
 ffxiv_ipc_event_play.fields = event_play_fields
@@ -30,8 +30,8 @@ function ffxiv_ipc_event_play.dissector(tvbuf, pktinfo, root)
 
   -- dissect the entities field
   local entities_tvbr = tvbuf:range(28, 4)
-  local entities_val  = entities_tvbr:raw()
-  tree:add(event_play_fields.entities, entities_tvbr, entities_val)
+  local entities_val  = entities_tvbr:le_uint()
+  tree:add_le(event_play_fields.entities, entities_tvbr, entities_val)
 
   return len
 end

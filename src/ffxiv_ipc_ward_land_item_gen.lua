@@ -5,7 +5,7 @@ local ffxiv_ipc_ward_land_item = Proto("ffxiv_ipc_ward_land_item", "FFXIV-IPC Wa
 local ward_land_item_fields = {
   price  = ProtoField.uint32("ffxiv_ipc_ward_land_item.price", "price", base.DEC),
   type   = ProtoField.uint8("ffxiv_ipc_ward_land_item.type", "type", base.DEC),
-  appeal = ProtoField.bytes("ffxiv_ipc_ward_land_item.appeal", "appeal", base.NONE),
+  appeal = ProtoField.uint8("ffxiv_ipc_ward_land_item.appeal", "appeal", base.DEC),
   name   = ProtoField.string("ffxiv_ipc_ward_land_item.name", "name", base.UNICODE),
 }
 
@@ -26,9 +26,20 @@ function ffxiv_ipc_ward_land_item.dissector(tvbuf, pktinfo, root)
   tree:add_le(ward_land_item_fields.type, type_tvbr, type_val)
 
   -- dissect the appeal field
-  local appeal_tvbr = tvbuf:range(5, 3)
-  local appeal_val  = appeal_tvbr:raw()
-  tree:add(ward_land_item_fields.appeal, appeal_tvbr, appeal_val)
+  local appeal_pos = 5
+  local appeal_len = 1
+  local appeal_count = 3
+
+  while appeal_pos + appeal_len <= len do
+    local appeal_tvbr = tvbuf:range(appeal_pos, appeal_len)
+    local appeal_val  = appeal_tvbr:le_uint()
+    tree:add_le(ward_land_item_fields.appeal, appeal_tvbr, appeal_val)
+    appeal_pos = appeal_pos + appeal_len
+    appeal_count = appeal_count - 1
+    if appeal_count <= 0 then
+      break
+    end
+  end
 
   -- dissect the name field
   local name_tvbr = tvbuf:range(8, 32)

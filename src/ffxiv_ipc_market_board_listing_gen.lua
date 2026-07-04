@@ -16,7 +16,7 @@ local market_board_listing_fields = {
   slot              = ProtoField.uint16("ffxiv_ipc_market_board_listing.slot", "slot", base.DEC),
   durability        = ProtoField.uint16("ffxiv_ipc_market_board_listing.durability", "durability", base.DEC),
   spiritbond        = ProtoField.uint16("ffxiv_ipc_market_board_listing.spiritbond", "spiritbond", base.DEC),
-  materia           = ProtoField.bytes("ffxiv_ipc_market_board_listing.materia", "materia", base.NONE),
+  materia           = ProtoField.uint16("ffxiv_ipc_market_board_listing.materia", "materia", base.DEC),
   padding1          = ProtoField.uint16("ffxiv_ipc_market_board_listing.padding1", "padding1", base.DEC),
   padding2          = ProtoField.uint32("ffxiv_ipc_market_board_listing.padding2", "padding2", base.DEC),
   retainer_name     = ProtoField.string("ffxiv_ipc_market_board_listing.retainer_name", "retainerName", base.UNICODE),
@@ -92,9 +92,20 @@ function ffxiv_ipc_market_board_listing.dissector(tvbuf, pktinfo, root)
   tree:add_le(market_board_listing_fields.spiritbond, spiritbond_tvbr, spiritbond_val)
 
   -- dissect the materia field
-  local materia_tvbr = tvbuf:range(54, 10)
-  local materia_val  = materia_tvbr:raw()
-  tree:add(market_board_listing_fields.materia, materia_tvbr, materia_val)
+  local materia_pos = 54
+  local materia_len = 2
+  local materia_count = 5
+
+  while materia_pos + materia_len <= len do
+    local materia_tvbr = tvbuf:range(materia_pos, materia_len)
+    local materia_val  = materia_tvbr:le_uint()
+    tree:add_le(market_board_listing_fields.materia, materia_tvbr, materia_val)
+    materia_pos = materia_pos + materia_len
+    materia_count = materia_count - 1
+    if materia_count <= 0 then
+      break
+    end
+  end
 
   -- dissect the padding1 field
   local padding1_tvbr = tvbuf:range(64, 2)
