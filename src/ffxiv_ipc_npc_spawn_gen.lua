@@ -322,9 +322,13 @@ function ffxiv_ipc_npc_spawn.dissector(tvbuf, pktinfo, root)
   end
 
   -- dissect the nickname field
-  local nickname_tvbr = tvbuf:range(556, 32)
+  local nickname_tvbr = tvbuf:range(578, 32)
   local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
   tree:add(npc_spawn_fields.nickname, nickname_tvbr, nickname_val)
+
+  local nickname_display = ", nickname: " .. nickname_val
+  pktinfo.cols.info:append(nickname_display)
+  tree:append_text(nickname_display)
 
   -- dissect the look field
   local look_tvbr = tvbuf:range(588, 26)

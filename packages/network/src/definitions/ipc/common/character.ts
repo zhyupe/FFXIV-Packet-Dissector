@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 import { Position } from './position'
 import { StatusEffect } from './status-effect'
 
@@ -146,7 +146,8 @@ export class Character extends Struct {
   @child({ type: FieldType.int, byteLength: 4 })
   models!: number[]
 
-  @field(FieldType.string, 556, 32)
+  @field(FieldType.string, 578, 32)
+  @format({ append: 'val' })
   nickname!: string
 
   @field(FieldType.bytes, 588, 26)
