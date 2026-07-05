@@ -88,8 +88,31 @@ export function condition(
   return setField((_, prev) => ({ ...prev, condition }))
 }
 
+function mergePrototypeMetadata<T>(
+  target: object,
+  key: symbol,
+): Store<T> | undefined {
+  const chain: object[] = []
+  let current: object | null = target
+  while (current && current !== Object.prototype) {
+    chain.unshift(current)
+    current = Object.getPrototypeOf(current)
+  }
+
+  const merged: Store<T> = {}
+  let hasAny = false
+  for (const item of chain) {
+    const own = Reflect.getOwnMetadata(key, item) as Store<T> | undefined
+    if (!own) continue
+    Object.assign(merged, own)
+    hasAny = true
+  }
+
+  return hasAny ? merged : undefined
+}
+
 export function getFields(target: Struct): Store<FieldMetadata> | undefined {
-  return Reflect.getMetadata(fieldMetadataKey, target) as Store<FieldMetadata>
+  return mergePrototypeMetadata<FieldMetadata>(target, fieldMetadataKey)
 }
 
 export function child(struct: Child): PropertyDecorator {
@@ -105,7 +128,7 @@ export function child(struct: Child): PropertyDecorator {
 }
 
 export function getChildren(target: Struct): Store<Child> | undefined {
-  return Reflect.getMetadata(childrenMetadataKey, target) as Store<Child>
+  return mergePrototypeMetadata<Child>(target, childrenMetadataKey)
 }
 
 export type Enum = Record<string, number | string>
@@ -132,9 +155,24 @@ export function ipcEnum(
 export function getEnums(
   target: StructConstructor,
 ): EnumMetadata[] | undefined {
-  return Reflect.getMetadata(enumMetadataKey, target) as
-    | EnumMetadata[]
-    | undefined
+  const chain: StructConstructor[] = []
+  let current: StructConstructor | null = target
+  while (current && current !== Function.prototype) {
+    chain.unshift(current)
+    current = Object.getPrototypeOf(current) as StructConstructor | null
+  }
+
+  const merged: EnumMetadata[] = []
+  for (const item of chain) {
+    const own = Reflect.getOwnMetadata(enumMetadataKey, item) as
+      | EnumMetadata[]
+      | undefined
+    if (own) {
+      merged.push(...own)
+    }
+  }
+
+  return merged.length ? merged : undefined
 }
 
 export function ipcIf(fieldName: string) {
