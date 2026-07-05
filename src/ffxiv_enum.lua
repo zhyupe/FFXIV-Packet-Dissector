@@ -332,6 +332,19 @@ M.forward.client_trigger_command_id = {
 }
 M.reverse.client_trigger_command_id = makeValString(M.forward.client_trigger_command_id)
 
+M.forward.event_id = {
+  Fishing = 1376257,
+}
+M.reverse.event_id = makeValString(M.forward.event_id)
+
+M.forward.fish_event_type = {
+  Cast = 1,
+  Hook = 2,
+  End = 3,
+  Bite = 5,
+}
+M.reverse.fish_event_type = makeValString(M.forward.fish_event_type)
+
 M.forward.item_quality = {
   NormalQuality = 0,
   HighQuality = 1,
