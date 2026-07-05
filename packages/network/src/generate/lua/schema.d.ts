@@ -94,7 +94,7 @@ interface IPCField {
    * If an unlisted truthy value is passed, the appended value would depend on the to-string implementation
    * of Lua. It's recommended to use `"val"` for this behavior.
    */
-  append?: 'enum' | 'hex' | any
+  append?: 'enum' | 'hex' | 'val'
   /**
    * Whether to append field name before the value.
    * Default: `false`

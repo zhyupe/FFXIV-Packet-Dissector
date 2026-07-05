@@ -20,7 +20,7 @@ export interface FieldDissectorOptions {
   enum?: string
   db?: string
   base?: 'hex' | 'dec' | 'HEX' | 'DEC'
-  append?: 'enum' | 'hex' | 'val' | any
+  append?: 'enum' | 'hex' | 'val'
   append_name?: boolean
   check_length?: boolean
   tvb_method?: string
