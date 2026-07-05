@@ -9,13 +9,21 @@ export class SystemLogMessage extends Struct {
   eventId!: number
 
   @field(FieldType.uint, 4, 4)
-  @eventField('systemLogParam1')
-  param1!: number
+  @format({ db: 'LogMessage', append: 'enum' })
+  logMessageId!: number
 
   @field(FieldType.uint, 8, 4)
   actionTimeline!: number
 
   @field(FieldType.uint, 12, 4)
+  @eventField('systemLogParam1')
+  param1!: number
+
+  @field(FieldType.uint, 16, 4)
+  @eventField('systemLogParam2')
+  param2!: number
+
+  @field(FieldType.uint, 20, 4)
   @eventField('systemLogParam3')
   param3!: number
 }

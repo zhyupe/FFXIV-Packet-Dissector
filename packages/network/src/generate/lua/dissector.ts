@@ -567,7 +567,7 @@ ${indent}end)()`
           (key) =>
             `label_${snakeName}_${snakeCase(key)}[${snakeCase(key)}_val]`,
         )
-        .join(' or ')}) .. "`
+        .join(' or ')}) .. ": `
     }
 
     return `

@@ -1,7 +1,7 @@
 import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { field, format, ipcEnum } from '@/struct/struct.decorator'
+import { condition, field, format, ipcEnum } from '@/struct/struct.decorator'
 
 const ClientTriggerCommandId = {
   ToggleSheathe: 1,
@@ -100,33 +100,29 @@ export class ClientTrigger extends Struct {
   unk_21!: number
 
   @field(FieldType.uint, 4, 4)
-  @format({
-    condition: {
-      commandId: [
-        { value: 701, label: 'Type', enum: 'ClientTriggerFishBaitType' },
-        { value: 809, label: 'Fate', db: 'Fate' },
-        { value: 810, label: 'Fate', db: 'Fate' },
-        { value: 813, label: 'Fate', db: 'Fate' },
-      ],
-    },
+  @condition({
+    commandId: [
+      { value: 701, label: 'Type', enum: 'ClientTriggerFishBaitType' },
+      { value: 809, label: 'Fate', db: 'Fate' },
+      { value: 810, label: 'Fate', db: 'Fate' },
+      { value: 813, label: 'Fate', db: 'Fate' },
+    ],
   })
-  param11!: number
+  param1!: number
 
   @field(FieldType.uint, 8, 4)
-  @format({
-    condition: {
-      commandId: [
-        { value: 104, label: 'Action', db: 'Action' },
-        { value: 701, label: 'Bait', db: 'Item' },
-        { value: 809, label: 'NpcId' },
-        { value: 813, label: 'Sync' },
-      ],
-    },
+  @condition({
+    commandId: [
+      { value: 104, label: 'Action', db: 'Action' },
+      { value: 701, label: 'Bait', db: 'Item' },
+      { value: 809, label: 'NpcId' },
+      { value: 813, label: 'Sync' },
+    ],
   })
-  param12!: number
+  param2!: number
 
   @field(FieldType.uint, 12, 4)
-  param2!: number
+  param3!: number
 
   @field(FieldType.uint, 16, 4)
   param4!: number
@@ -135,5 +131,5 @@ export class ClientTrigger extends Struct {
   param5!: number
 
   @field(FieldType.biguint, 24)
-  param3!: bigint
+  param6!: bigint
 }

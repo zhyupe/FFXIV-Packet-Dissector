@@ -558,7 +558,7 @@ M.types = {
     [0] = {
       title = "SystemLogMessage",
       name = "ffxiv_ipc_system_log_message",
-      length = 16,
+      length = 24,
     },
   },
   [0x03d6] = {

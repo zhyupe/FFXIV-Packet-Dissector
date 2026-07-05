@@ -4,6 +4,7 @@ type EventField =
   | 'eventId'
   | 'playScene'
   | 'systemLogParam1'
+  | 'systemLogParam2'
   | 'systemLogParam3'
 
 export enum EventId {
@@ -27,7 +28,7 @@ export const eventField = createConditionFactory<EventField, EventId>(
   {
     [EventId.Fishing]: {
       playScene: { label: 'Type', enum: 'FishEventType' },
-      systemLogParam3: { label: 'PlaceName', db: 'PlaceName' },
+      systemLogParam1: { label: 'PlaceName', db: 'PlaceName', append: 'enum' },
     },
   },
 )
