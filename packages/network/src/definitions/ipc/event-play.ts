@@ -1,19 +1,27 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { field, format } from '@/struct/struct.decorator'
+import { field, format, ipcEnum } from '@/struct/struct.decorator'
+import { EventEnums, eventField } from './common/event'
 import { createListStructFactory } from './factory/list'
 
+@ipcEnum(EventEnums)
 class EventPlayHeader extends Struct {
   static byteLength = 28
 
   @field(FieldType.biguint, 0)
-  @format({ base: 'HEX' })
+  @format({ base: Base.HEX })
   actorId!: bigint
 
   @field(FieldType.uint, 8, 4)
+  @format({
+    append: 'enum',
+    enum: 'EventId',
+  })
   eventId!: number
 
   @field(FieldType.uint, 12, 2)
+  @eventField('playScene')
   scene!: number
 
   @field(FieldType.uint, 14, 2)
