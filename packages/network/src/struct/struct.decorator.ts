@@ -49,7 +49,14 @@ export interface EnumMetadata {
 type Store<T> = Record<string, T | undefined>
 type Child = StructConstructor | ChildMetadata
 
-export function field(type: FieldType, offset?: number, length?: number) {
+type ClassDecorator = (target: StructConstructor) => void
+type PropertyDecorator = (target: Struct, propertyKey: string) => void
+
+export function field(
+  type: FieldType,
+  offset?: number,
+  length?: number,
+): PropertyDecorator {
   return (target: Struct, propertyKey: string): void => {
     let store: Store<FieldMetadata> = {}
     if (Reflect.hasOwnMetadata(fieldMetadataKey, target)) {
@@ -78,7 +85,7 @@ export function field(type: FieldType, offset?: number, length?: number) {
   }
 }
 
-export function dissector(options: FieldDissectorOptions) {
+export function dissector(options: FieldDissectorOptions): PropertyDecorator {
   return (target: Struct, propertyKey: string): void => {
     let store: Store<FieldMetadata> = {}
     if (Reflect.hasOwnMetadata(fieldMetadataKey, target)) {
@@ -100,7 +107,7 @@ export function getFields(target: Struct): Store<FieldMetadata> | undefined {
   return Reflect.getMetadata(fieldMetadataKey, target) as Store<FieldMetadata>
 }
 
-export function child(struct: Child) {
+export function child(struct: Child): PropertyDecorator {
   return (target: Struct, propertyKey: string): void => {
     let store: Store<Child> = {}
     if (Reflect.hasOwnMetadata(childrenMetadataKey, target)) {
@@ -116,14 +123,24 @@ export function getChildren(target: Struct): Store<Child> | undefined {
   return Reflect.getMetadata(childrenMetadataKey, target) as Store<Child>
 }
 
-export function ipcEnum(name: string, values: Record<string, number | string>) {
+export type Enum = Record<string, number | string>
+export function ipcEnum(enums: Record<string, Enum>): ClassDecorator
+export function ipcEnum(name: string, values: Enum): ClassDecorator
+export function ipcEnum(
+  arg0: string | Record<string, Enum>,
+  arg1?: Enum,
+): ClassDecorator {
   return (target: StructConstructor): void => {
-    const store = getEnums(target) ?? []
-    Reflect.defineMetadata(
-      enumMetadataKey,
-      [...store, { name, values }],
-      target,
-    )
+    const store = getEnums(target)?.slice() ?? []
+    if (typeof arg0 === 'object') {
+      for (const [name, values] of Object.entries(arg0)) {
+        store.push({ name, values })
+      }
+    } else if (arg1) {
+      store.push({ name: arg0, values: arg1 })
+    }
+
+    Reflect.defineMetadata(enumMetadataKey, store, target)
   }
 }
 
