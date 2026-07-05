@@ -1,14 +1,11 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import {
-  dissector,
-  type FieldDissectorCondition,
-  field,
-  ipcEnum,
-} from '@/struct/struct.decorator'
+import { dissector, field, ipcEnum } from '@/struct/struct.decorator'
 import { ActorControlType } from './common/actor-control-type.enum'
+import { createConditionFactory } from './factory/condition'
 
 type ActorControlField =
+  | 'type'
   | 'category'
   | 'data0'
   | 'data1'
@@ -18,12 +15,10 @@ type ActorControlField =
   | 'data5'
   | 'data6'
 
-const conditions: Partial<
-  Record<
-    ActorControlType | number,
-    Partial<Record<ActorControlField, Omit<FieldDissectorCondition, 'value'>>>
-  >
-> = {
+const actorControlField = createConditionFactory<
+  ActorControlField,
+  ActorControlType | number
+>('type', {
   [ActorControlType.StatusEffectLose]: {
     data0: { label: 'Status', enum: '$Status' },
   },
@@ -86,27 +81,7 @@ const conditions: Partial<
   310: {
     data0: { label: 'Marker', enum: 'ActorControl144Marker' },
   },
-}
-
-const actorControlField = (name: ActorControlField) => {
-  const picked = Object.entries(conditions)
-    .map(([value, condition]): FieldDissectorCondition | null => {
-      if (condition?.[name]) {
-        return { value: +value, ...condition[name] }
-      }
-
-      return null
-    })
-    .filter((a): a is FieldDissectorCondition => !!a)
-
-  if (picked.length) {
-    return dissector({
-      condition: { type: picked },
-    })
-  }
-
-  return () => {}
-}
+})
 
 @ipcEnum('ActorControlType', ActorControlType)
 @ipcEnum('ActorControl144Marker', {
