@@ -1,13 +1,13 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field } from '@/struct/struct.decorator'
+import { field, format } from '@/struct/struct.decorator'
 import { createListStructFactory } from './factory/list'
 
 class EventPlayHeader extends Struct {
   static byteLength = 28
 
   @field(FieldType.biguint, 0)
-  @dissector({ base: 'HEX' })
+  @format({ base: 'HEX' })
   actorId!: bigint
 
   @field(FieldType.uint, 8, 4)

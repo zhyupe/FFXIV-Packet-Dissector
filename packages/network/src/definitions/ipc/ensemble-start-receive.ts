@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field, ipcEnum } from '@/struct/struct.decorator'
+import { field, format, ipcEnum } from '@/struct/struct.decorator'
 
 const EnsembleAssistant = {
   On: 1,
@@ -16,6 +16,6 @@ export class EnsembleStartReceive extends Struct {
   meter!: number
 
   @field(FieldType.byte, 8)
-  @dissector({ enum: 'EnsembleAssistant' })
+  @format({ enum: 'EnsembleAssistant' })
   ensembleAssistant!: number
 }

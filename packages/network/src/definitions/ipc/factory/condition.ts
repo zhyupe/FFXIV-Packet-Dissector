@@ -1,11 +1,8 @@
-import {
-  dissector,
-  type FieldDissectorCondition,
-  type FieldDissectorOptions,
-} from '@/struct/struct.decorator'
+import type { IPCFieldCondition } from '@/generate/interface'
+import { condition } from '@/struct/struct.decorator'
 
 export type ConditionItem<Fields extends string> = Partial<
-  Record<Fields, Omit<FieldDissectorCondition, 'value'>>
+  Record<Fields, Omit<IPCFieldCondition, 'value'>>
 >
 export type Conditions<
   Fields extends string,
@@ -20,9 +17,9 @@ export function createConditionFactory<
   conditions: Conditions<Fields, Value>,
   isNumericKey = true,
 ) {
-  return (name: Fields, options: FieldDissectorOptions = {}) => {
+  return (name: Fields) => {
     const picked = Object.entries(conditions)
-      .map(([value, condition]): FieldDissectorCondition | null => {
+      .map(([value, condition]): IPCFieldCondition | null => {
         if ((condition as ConditionItem<Fields>)?.[name]) {
           return {
             value: isNumericKey ? +value : value,
@@ -32,13 +29,10 @@ export function createConditionFactory<
 
         return null
       })
-      .filter((a): a is FieldDissectorCondition => !!a)
+      .filter((a): a is IPCFieldCondition => !!a)
 
     if (picked.length) {
-      return dissector({
-        condition: { [matchField]: picked },
-        ...options,
-      })
+      return condition({ [matchField]: picked })
     }
 
     return () => {}

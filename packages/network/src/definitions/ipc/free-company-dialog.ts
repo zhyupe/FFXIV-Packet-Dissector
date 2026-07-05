@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field } from '@/struct/struct.decorator'
+import { field, format } from '@/struct/struct.decorator'
 
 export class FreeCompanyDialog extends Struct {
   @field(FieldType.biguint, 0)
@@ -34,14 +34,14 @@ export class FreeCompanyDialog extends Struct {
   fcRank!: number
 
   @field(FieldType.string, 50, 21)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   fcName!: string
 
   @field(FieldType.byte, 71)
   padding1!: number
 
   @field(FieldType.string, 72, 6)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   fcTag!: string
 
   @field(FieldType.byte, 78)

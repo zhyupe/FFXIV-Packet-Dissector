@@ -1,19 +1,20 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 
 class FellowshipMessageBoardItem extends Struct {
   static byteLength = 152
 
   @field(FieldType.biguint, 0)
-  @dissector({ base: 'HEX' })
+  @format({ base: Base.HEX })
   uniqueId!: bigint
 
   @field(FieldType.uint, 8, 4)
   time!: number
 
   @field(FieldType.uint, 12, 2)
-  @dissector({ db: 'server' })
+  @format({ db: 'server' })
   userServer!: number
 
   @field(FieldType.byte, 14)

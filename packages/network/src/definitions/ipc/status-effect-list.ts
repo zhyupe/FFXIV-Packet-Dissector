@@ -1,11 +1,11 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 import { StatusEffect } from './common/status-effect'
 
 export class StatusEffectList extends Struct {
   @field(FieldType.byte, 0)
-  @dissector({ db: 'ClassJob' })
+  @format({ db: 'ClassJob' })
   classId!: number
 
   @field(FieldType.byte, 1)
@@ -49,7 +49,7 @@ export class BossStatusEffectList extends Struct {
   statusEffects2!: StatusEffect[]
 
   @field(FieldType.byte, 360)
-  @dissector({ db: 'ClassJob' })
+  @format({ db: 'ClassJob' })
   classId!: number
 
   @field(FieldType.byte, 361)

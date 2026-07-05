@@ -1,10 +1,11 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 
 export class AddStatusEffectItem extends Struct {
   @field(FieldType.uint, 0, 2)
-  @dissector({ db: 'Status', append: 'enum' })
+  @format({ db: 'Status', append: 'enum' })
   status!: number
 
   @field(FieldType.uint, 2, 2)
@@ -17,7 +18,7 @@ export class AddStatusEffectItem extends Struct {
   duration!: number
 
   @field(FieldType.uint, 10, 4)
-  @dissector({ base: 'HEX' })
+  @format({ base: Base.HEX })
   actorId!: number
 
   @field(FieldType.uint, 14, 2)

@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field, ipcEnum } from '@/struct/struct.decorator'
+import { field, format, ipcEnum } from '@/struct/struct.decorator'
 
 const ClientActionType = {
   Action: 8,
@@ -17,14 +17,14 @@ export class ClientAction extends Struct {
   unknown2!: number
 
   @field(FieldType.uint, 8, 2)
-  @dissector({ enum: 'ClientActionType' })
+  @format({ enum: 'ClientActionType' })
   type!: number
 
   @field(FieldType.uint, 10, 2)
   unknown3!: number
 
   @field(FieldType.uint, 12, 4)
-  @dissector({ db: 'Action' })
+  @format({ db: 'Action' })
   action!: number
 
   @field(FieldType.uint, 16, 4)

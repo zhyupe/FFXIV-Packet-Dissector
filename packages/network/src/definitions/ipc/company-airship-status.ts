@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 
 export class CompanyAirshipStatusItem extends Struct {
   static byteLength = 36
@@ -12,7 +12,7 @@ export class CompanyAirshipStatusItem extends Struct {
   maxDistance!: number
 
   @field(FieldType.string, 6, 23)
-  @dissector({ append: 'val', check_length: true })
+  @format({ append: 'val', check_length: true })
   name!: string
 
   @field(FieldType.byte, 29)

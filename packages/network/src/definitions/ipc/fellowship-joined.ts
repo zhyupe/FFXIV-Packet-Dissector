@@ -1,12 +1,13 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 
 export class FellowshipJoinedItem extends Struct {
   static byteLength = 80
 
   @field(FieldType.biguint, 0)
-  @dissector({ base: 'HEX' })
+  @format({ base: Base.HEX })
   uniqueId!: bigint
 
   @field(FieldType.biguint, 8)

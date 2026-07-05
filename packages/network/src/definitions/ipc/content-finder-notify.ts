@@ -1,13 +1,13 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field, ipcIf } from '@/struct/struct.decorator'
+import { child, field, format, ipcIf } from '@/struct/struct.decorator'
 
 @ipcIf('content')
 export class ContentFinderNotifyInstance extends Struct {
   static byteLength = 4
 
   @field(FieldType.uint, 0, 2)
-  @dissector({ db: 'ContentFinderCondition', append: 'enum' })
+  @format({ db: 'ContentFinderCondition', append: 'enum' })
   content!: number
 
   @field(FieldType.uint, 2, 2)
@@ -16,11 +16,11 @@ export class ContentFinderNotifyInstance extends Struct {
 
 export class ContentFinderNotify extends Struct {
   @field(FieldType.byte, 0)
-  @dissector({ enum: 'MatchEventType' })
+  @format({ enum: 'MatchEventType' })
   type!: number
 
   @field(FieldType.byte, 1)
-  @dissector({ db: 'ClassJob' })
+  @format({ db: 'ClassJob' })
   classJob!: number
 
   @field(FieldType.uint, 2, 2)
@@ -33,7 +33,7 @@ export class ContentFinderNotify extends Struct {
   unknown3!: number
 
   @field(FieldType.uint, 8, 2)
-  @dissector({ db: 'ContentRoulette' })
+  @format({ db: 'ContentRoulette' })
   roulette!: number
 
   @field(FieldType.uint, 10, 2)

@@ -1,6 +1,7 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field, ipcEnum } from '@/struct/struct.decorator'
+import { field, format, ipcEnum } from '@/struct/struct.decorator'
 import { ActionEffectDisplayType } from './action-effect-display-type.enum'
 
 @ipcEnum('ActionEffectDisplayType', ActionEffectDisplayType)
@@ -11,7 +12,7 @@ export class EffectHeader extends Struct {
   animationTargetId!: number
 
   @field(FieldType.uint, 8, 4)
-  @dissector({ db: 'Action' })
+  @format({ db: 'Action' })
   action!: number
 
   @field(FieldType.uint, 12, 4)
@@ -21,7 +22,7 @@ export class EffectHeader extends Struct {
   animationLockTime!: number
 
   @field(FieldType.uint, 20, 4)
-  @dissector({ base: 'hex' })
+  @format({ base: Base.HEX })
   someTargetId!: number
 
   @field(FieldType.uint, 24, 2)
@@ -37,7 +38,7 @@ export class EffectHeader extends Struct {
   variation!: number
 
   @field(FieldType.byte, 31)
-  @dissector({ enum: 'ActionEffectDisplayType' })
+  @format({ enum: 'ActionEffectDisplayType' })
   effectDisplayType!: number
 
   @field(FieldType.byte, 33)

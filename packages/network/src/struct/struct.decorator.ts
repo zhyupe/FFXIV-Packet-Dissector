@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import type { IPCFieldCondition, IPCFieldFormat } from '@/generate/interface'
 import type { FieldType } from './field-type.enum'
 import { fieldLength } from './helper'
 import type { Struct, StructConstructor } from './struct'
@@ -13,27 +14,8 @@ export interface FieldMetadata {
   offset: number
   length?: number
   children?: FieldMetadata[]
-  dissector?: FieldDissectorOptions
-}
-
-export interface FieldDissectorOptions {
-  enum?: string
-  db?: string
-  base?: 'hex' | 'dec' | 'HEX' | 'DEC'
-  append?: 'enum' | 'hex' | 'val'
-  append_name?: boolean
-  check_length?: boolean
-  tvb_method?: string
-  add_le?: boolean
-  condition?: Record<string, FieldDissectorCondition[]>
-}
-
-export interface FieldDissectorCondition {
-  value: any
-  label?: string
-  enum?: string
-  db?: string
-  base?: 'hex' | 'dec' | 'HEX' | 'DEC'
+  format?: IPCFieldFormat
+  condition?: Record<string, IPCFieldCondition[]>
 }
 
 export interface ChildMetadata {
@@ -52,12 +34,10 @@ type Child = StructConstructor | ChildMetadata
 type ClassDecorator = (target: StructConstructor) => void
 type PropertyDecorator = (target: Struct, propertyKey: string) => void
 
-export function field(
-  type: FieldType,
-  offset?: number,
-  length?: number,
-): PropertyDecorator {
-  return (target: Struct, propertyKey: string): void => {
+function setField(
+  handler: (target: Struct, prev: FieldMetadata) => FieldMetadata,
+) {
+  return (target: Struct, propertyKey: string) => {
     let store: Store<FieldMetadata> = {}
     if (Reflect.hasOwnMetadata(fieldMetadataKey, target)) {
       store = Reflect.getMetadata(
@@ -66,13 +46,24 @@ export function field(
       ) as Store<FieldMetadata>
     }
 
+    store[propertyKey] = handler(
+      target,
+      (store[propertyKey] || {}) as FieldMetadata,
+    )
+    Reflect.defineMetadata(fieldMetadataKey, store, target)
+  }
+}
+
+export function field(
+  type: FieldType,
+  offset?: number,
+  length?: number,
+): PropertyDecorator {
+  return setField((target, prev) => {
     const structConstructor = target.constructor as StructConstructor
     if (offset === undefined || offset < 0) {
       offset = structConstructor.byteLength ?? 0
     }
-
-    store[propertyKey] = { ...store[propertyKey], type, offset, length }
-    Reflect.defineMetadata(fieldMetadataKey, store, target)
 
     const endByte = offset + fieldLength(type, length)
 
@@ -82,25 +73,19 @@ export function field(
     ) {
       structConstructor.byteLength = endByte
     }
-  }
+
+    return { ...prev, type, offset, length }
+  })
 }
 
-export function dissector(options: FieldDissectorOptions): PropertyDecorator {
-  return (target: Struct, propertyKey: string): void => {
-    let store: Store<FieldMetadata> = {}
-    if (Reflect.hasOwnMetadata(fieldMetadataKey, target)) {
-      store = Reflect.getMetadata(
-        fieldMetadataKey,
-        target,
-      ) as Store<FieldMetadata>
-    }
+export function format(format: IPCFieldFormat): PropertyDecorator {
+  return setField((_, prev) => ({ ...prev, format }))
+}
 
-    store[propertyKey] = {
-      ...store[propertyKey],
-      dissector: options,
-    } as FieldMetadata
-    Reflect.defineMetadata(fieldMetadataKey, store, target)
-  }
+export function condition(
+  condition: Record<string, IPCFieldCondition[]>,
+): PropertyDecorator {
+  return setField((_, prev) => ({ ...prev, condition }))
 }
 
 export function getFields(target: Struct): Store<FieldMetadata> | undefined {

@@ -1,10 +1,10 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field } from '@/struct/struct.decorator'
+import { field, format } from '@/struct/struct.decorator'
 
 export class FateInfo extends Struct {
   @field(FieldType.uint, 0, 2)
-  @dissector({ db: 'Fate', append: 'enum' })
+  @format({ db: 'Fate', append: 'enum' })
   fate!: number
 
   @field(FieldType.uint, 2, 2)

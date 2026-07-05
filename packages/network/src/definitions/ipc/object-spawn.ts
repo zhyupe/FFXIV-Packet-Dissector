@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 import { Position } from './common/position'
 
 export class ObjectSpawn extends Struct {
@@ -17,7 +17,7 @@ export class ObjectSpawn extends Struct {
   unknown3!: number
 
   @field(FieldType.uint, 4, 4)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   objId!: number
 
   @field(FieldType.uint, 8, 4)

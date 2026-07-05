@@ -13,19 +13,21 @@ import {
   getFields,
   getStructIf,
 } from '@/struct/struct.decorator'
+import type { IPCEnum, IPCField, IPCFieldFormat, IPCSchema } from '../interface'
 import { snakeCase } from '../utils'
 import { type Pair, table, tableValue } from './table'
+import { Base } from './wireshark'
 
 /** Path to repository root */
 const root = join(__dirname, '../../../../../')
 
-const typeDefaults: Record<string, Partial<IPCField>> = {
+const typeDefaults: Record<string, Partial<IPCFieldFormat>> = {
   bytes: {
-    base: 'NONE',
+    base: Base.NONE,
     add_le: false,
   },
   string: {
-    base: 'UNICODE',
+    base: Base.UNICODE,
     add_le: false,
   },
 }
@@ -58,38 +60,10 @@ const tvbMethod = ({ type }: IPCField) => {
   return `${type}()`
 }
 
-const itemAppend = (item: IPCField, indent = '  ') => {
-  const snakeName = snakeCase(item.name)
-  let output = `${snakeName}_val`
-  switch (item.append) {
-    case 'enum':
-      if (item.enum) {
-        output = `(${item.enum}[${output}] or "(unknown)")`
-      }
-      break
-    case 'hex':
-      output = `string.format('%0${(item.length ?? 1) * 2}x', ${output})`
-      break
-    default:
-      break
-  }
-
-  let outputName = `${item.name}: `
-  if (item.append_name === false) {
-    outputName = ''
-  } else if (item.condition) {
-    outputName = `" .. (${Object.keys(item.condition)
-      .map(
-        (key) => `label_${snakeName}_${snakeCase(key)}[${snakeCase(key)}_val]`,
-      )
-      .join(' or ')}) .. "`
-  }
-
-  return `
-${indent}local ${snakeName}_display = ", ${outputName}" .. ${output}
-${indent}pktinfo.cols.info:append(${snakeName}_display)
-${indent}tree:append_text(${snakeName}_display)`
-}
+const hasConditionAppend = (item: IPCField) =>
+  Object.values(item.condition ?? {}).some((values) =>
+    values.some((value) => !!value.append),
+  )
 
 const renderOpcodeKey = (opcode: string | number) => {
   const opcodeNumber =
@@ -172,7 +146,12 @@ const structToIPCSchema = (
       ]
     }
 
-    return [fieldMetadataToIPCField(key, metadata, child)]
+    const field = fieldMetadataToIPCField(key, metadata, child)
+    field.format = {
+      ...typeDefaults[field.type],
+      ...field.format,
+    }
+    return [field]
   })
 
   return {
@@ -193,7 +172,6 @@ const getStructEnums = (struct: StructConstructor): IPCEnum[] | undefined => {
 
   return enums.map(({ name, values }) => ({
     name,
-    type: 'uint',
     values: Object.entries(values)
       .filter(([key]) => !/^\d+$/.test(key))
       .map(([key, value]) => ({ key, value })),
@@ -205,7 +183,7 @@ const fieldMetadataToIPCField = (
   metadata: FieldMetadata,
   child?: StructConstructor | ChildMetadata,
 ): IPCField => {
-  const dissector = fieldDissectorOptionsToIPCField(metadata)
+  const { format, condition } = metadata
 
   if (!child || isStructConstructor(child)) {
     return {
@@ -213,14 +191,16 @@ const fieldMetadataToIPCField = (
       type: fieldTypeMap[metadata.type],
       offset: metadata.offset,
       length: getFieldMetadataLength(metadata),
-      ...dissector,
+      format,
+      condition,
     }
   }
 
   if (metadata.type === FieldType.array) {
-    const itemLength = metadata.length && child.byteLength
-      ? metadata.length / child.byteLength
-      : undefined
+    const itemLength =
+      metadata.length && child.byteLength
+        ? metadata.length / child.byteLength
+        : undefined
 
     return {
       name,
@@ -228,7 +208,8 @@ const fieldMetadataToIPCField = (
       offset: metadata.offset,
       length: child.byteLength,
       count: itemLength,
-      ...dissector,
+      format,
+      condition,
     }
   }
 
@@ -237,35 +218,8 @@ const fieldMetadataToIPCField = (
     type: fieldTypeMap[child.type],
     offset: metadata.offset,
     length: metadata.length ?? child.byteLength,
-    ...dissector,
-  }
-}
-
-const fieldDissectorOptionsToIPCField = ({
-  dissector,
-}: FieldMetadata): Partial<IPCField> => {
-  if (!dissector) return {}
-
-  return {
-    enum: dissector.db ? `$${dissector.db}` : dissector.enum,
-    base: dissector.base?.toUpperCase(),
-    append: dissector.append,
-    append_name: dissector.append_name,
-    check_length: dissector.check_length,
-    tvb_method: dissector.tvb_method,
-    add_le: dissector.add_le,
-    condition: dissector.condition
-      ? Object.fromEntries(
-          Object.entries(dissector.condition).map(([key, values]) => [
-            key,
-            values.map((value) => ({
-              ...value,
-              enum: value.db ? `$${value.db}` : value.enum,
-              base: value.base?.toUpperCase(),
-            })),
-          ]),
-        )
-      : undefined,
+    format,
+    condition,
   }
 }
 
@@ -296,10 +250,6 @@ class DissectorFile {
 
     const fields = (obj.fields ?? []).map((oldItem) => {
       const item = { key: snakeCase(oldItem.name), ...oldItem }
-      if (item.enum) {
-        item.enum = this.#resolveEnum(item.enum)
-      }
-
       if (typeDefaults[item.type]) {
         Object.assign(item, typeDefaults[item.type])
       }
@@ -331,23 +281,18 @@ class DissectorFile {
       : ''
 
     const output: string[] = []
-    if (this.requires.db) {
-      output.push(`local db = require('ffxiv_db')`)
-    }
-    if (this.requires.enum) {
-      output.push(`local enum = require('ffxiv_enum')`)
-    }
 
     // field condition
     output.push('')
     for (const item of fields) {
-      if (item.type === 'children' || !item.condition) continue
+      const { type, condition } = item
+      if (type === 'children' || !condition) continue
 
-      const text = Object.keys(item.condition)
+      const text = Object.keys(condition)
         .map((key) =>
           table(
             `local label_${item.key}_${snakeCase(key)}`,
-            item.condition[key]
+            condition[key]
               .filter((row) => row.label)
               .map((row) => ({ key: row.value, value: row.label })),
           ),
@@ -368,12 +313,13 @@ class DissectorFile {
       `local ${snakeName}_fields = {`,
       ...fields
         .filter((item) => item.type !== 'children')
-        .map(
-          (item) =>
-            `  ${item.key}${' '.repeat(maxLength - item.key.length)} = ProtoField.${protoFieldType(item)}("ffxiv_ipc_${snakeName}.${
-              item.key
-            }", "${item.name}", base.${item.base || 'DEC'}${item.enum ? `, ${item.enum}` : ''}),`,
-        ),
+        .map((item) => {
+          const { format = {} } = item
+          const enumRef = this.#resolveEnum(format)
+          return `  ${item.key}${' '.repeat(maxLength - item.key.length)} = ProtoField.${protoFieldType(item)}("ffxiv_ipc_${snakeName}.${
+            item.key
+          }", "${item.name}", base.${format.base || 'DEC'}${enumRef ? `, ${enumRef}` : ''}),`
+        }),
       '}',
       '',
       `ffxiv_ipc_${snakeName}.fields = ${snakeName}_fields`,
@@ -393,20 +339,31 @@ class DissectorFile {
       'end',
     )
 
+    if (this.requires.enum) {
+      output.unshift(`local enum = require('ffxiv_enum')`)
+    }
+    if (this.requires.db) {
+      output.unshift(`local db = require('ffxiv_db')`)
+    }
+
     this.renderer.commit(
       `ffxiv_ipc_${this.snakeName}_gen.lua`,
       output.join('\n').replace(/\n[\s\n]*\n/g, '\n\n'),
     )
   }
 
-  #resolveEnum = (value: string) => {
-    if (value.startsWith('$')) {
+  #resolveEnum = (format: Pick<IPCFieldFormat, 'db' | 'enum'>) => {
+    if (format.db) {
       this.requires.db = true
-      return value.replace('$', 'db.')
-    } else {
-      this.requires.enum = true
-      return `enum.reverse.${snakeCase(value)}`
+      return `db.${format.db}`
     }
+
+    if (format.enum) {
+      this.requires.enum = true
+      return `enum.reverse.${snakeCase(format.enum)}`
+    }
+
+    return null
   }
 
   #renderChildren = (
@@ -459,11 +416,13 @@ class DissectorFile {
       return this.#renderChildren(fieldKey, item)
     }
 
+    const { format = {} } = item
+
     let indent = '  '
     let prefix = `${indent}-- dissect the ${fieldKey} field\n`
     let suffix = ''
 
-    if (item.check_length) {
+    if (format.check_length) {
       prefix += `${indent}if tvbuf:len() >= ${item.offset + (item.length || 0)} then\n`
       suffix = `\n${indent}end${suffix}`
       indent += '  '
@@ -473,11 +432,11 @@ class DissectorFile {
       typeof item.count === 'number' && item.count > 1 && !!item.length
 
     if (hasPrimitiveArray) {
-      const addMethod = item.add_le === false ? 'add' : 'add_le'
+      const addMethod = format.add_le === false ? 'add' : 'add_le'
       const length = item.length as number
-      const valueMethod = item.tvb_method || tvbMethod(item)
+      const valueMethod = format.tvb_method || tvbMethod(item)
 
-      let content = `${indent}local ${fieldKey}_pos = ${item.offset}
+      const content = `${indent}local ${fieldKey}_pos = ${item.offset}
 ${indent}local ${fieldKey}_len = ${length}
 ${indent}local ${fieldKey}_count = ${item.count}
 
@@ -485,7 +444,7 @@ ${indent}while ${fieldKey}_pos + ${fieldKey}_len <= len do
 ${indent}  local ${fieldKey}_tvbr = tvbuf:range(${fieldKey}_pos, ${fieldKey}_len)
 ${indent}  local ${fieldKey}_val  = ${fieldKey}_tvbr:${valueMethod}
 ${indent}  tree:${addMethod}(${this.snakeName}_fields.${fieldKey}, ${fieldKey}_tvbr, ${fieldKey}_val)${
-        item.append ? itemAppend(item, `${indent}  `) : ''
+        format.append ? this.#renderAppend(item, `${indent}  `) : ''
       }
 ${indent}  ${fieldKey}_pos = ${fieldKey}_pos + ${fieldKey}_len
 ${indent}  ${fieldKey}_count = ${fieldKey}_count - 1
@@ -498,15 +457,21 @@ ${indent}end`
     }
 
     let content = `${indent}local ${fieldKey}_tvbr = tvbuf:range(${item.offset}${item.length ? `, ${item.length}` : ''})
-${indent}local ${fieldKey}_val  = ${fieldKey}_tvbr:${item.tvb_method || tvbMethod(item)}`
+${indent}local ${fieldKey}_val  = ${fieldKey}_tvbr:${format.tvb_method || tvbMethod(item)}`
 
     let labelKeyVar: string | null = null
     let labelValVar: string | null = null
+    const conditionHasAppend = hasConditionAppend(item)
     if (item.condition) {
       labelKeyVar = `${fieldKey}_label_key`
       labelValVar = `${fieldKey}_label_val`
       content += `\n${indent}local ${labelKeyVar} = "${item.name}"`
       content += `\n${indent}local ${labelValVar} = ${fieldKey}_val`
+      if (conditionHasAppend) {
+        content += `\n${indent}local ${fieldKey}_append_mode = ${
+          format.append ? tableValue(format.append) : 'nil'
+        }`
+      }
 
       let isFirst = true
       for (const [conditionKey, arr] of Object.entries(item.condition)) {
@@ -518,10 +483,15 @@ ${indent}local ${fieldKey}_val  = ${fieldKey}_tvbr:${item.tvb_method || tvbMetho
             content += `\n${indent}  ${labelKeyVar} = ${tableValue(modifier.label)}`
           }
 
-          if (modifier.enum) {
-            content += `\n${indent}  ${labelValVar} = (${this.#resolveEnum(modifier.enum)}[${fieldKey}_val] or "Unknown") .. " (" .. ${fieldKey}_val .. ")"`
+          const enumRef = this.#resolveEnum(modifier)
+          if (enumRef) {
+            content += `\n${indent}  ${labelValVar} = (${enumRef}[${fieldKey}_val] or "Unknown") .. " (" .. ${fieldKey}_val .. ")"`
           } else if (modifier.base === 'HEX') {
             content += `\n${indent}  ${labelValVar} = string.format('%0${(item.length ?? 1) * 2}x', ${fieldKey}_val)`
+          }
+
+          if (modifier.append) {
+            content += `\n${indent}  ${fieldKey}_append_mode = ${tableValue(modifier.append)}`
           }
           isFirst = false
         }
@@ -532,17 +502,78 @@ ${indent}local ${fieldKey}_val  = ${fieldKey}_tvbr:${item.tvb_method || tvbMetho
       }
     }
 
-    const addMethod = item.add_le === false ? 'add' : 'add_le'
+    const addMethod = format.add_le === false ? 'add' : 'add_le'
     let labelArg = ''
     if (labelKeyVar) {
       labelArg = `, ${labelKeyVar} .. ": " .. ${labelValVar || `${fieldKey}_val`}`
     }
 
     content += `\n${indent}tree:${addMethod}(${this.snakeName}_fields.${fieldKey}, ${fieldKey}_tvbr, ${fieldKey}_val${labelArg})`
-    if (item.append) {
-      content += `\n${itemAppend(item, indent)}`
+    if (format.append || conditionHasAppend) {
+      const appendModeExpr = conditionHasAppend
+        ? `${fieldKey}_append_mode`
+        : undefined
+      content += `\n${this.#renderAppend(item, indent, {
+        appendModeExpr,
+        conditionValueExpr: labelValVar ?? undefined,
+      })}`
     }
     return prefix + content + suffix
+  }
+
+  #renderAppend = (
+    item: IPCField,
+    indent = '  ',
+    options: {
+      appendModeExpr?: string
+      conditionValueExpr?: string
+    } = {},
+  ) => {
+    const { format = {} } = item
+    const snakeName = snakeCase(item.name)
+    const baseValueExpr = `${snakeName}_val`
+
+    const enumRef = this.#resolveEnum(format)
+    const enumValueExpr = enumRef
+      ? `(${enumRef}[${baseValueExpr}] or "(unknown)")`
+      : baseValueExpr
+    const hexValueExpr = `string.format('%0${(item.length ?? 1) * 2}x', ${baseValueExpr})`
+    const conditionValueExpr = options.conditionValueExpr ?? baseValueExpr
+
+    let output = baseValueExpr
+    if (options.appendModeExpr) {
+      output = `(function()
+${indent}  local _append = ${options.appendModeExpr}
+${indent}  if _append == "enum" then
+${indent}    return ${item.condition ? conditionValueExpr : enumValueExpr}
+${indent}  end
+${indent}  if _append == "hex" then
+${indent}    return ${item.condition ? conditionValueExpr : hexValueExpr}
+${indent}  end
+${indent}  return ${baseValueExpr}
+${indent}end)()`
+    } else if (format.append === 'enum') {
+      output = item.condition ? conditionValueExpr : enumValueExpr
+    } else if (format.append === 'hex') {
+      output = item.condition ? conditionValueExpr : hexValueExpr
+    }
+
+    let outputName = `${item.name}: `
+    if (format.append_name === false) {
+      outputName = ''
+    } else if (item.condition) {
+      outputName = `" .. (${Object.keys(item.condition)
+        .map(
+          (key) =>
+            `label_${snakeName}_${snakeCase(key)}[${snakeCase(key)}_val]`,
+        )
+        .join(' or ')}) .. "`
+    }
+
+    return `
+${indent}local ${snakeName}_display = ", ${outputName}" .. ${output}
+${indent}pktinfo.cols.info:append(${snakeName}_display)
+${indent}tree:append_text(${snakeName}_display)`
   }
 }
 
@@ -744,7 +775,7 @@ const getPacketLength = ({ fields }: Pick<IPCSchema, 'fields'>) => {
         length,
         item.offset +
           (item.type === 'children'
-            ? (item.length || 0)
+            ? item.length || 0
             : (item.length || 0) * (item.count || 1)),
       ),
     0,

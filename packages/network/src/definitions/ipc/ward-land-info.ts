@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 import { WardLandItem } from './common/ward-land-item'
 
 export class WardLandInfo extends Struct {
@@ -8,11 +8,11 @@ export class WardLandInfo extends Struct {
   section!: number
 
   @field(FieldType.uint, 4, 2)
-  @dissector({ db: 'TerritoryType', append: 'enum' })
+  @format({ db: 'TerritoryType', append: 'enum' })
   territoryType!: number
 
   @field(FieldType.uint, 6, 2)
-  @dissector({ db: 'World' })
+  @format({ db: 'World' })
   world!: number
 
   @field(FieldType.array, 8, 60 * WardLandItem.byteLength)

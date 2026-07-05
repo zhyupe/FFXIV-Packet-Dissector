@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 import { FauxHollowBlock } from './common/faux-hollow'
 
 export class FauxHollowStatus extends Struct {
@@ -14,7 +14,7 @@ export class FauxHollowStatus extends Struct {
   unknown3!: number
 
   @field(FieldType.uint, 12, 4)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   value!: number
 
   @field(FieldType.uint, 16, 4)
@@ -24,7 +24,7 @@ export class FauxHollowStatus extends Struct {
   unknown4!: number
 
   @field(FieldType.uint, 48, 4)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   chance!: number
 
   @field(FieldType.uint, 52, 4)

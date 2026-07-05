@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 import { SubmarineStatusItem } from './common/submarine'
 
 export class SubmarineStatusList extends Struct {
@@ -40,11 +40,11 @@ class SubmarineExplorationResultEntry extends Struct {
   exp!: number
 
   @field(FieldType.uint, 16, 4)
-  @dissector({ db: 'Item' })
+  @format({ db: 'Item' })
   loot1ItemId!: number
 
   @field(FieldType.uint, 20, 4)
-  @dissector({ db: 'Item' })
+  @format({ db: 'Item' })
   loot2ItemId!: number
 
   @field(FieldType.uint, 24, 2)

@@ -1,6 +1,7 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field } from '@/struct/struct.decorator'
+import { field, format } from '@/struct/struct.decorator'
 
 export class SkillHandler extends Struct {
   @field(FieldType.byte, 0)
@@ -16,7 +17,7 @@ export class SkillHandler extends Struct {
   pad_00021!: number
 
   @field(FieldType.uint, 4, 4)
-  @dissector({ db: 'Action' })
+  @format({ db: 'Action' })
   action!: number
 
   @field(FieldType.uint, 8, 2)
@@ -41,7 +42,7 @@ export class SkillHandler extends Struct {
   pad_000C5!: number
 
   @field(FieldType.uint, 16, 4)
-  @dissector({ base: 'HEX' })
+  @format({ base: Base.HEX })
   targetId!: number
 
   @field(FieldType.uint, 20, 4)

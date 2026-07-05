@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field, ipcIf } from '@/struct/struct.decorator'
+import { child, field, format, ipcIf } from '@/struct/struct.decorator'
 
 @ipcIf('id')
 export class LinkshellItem extends Struct {
@@ -13,7 +13,7 @@ export class LinkshellItem extends Struct {
   unknown0!: number
 
   @field(FieldType.uint, 6, 2)
-  @dissector({ db: 'World' })
+  @format({ db: 'World' })
   server1!: number
 
   @field(FieldType.uint, 8, 4)
@@ -23,7 +23,7 @@ export class LinkshellItem extends Struct {
   unknown1!: number
 
   @field(FieldType.uint, 14, 2)
-  @dissector({ db: 'World' })
+  @format({ db: 'World' })
   server2!: number
 
   @field(FieldType.byte, 17)
@@ -33,7 +33,7 @@ export class LinkshellItem extends Struct {
   padding!: number
 
   @field(FieldType.string, 20, 36)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   name!: string
 }
 

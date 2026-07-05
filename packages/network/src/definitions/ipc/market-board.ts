@@ -1,12 +1,12 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 
 class MarketBoardSearchItem extends Struct {
   static byteLength = 8
 
   @field(FieldType.uint, 0, 4)
-  @dissector({ db: 'Item' })
+  @format({ db: 'Item' })
   itemCatalogId!: number
 
   @field(FieldType.uint, 4, 2)
@@ -53,7 +53,7 @@ class MarketBoardHistoryListing extends Struct {
   onMannequin!: number
 
   @field(FieldType.string, 14, 32)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   buyerName!: string
 
   @field(FieldType.uint, 46, 2)
@@ -62,7 +62,7 @@ class MarketBoardHistoryListing extends Struct {
 
 export class MarketBoardItemListingHistory extends Struct {
   @field(FieldType.uint, 0, 4)
-  @dissector({ db: 'Item' })
+  @format({ db: 'Item' })
   itemCatalogId!: number
 
   @field(FieldType.array, 4, 20 * MarketBoardHistoryListing.byteLength)
@@ -95,7 +95,7 @@ class MarketBoardListing extends Struct {
   quantity!: number
 
   @field(FieldType.uint, 44, 4)
-  @dissector({ db: 'Item' })
+  @format({ db: 'Item' })
   itemId!: number
 
   @field(FieldType.uint, 48, 2)
@@ -118,11 +118,11 @@ class MarketBoardListing extends Struct {
   padding2!: number
 
   @field(FieldType.string, 70, 32)
-  @dissector({ append: 'val', check_length: true })
+  @format({ append: 'val', check_length: true })
   retainerName!: string
 
   @field(FieldType.string, 102, 32)
-  @dissector({ append: 'val', check_length: true })
+  @format({ append: 'val', check_length: true })
   playerName!: string
 
   @field(FieldType.byte, 134)
@@ -172,7 +172,7 @@ export class MarketBoardItemListingCount extends Struct {
 
 export class MarketBoardPurchase extends Struct {
   @field(FieldType.uint, 0, 4)
-  @dissector({ db: 'Item' })
+  @format({ db: 'Item' })
   itemId!: number
 
   @field(FieldType.uint, 8, 4)
@@ -187,7 +187,7 @@ export class MarketBoardPurchaseHandler extends Struct {
   listingId!: bigint
 
   @field(FieldType.uint, 16, 4)
-  @dissector({ db: 'Item' })
+  @format({ db: 'Item' })
   itemId!: number
 
   @field(FieldType.uint, 20, 4)

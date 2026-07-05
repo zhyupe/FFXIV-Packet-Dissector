@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 
 export class CompanyLevelItem extends Struct {
   static byteLength = 35
@@ -12,7 +12,7 @@ export class CompanyLevelItem extends Struct {
   index!: number
 
   @field(FieldType.string, 3, 32)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   name!: string
 }
 

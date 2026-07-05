@@ -1,6 +1,7 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field, ipcEnum } from '@/struct/struct.decorator'
+import { field, format, ipcEnum } from '@/struct/struct.decorator'
 
 const ClientTriggerCommandId = {
   ToggleSheathe: 1,
@@ -89,7 +90,7 @@ const ClientTriggerFishBaitType = {
 @ipcEnum('ClientTriggerFishBaitType', ClientTriggerFishBaitType)
 export class ClientTrigger extends Struct {
   @field(FieldType.uint, 0, 2)
-  @dissector({ enum: 'ClientTriggerCommandId', base: 'HEX', append: 'enum' })
+  @format({ enum: 'ClientTriggerCommandId', base: Base.HEX, append: 'enum' })
   commandId!: number
 
   @field(FieldType.byte, 2)
@@ -99,7 +100,7 @@ export class ClientTrigger extends Struct {
   unk_21!: number
 
   @field(FieldType.uint, 4, 4)
-  @dissector({
+  @format({
     condition: {
       commandId: [
         { value: 701, label: 'Type', enum: 'ClientTriggerFishBaitType' },
@@ -112,7 +113,7 @@ export class ClientTrigger extends Struct {
   param11!: number
 
   @field(FieldType.uint, 8, 4)
-  @dissector({
+  @format({
     condition: {
       commandId: [
         { value: 104, label: 'Action', db: 'Action' },

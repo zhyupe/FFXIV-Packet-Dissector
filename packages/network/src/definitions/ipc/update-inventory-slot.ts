@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field, ipcEnum } from '@/struct/struct.decorator'
+import { field, format, ipcEnum } from '@/struct/struct.decorator'
 
 const ItemLocation = {
   Inventory0: 0,
@@ -45,18 +45,18 @@ export class UpdateInventorySlot extends Struct {
   unknown0!: number
 
   @field(FieldType.uint, 8, 2)
-  @dissector({ enum: 'ItemLocation' })
+  @format({ enum: 'ItemLocation' })
   containerId!: number
 
   @field(FieldType.uint, 10, 2)
   slot!: number
 
   @field(FieldType.uint, 12, 4)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   quantity!: number
 
   @field(FieldType.uint, 16, 4)
-  @dissector({ db: 'Item', append: 'enum' })
+  @format({ db: 'Item', append: 'enum' })
   catalogId!: number
 
   @field(FieldType.uint, 20, 4)
@@ -66,7 +66,7 @@ export class UpdateInventorySlot extends Struct {
   signatureId!: bigint
 
   @field(FieldType.byte, 32)
-  @dissector({ enum: 'ItemQuality', append: 'enum' })
+  @format({ enum: 'ItemQuality', append: 'enum' })
   quality!: number
 
   @field(FieldType.byte, 33)
@@ -82,7 +82,7 @@ export class UpdateInventorySlot extends Struct {
   stain!: number
 
   @field(FieldType.uint, 40, 2)
-  @dissector({ db: 'Item' })
+  @format({ db: 'Item' })
   glamourCatalogId!: number
 
   @field(FieldType.uint, 42, 2)

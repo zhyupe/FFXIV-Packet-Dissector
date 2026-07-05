@@ -1,6 +1,7 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field, ipcEnum } from '@/struct/struct.decorator'
+import { field, format, ipcEnum } from '@/struct/struct.decorator'
 
 const FishEventType = {
   Cast: 1,
@@ -12,7 +13,7 @@ const FishEventType = {
 @ipcEnum('FishEventType', FishEventType)
 export class FishEvent extends Struct {
   @field(FieldType.uint, 0, 4)
-  @dissector({ base: 'HEX' })
+  @format({ base: Base.HEX })
   userId!: number
 
   @field(FieldType.uint, 4, 2)
@@ -28,7 +29,7 @@ export class FishEvent extends Struct {
   unknown4!: number
 
   @field(FieldType.uint, 12, 2)
-  @dissector({ enum: 'FishEventType', append: 'enum' })
+  @format({ enum: 'FishEventType', append: 'enum' })
   type!: number
 
   @field(FieldType.uint, 14, 2)

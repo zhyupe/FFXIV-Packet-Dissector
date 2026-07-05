@@ -1,6 +1,7 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 import { EffectEntity } from './common/effect-entity'
 import { EffectHeader } from './common/effect-header'
 
@@ -14,7 +15,7 @@ export class Effect extends Struct {
   entities!: EffectEntity[]
 
   @field(FieldType.uint, 112, 4)
-  @dissector({ base: 'hex' })
+  @format({ base: Base.HEX })
   effectTargetId!: number
 
   @field(FieldType.uint, 116, 4)

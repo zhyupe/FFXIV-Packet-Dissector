@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field } from '@/struct/struct.decorator'
+import { child, field, format } from '@/struct/struct.decorator'
 
 class AirshipExplorationResultEntry extends Struct {
   static byteLength = 56
@@ -24,11 +24,11 @@ class AirshipExplorationResultEntry extends Struct {
   unknown0!: number
 
   @field(FieldType.uint, 12, 4)
-  @dissector({ db: 'Item' })
+  @format({ db: 'Item' })
   loot1ItemId!: number
 
   @field(FieldType.uint, 16, 4)
-  @dissector({ db: 'Item' })
+  @format({ db: 'Item' })
   loot2ItemId!: number
 
   @field(FieldType.uint, 20, 2)
@@ -102,7 +102,7 @@ class AirshipStatusListItem extends Struct {
   rank!: number
 
   @field(FieldType.string, 12, 20)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   name!: string
 
   @field(FieldType.uint, 32, 4)
@@ -189,7 +189,7 @@ export class AirshipStatus extends Struct {
   dest5!: number
 
   @field(FieldType.string, 35, 20)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   name!: string
 
   @field(FieldType.byte, 55)

@@ -1,6 +1,7 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field, ipcEnum } from '@/struct/struct.decorator'
+import { field, format, ipcEnum } from '@/struct/struct.decorator'
 import { ActorControlType } from './common/actor-control-type.enum'
 import { createConditionFactory } from './factory/condition'
 
@@ -20,13 +21,13 @@ const actorControlField = createConditionFactory<
   ActorControlType | number
 >('type', {
   [ActorControlType.StatusEffectLose]: {
-    data0: { label: 'Status', enum: '$Status' },
+    data0: { label: 'Status', db: 'Status' },
   },
   [ActorControlType.HPFloatingText]: {
-    data0: { label: 'Status', enum: '$Status' },
+    data0: { label: 'Status', db: 'Status' },
     data1: { label: 'Type' },
     data2: { label: 'Value' },
-    data3: { label: 'ActorId', base: 'HEX' },
+    data3: { label: 'ActorId', base: Base.HEX },
   },
   [ActorControlType.AchievementMsg]: {
     data0: { label: 'Achievement' },
@@ -40,26 +41,26 @@ const actorControlField = createConditionFactory<
   },
 
   [ActorControlType.FateInit]: {
-    data0: { label: 'Fate', enum: '$Fate' },
+    data0: { label: 'Fate', db: 'Fate' },
   },
   [ActorControlType.FateEnd]: {
-    data0: { label: 'Fate', enum: '$Fate' },
+    data0: { label: 'Fate', db: 'Fate' },
   },
   [ActorControlType.FateNpc]: {
-    data0: { label: 'Fate', enum: '$Fate' },
+    data0: { label: 'Fate', db: 'Fate' },
   },
   [ActorControlType.FateProgress]: {
-    data0: { label: 'Fate', enum: '$Fate' },
+    data0: { label: 'Fate', db: 'Fate' },
     data1: { label: 'Progress(%)' },
   },
   [ActorControlType.FishingMsg]: {
-    data0: { label: 'Item', enum: '$Item' },
+    data0: { label: 'Item', db: 'Item' },
   },
   [ActorControlType.FishingBaitMsg]: {
-    data0: { label: 'Bait', enum: '$Item' },
+    data0: { label: 'Bait', db: 'Item' },
   },
   [ActorControlType.FatePosition]: {
-    data1: { label: 'NpcId', base: 'HEX' },
+    data1: { label: 'NpcId', base: Base.HEX },
     data2: { label: 'Radius' },
     data3: { label: 'X' },
     data4: { label: 'Y' },
@@ -94,7 +95,7 @@ const actorControlField = createConditionFactory<
 })
 export class ActorControl extends Struct {
   @field(FieldType.uint, 0, 2)
-  @dissector({ enum: 'ActorControlType' })
+  @format({ enum: 'ActorControlType' })
   type!: ActorControlType
 
   @field(FieldType.uint, 2, 2)

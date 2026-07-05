@@ -1,18 +1,18 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field } from '@/struct/struct.decorator'
+import { field, format } from '@/struct/struct.decorator'
 
 export class GardenStatus extends Struct {
   @field(FieldType.byte, 0)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   type!: number
 
   @field(FieldType.byte, 1)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   houseIndex!: number
 
   @field(FieldType.uint, 2, 2)
-  @dissector({ append: 'val' })
+  @format({ append: 'val' })
   section!: number
 
   @field(FieldType.uint, 8, 2)

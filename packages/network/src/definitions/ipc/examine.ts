@@ -1,6 +1,6 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, dissector, field, ipcIf } from '@/struct/struct.decorator'
+import { child, field, format, ipcIf } from '@/struct/struct.decorator'
 
 @ipcIf('materiaId')
 export class ExamineItemMateria extends Struct {
@@ -18,11 +18,11 @@ export class ExamineItemData extends Struct {
   static byteLength = 40
 
   @field(FieldType.uint, 0, 4)
-  @dissector({ db: 'Item', append: 'enum' })
+  @format({ db: 'Item', append: 'enum' })
   catalogId!: number
 
   @field(FieldType.uint, 4, 4)
-  @dissector({ db: 'Item', append: 'enum' })
+  @format({ db: 'Item', append: 'enum' })
   appearance!: number
 
   @field(FieldType.biguint, 8)
@@ -47,7 +47,7 @@ export class Examine extends Struct {
   unknown0!: number
 
   @field(FieldType.int, 2, 1)
-  @dissector({ db: 'ClassJob' })
+  @format({ db: 'ClassJob' })
   classJob!: number
 
   @field(FieldType.int, 3, 1)
@@ -57,7 +57,7 @@ export class Examine extends Struct {
   padding!: number
 
   @field(FieldType.uint, 6, 2)
-  @dissector({ db: 'TitleMasculine' })
+  @format({ db: 'TitleMasculine' })
   title!: number
 
   @field(FieldType.int, 8, 1)
@@ -82,7 +82,7 @@ export class Examine extends Struct {
   unknown2!: number
 
   @field(FieldType.uint, 50, 2)
-  @dissector({ db: 'World' })
+  @format({ db: 'World' })
   world!: number
 
   @field(FieldType.array, 64, 14 * ExamineItemData.byteLength)
@@ -90,6 +90,6 @@ export class Examine extends Struct {
   examineItemData!: ExamineItemData[]
 
   @field(FieldType.string, 624, 32)
-  @dissector({ append: 'val', check_length: true })
+  @format({ append: 'val', check_length: true })
   nickname!: string
 }

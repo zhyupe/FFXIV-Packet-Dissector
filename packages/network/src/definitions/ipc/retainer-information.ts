@@ -1,22 +1,23 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { dissector, field } from '@/struct/struct.decorator'
+import { field, format } from '@/struct/struct.decorator'
 
 export class RetainerInformation extends Struct {
   @field(FieldType.biguint, 0)
-  @dissector({ base: 'HEX' })
+  @format({ base: Base.HEX })
   uniqueId!: bigint
 
   @field(FieldType.uint, 8, 4)
-  @dissector({ base: 'HEX' })
+  @format({ base: Base.HEX })
   characterId!: number
 
   @field(FieldType.uint, 12, 2)
-  @dissector({ db: 'World' })
+  @format({ db: 'World' })
   userServer!: number
 
   @field(FieldType.byte, 14)
-  @dissector({ enum: 'PublicMessageType' })
+  @format({ enum: 'PublicMessageType' })
   type!: number
 
   @field(FieldType.byte, 17)
@@ -32,7 +33,7 @@ export class RetainerInformation extends Struct {
   market!: number
 
   @field(FieldType.byte, 26)
-  @dissector({ db: 'ClassJob' })
+  @format({ db: 'ClassJob' })
   classJob!: number
 
   @field(FieldType.byte, 27)
