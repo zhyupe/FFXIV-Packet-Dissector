@@ -17,6 +17,15 @@ export const int = {
 }
 
 export const BitConverter = {
+  ToInt64(input: Buffer, offset: number) {
+    return input.readBigInt64LE(offset)
+  },
+  ToInt32(input: Buffer, offset: number) {
+    return input.readInt32LE(offset)
+  },
+  ToInt16(input: Buffer, offset: number) {
+    return input.readInt16LE(offset)
+  },
   ToUInt64(input: Buffer, offset: number) {
     return input.readBigUInt64LE(offset)
   },

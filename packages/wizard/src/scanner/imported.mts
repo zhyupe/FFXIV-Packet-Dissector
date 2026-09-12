@@ -31,6 +31,7 @@ interface ImportedPacket {
   Data: Buffer
   SourceActor: number
   TargetActor: number
+  Type: number
 }
 
 type QuickPrompt = string[] | Record<string, string> | ScannerPrompt<any>
@@ -79,6 +80,7 @@ export const getImportedScanners = () => {
             Data: Buffer.concat([emptyHeader, packet.data]),
             SourceActor: packet.header.sourceActor,
             TargetActor: packet.header.targetActor,
+            Type: packet.header.type,
           },
           answer,
           store,
@@ -491,20 +493,14 @@ export const getImportedScanners = () => {
 
       const marker = packet.Data[Offsets.IpcData]
       const isSet = packet.Data[Offsets.IpcData + 0x01]
-      const x =
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x04) / 1000
-      const y =
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x08) / 1000
-      const z =
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x0c) / 1000
+      const x = BitConverter.ToInt32(packet.Data, Offsets.IpcData + 0x04) / 1000
+      const y = BitConverter.ToInt32(packet.Data, Offsets.IpcData + 0x08) / 1000
+      const z = BitConverter.ToInt32(packet.Data, Offsets.IpcData + 0x0c) / 1000
 
+      const diff = new Vector3(x, y, z).minus(limsaLominsaMarket)
+      console.log(packet.Type.toString(16), diff.X, diff.Y, diff.Z)
       return (
-        marker === 0 &&
-        isSet === 1 &&
-        inRange(
-          new Vector3(x, y, z).minus(limsaLominsaMarket),
-          new Vector3(0.5, 1, 0.5),
-        )
+        marker === 0 && isSet === 1 && inRange(diff, new Vector3(0.5, 1, 0.5))
       )
     },
   )
