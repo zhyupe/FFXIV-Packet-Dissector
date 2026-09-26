@@ -1,0 +1,46 @@
+name: Sync and generate network
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  sync-and-generate:
+    if: github.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.6.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22.19.0"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm --filter . --filter network install --frozen-lockfile
+
+      - name: Sync network
+        run: pnpm --filter network run sync
+
+      - name: Generate network
+        run: pnpm --filter network run generate
+
+      - name: Add & Commit
+        uses: EndBug/add-and-commit@v11
