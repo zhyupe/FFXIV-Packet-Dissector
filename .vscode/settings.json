@@ -1,0 +1,6 @@
+{
+  "search.exclude": {
+    "packages/network/src/opcode/*.ts": true,
+    "src/ffxiv_ipc_type_*.lua": true
+  }
+}
