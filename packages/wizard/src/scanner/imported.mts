@@ -548,6 +548,15 @@ export const getImportedScanners = () => {
       BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 8) == 0x150001,
   )
   RegisterScanner(
+    'SystemLogMessage',
+    '',
+    PacketSource.Server,
+    (packet) =>
+      packet.PacketSize == 56 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData) == 0x150001 &&
+      BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4) == 1110,
+  )
+  RegisterScanner(
     'EventPlay',
     '',
     PacketSource.Server,
@@ -586,6 +595,16 @@ export const getImportedScanners = () => {
       ) &&
       limsaLominsaFishes.includes(
         BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 0x10),
+      ),
+  )
+  RegisterScanner(
+    'FishCaught',
+    '',
+    PacketSource.Server,
+    (packet, _) =>
+      packet.PacketSize == 48 &&
+      limsaLominsaFishes.includes(
+        BitConverter.ToUInt32(packet.Data, Offsets.IpcData),
       ),
   )
   //=================
@@ -1057,17 +1076,6 @@ export const getImportedScanners = () => {
     'Attack multiple enemies (>24) with Holy.',
     PacketSource.Server,
     (packet, _) => isHolyPacket(packet, 2396),
-  )
-  //=================
-  RegisterScanner(
-    'SystemLogMessage',
-    'Please go to first boss room and touch any coral formation.',
-    PacketSource.Server,
-    (packet) =>
-      packet.PacketSize == 56 &&
-      [2034, 2035].includes(
-        BitConverter.ToUInt32(packet.Data, Offsets.IpcData + 4),
-      ),
   )
   //=================
   /*
