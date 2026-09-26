@@ -13,8 +13,6 @@ local currency_crystal_info_fields = {
   unknown            = ProtoField.uint32("ffxiv_ipc_currency_crystal_info.unknown", "unknown", base.DEC),
   catalog_id         = ProtoField.uint32("ffxiv_ipc_currency_crystal_info.catalog_id", "catalogId", base.DEC, db.Item),
   unknown1           = ProtoField.uint32("ffxiv_ipc_currency_crystal_info.unknown1", "unknown1", base.DEC),
-  unknown2           = ProtoField.uint32("ffxiv_ipc_currency_crystal_info.unknown2", "unknown2", base.DEC),
-  unknown3           = ProtoField.uint32("ffxiv_ipc_currency_crystal_info.unknown3", "unknown3", base.DEC),
 }
 
 ffxiv_ipc_currency_crystal_info.fields = currency_crystal_info_fields
@@ -69,16 +67,6 @@ function ffxiv_ipc_currency_crystal_info.dissector(tvbuf, pktinfo, root)
   local unknown1_tvbr = tvbuf:range(20, 4)
   local unknown1_val  = unknown1_tvbr:le_uint()
   tree:add_le(currency_crystal_info_fields.unknown1, unknown1_tvbr, unknown1_val)
-
-  -- dissect the unknown2 field
-  local unknown2_tvbr = tvbuf:range(24, 4)
-  local unknown2_val  = unknown2_tvbr:le_uint()
-  tree:add_le(currency_crystal_info_fields.unknown2, unknown2_tvbr, unknown2_val)
-
-  -- dissect the unknown3 field
-  local unknown3_tvbr = tvbuf:range(28, 4)
-  local unknown3_val  = unknown3_tvbr:le_uint()
-  tree:add_le(currency_crystal_info_fields.unknown3, unknown3_tvbr, unknown3_val)
 
   return len
 end

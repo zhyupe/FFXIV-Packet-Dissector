@@ -26,10 +26,4 @@ export class CurrencyCrystalInfo extends Struct {
 
   @field(FieldType.uint, 20, 4)
   unknown1!: number
-
-  @field(FieldType.uint, 24, 4)
-  unknown2!: number
-
-  @field(FieldType.uint, 28, 4)
-  unknown3!: number
 }

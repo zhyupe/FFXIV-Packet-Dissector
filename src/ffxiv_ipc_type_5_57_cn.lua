@@ -349,7 +349,7 @@ M.types = {
     [0] = {
       title = "CurrencyCrystalInfo",
       name = "ffxiv_ipc_currency_crystal_info",
-      length = 32,
+      length = 24,
     },
   },
   [0x02c8] = {
