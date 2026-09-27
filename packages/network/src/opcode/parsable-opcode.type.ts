@@ -1,4 +1,4 @@
-import type { PacketMap } from '../ipc'
+import type { PacketMap } from '../definitions/ipc'
 import type { NormalizedOpcode } from './normalized-opcode.enum'
 
 export type ParsableOpcode = {

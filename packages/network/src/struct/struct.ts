@@ -79,19 +79,21 @@ export abstract class Struct {
         value = buffer.readUIntLE(offset, length as number)
         break
       case FieldType.string: {
-        let end = offset + (length as number)
-        while (end > offset && buffer[end - 1] === 0) {
-          --end
-        }
-
-        value = buffer.slice(offset, end).toString('utf-8')
+        const end = length === undefined ? buffer.length : offset + length
+        const nul = buffer.indexOf(0, offset)
+        value = buffer
+          .subarray(offset, nul >= offset && nul < end ? nul : end)
+          .toString('utf-8')
         break
       }
       case FieldType.byte:
         value = buffer[offset]
         break
       case FieldType.bytes:
-        value = buffer.slice(offset, offset + (length as number))
+        value = buffer.subarray(
+          offset,
+          length === undefined ? buffer.length : offset + length,
+        )
         break
       case FieldType.array: {
         const child = this.getChildConfig(key)
@@ -114,6 +116,12 @@ export abstract class Struct {
   }
 
   constructor(buffer: Buffer) {
+    const minimum = (this.constructor as StructConstructor).byteLength ?? 0
+    if (buffer.length < minimum) {
+      throw new RangeError(
+        `${this.constructor.name}: expected at least ${minimum} bytes, got ${buffer.length}`,
+      )
+    }
     const fields = getFields(this)
     if (!fields) return
 
@@ -129,15 +137,10 @@ export abstract class Struct {
       } catch (e) {
         if (e instanceof RangeError) {
           const { type, offset, length } = config
-          console.error(e.message, {
-            className: this.constructor.name,
-            key,
-            type: FieldType[type],
-            offset,
-            length,
-            buffer: buffer.toString('hex'),
-          })
-          process.exit(1)
+          throw new RangeError(
+            `${this.constructor.name}.${key}: invalid ${FieldType[type]} at ${offset}, length ${length ?? 'remaining'}`,
+            { cause: e },
+          )
         } else {
           throw e
         }

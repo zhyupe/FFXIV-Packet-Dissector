@@ -83,3 +83,65 @@ export class BossStatusEffectList extends Struct {
   @child(StatusEffect)
   statusEffects!: StatusEffect[]
 }
+
+export class EurekaStatusEffectList extends Struct {
+  @field(FieldType.byte, 0)
+  rank!: number
+
+  @field(FieldType.byte, 1)
+  element!: number
+
+  @field(FieldType.byte, 2)
+  unknown2!: number
+
+  @field(FieldType.byte, 3)
+  padding!: number
+
+  @field(FieldType.object, 4, 380)
+  @child(StatusEffectList)
+  data!: StatusEffectList
+}
+export class StatusEffectList2 extends Struct {
+  @field(FieldType.byte, 0)
+  rank!: number
+
+  @field(FieldType.byte, 1)
+  unknown1!: number
+
+  @field(FieldType.byte, 2)
+  unknown2!: number
+
+  @field(FieldType.byte, 3)
+  padding!: number
+
+  @field(FieldType.object, 4, 380)
+  @child(StatusEffectList)
+  data!: StatusEffectList
+}
+export class StatusEffectListForay3 extends Struct {
+  @field(FieldType.byte, 0)
+  rank!: number
+
+  @field(FieldType.byte, 1)
+  unknown1!: number
+
+  @field(FieldType.byte, 2)
+  unknown2!: number
+
+  @field(FieldType.byte, 3)
+  padding!: number
+
+  @field(FieldType.object, 4, 380)
+  @child(StatusEffectList)
+  data!: StatusEffectList
+}
+export class StatusEffectList3 extends Struct {
+  @field(FieldType.array, 0, 360)
+  @child(StatusEffect)
+  statusEffects!: StatusEffect[]
+}
+export class StatusEffectListPlayerDouble extends Struct {
+  @field(FieldType.array, 0, 720)
+  @child(StatusEffect)
+  statusEffects!: StatusEffect[]
+}

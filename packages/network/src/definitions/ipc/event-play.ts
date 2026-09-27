@@ -27,11 +27,8 @@ class EventPlayHeader extends Struct {
   @field(FieldType.uint, 14, 2)
   padding!: number
 
-  @field(FieldType.uint, 16, 4)
-  sceneFlags!: number
-
-  @field(FieldType.uint, 20, 4)
-  unknown!: number
+  @field(FieldType.biguint, 16)
+  sceneFlags!: bigint
 
   @field(FieldType.byte, 24)
   paramSize!: number
@@ -52,4 +49,18 @@ const factory = createListStructFactory(
 
 export const EventPlay = factory(1)
 export const EventPlay4 = factory(4)
+export const EventPlay8 = factory(8)
+export const EventPlay16 = factory(16)
 export const EventPlay32 = factory(32)
+export const EventPlay64 = factory(64)
+export const EventPlay128 = factory(128)
+export const EventPlay255 = factory(255)
+
+EventPlay.byteLength = 40
+EventPlay4.byteLength = 48
+EventPlay8.byteLength = 64
+EventPlay16.byteLength = 96
+EventPlay32.byteLength = 160
+EventPlay64.byteLength = 288
+EventPlay128.byteLength = 544
+EventPlay255.byteLength = 1048
