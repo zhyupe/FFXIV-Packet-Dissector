@@ -83,6 +83,9 @@ importers:
         specifier: ^4.19.3
         version: 4.22.4
     devDependencies:
+      '@tsconfig/node20':
+        specifier: 'catalog:'
+        version: 20.1.6
       '@types/node':
         specifier: 'catalog:'
         version: 20.19.24

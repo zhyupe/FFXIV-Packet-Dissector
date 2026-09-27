@@ -12,6 +12,7 @@
     "build": "tsdown src/index.ts"
   },
   "devDependencies": {
+    "@tsconfig/node20": "catalog:",
     "@types/node": "catalog:",
     "tsdown": "catalog:",
     "tsx": "catalog:",
