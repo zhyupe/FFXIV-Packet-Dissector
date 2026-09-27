@@ -341,6 +341,10 @@ local M = {
     name = "ffxiv_ipc_fashion_report",
     length = 32,
   },
+  FashionReportHighScore = {
+    name = "ffxiv_ipc_fashion_report_high_score",
+    length = 80,
+  },
   FateInfo = {
     name = "ffxiv_ipc_fate_info",
     length = 24,

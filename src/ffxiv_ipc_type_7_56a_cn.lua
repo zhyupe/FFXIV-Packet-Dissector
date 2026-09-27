@@ -431,6 +431,12 @@ M.types = {
       outgoing = false,
     },
   },
+  [0x018c] = {
+    [0] = {
+      type = "FashionReportHighScore",
+      outgoing = false,
+    },
+  },
   [0x0191] = {
     [0] = {
       type = "UpdateParty",

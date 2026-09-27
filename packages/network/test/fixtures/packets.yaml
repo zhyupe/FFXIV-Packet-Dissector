@@ -110,6 +110,7 @@ ServerZoneIpc:
     ExamineFreeCompanyInfo: {}
     ExamineSearchInfo: {}
     FashionReport: {}
+    FashionReportHighScore: {}
     FateInfo: {}
     FirstAttack: {}
     FishCaught: {}

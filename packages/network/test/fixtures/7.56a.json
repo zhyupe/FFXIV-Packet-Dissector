@@ -75,6 +75,7 @@
   "ExamineFreeCompanyInfo": "0x0369",
   "ExamineSearchInfo": "0x02CF",
   "FashionReport": "0x036C",
+  "FashionReportHighScore": "0x018C",
   "FateInfo": "0x0154",
   "FirstAttack": "0x00D6",
   "FishCaught": "0x0110",

@@ -77,6 +77,7 @@ export enum NormalizedOpcode {
   ExamineFreeCompanyInfo = 'ExamineFreeCompanyInfo',
   ExamineSearchInfo = 'ExamineSearchInfo',
   FashionReport = 'FashionReport',
+  FashionReportHighScore = 'FashionReportHighScore',
   FateInfo = 'FateInfo',
   FellowshipInfo = 'FellowshipInfo',
   FellowshipInfoQuery = 'FellowshipInfoQuery',

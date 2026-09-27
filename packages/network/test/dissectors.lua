@@ -74,6 +74,7 @@ package.preload.ffxiv_db = function()
     ContentFinderCondition = { [42] = 'Test Duty' },
     ContentRoulette = { [7] = 'Test Roulette' },
     World = { [31] = 'Test World' },
+    Item = { [70000] = 'Test Item' },
   }, { __index = function() return {} end })
 end
 for _, file in ipairs(arg) do dofile(file) end
@@ -375,6 +376,42 @@ do
   assert(select(2, registry.getDissector(0x036C, 32, 'S')) == 'FashionReport')
   assert(registry.getDissector(0x036C, 31, 'S') == nil)
   assert(registry.getDissector(0x036C, 32, 'C') == nil)
+end
+
+-- Artificial high-score equipment; no captured item IDs or evaluation sequences.
+do
+  local result = string.rep('\0', 80)
+  result = replace(result, 0, string.char(73))
+  for i = 0, 10 do
+    result = replace(result, 4 + 4 * i, string.pack('<I4', i == 1 and 1070001 or 70000 + i))
+    result = replace(result, 0x40 + i, string.char(i % 7))
+  end
+  result = replace(result, 0x30, string.pack('<I2I2', 0xabcd, 0xffff))
+  for i = 0, 5 do
+    result = replace(result, 0x34 + i, string.char(10 + i))
+    result = replace(result, 0x3a + i, string.char(20 + i))
+  end
+  result = replace(result, 0x4b, string.rep(string.char(0xa5), 5))
+  parse('ffxiv_ipc_fashion_report_high_score', result)
+  assert(field('ffxiv_ipc_fashion_report_high_score.score') == 73)
+  assert(#values['ffxiv_ipc_fashion_report_high_score.item_ids'] == 11)
+  assert(field('ffxiv_ipc_fashion_report_high_score.item_ids', 2) == 1070001)
+  assert(field('ffxiv_ipc_fashion_report_high_score.item_ids', 11) == 70010)
+  assert(fieldDefinitions['ffxiv_ipc_fashion_report_high_score.item_ids'].valueNames[70000] == 'Test Item')
+  assert(field('ffxiv_ipc_fashion_report_high_score.glasses_ids', 2) == 0xffff)
+  assert(field('ffxiv_ipc_fashion_report_high_score.stain0_ids', 6) == 15)
+  assert(field('ffxiv_ipc_fashion_report_high_score.stain1_ids', 6) == 25)
+  assert(#values['ffxiv_ipc_fashion_report_high_score.item_evaluations'] == 11)
+  assert(field('ffxiv_ipc_fashion_report_high_score.item_evaluations', 6) == 5)
+  assert(field('ffxiv_ipc_fashion_report_high_score.item_evaluations', 7) == 6)
+  assert(field('ffxiv_ipc_fashion_report_high_score.item_evaluations', 11) == 3)
+  local ratings = fieldDefinitions['ffxiv_ipc_fashion_report_high_score.item_evaluations'].valueNames
+  assert(ratings[0] == 'Gold' and ratings[4] == 'OneStar' and ratings[5] == 'NoRating')
+  assert(ratings[1] == nil and ratings[2] == nil and ratings[3] == nil)
+  assert(field('ffxiv_ipc_fashion_report_high_score.unknown_tail') == string.rep(string.char(0xa5), 5))
+  assert(select(2, registry.getDissector(0x018C, 80, 'S')) == 'FashionReportHighScore')
+  assert(registry.getDissector(0x018C, 79, 'S') == nil)
+  assert(registry.getDissector(0x018C, 80, 'C') == nil)
 end
 
 -- Artificial adventurer plate: wire hours remain independent of the host timezone.

@@ -356,6 +356,13 @@ M.forward.fish_event_type = {
 }
 M.reverse.fish_event_type = makeValString(M.forward.fish_event_type)
 
+M.forward.fashion_report_evaluation = {
+  Gold = 0,
+  OneStar = 4,
+  NoRating = 5,
+}
+M.reverse.fashion_report_evaluation = makeValString(M.forward.fashion_report_evaluation)
+
 M.forward.item_quality = {
   NormalQuality = 0,
   HighQuality = 1,

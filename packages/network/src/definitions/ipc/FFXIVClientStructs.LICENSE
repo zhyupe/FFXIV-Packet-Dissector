@@ -1,8 +1,8 @@
 PlayerSpawn, Achievement, ContentFinderNotify, PartyFinderList, CharaCard and
-FashionReport layouts reference
+FashionReport / FashionReportHighScore layouts reference
 SpawnPlayerPacket, CommonSpawnData, AchievementsPacket, QueueUpdatePacket,
 CrossRealmListingSegmentPacket, CharaCardPacket, CharaCardData and
-FashionCheckManager.PreviewData from
+FashionCheckManager.PreviewData and FashionCheckManager.HighScoreData from
 https://github.com/aers/FFXIVClientStructs
 
 MIT License
