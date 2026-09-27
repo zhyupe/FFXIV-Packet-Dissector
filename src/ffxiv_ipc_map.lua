@@ -509,6 +509,10 @@ local M = {
     name = "ffxiv_ipc_market_board_search_result",
     length = 176,
   },
+  NearCompletionAchievements = {
+    name = "ffxiv_ipc_near_completion_achievements",
+    length = 520,
+  },
   NpcSpawn = {
     name = "ffxiv_ipc_npc_spawn",
     length = 624,

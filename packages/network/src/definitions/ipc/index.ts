@@ -2,6 +2,7 @@
 
 import { NormalizedOpcode } from '@/opcode'
 import type { StructConstructor } from '@/struct/struct'
+import { NearCompletionAchievements } from './achievement'
 import { ActionRequest, ActionRequestGroundTargeted } from './action-request'
 import { ActorCast } from './actor-cast'
 import {
@@ -350,6 +351,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.MarketBoardPurchaseHandler]: MarketBoardPurchaseHandler,
   [NormalizedOpcode.MarketBoardSale]: MarketBoardSale,
   [NormalizedOpcode.MarketBoardSearchResult]: MarketBoardSearchResult,
+  [NormalizedOpcode.NearCompletionAchievements]: NearCompletionAchievements,
   [NormalizedOpcode.NpcSpawn]: NpcSpawn,
   [NormalizedOpcode.NpcSpawn2]: NpcSpawn2,
   [NormalizedOpcode.NpcYell]: NpcYell,
@@ -568,6 +570,7 @@ export {
   MarketBoardPurchaseHandler,
   MarketBoardSale,
   MarketBoardSearchResult,
+  NearCompletionAchievements,
   NpcRemove,
   NpcSpawn,
   NpcSpawn2,

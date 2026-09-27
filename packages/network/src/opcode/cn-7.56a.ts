@@ -38,6 +38,9 @@ export const CN_7_56a: OpcodeMap = {
   0x00c5: [{ type: NormalizedOpcode.ContentFinderDutyInfo, outgoing: false }],
   0x00c7: [{ type: NormalizedOpcode.EffectResultBasic32, outgoing: false }],
   0x00d0: [{ type: NormalizedOpcode.PlayerStats, outgoing: false }],
+  0x00d3: [
+    { type: NormalizedOpcode.NearCompletionAchievements, outgoing: false },
+  ],
   0x00d6: [{ type: NormalizedOpcode.FirstAttack, outgoing: false }],
   0x00d9: [{ type: NormalizedOpcode.EventFinish, outgoing: false }],
   0x00dd: [{ type: NormalizedOpcode.NpcYell, outgoing: false }],

@@ -34,6 +34,7 @@ const typeDefaults: Record<string, Partial<IPCFieldFormat>> = {
 }
 
 const protoFieldType = ({ type, length, format }: IPCField) => {
+  if (type === 'bitset') return 'uint32'
   if (format?.divisor !== undefined) return 'double'
   if (type === 'uint') {
     return `uint${(length ?? 4) * 8}`
@@ -94,6 +95,7 @@ const fieldTypeMap: Record<FieldType, string> = {
   [FieldType.bytes]: 'bytes',
   [FieldType.array]: 'bytes',
   [FieldType.object]: 'bytes',
+  [FieldType.bitset]: 'bitset',
 }
 
 const isStructConstructor = (
@@ -460,6 +462,21 @@ ${indent}    break
 ${indent}  end
 ${indent}end`
 
+      return prefix + content + suffix
+    }
+
+    if (item.type === 'bitset') {
+      const end = item.length === undefined ? 'len' : item.offset + item.length
+      const content = `${indent}for ${fieldKey}_pos = ${item.offset}, ${end} - 1 do
+${indent}  local ${fieldKey}_tvbr = tvbuf:range(${fieldKey}_pos, 1)
+${indent}  local ${fieldKey}_byte = ${fieldKey}_tvbr:le_uint()
+${indent}  for ${fieldKey}_bit = 0, 7 do
+${indent}    if math.floor(${fieldKey}_byte / 2 ^ ${fieldKey}_bit) % 2 == 1 then
+${indent}      local ${fieldKey}_val = (${fieldKey}_pos - ${item.offset}) * 8 + ${fieldKey}_bit
+${indent}      tree:add_le(${this.snakeName}_fields.${fieldKey}, ${fieldKey}_tvbr, ${fieldKey}_val)
+${indent}    end
+${indent}  end
+${indent}end`
       return prefix + content + suffix
     }
 

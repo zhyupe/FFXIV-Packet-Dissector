@@ -95,6 +95,19 @@ export abstract class Struct {
           length === undefined ? buffer.length : offset + length,
         )
         break
+      case FieldType.bitset: {
+        const end = length === undefined ? buffer.length : offset + length
+        const indices: number[] = []
+        for (let pos = offset; pos < end; pos++) {
+          for (let bit = 0; bit < 8; bit++) {
+            if (buffer[pos] & (1 << bit)) {
+              indices.push((pos - offset) * 8 + bit)
+            }
+          }
+        }
+        value = indices
+        break
+      }
       case FieldType.array: {
         const child = this.getChildConfig(key)
         const arr = []

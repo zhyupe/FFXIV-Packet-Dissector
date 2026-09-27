@@ -380,4 +380,10 @@ M.forward.item_location = {
 }
 M.reverse.item_location = makeValString(M.forward.item_location)
 
+M.forward.near_completion_achievement_slot = {
+  LoginNotification = 0,
+  AchievementAddon = 1,
+}
+M.reverse.near_completion_achievement_slot = makeValString(M.forward.near_completion_achievement_slot)
+
 return M

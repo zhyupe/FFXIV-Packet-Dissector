@@ -10,4 +10,6 @@ export enum FieldType {
   bytes,
   array,
   object,
+  /** LSB-first bitmap decoded as zero-based indices of set bits. */
+  bitset,
 }

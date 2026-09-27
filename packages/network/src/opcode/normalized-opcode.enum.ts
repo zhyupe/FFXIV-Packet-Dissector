@@ -142,6 +142,7 @@ export enum NormalizedOpcode {
   MarketBoardSale = 'MarketBoardSale',
   MarketBoardSearchResult = 'MarketBoardSearchResult',
   ModelEquip = 'ModelEquip',
+  NearCompletionAchievements = 'NearCompletionAchievements',
   NpcSpawn = 'NpcSpawn',
   NpcSpawn2 = 'NpcSpawn2',
   NpcYell = 'NpcYell',

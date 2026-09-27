@@ -189,6 +189,12 @@ M.types = {
       outgoing = false,
     },
   },
+  [0x00d3] = {
+    [0] = {
+      type = "NearCompletionAchievements",
+      outgoing = false,
+    },
+  },
   [0x00d6] = {
     [0] = {
       type = "FirstAttack",

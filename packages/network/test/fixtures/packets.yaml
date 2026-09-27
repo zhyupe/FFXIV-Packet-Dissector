@@ -161,6 +161,7 @@ ServerZoneIpc:
     MarketBoardSale: {}
     MarketBoardSearchResult: {}
     ModelEquip: {}
+    NearCompletionAchievements: {}
     NpcSpawn:
       ACT: NpcSpawn
     NpcSpawn2:

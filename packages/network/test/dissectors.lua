@@ -122,6 +122,33 @@ assert(registry.getDissector(0x0131, 95, 'S') == nil)
 assert(registry.getDissector(0xFFFF, 1024, 'S') == nil)
 assert(select(2, registry.getDissector(0x0351, 288, 'S')) == 'EventPlay64')
 
+-- Artificial membership bits exercise both slots and the entire bitmap capacity.
+local achievementIds = { 0, 7, 8, 19, 4077, 4078, 4079 }
+for slot = 0, 1 do
+  local bitmap = {}
+  for i = 1, 510 do bitmap[i] = 0 end
+  for _, id in ipairs(achievementIds) do
+    local index = math.floor(id / 8) + 1
+    bitmap[index] = bitmap[index] + 2 ^ (id % 8)
+  end
+  for i, byte in ipairs(bitmap) do bitmap[i] = string.char(byte) end
+  local bytes = string.pack('<I4', slot) .. table.concat(bitmap) .. string.rep('\165', 6)
+  parse('ffxiv_ipc_near_completion_achievements', bytes .. string.rep('\255', 8))
+  assert(field('ffxiv_ipc_near_completion_achievements.slot') == slot)
+  assert(#values['ffxiv_ipc_near_completion_achievements.achievement_ids'] == #achievementIds)
+  for index, id in ipairs(achievementIds) do
+    assert(field('ffxiv_ipc_near_completion_achievements.achievement_ids', index) == id)
+  end
+  assert(field('ffxiv_ipc_near_completion_achievements.unknown_tail') == string.rep('\165', 6))
+end
+local slotNames = fieldDefinitions['ffxiv_ipc_near_completion_achievements.slot'].valueNames
+assert(slotNames[0] == 'LoginNotification' and slotNames[1] == 'AchievementAddon')
+parse('ffxiv_ipc_near_completion_achievements', string.rep('\0', 520))
+assert(values['ffxiv_ipc_near_completion_achievements.achievement_ids'] == nil)
+assert(select(2, registry.getDissector(0x00D3, 520, 'S')) == 'NearCompletionAchievements')
+assert(registry.getDissector(0x00D3, 519, 'S') == nil)
+assert(registry.getDissector(0x00D3, 520, 'C') == nil)
+
 -- Synthetic fixed-point values; no captured payloads or player identifiers.
 local jobs = { 'carpenter', 'blacksmith', 'armorer', 'goldsmith', 'leatherworker', 'weaver', 'alchemist', 'culinarian' }
 local levels, rawLevels = {}, { 0, 1, 100, 101, 12345, 23456, 34567, 0xffffffff }
