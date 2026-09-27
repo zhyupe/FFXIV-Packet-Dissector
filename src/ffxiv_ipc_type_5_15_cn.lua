@@ -6,6 +6,8 @@ M.types = {
   [0x00a4] = {
     [0] = {
       title = "CFPreferredRole",
+      name = "ffxiv_ipc_cf_preferred_role",
+      length = 16,
     },
   },
   [0x00b4] = {
@@ -136,19 +138,21 @@ M.types = {
     [0] = {
       title = "EventPlay4",
       name = "ffxiv_ipc_event_play4",
-      length = 44,
+      length = 48,
     },
   },
   [0x0216] = {
     [0] = {
       title = "EventPlay",
       name = "ffxiv_ipc_event_play",
-      length = 32,
+      length = 40,
     },
   },
   [0x021b] = {
     [0] = {
       title = "ResumeEventScene32",
+      name = "ffxiv_ipc_resume_event_scene32",
+      length = 136,
     },
   },
   [0x0236] = {
@@ -160,7 +164,7 @@ M.types = {
     [0] = {
       title = "EffectResult",
       name = "ffxiv_ipc_effect_result",
-      length = 42,
+      length = 96,
     },
   },
   [0x023b] = {
@@ -307,6 +311,8 @@ M.types = {
   [0x0399] = {
     [0] = {
       title = "StatusEffectList2",
+      name = "ffxiv_ipc_status_effect_list2",
+      length = 384,
     },
   },
   [0x039e] = {

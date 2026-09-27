@@ -3,8 +3,8 @@
 local ffxiv_ipc_server_notice = Proto("ffxiv_ipc_server_notice", "FFXIV-IPC ServerNotice")
 
 local server_notice_fields = {
-  padding = ProtoField.uint8("ffxiv_ipc_server_notice.padding", "padding", base.DEC),
-  content = ProtoField.string("ffxiv_ipc_server_notice.content", "content", base.UNICODE),
+  display_flags = ProtoField.uint8("ffxiv_ipc_server_notice.display_flags", "displayFlags", base.DEC),
+  content       = ProtoField.string("ffxiv_ipc_server_notice.content", "content", base.UNICODE),
 }
 
 ffxiv_ipc_server_notice.fields = server_notice_fields
@@ -17,10 +17,10 @@ function ffxiv_ipc_server_notice.dissector(tvbuf, pktinfo, root)
     return len
   end
 
-  -- dissect the padding field
-  local padding_tvbr = tvbuf:range(0, 1)
-  local padding_val  = padding_tvbr:le_uint()
-  tree:add_le(server_notice_fields.padding, padding_tvbr, padding_val)
+  -- dissect the display_flags field
+  local display_flags_tvbr = tvbuf:range(0, 1)
+  local display_flags_val  = display_flags_tvbr:le_uint()
+  tree:add_le(server_notice_fields.display_flags, display_flags_tvbr, display_flags_val)
 
   -- dissect the content field
   if tvbuf:len() >= 1 then

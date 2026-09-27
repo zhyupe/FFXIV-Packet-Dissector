@@ -28,7 +28,7 @@ M.types = {
     [0] = {
       title = "EventPlay32",
       name = "ffxiv_ipc_event_play32",
-      length = 156,
+      length = 160,
     },
   },
   [0x009f] = {
@@ -62,11 +62,15 @@ M.types = {
   [0x00ad] = {
     [0] = {
       title = "SystemLogMessage144",
+      name = "ffxiv_ipc_system_log_message144",
+      length = 144,
     },
   },
   [0x00b4] = {
     [0] = {
       title = "NpcYell",
+      name = "ffxiv_ipc_npc_yell",
+      length = 32,
     },
   },
   [0x00b6] = {
@@ -107,11 +111,15 @@ M.types = {
   [0x00cd] = {
     [0] = {
       title = "SystemLogMessage80",
+      name = "ffxiv_ipc_system_log_message80",
+      length = 80,
     },
   },
   [0x00d3] = {
     [0] = {
       title = "EffectResult16",
+      name = "ffxiv_ipc_effect_result16",
+      length = 1416,
     },
   },
   [0x00d4] = {
@@ -160,12 +168,14 @@ M.types = {
     [0] = {
       title = "EventPlay4",
       name = "ffxiv_ipc_event_play4",
-      length = 44,
+      length = 48,
     },
   },
   [0x0139] = {
     [0] = {
       title = "EffectResultBasic",
+      name = "ffxiv_ipc_effect_result_basic",
+      length = 24,
     },
   },
   [0x0141] = {
@@ -178,16 +188,22 @@ M.types = {
   [0x0145] = {
     [0] = {
       title = "SystemLogMessage48",
+      name = "ffxiv_ipc_system_log_message48",
+      length = 48,
     },
   },
   [0x014a] = {
     [0] = {
       title = "ResumeEventScene16",
+      name = "ffxiv_ipc_resume_event_scene16",
+      length = 72,
     },
   },
   [0x015e] = {
     [0] = {
       title = "ResumeEventScene32",
+      name = "ffxiv_ipc_resume_event_scene32",
+      length = 136,
     },
   },
   [0x0167] = {
@@ -207,6 +223,8 @@ M.types = {
   [0x0170] = {
     [0] = {
       title = "ActionRequestGroundTargeted",
+      name = "ffxiv_ipc_action_request_ground_targeted",
+      length = 40,
     },
   },
   [0x0171] = {
@@ -219,6 +237,8 @@ M.types = {
   [0x0177] = {
     [0] = {
       title = "RSF",
+      name = "ffxiv_ipc_rsf",
+      length = 72,
     },
   },
   [0x017f] = {
@@ -255,6 +275,8 @@ M.types = {
   [0x01b0] = {
     [0] = {
       title = "StatusEffectList3",
+      name = "ffxiv_ipc_status_effect_list3",
+      length = 360,
     },
   },
   [0x01c0] = {
@@ -281,6 +303,8 @@ M.types = {
   [0x01d1] = {
     [0] = {
       title = "ActionRequest",
+      name = "ffxiv_ipc_action_request",
+      length = 40,
     },
   },
   [0x01d8] = {
@@ -300,6 +324,8 @@ M.types = {
   [0x01eb] = {
     [0] = {
       title = "PlaceFieldMarkerPreset",
+      name = "ffxiv_ipc_place_field_marker_preset",
+      length = 104,
     },
   },
   [0x01f0] = {
@@ -319,6 +345,8 @@ M.types = {
   [0x0203] = {
     [0] = {
       title = "StatusEffectListForay3",
+      name = "ffxiv_ipc_status_effect_list_foray3",
+      length = 384,
     },
   },
   [0x0205] = {
@@ -345,11 +373,15 @@ M.types = {
   [0x021a] = {
     [0] = {
       title = "CountdownInitiate",
+      name = "ffxiv_ipc_countdown_initiate",
+      length = 64,
     },
   },
   [0x022c] = {
     [0] = {
       title = "MapEffect12",
+      name = "ffxiv_ipc_map_effect12",
+      length = 64,
     },
   },
   [0x023c] = {
@@ -391,7 +423,7 @@ M.types = {
     [0] = {
       title = "EffectResult",
       name = "ffxiv_ipc_effect_result",
-      length = 42,
+      length = 96,
     },
   },
   [0x0285] = {
@@ -411,6 +443,8 @@ M.types = {
   [0x02ae] = {
     [0] = {
       title = "EurekaStatusEffectList",
+      name = "ffxiv_ipc_eureka_status_effect_list",
+      length = 384,
     },
   },
   [0x02af] = {
@@ -424,12 +458,14 @@ M.types = {
     [0] = {
       title = "EventPlay",
       name = "ffxiv_ipc_event_play",
-      length = 32,
+      length = 40,
     },
   },
   [0x02b6] = {
     [0] = {
       title = "MapEffect8",
+      name = "ffxiv_ipc_map_effect8",
+      length = 48,
     },
   },
   [0x02b8] = {
@@ -442,11 +478,15 @@ M.types = {
   [0x02c0] = {
     [0] = {
       title = "CFPreferredRole",
+      name = "ffxiv_ipc_cf_preferred_role",
+      length = 16,
     },
   },
   [0x02d2] = {
     [0] = {
       title = "EffectResult8",
+      name = "ffxiv_ipc_effect_result8",
+      length = 712,
     },
   },
   [0x02d3] = {
@@ -478,6 +518,8 @@ M.types = {
   [0x02ec] = {
     [0] = {
       title = "BattleTalk2",
+      name = "ffxiv_ipc_battle_talk2",
+      length = 40,
     },
   },
   [0x02ef] = {
@@ -537,11 +579,15 @@ M.types = {
   [0x0336] = {
     [0] = {
       title = "EffectResult4",
+      name = "ffxiv_ipc_effect_result4",
+      length = 360,
     },
   },
   [0x0349] = {
     [0] = {
       title = "CountdownCancel",
+      name = "ffxiv_ipc_countdown_cancel",
+      length = 56,
     },
   },
   [0x034c] = {
@@ -588,6 +634,8 @@ M.types = {
     },
     [1] = {
       title = "RSV",
+      name = "ffxiv_ipc_rsv",
+      length = 52,
     },
   },
   [0x037e] = {
@@ -600,21 +648,29 @@ M.types = {
   [0x0383] = {
     [0] = {
       title = "MapEffect4",
+      name = "ffxiv_ipc_map_effect4",
+      length = 24,
     },
   },
   [0x0386] = {
     [0] = {
       title = "EnvironmentControl",
+      name = "ffxiv_ipc_environment_control",
+      length = 16,
     },
   },
   [0x0396] = {
     [0] = {
       title = "StatusEffectList2",
+      name = "ffxiv_ipc_status_effect_list2",
+      length = 384,
     },
   },
   [0x0397] = {
     [0] = {
       title = "SystemLogMessage32",
+      name = "ffxiv_ipc_system_log_message32",
+      length = 32,
     },
   },
   [0x03c3] = {

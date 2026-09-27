@@ -7,7 +7,7 @@ M.types = {
     [0] = {
       title = "EffectResult",
       name = "ffxiv_ipc_effect_result",
-      length = 42,
+      length = 96,
     },
   },
   [0x0070] = {
@@ -34,6 +34,8 @@ M.types = {
   [0x0087] = {
     [0] = {
       title = "ResumeEventScene16",
+      name = "ffxiv_ipc_resume_event_scene16",
+      length = 72,
     },
   },
   [0x0095] = {
@@ -145,13 +147,15 @@ M.types = {
   [0x01b8] = {
     [0] = {
       title = "PlaceFieldMarkerPreset",
+      name = "ffxiv_ipc_place_field_marker_preset",
+      length = 104,
     },
   },
   [0x01b9] = {
     [0] = {
       title = "EventPlay",
       name = "ffxiv_ipc_event_play",
-      length = 32,
+      length = 40,
     },
   },
   [0x01c4] = {
@@ -293,6 +297,8 @@ M.types = {
   [0x02f2] = {
     [0] = {
       title = "ResumeEventScene32",
+      name = "ffxiv_ipc_resume_event_scene32",
+      length = 136,
     },
   },
   [0x02f6] = {
@@ -355,7 +361,7 @@ M.types = {
     [0] = {
       title = "EventPlay4",
       name = "ffxiv_ipc_event_play4",
-      length = 44,
+      length = 48,
     },
   },
   [0x036b] = {

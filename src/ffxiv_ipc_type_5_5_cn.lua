@@ -89,7 +89,7 @@ M.types = {
     [0] = {
       title = "EventPlay4",
       name = "ffxiv_ipc_event_play4",
-      length = 44,
+      length = 48,
     },
   },
   [0x00f2] = {
@@ -150,7 +150,7 @@ M.types = {
     [0] = {
       title = "EventPlay",
       name = "ffxiv_ipc_event_play",
-      length = 32,
+      length = 40,
     },
   },
   [0x0171] = {
@@ -278,6 +278,8 @@ M.types = {
   [0x0298] = {
     [0] = {
       title = "PlaceFieldMarkerPreset",
+      name = "ffxiv_ipc_place_field_marker_preset",
+      length = 104,
     },
   },
   [0x02ac] = {
@@ -303,7 +305,7 @@ M.types = {
     [0] = {
       title = "EffectResult",
       name = "ffxiv_ipc_effect_result",
-      length = 42,
+      length = 96,
     },
     [1] = {
       title = "EventStart",
@@ -314,6 +316,8 @@ M.types = {
   [0x02da] = {
     [0] = {
       title = "ResumeEventScene32",
+      name = "ffxiv_ipc_resume_event_scene32",
+      length = 136,
     },
   },
   [0x0308] = {
@@ -368,11 +372,15 @@ M.types = {
   [0x0335] = {
     [0] = {
       title = "ResumeEventScene16",
+      name = "ffxiv_ipc_resume_event_scene16",
+      length = 72,
     },
   },
   [0x033d] = {
     [0] = {
       title = "CFPreferredRole",
+      name = "ffxiv_ipc_cf_preferred_role",
+      length = 16,
     },
   },
   [0x033e] = {
@@ -385,6 +393,8 @@ M.types = {
   [0x035d] = {
     [0] = {
       title = "StatusEffectList2",
+      name = "ffxiv_ipc_status_effect_list2",
+      length = 384,
     },
   },
   [0x036e] = {

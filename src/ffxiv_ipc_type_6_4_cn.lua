@@ -47,14 +47,14 @@ M.types = {
     [0] = {
       title = "EventPlay",
       name = "ffxiv_ipc_event_play",
-      length = 32,
+      length = 40,
     },
   },
   [0x00b4] = {
     [0] = {
       title = "EventPlay4",
       name = "ffxiv_ipc_event_play4",
-      length = 44,
+      length = 48,
     },
   },
   [0x00bb] = {
@@ -121,6 +121,8 @@ M.types = {
   [0x00fb] = {
     [0] = {
       title = "PlaceFieldMarkerPreset",
+      name = "ffxiv_ipc_place_field_marker_preset",
+      length = 104,
     },
   },
   [0x0103] = {
@@ -168,6 +170,8 @@ M.types = {
   [0x011e] = {
     [0] = {
       title = "EnvironmentControl",
+      name = "ffxiv_ipc_environment_control",
+      length = 16,
     },
   },
   [0x0124] = {
@@ -215,6 +219,8 @@ M.types = {
   [0x016c] = {
     [0] = {
       title = "RSV",
+      name = "ffxiv_ipc_rsv",
+      length = 52,
     },
   },
   [0x0174] = {
@@ -277,7 +283,7 @@ M.types = {
     [0] = {
       title = "EffectResult",
       name = "ffxiv_ipc_effect_result",
-      length = 42,
+      length = 96,
     },
   },
   [0x020e] = {
@@ -346,6 +352,8 @@ M.types = {
   [0x026a] = {
     [0] = {
       title = "EffectResultBasic",
+      name = "ffxiv_ipc_effect_result_basic",
+      length = 24,
     },
   },
   [0x0271] = {
@@ -365,6 +373,8 @@ M.types = {
   [0x0289] = {
     [0] = {
       title = "StatusEffectList2",
+      name = "ffxiv_ipc_status_effect_list2",
+      length = 384,
     },
   },
   [0x028d] = {
@@ -398,6 +408,8 @@ M.types = {
   [0x02c4] = {
     [0] = {
       title = "StatusEffectList3",
+      name = "ffxiv_ipc_status_effect_list3",
+      length = 360,
     },
   },
   [0x02cc] = {
@@ -469,6 +481,8 @@ M.types = {
   [0x0377] = {
     [0] = {
       title = "ResumeEventScene32",
+      name = "ffxiv_ipc_resume_event_scene32",
+      length = 136,
     },
   },
   [0x0385] = {
@@ -526,6 +540,8 @@ M.types = {
   [0x03bf] = {
     [0] = {
       title = "CFPreferredRole",
+      name = "ffxiv_ipc_cf_preferred_role",
+      length = 16,
     },
   },
   [0x03c1] = {
@@ -552,6 +568,8 @@ M.types = {
   [0x03d6] = {
     [0] = {
       title = "ResumeEventScene16",
+      name = "ffxiv_ipc_resume_event_scene16",
+      length = 72,
     },
   },
 }

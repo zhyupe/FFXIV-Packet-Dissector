@@ -13,8 +13,7 @@ local event_play_header_fields = {
   event_id    = ProtoField.uint32("ffxiv_ipc_event_play_header.event_id", "eventId", base.DEC, enum.reverse.event_id),
   scene       = ProtoField.uint16("ffxiv_ipc_event_play_header.scene", "scene", base.DEC),
   padding     = ProtoField.uint16("ffxiv_ipc_event_play_header.padding", "padding", base.DEC),
-  scene_flags = ProtoField.uint32("ffxiv_ipc_event_play_header.scene_flags", "sceneFlags", base.DEC),
-  unknown     = ProtoField.uint32("ffxiv_ipc_event_play_header.unknown", "unknown", base.DEC),
+  scene_flags = ProtoField.uint64("ffxiv_ipc_event_play_header.scene_flags", "sceneFlags", base.DEC),
   param_size  = ProtoField.uint8("ffxiv_ipc_event_play_header.param_size", "paramSize", base.DEC),
   padding1    = ProtoField.uint8("ffxiv_ipc_event_play_header.padding1", "padding1", base.DEC),
   padding2    = ProtoField.uint16("ffxiv_ipc_event_play_header.padding2", "padding2", base.DEC),
@@ -61,14 +60,9 @@ function ffxiv_ipc_event_play_header.dissector(tvbuf, pktinfo, root)
   tree:add_le(event_play_header_fields.padding, padding_tvbr, padding_val)
 
   -- dissect the scene_flags field
-  local scene_flags_tvbr = tvbuf:range(16, 4)
-  local scene_flags_val  = scene_flags_tvbr:le_uint()
+  local scene_flags_tvbr = tvbuf:range(16, 8)
+  local scene_flags_val  = scene_flags_tvbr:le_uint64()
   tree:add_le(event_play_header_fields.scene_flags, scene_flags_tvbr, scene_flags_val)
-
-  -- dissect the unknown field
-  local unknown_tvbr = tvbuf:range(20, 4)
-  local unknown_val  = unknown_tvbr:le_uint()
-  tree:add_le(event_play_header_fields.unknown, unknown_tvbr, unknown_val)
 
   -- dissect the param_size field
   local param_size_tvbr = tvbuf:range(24, 1)

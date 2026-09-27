@@ -10,12 +10,12 @@ local label_param1_event_id = {
 local ffxiv_ipc_system_log_message = Proto("ffxiv_ipc_system_log_message", "FFXIV-IPC SystemLogMessage")
 
 local system_log_message_fields = {
-  event_id        = ProtoField.uint32("ffxiv_ipc_system_log_message.event_id", "eventId", base.DEC, enum.reverse.event_id),
-  log_message_id  = ProtoField.uint32("ffxiv_ipc_system_log_message.log_message_id", "logMessageId", base.DEC, db.LogMessage),
-  action_timeline = ProtoField.uint32("ffxiv_ipc_system_log_message.action_timeline", "actionTimeline", base.DEC),
-  param1          = ProtoField.uint32("ffxiv_ipc_system_log_message.param1", "param1", base.DEC),
-  param2          = ProtoField.uint32("ffxiv_ipc_system_log_message.param2", "param2", base.DEC),
-  param3          = ProtoField.uint32("ffxiv_ipc_system_log_message.param3", "param3", base.DEC),
+  event_id       = ProtoField.uint32("ffxiv_ipc_system_log_message.event_id", "eventId", base.DEC, enum.reverse.event_id),
+  log_message_id = ProtoField.uint32("ffxiv_ipc_system_log_message.log_message_id", "logMessageId", base.DEC, db.LogMessage),
+  param_count    = ProtoField.uint8("ffxiv_ipc_system_log_message.param_count", "paramCount", base.DEC),
+  padding        = ProtoField.bytes("ffxiv_ipc_system_log_message.padding", "padding", base.NONE),
+  param1         = ProtoField.uint32("ffxiv_ipc_system_log_message.param1", "param1", base.DEC),
+  param2         = ProtoField.uint32("ffxiv_ipc_system_log_message.param2", "param2", base.DEC),
 }
 
 ffxiv_ipc_system_log_message.fields = system_log_message_fields
@@ -46,10 +46,15 @@ function ffxiv_ipc_system_log_message.dissector(tvbuf, pktinfo, root)
   pktinfo.cols.info:append(log_message_id_display)
   tree:append_text(log_message_id_display)
 
-  -- dissect the action_timeline field
-  local action_timeline_tvbr = tvbuf:range(8, 4)
-  local action_timeline_val  = action_timeline_tvbr:le_uint()
-  tree:add_le(system_log_message_fields.action_timeline, action_timeline_tvbr, action_timeline_val)
+  -- dissect the param_count field
+  local param_count_tvbr = tvbuf:range(8, 1)
+  local param_count_val  = param_count_tvbr:le_uint()
+  tree:add_le(system_log_message_fields.param_count, param_count_tvbr, param_count_val)
+
+  -- dissect the padding field
+  local padding_tvbr = tvbuf:range(9, 3)
+  local padding_val  = padding_tvbr:raw()
+  tree:add(system_log_message_fields.padding, padding_tvbr, padding_val)
 
   -- dissect the param1 field
   local param1_tvbr = tvbuf:range(12, 4)
@@ -81,11 +86,6 @@ function ffxiv_ipc_system_log_message.dissector(tvbuf, pktinfo, root)
   local param2_tvbr = tvbuf:range(16, 4)
   local param2_val  = param2_tvbr:le_uint()
   tree:add_le(system_log_message_fields.param2, param2_tvbr, param2_val)
-
-  -- dissect the param3 field
-  local param3_tvbr = tvbuf:range(20, 4)
-  local param3_val  = param3_tvbr:le_uint()
-  tree:add_le(system_log_message_fields.param3, param3_tvbr, param3_val)
 
   return len
 end

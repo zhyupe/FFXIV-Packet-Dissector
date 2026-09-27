@@ -11,7 +11,7 @@ ffxiv_ipc_event_play4.fields = event_play4_fields
 function ffxiv_ipc_event_play4.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_event_play4, tvbuf)
   local len = tvbuf:len()
-  if len < 44 then
+  if len < 48 then
     tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated EventPlay4 payload")
     return len
   end
