@@ -73,6 +73,7 @@ package.preload.ffxiv_db = function()
     PlaceName = { [42] = 'Test Place' },
     ContentFinderCondition = { [42] = 'Test Duty' },
     ContentRoulette = { [7] = 'Test Roulette' },
+    World = { [31] = 'Test World' },
   }, { __index = function() return {} end })
 end
 for _, file in ipairs(arg) do dofile(file) end
@@ -355,6 +356,46 @@ assert(values['ffxiv_ipc_near_completion_achievements.achievement_ids'] == nil)
 assert(select(2, registry.getDissector(0x00D3, 520, 'S')) == 'NearCompletionAchievements')
 assert(registry.getDissector(0x00D3, 519, 'S') == nil)
 assert(registry.getDissector(0x00D3, 520, 'C') == nil)
+
+-- Artificial segmented listings, including 64-bit masks and bounded UTF-8 text.
+do
+  local listing = string.rep('\0', 400)
+  listing = replace(listing, 0, string.pack('<I8', (1 << 60) + 1))
+  listing = replace(listing, 0x1c, string.pack('<I4I2I2', 2, 7, 1))
+  listing = replace(listing, 0x2e, string.pack('<I2', 31))
+  listing = replace(listing, 0x44, string.pack('<I2', 65535))
+  listing = replace(listing, 0x4c, string.pack('<I2', 123))
+  listing = replace(listing, 0x60 + 7 * 8, string.pack('<I8', 1 << 60))
+  listing = replace(listing, 0xa0 + 7, string.char(19))
+  listing = replace(listing, 0xa8, '测试\0ignored')
+  listing = replace(listing, 0xc8, 'Synthetic description\0ignored')
+  local segment = string.rep('\0', 12) .. string.pack('<I2I2', 3, 0) .. listing:rep(4)
+  parse('ffxiv_ipc_party_finder_list', segment)
+  assert(field('ffxiv_ipc_party_finder_list.segment_index') == 3)
+  assert(#values['ffxiv_ipc_party_finder_listing.listing_id'] == 4)
+  assert(field('ffxiv_ipc_party_finder_listing.listing_id', 4) == (1 << 60) + 1)
+  assert(field('ffxiv_ipc_party_finder_listing.slot_flags', 32) == 1 << 60)
+  assert(field('ffxiv_ipc_party_finder_listing.jobs_present', 32) == 19)
+  assert(field('ffxiv_ipc_party_finder_listing.name', 4) == '测试')
+  assert(field('ffxiv_ipc_party_finder_listing.description', 4) == 'Synthetic description')
+  assert(field('ffxiv_ipc_party_finder_listing.minimum_item_level', 4) == 123)
+  assert(field('ffxiv_ipc_party_finder_listing.seconds_remaining', 4) == 65535)
+  assert(fieldDefinitions['ffxiv_ipc_party_finder_listing.world_id'].valueNames[31] == 'Test World')
+  assert(fieldDefinitions['ffxiv_ipc_party_finder_listing.jobs_present'].valueNames[19] == 'Test Job')
+  assert(fieldTexts['ffxiv_ipc_party_finder_listing.duty']:find('Test Roulette', 1, true))
+  listing = replace(listing, 0x1c, string.pack('<I4I2I2', 4, 42, 2))
+  parse('ffxiv_ipc_party_finder_listing', listing)
+  assert(fieldTexts['ffxiv_ipc_party_finder_listing.duty']:find('Test Duty', 1, true))
+  for _, category in ipairs({ 256, 8192 }) do
+    parse('ffxiv_ipc_party_finder_listing', replace(listing, 0x1c, string.pack('<I4', category)))
+    assert(fieldTexts['ffxiv_ipc_party_finder_listing.duty'] == 'extensionDuty: 42')
+  end
+  parse('ffxiv_ipc_party_finder_listing', replace(listing, 0x22, string.pack('<I2', 99)))
+  assert(fieldTexts['ffxiv_ipc_party_finder_listing.duty'] == 'duty: 42')
+  assert(select(2, registry.getDissector(0x02E6, 1616, 'S')) == 'PartyFinderList')
+  assert(registry.getDissector(0x02E6, 1615, 'S') == nil)
+  assert(registry.getDissector(0x02E6, 1616, 'C') == nil)
+end
 
 -- Synthetic fixed-point values; no captured payloads or player identifiers.
 local jobs = { 'carpenter', 'blacksmith', 'armorer', 'goldsmith', 'leatherworker', 'weaver', 'alchemist', 'culinarian' }

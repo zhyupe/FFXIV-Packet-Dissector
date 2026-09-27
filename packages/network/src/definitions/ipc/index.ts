@@ -154,6 +154,7 @@ import { NpcRemove } from './npc-remove'
 import { NpcSpawn, NpcSpawn2 } from './npc-spawn'
 import { NpcYell } from './npc-yell'
 import { ObjectSpawn } from './object-spawn'
+import { PartyFinderList, PartyFinderListing } from './party-finder-list'
 import { PerformNote } from './perform-note'
 import { Ping, PingHandler } from './ping'
 import { PlaceFieldMarker } from './place-field-marker'
@@ -373,6 +374,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.NpcSpawn2]: NpcSpawn2,
   [NormalizedOpcode.NpcYell]: NpcYell,
   [NormalizedOpcode.ObjectSpawn]: ObjectSpawn,
+  [NormalizedOpcode.PartyFinderList]: PartyFinderList,
   [NormalizedOpcode.PlaceFieldMarker]: PlaceFieldMarker,
   [NormalizedOpcode.PlaceFieldMarkerPreset]: PlaceFieldMarkerPreset,
   [NormalizedOpcode.PlayerBlueMageActions]: PlayerBlueMageActions,
@@ -603,6 +605,8 @@ export {
   NpcSpawn2,
   NpcYell,
   ObjectSpawn,
+  PartyFinderList,
+  PartyFinderListing,
   PerformNote,
   Ping,
   PingHandler,

@@ -1,5 +1,6 @@
-PlayerSpawn, Achievement and ContentFinderNotify layouts reference
-SpawnPlayerPacket, CommonSpawnData, AchievementsPacket and QueueUpdatePacket from
+PlayerSpawn, Achievement, ContentFinderNotify and PartyFinderList layouts reference
+SpawnPlayerPacket, CommonSpawnData, AchievementsPacket, QueueUpdatePacket and
+CrossRealmListingSegmentPacket from
 https://github.com/aers/FFXIVClientStructs
 
 MIT License

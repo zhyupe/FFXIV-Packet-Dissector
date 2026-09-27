@@ -397,4 +397,31 @@ M.forward.near_completion_achievement_slot = {
 }
 M.reverse.near_completion_achievement_slot = makeValString(M.forward.near_completion_achievement_slot)
 
+M.forward.party_finder_duty_type = {
+  Other = 0,
+  Roulette = 1,
+  Normal = 2,
+}
+M.reverse.party_finder_duty_type = makeValString(M.forward.party_finder_duty_type)
+
+M.forward.party_finder_category = {
+  None = 0,
+  Roulette = 2,
+  Dungeons = 4,
+  Guildhests = 8,
+  Trials = 16,
+  Raids = 32,
+  HighEndDuty = 64,
+  PvP = 128,
+  GoldSaucer = 256,
+  FATEs = 512,
+  TreasureHunts = 1024,
+  TheHunt = 2048,
+  GatheringForays = 4096,
+  DeepDungeons = 8192,
+  FieldOperations = 16384,
+  VCDungeonFinder = 32768,
+}
+M.reverse.party_finder_category = makeValString(M.forward.party_finder_category)
+
 return M

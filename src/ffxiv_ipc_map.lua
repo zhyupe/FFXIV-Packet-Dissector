@@ -549,6 +549,14 @@ local M = {
     name = "ffxiv_ipc_object_spawn",
     length = 64,
   },
+  PartyFinderList = {
+    name = "ffxiv_ipc_party_finder_list",
+    length = 1616,
+  },
+  PartyFinderListing = {
+    name = "ffxiv_ipc_party_finder_listing",
+    length = 400,
+  },
   PlaceFieldMarker = {
     name = "ffxiv_ipc_place_field_marker",
     length = 16,
