@@ -7,6 +7,7 @@ import {
   writeFileSync,
 } from 'node:fs'
 import { join } from 'node:path'
+import { normalizeOpcodeTable, packetDirections } from './packet-names'
 import { codePath, formatCode, readCode, writeCode } from './utils'
 
 const urls = {
@@ -52,7 +53,7 @@ function generateOpcodeFile(
     string,
     Array<{ type: string; size?: number; outgoing?: boolean }>
   > = {}
-  for (const [name, _opcode] of Object.entries(table)) {
+  for (const [name, _opcode] of Object.entries(normalizeOpcodeTable(table))) {
     if (!name || !_opcode) {
       console.log(`Invalid row: ${version}, ${name}, ${_opcode}`)
       continue
@@ -69,6 +70,7 @@ function generateOpcodeFile(
 
     opcodes[opcode].push({
       type: name,
+      outgoing: packetDirections[name],
     })
   }
 
@@ -170,7 +172,7 @@ export async function syncOpcodes() {
     `opcode-${latestVersion}`,
   )
 
-  const opcodeTypeSet = new Set(Object.keys(latestTable))
+  const opcodeTypeSet = new Set(Object.keys(normalizeOpcodeTable(latestTable)))
   try {
     const existed = readCode('opcode/normalized-opcode.enum.ts')
     const matches = existed.matchAll(/(\w+) = ['"](\w+)['"]/g)
@@ -191,7 +193,7 @@ export async function syncOpcodes() {
 
   for (const version of cnVersions) {
     const codeFile = `opcode/cn-${version}.ts`
-    if (existsSync(join(codePath, codeFile))) {
+    if (version !== latestVersion && existsSync(join(codePath, codeFile))) {
       continue
     }
 

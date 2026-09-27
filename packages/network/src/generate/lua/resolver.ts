@@ -1,0 +1,30 @@
+export const opcodeResolver = `local M = {}
+
+-- Generated opcode arrays use zero-based indices. Prefer exact lengths, then
+-- the longest known prefix; never let Lua's table iteration order pick a type.
+function M.getDissector(types, length, direction)
+  if type(types) ~= "table" then return nil end
+  local outgoing = nil
+  if direction == "C" then outgoing = true end
+  if direction == "S" then outgoing = false end
+  local title, best = nil, nil
+  local index = 0
+  while types[index] ~= nil do
+    local entry = types[index]
+    if outgoing == nil or entry.outgoing == nil or entry.outgoing == outgoing then
+      title = title or entry.title
+      if entry.name ~= nil and entry.length ~= nil and entry.length <= length then
+        if best == nil or entry.length > best.length then
+          best = entry
+        end
+      end
+    end
+    index = index + 1
+  end
+  if best ~= nil then
+    return Dissector.get(best.name), best.title
+  end
+  return nil, title
+end
+
+return M`

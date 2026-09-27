@@ -11,7 +11,7 @@ export const table = <T = any>(
   obj: Pair<T>[] | Record<string, T>,
   rawValue = false,
 ) => {
-  if (!Array.isArray(obj) || !obj[0].key) {
+  if (!Array.isArray(obj) || !obj[0]?.key) {
     obj = objToPairs(obj as Record<string, T>)
   }
   return `${name} = ${tableContent(obj as Pair<T>[], rawValue)}`
@@ -31,7 +31,8 @@ export const tableKey = (key: string | number) => {
 }
 
 export const tableValue = (val: any, raw = false, prefix = ''): string => {
-  if (raw || typeof val === 'number') {
+  if (val === undefined || val === null) return 'nil'
+  if (raw || typeof val === 'number' || typeof val === 'boolean') {
     return `${val}`
   }
 

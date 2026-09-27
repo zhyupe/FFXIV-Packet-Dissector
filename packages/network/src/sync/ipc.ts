@@ -4,7 +4,7 @@ import { codePath, formatCode, writeCode } from './utils'
 
 const ipcRoot = join(codePath, 'definitions/ipc')
 
-const commentRegex = /\/\*\s*ipc:([\w, ])+\s*\*\//g
+const commentRegex = /\/\*\s*ipc:([\w, ]+)\s*\*\//g
 const exportRegex = /export (?:class|const) (\w+)/g
 const fileFilter = (file: string) =>
   !file.startsWith('.') && file.endsWith('.ts')

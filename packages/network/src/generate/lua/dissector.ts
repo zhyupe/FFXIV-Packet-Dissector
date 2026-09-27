@@ -15,6 +15,7 @@ import {
 } from '@/struct/struct.decorator'
 import type { IPCEnum, IPCField, IPCFieldFormat, IPCSchema } from '../interface'
 import { snakeCase } from '../utils'
+import { opcodeResolver } from './resolver'
 import { type Pair, table, tableValue } from './table'
 import { Base } from './wireshark'
 
@@ -46,7 +47,7 @@ const protoFieldType = ({ type, length }: IPCField) => {
 
 const tvbMethod = ({ type }: IPCField) => {
   if (type === 'string') {
-    return 'string(ENC_UTF_8)'
+    return 'string(ENC_UTF_8):match("^[^%z]*")'
   } else if (type === 'bytes') {
     return 'raw()'
   } else if (type.startsWith('uint')) {
@@ -331,6 +332,10 @@ class DissectorFile {
       `function ffxiv_ipc_${snakeName}.dissector(tvbuf, pktinfo, root)`,
       `  local tree = root:add(ffxiv_ipc_${snakeName}, tvbuf)`,
       `  local len = tvbuf:len()`,
+      `  if len < ${length} then`,
+      `    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ${obj.name} payload")`,
+      `    return len`,
+      `  end`,
       '',
       fieldContent,
       ifContent,
@@ -567,7 +572,7 @@ ${indent}end)()`
           (key) =>
             `label_${snakeName}_${snakeCase(key)}[${snakeCase(key)}_val]`,
         )
-        .join(' or ')}) .. ": `
+        .join(' or ')} or ${tableValue(item.name)}) .. ": `
     }
 
     return `
@@ -669,6 +674,7 @@ return M
   }
 
   commitOpcodes() {
+    this.commit('ffxiv_ipc_resolver.lua', opcodeResolver)
     const entries = Object.entries(CNOpcode)
     for (const [version, opcodes] of entries) {
       this.commit(
@@ -705,7 +711,12 @@ return M
   #renderOpcodes(opcodeMap: OpcodeMap) {
     const typesObject: Record<
       string,
-      Array<{ name?: string; length?: number; title: string }>
+      Array<{
+        name?: string
+        length?: number
+        title: string
+        outgoing?: boolean
+      }>
     > = {}
     for (const [opcode, config] of Object.entries(opcodeMap)) {
       if (!config) continue
@@ -716,11 +727,19 @@ return M
           typeof item === 'string' || typeof item.size !== 'number'
             ? this.ipcLength[type]
             : item.size
-        const entry: { name?: string; length?: number; title: string } = {
+        const entry: {
+          name?: string
+          length?: number
+          title: string
+          outgoing?: boolean
+        } = {
           title: this.#getOpcodeItemTitle(item),
         }
+        if (typeof item !== 'string' && typeof item.outgoing === 'boolean') {
+          entry.outgoing = item.outgoing
+        }
 
-        if (typeof length === 'number') {
+        if (typeof length === 'number' && this.ipcLength[type] !== undefined) {
           entry.name = `ffxiv_ipc_${snakeCase(type)}`
           entry.length = length
         }
@@ -733,33 +752,12 @@ return M
       typesObject[renderOpcodeKey(opcode)] = types
     }
 
-    return `local M = {}
+    return `local resolver = require("ffxiv_ipc_resolver")
+local M = {}
 ${table('M.types', typesObject)}
 
-function M.getDissector(typeNum, length)
-  local types = M.types[typeNum]
-  if type(types) ~= "table" then
-    return nil
-  end
-
-  local title = nil
-  if types[0] ~= nil then
-    title = types[0].title
-  end
-
-  for k, v in pairs(types) do
-    if v.name ~= nil and v.length ~= nil and v.length == length then
-      return Dissector.get(v.name), v.title
-    end
-  end
-
-  for k, v in pairs(types) do
-    if v.name ~= nil and v.length ~= nil and v.length < length then
-      return Dissector.get(v.name), v.title
-    end
-  end
-
-  return nil, title
+function M.getDissector(typeNum, length, direction)
+  return resolver.getDissector(M.types[typeNum], length, direction)
 end
 
 return M`
