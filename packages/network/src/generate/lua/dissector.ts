@@ -674,6 +674,15 @@ return M
   }
 
   commitOpcodes() {
+    const packetMap = Object.fromEntries(
+      Object.entries(this.ipcLength)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([type, length]) => [
+          type,
+          { name: `ffxiv_ipc_${snakeCase(type)}`, length },
+        ]),
+    )
+    this.commit('ffxiv_ipc_map.lua', `local ${table('M', packetMap)}\nreturn M`)
     this.commit('ffxiv_ipc_resolver.lua', opcodeResolver)
     const entries = Object.entries(CNOpcode)
     for (const [version, opcodes] of entries) {
@@ -712,9 +721,9 @@ return M
     const typesObject: Record<
       string,
       Array<{
-        name?: string
+        type: string
         length?: number
-        title: string
+        title?: string
         outgoing?: boolean
       }>
     > = {}
@@ -723,25 +732,22 @@ return M
 
       const types = (Array.isArray(config) ? config : [config]).map((item) => {
         const type = this.#getOpcodeItemType(item)
-        const length =
-          typeof item === 'string' || typeof item.size !== 'number'
-            ? this.ipcLength[type]
-            : item.size
         const entry: {
-          name?: string
+          type: string
           length?: number
-          title: string
+          title?: string
           outgoing?: boolean
         } = {
-          title: this.#getOpcodeItemTitle(item),
+          type,
         }
+        const title = this.#getOpcodeItemTitle(item)
+        if (title !== type) entry.title = title
         if (typeof item !== 'string' && typeof item.outgoing === 'boolean') {
           entry.outgoing = item.outgoing
         }
 
-        if (typeof length === 'number' && this.ipcLength[type] !== undefined) {
-          entry.name = `ffxiv_ipc_${snakeCase(type)}`
-          entry.length = length
+        if (typeof item !== 'string' && typeof item.size === 'number') {
+          entry.length = item.size
         }
 
         return entry

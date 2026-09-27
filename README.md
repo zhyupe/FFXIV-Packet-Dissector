@@ -86,7 +86,14 @@ are rejected.
 
 `sync` refreshes the latest opcode table, including newly added upstream names;
 historical TypeScript opcode tables are retained. `generate` regenerates all Lua
-tables from the shared definitions. For offline tests, the requested 7.56a JSON is
+tables from the shared definitions. `src/ffxiv_ipc_map.lua` stores shared dissector
+names and minimum payload lengths, keyed by packet type. Version tables contain
+only opcode-to-type mappings, directions, and any explicit title or length
+overrides. The resolver looks up shared metadata at runtime, so changing a
+structure's length or adding a dissector does not change every version table.
+An opcode entry's explicit `size` takes precedence over the shared length.
+
+For offline tests, the requested 7.56a JSON is
 pinned in `packages/network/test/fixtures/7.56a.json`, alongside a `packets.yaml`
 snapshot for reproducible offline name normalization.
 

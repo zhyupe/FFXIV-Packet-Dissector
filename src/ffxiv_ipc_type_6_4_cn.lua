@@ -5,571 +5,415 @@ local M = {}
 M.types = {
   [0x006a] = {
     [0] = {
-      title = "UpdateClassInfo",
-      name = "ffxiv_ipc_update_class_info",
-      length = 16,
+      type = "UpdateClassInfo",
     },
   },
   [0x006c] = {
     [0] = {
-      title = "PlayerStats",
-      name = "ffxiv_ipc_player_stats",
-      length = 120,
+      type = "PlayerStats",
     },
   },
   [0x0078] = {
     [0] = {
-      title = "SetSearchInfoHandler",
+      type = "SetSearchInfoHandler",
     },
   },
   [0x007a] = {
     [0] = {
-      title = "ActorControl",
-      name = "ffxiv_ipc_actor_control",
-      length = 24,
+      type = "ActorControl",
     },
   },
   [0x0080] = {
     [0] = {
-      title = "WardLandInfo",
-      name = "ffxiv_ipc_ward_land_info",
-      length = 2408,
+      type = "WardLandInfo",
     },
   },
   [0x0099] = {
     [0] = {
-      title = "ActorSetPos",
-      name = "ffxiv_ipc_actor_set_pos",
-      length = 20,
+      type = "ActorSetPos",
     },
   },
   [0x00a0] = {
     [0] = {
-      title = "EventPlay",
-      name = "ffxiv_ipc_event_play",
-      length = 40,
+      type = "EventPlay",
     },
   },
   [0x00b4] = {
     [0] = {
-      title = "EventPlay4",
-      name = "ffxiv_ipc_event_play4",
-      length = 48,
+      type = "EventPlay4",
     },
   },
   [0x00bb] = {
     [0] = {
-      title = "ActorFreeSpawn",
-      name = "ffxiv_ipc_actor_free_spawn",
-      length = 8,
+      type = "ActorFreeSpawn",
     },
   },
   [0x00c0] = {
     [0] = {
-      title = "PlayerSpawn",
-      name = "ffxiv_ipc_player_spawn",
-      length = 624,
+      type = "PlayerSpawn",
     },
   },
   [0x00cf] = {
     [0] = {
-      title = "UpdateSearchInfo",
+      type = "UpdateSearchInfo",
     },
   },
   [0x00d8] = {
     [0] = {
-      title = "NpcSpawn",
-      name = "ffxiv_ipc_npc_spawn",
-      length = 624,
+      type = "NpcSpawn",
     },
   },
   [0x00df] = {
     [0] = {
-      title = "ContainerInfo",
-      name = "ffxiv_ipc_container_info",
-      length = 16,
+      type = "ContainerInfo",
     },
   },
   [0x00e9] = {
     [0] = {
-      title = "InventoryActionAck",
-      name = "ffxiv_ipc_inventory_action_ack",
-      length = 16,
+      type = "InventoryActionAck",
     },
   },
   [0x00ec] = {
     [0] = {
-      title = "ContentFinderNotifyPop",
-      name = "ffxiv_ipc_content_finder_notify_pop",
-      length = 32,
+      type = "ContentFinderNotifyPop",
     },
   },
   [0x00f4] = {
     [0] = {
-      title = "AoeEffect8",
-      name = "ffxiv_ipc_aoe_effect8",
-      length = 632,
+      type = "AoeEffect8",
     },
   },
   [0x00f6] = {
     [0] = {
-      title = "Examine",
-      name = "ffxiv_ipc_examine",
-      length = 656,
+      type = "Examine",
     },
   },
   [0x00fb] = {
     [0] = {
-      title = "PlaceFieldMarkerPreset",
-      name = "ffxiv_ipc_place_field_marker_preset",
-      length = 104,
+      type = "PlaceFieldMarkerPreset",
     },
   },
   [0x0103] = {
     [0] = {
-      title = "ActorControlTarget",
-      name = "ffxiv_ipc_actor_control_target",
-      length = 32,
+      type = "ActorControlTarget",
     },
   },
   [0x010d] = {
     [0] = {
-      title = "SystemLogMessage",
-      name = "ffxiv_ipc_system_log_message",
-      length = 24,
+      type = "SystemLogMessage",
     },
   },
   [0x0111] = {
     [0] = {
-      title = "InventoryTransaction",
-      name = "ffxiv_ipc_inventory_transaction",
-      length = 36,
+      type = "InventoryTransaction",
     },
   },
   [0x0112] = {
     [0] = {
-      title = "UpdatePositionInstance",
-      name = "ffxiv_ipc_update_position_instance",
-      length = 40,
+      type = "UpdatePositionInstance",
     },
   },
   [0x0113] = {
     [0] = {
-      title = "FreeCompanyDialog",
-      name = "ffxiv_ipc_free_company_dialog",
-      length = 79,
+      type = "FreeCompanyDialog",
     },
   },
   [0x011a] = {
     [0] = {
-      title = "ActorMove",
-      name = "ffxiv_ipc_actor_move",
-      length = 12,
+      type = "ActorMove",
     },
   },
   [0x011e] = {
     [0] = {
-      title = "EnvironmentControl",
-      name = "ffxiv_ipc_environment_control",
-      length = 16,
+      type = "EnvironmentControl",
     },
   },
   [0x0124] = {
     [0] = {
-      title = "BossStatusEffectList",
-      name = "ffxiv_ipc_boss_status_effect_list",
-      length = 740,
+      type = "BossStatusEffectList",
     },
   },
   [0x012b] = {
     [0] = {
-      title = "Logout",
-      name = "ffxiv_ipc_logout",
-      length = 8,
+      type = "Logout",
     },
   },
   [0x0138] = {
     [0] = {
-      title = "AoeEffect24",
-      name = "ffxiv_ipc_aoe_effect24",
-      length = 1784,
+      type = "AoeEffect24",
     },
   },
   [0x0139] = {
     [0] = {
-      title = "ActorControlSelf",
-      name = "ffxiv_ipc_actor_control_self",
-      length = 32,
+      type = "ActorControlSelf",
     },
   },
   [0x014c] = {
     [0] = {
-      title = "AoeEffect32",
-      name = "ffxiv_ipc_aoe_effect32",
-      length = 2360,
+      type = "AoeEffect32",
     },
   },
   [0x0161] = {
     [0] = {
-      title = "ObjectSpawn",
-      name = "ffxiv_ipc_object_spawn",
-      length = 64,
+      type = "ObjectSpawn",
     },
   },
   [0x016c] = {
     [0] = {
-      title = "RSV",
-      name = "ffxiv_ipc_rsv",
-      length = 52,
+      type = "RSV",
     },
   },
   [0x0174] = {
     [0] = {
-      title = "MarketBoardSearchResult",
-      name = "ffxiv_ipc_market_board_search_result",
-      length = 176,
+      type = "MarketBoardSearchResult",
     },
   },
   [0x0179] = {
     [0] = {
-      title = "SubmarineExplorationResult",
-      name = "ffxiv_ipc_submarine_exploration_result",
-      length = 288,
+      type = "SubmarineExplorationResult",
     },
   },
   [0x017b] = {
     [0] = {
-      title = "ItemMarketBoardInfo",
-      name = "ffxiv_ipc_item_market_board_info",
-      length = 20,
+      type = "ItemMarketBoardInfo",
     },
   },
   [0x017d] = {
     [0] = {
-      title = "FreeCompanyInfo",
-      name = "ffxiv_ipc_free_company_info",
-      length = 80,
+      type = "FreeCompanyInfo",
     },
   },
   [0x0182] = {
     [0] = {
-      title = "CurrencyCrystalInfo",
-      name = "ffxiv_ipc_currency_crystal_info",
-      length = 24,
+      type = "CurrencyCrystalInfo",
     },
   },
   [0x0183] = {
     [0] = {
-      title = "EventFinish",
-      name = "ffxiv_ipc_event_finish",
-      length = 4,
+      type = "EventFinish",
     },
   },
   [0x0188] = {
     [0] = {
-      title = "MarketBoardItemListing",
-      name = "ffxiv_ipc_market_board_item_listing",
-      length = 1444,
+      type = "MarketBoardItemListing",
     },
   },
   [0x01aa] = {
     [0] = {
-      title = "ActorGauge",
-      name = "ffxiv_ipc_actor_gauge",
-      length = 16,
+      type = "ActorGauge",
     },
   },
   [0x01fb] = {
     [0] = {
-      title = "EffectResult",
-      name = "ffxiv_ipc_effect_result",
-      length = 96,
+      type = "EffectResult",
     },
   },
   [0x020e] = {
     [0] = {
-      title = "FateInfo",
-      name = "ffxiv_ipc_fate_info",
-      length = 24,
+      type = "FateInfo",
     },
   },
   [0x0214] = {
     [0] = {
-      title = "ItemInfo",
-      name = "ffxiv_ipc_item_info",
-      length = 64,
+      type = "ItemInfo",
     },
   },
   [0x0216] = {
     [0] = {
-      title = "UpdateInventorySlot",
-      name = "ffxiv_ipc_update_inventory_slot",
-      length = 64,
+      type = "UpdateInventorySlot",
     },
   },
   [0x0223] = {
     [0] = {
-      title = "StatusEffectList",
-      name = "ffxiv_ipc_status_effect_list",
-      length = 380,
+      type = "StatusEffectList",
     },
   },
   [0x0227] = {
     [0] = {
-      title = "UpdateHpMpTp",
-      name = "ffxiv_ipc_update_hp_mp_tp",
-      length = 8,
+      type = "UpdateHpMpTp",
     },
   },
   [0x023e] = {
     [0] = {
-      title = "AirshipExplorationResult",
-      name = "ffxiv_ipc_airship_exploration_result",
-      length = 284,
+      type = "AirshipExplorationResult",
     },
   },
   [0x0240] = {
     [0] = {
-      title = "AirshipStatus",
-      name = "ffxiv_ipc_airship_status",
-      length = 72,
+      type = "AirshipStatus",
     },
   },
   [0x0242] = {
     [0] = {
-      title = "SubmarineProgressionStatus",
-      name = "ffxiv_ipc_submarine_progression_status",
-      length = 31,
+      type = "SubmarineProgressionStatus",
     },
   },
   [0x024d] = {
     [0] = {
-      title = "InitZone",
-      name = "ffxiv_ipc_init_zone",
-      length = 96,
+      type = "InitZone",
     },
   },
   [0x026a] = {
     [0] = {
-      title = "EffectResultBasic",
-      name = "ffxiv_ipc_effect_result_basic",
-      length = 24,
+      type = "EffectResultBasic",
     },
   },
   [0x0271] = {
     [0] = {
-      title = "InventoryTransactionFinish",
-      name = "ffxiv_ipc_inventory_transaction_finish",
-      length = 16,
+      type = "InventoryTransactionFinish",
     },
   },
   [0x0274] = {
     [0] = {
-      title = "CompanySubmersibleStatus",
-      name = "ffxiv_ipc_company_submersible_status",
-      length = 144,
+      type = "CompanySubmersibleStatus",
     },
   },
   [0x0289] = {
     [0] = {
-      title = "StatusEffectList2",
-      name = "ffxiv_ipc_status_effect_list2",
-      length = 384,
+      type = "StatusEffectList2",
     },
   },
   [0x028d] = {
     [0] = {
-      title = "PlayerSetup",
-      name = "ffxiv_ipc_player_setup",
-      length = 1938,
+      type = "PlayerSetup",
     },
   },
   [0x02a6] = {
     [0] = {
-      title = "RetainerInformation",
-      name = "ffxiv_ipc_retainer_information",
-      length = 73,
+      type = "RetainerInformation",
     },
   },
   [0x02ae] = {
     [0] = {
-      title = "PlaceFieldMarker",
-      name = "ffxiv_ipc_place_field_marker",
-      length = 16,
+      type = "PlaceFieldMarker",
     },
   },
   [0x02ba] = {
     [0] = {
-      title = "MarketBoardItemListingCount",
-      name = "ffxiv_ipc_market_board_item_listing_count",
-      length = 8,
+      type = "MarketBoardItemListingCount",
     },
   },
   [0x02c4] = {
     [0] = {
-      title = "StatusEffectList3",
-      name = "ffxiv_ipc_status_effect_list3",
-      length = 360,
+      type = "StatusEffectList3",
     },
   },
   [0x02cc] = {
     [0] = {
-      title = "ExamineSearchInfo",
+      type = "ExamineSearchInfo",
     },
   },
   [0x02d0] = {
     [0] = {
-      title = "Playtime",
-      name = "ffxiv_ipc_playtime",
-      length = 4,
+      type = "Playtime",
     },
   },
   [0x02d8] = {
     [0] = {
-      title = "MarketBoardPurchaseHandler",
-      name = "ffxiv_ipc_market_board_purchase_handler",
-      length = 28,
+      type = "MarketBoardPurchaseHandler",
     },
   },
   [0x02e4] = {
     [0] = {
-      title = "MarketBoardItemListingHistory",
-      name = "ffxiv_ipc_market_board_item_listing_history",
-      length = 964,
+      type = "MarketBoardItemListingHistory",
     },
   },
   [0x0311] = {
     [0] = {
-      title = "PrepareZoning",
-      name = "ffxiv_ipc_prepare_zoning",
-      length = 16,
+      type = "PrepareZoning",
     },
   },
   [0x0325] = {
     [0] = {
-      title = "ChatHandler",
+      type = "ChatHandler",
     },
   },
   [0x0327] = {
     [0] = {
-      title = "EventStart",
-      name = "ffxiv_ipc_event_start",
-      length = 12,
+      type = "EventStart",
     },
   },
   [0x033c] = {
     [0] = {
-      title = "IslandWorkshopSupplyDemand",
-      name = "ffxiv_ipc_island_workshop_supply_demand",
-      length = 2,
+      type = "IslandWorkshopSupplyDemand",
     },
   },
   [0x034f] = {
     [0] = {
-      title = "CEDirector",
-      name = "ffxiv_ipc_ce_director",
-      length = 16,
+      type = "CEDirector",
     },
   },
   [0x0358] = {
     [0] = {
-      title = "ActorCast",
-      name = "ffxiv_ipc_actor_cast",
-      length = 30,
+      type = "ActorCast",
     },
   },
   [0x0377] = {
     [0] = {
-      title = "ResumeEventScene32",
-      name = "ffxiv_ipc_resume_event_scene32",
-      length = 136,
+      type = "ResumeEventScene32",
     },
   },
   [0x0385] = {
     [0] = {
-      title = "Effect",
-      name = "ffxiv_ipc_effect",
-      length = 120,
+      type = "Effect",
     },
   },
   [0x0389] = {
     [0] = {
-      title = "AirshipStatusList",
-      name = "ffxiv_ipc_airship_status_list",
-      length = 158,
+      type = "AirshipStatusList",
     },
   },
   [0x0395] = {
     [0] = {
-      title = "SubmarineStatusList",
-      name = "ffxiv_ipc_submarine_status_list",
-      length = 240,
+      type = "SubmarineStatusList",
     },
   },
   [0x039d] = {
     [0] = {
-      title = "ClientTrigger",
-      name = "ffxiv_ipc_client_trigger",
-      length = 32,
+      type = "ClientTrigger",
     },
   },
   [0x03a4] = {
     [0] = {
-      title = "InventoryHandlerOffset",
+      type = "InventoryHandlerOffset",
     },
     [1] = {
-      title = "InventoryModifyHandler",
-      name = "ffxiv_ipc_inventory_modify_handler",
-      length = 44,
+      type = "InventoryModifyHandler",
     },
   },
   [0x03a5] = {
     [0] = {
-      title = "CompanyAirshipStatus",
-      name = "ffxiv_ipc_company_airship_status",
-      length = 144,
+      type = "CompanyAirshipStatus",
     },
   },
   [0x03a7] = {
     [0] = {
-      title = "MarketBoardPurchase",
-      name = "ffxiv_ipc_market_board_purchase",
-      length = 12,
+      type = "MarketBoardPurchase",
     },
   },
   [0x03bf] = {
     [0] = {
-      title = "CFPreferredRole",
-      name = "ffxiv_ipc_cf_preferred_role",
-      length = 16,
+      type = "CFPreferredRole",
     },
   },
   [0x03c1] = {
     [0] = {
-      title = "AoeEffect16",
-      name = "ffxiv_ipc_aoe_effect16",
-      length = 1208,
+      type = "AoeEffect16",
     },
   },
   [0x03c7] = {
     [0] = {
-      title = "NpcSpawn2",
-      name = "ffxiv_ipc_npc_spawn2",
-      length = 624,
+      type = "NpcSpawn2",
     },
   },
   [0x03d2] = {
     [0] = {
-      title = "UpdatePositionHandler",
-      name = "ffxiv_ipc_update_position_handler",
-      length = 20,
+      type = "UpdatePositionHandler",
     },
   },
   [0x03d6] = {
     [0] = {
-      title = "ResumeEventScene16",
-      name = "ffxiv_ipc_resume_event_scene16",
-      length = 72,
+      type = "ResumeEventScene16",
     },
   },
 }

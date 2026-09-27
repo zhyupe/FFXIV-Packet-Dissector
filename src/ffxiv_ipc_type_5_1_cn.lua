@@ -5,51 +5,37 @@ local M = {}
 M.types = {
   [0x00de] = {
     [0] = {
-      title = "ActorControl",
-      name = "ffxiv_ipc_actor_control",
-      length = 24,
+      type = "ActorControl",
     },
   },
   [0x01c3] = {
     [0] = {
-      title = "ActorControlSelf",
-      name = "ffxiv_ipc_actor_control_self",
-      length = 32,
+      type = "ActorControlSelf",
     },
   },
   [0x0265] = {
     [0] = {
-      title = "ContentFinderNotifyPop",
-      name = "ffxiv_ipc_content_finder_notify_pop",
-      length = 32,
+      type = "ContentFinderNotifyPop",
     },
   },
   [0x0315] = {
     [0] = {
-      title = "ClientTrigger",
-      name = "ffxiv_ipc_client_trigger",
-      length = 32,
+      type = "ClientTrigger",
     },
   },
   [0x0318] = {
     [0] = {
-      title = "InventoryTransactionFinish",
-      name = "ffxiv_ipc_inventory_transaction_finish",
-      length = 16,
+      type = "InventoryTransactionFinish",
     },
   },
   [0x0382] = {
     [0] = {
-      title = "ActorGauge",
-      name = "ffxiv_ipc_actor_gauge",
-      length = 16,
+      type = "ActorGauge",
     },
   },
   [0x03ac] = {
     [0] = {
-      title = "ActorControlTarget",
-      name = "ffxiv_ipc_actor_control_target",
-      length = 32,
+      type = "ActorControlTarget",
     },
   },
 }

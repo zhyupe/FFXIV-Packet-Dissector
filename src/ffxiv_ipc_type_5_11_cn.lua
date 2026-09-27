@@ -5,58 +5,42 @@ local M = {}
 M.types = {
   [0x00c1] = {
     [0] = {
-      title = "ActorControl",
-      name = "ffxiv_ipc_actor_control",
-      length = 24,
+      type = "ActorControl",
     },
   },
   [0x00fa] = {
     [0] = {
-      title = "EventPlay",
-      name = "ffxiv_ipc_event_play",
-      length = 40,
+      type = "EventPlay",
     },
   },
   [0x010b] = {
     [0] = {
-      title = "ActorControlTarget",
-      name = "ffxiv_ipc_actor_control_target",
-      length = 32,
+      type = "ActorControlTarget",
     },
   },
   [0x011f] = {
     [0] = {
-      title = "ActorControlSelf",
-      name = "ffxiv_ipc_actor_control_self",
-      length = 32,
+      type = "ActorControlSelf",
     },
   },
   [0x01de] = {
     [0] = {
-      title = "ClientTrigger",
-      name = "ffxiv_ipc_client_trigger",
-      length = 32,
+      type = "ClientTrigger",
     },
   },
   [0x026c] = {
     [0] = {
-      title = "ActorGauge",
-      name = "ffxiv_ipc_actor_gauge",
-      length = 16,
+      type = "ActorGauge",
     },
   },
   [0x02f0] = {
     [0] = {
-      title = "RetainerInformation",
-      name = "ffxiv_ipc_retainer_information",
-      length = 73,
+      type = "RetainerInformation",
     },
   },
   [0x0377] = {
     [0] = {
-      title = "ContentFinderNotifyPop",
-      name = "ffxiv_ipc_content_finder_notify_pop",
-      length = 32,
+      type = "ContentFinderNotifyPop",
     },
   },
 }

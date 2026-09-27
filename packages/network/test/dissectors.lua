@@ -75,6 +75,7 @@ end
 for _, file in ipairs(arg) do dofile(file) end
 assert(next(protocols), 'pass src/*_gen.lua as arguments')
 local registry = require('ffxiv_ipc_type_7_56a_cn')
+local packets = require('ffxiv_ipc_map')
 local function parse(name, bytes)
   values = {}
   displayTexts = {}
@@ -91,17 +92,20 @@ end
 local count = 0
 for opcode, entries in pairs(registry.types) do
   for _, entry in pairs(entries) do
-    if entry.name then
+    local packet = packets[entry.type]
+    if packet then
+      local length = entry.length or packet.length
+      local expectedTitle = entry.title or entry.type
       local direction = entry.outgoing == true and 'C' or 'S'
-      local dissector, title = registry.getDissector(opcode, entry.length, direction)
-      assert(dissector and dissector.name == entry.name, entry.title .. ': wrong selection')
-      assert(title == entry.title)
+      local dissector, title = registry.getDissector(opcode, length, direction)
+      assert(dissector and dissector.name == packet.name, expectedTitle .. ': wrong selection')
+      assert(title == expectedTitle)
       local previous = experts
-      parse(entry.name, string.rep('\0', entry.length))
-      assert(experts == previous, entry.title .. ': full payload marked truncated')
-      if entry.length > 0 then
-        parse(entry.name, string.rep('\0', entry.length - 1))
-        assert(experts == previous + 1, entry.title .. ': truncation was not reported')
+      parse(packet.name, string.rep('\0', length))
+      assert(experts == previous, expectedTitle .. ': full payload marked truncated')
+      if length > 0 then
+        parse(packet.name, string.rep('\0', length - 1))
+        assert(experts == previous + 1, expectedTitle .. ': truncation was not reported')
       end
       count = count + 1
     end
@@ -121,10 +125,31 @@ assert(select(2, registry.getDissector(0x0351, 288, 'S')) == 'EventPlay64')
 -- If multiple known prefixes fit, selection must be stable and choose the longest.
 local resolve = require('ffxiv_ipc_resolver').getDissector
 local choices = {
-  [0] = { name = 'ffxiv_ipc_event_play', title = 'short', length = 40 },
-  [1] = { name = 'ffxiv_ipc_event_play64', title = 'long', length = 288 },
+  [0] = { type = 'EventPlay', title = 'short' },
+  [1] = { type = 'EventPlay64', title = 'long' },
 }
 assert(select(2, resolve(choices, 300)) == 'long')
+assert(select(2, resolve(choices, 288)) == 'long')
+assert(select(2, resolve(choices, 287)) == 'short')
+
+-- Shared length changes apply without replacing or modifying a version table.
+local previousLength = packets.EventPlay64.length
+packets.EventPlay64.length = 320
+assert(select(2, resolve(choices, 300)) == 'short')
+assert(registry.getDissector(0x0351, 288, 'S') == nil)
+assert(select(2, registry.getDissector(0x0351, 320, 'S')) == 'EventPlay64')
+-- Explicit version lengths take precedence, including zero.
+choices[1].length = 288
+assert(select(2, resolve(choices, 300)) == 'long')
+assert(resolve({ [0] = { type = 'EventPlay', length = 0 } }, 0) ~= nil)
+packets.EventPlay64.length = previousLength
+
+-- Unknown structures retain their title even if a version declares a length.
+d, title = resolve({ [0] = { type = 'UnknownPacket', length = 8 } }, 32)
+assert(d == nil and title == 'UnknownPacket')
+d, title = resolve({ [0] = { type = 'UnknownPacket', title = 'custom', length = 8 } }, 32)
+assert(d == nil and title == 'custom')
+assert(resolve({ [0] = { type = 'EventPlay', outgoing = false } }, 40, 'C') == nil)
 
 local result = string.rep('\0', 360)
 result = replace(result, 0, string.char(4))
