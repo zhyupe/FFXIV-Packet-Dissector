@@ -3,6 +3,7 @@
 ServerZoneIpc:
   direction: server-to-client
   packets:
+    Achievement: {}
     ActorCast:
       ACT: ActorCast
     ActorControl:

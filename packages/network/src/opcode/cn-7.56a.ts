@@ -80,6 +80,7 @@ export const CN_7_56a: OpcodeMap = {
     { type: NormalizedOpcode.ClientTrigger, outgoing: true },
     { type: NormalizedOpcode.FreeCompanyDialog, outgoing: false },
   ],
+  0x0188: [{ type: NormalizedOpcode.Achievement, outgoing: false }],
   0x0191: [{ type: NormalizedOpcode.UpdateParty, outgoing: false }],
   0x0192: [{ type: NormalizedOpcode.PlayerBlueMageActions, outgoing: false }],
   0x0198: [{ type: NormalizedOpcode.EnvironmentControl, outgoing: false }],

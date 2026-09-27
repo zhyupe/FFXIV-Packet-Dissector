@@ -1,4 +1,5 @@
-PlayerSpawn layout references SpawnPlayerPacket and CommonSpawnData from
+PlayerSpawn and Achievement layouts reference SpawnPlayerPacket,
+CommonSpawnData and AchievementsPacket from
 https://github.com/aers/FFXIVClientStructs
 
 MIT License

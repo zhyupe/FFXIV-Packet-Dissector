@@ -415,6 +415,12 @@ M.types = {
       outgoing = false,
     },
   },
+  [0x0188] = {
+    [0] = {
+      type = "Achievement",
+      outgoing = false,
+    },
+  },
   [0x0191] = {
     [0] = {
       type = "UpdateParty",

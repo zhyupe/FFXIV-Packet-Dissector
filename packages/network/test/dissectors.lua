@@ -6,7 +6,7 @@ base = { HEX = 16, DEC = 10, NONE = 0, UNICODE = 0 }
 ENC_UTF_8 = 0
 PI_MALFORMED, PI_ERROR = 1, 2
 local protocols, values, experts = {}, {}, 0
-local fieldDefinitions, displayTexts = {}, {}
+local fieldDefinitions, displayTexts, fieldTexts = {}, {}, {}
 function Proto(name, title)
   assert(protocols[name] == nil, 'duplicate protocol: ' .. name)
   local proto = { name = name, title = title }
@@ -31,10 +31,11 @@ local column = { set = function() end, append = function(_, text)
 end }
 local info = { cols = { info = column, protocol = column } }
 local tree = {}
-function tree:add(field, range, value)
+function tree:add(field, range, value, text)
   if field and field.abbr then
     values[field.abbr] = values[field.abbr] or {}
     table.insert(values[field.abbr], value == nil and range or value)
+    fieldTexts[field.abbr] = text
   end
   return self
 end
@@ -79,6 +80,7 @@ local packets = require('ffxiv_ipc_map')
 local function parse(name, bytes)
   values = {}
   displayTexts = {}
+  fieldTexts = {}
   Dissector.get(name):call(tvb(bytes), info, tree)
 end
 local function field(name, index)
@@ -121,6 +123,59 @@ assert(registry.getDissector(0x0187, 32, 'S') == nil)
 assert(registry.getDissector(0x0131, 95, 'S') == nil)
 assert(registry.getDissector(0xFFFF, 1024, 'S') == nil)
 assert(select(2, registry.getDissector(0x0351, 288, 'S')) == 'EventPlay64')
+
+-- Synthetic progress response: counts remain unsigned, without percentage scaling.
+local progress = string.pack('<I2I2I4I4I4', 514, 0, 42, 0x80000001, 0xFFFFFFFF) .. string.rep('\0', 16)
+parse('ffxiv_ipc_actor_control_self', progress)
+assert(fieldDefinitions['ffxiv_ipc_actor_control_self.type'].valueNames[514] == 'AchievementSetRate')
+assert(field('ffxiv_ipc_actor_control_self.data0') == 42)
+assert(field('ffxiv_ipc_actor_control_self.data1') == 0x80000001)
+assert(field('ffxiv_ipc_actor_control_self.data2') == 0xFFFFFFFF)
+assert(fieldTexts['ffxiv_ipc_actor_control_self.data0'] == 'Achievement: 42')
+assert(fieldTexts['ffxiv_ipc_actor_control_self.data1'] == 'Current: 2147483649')
+assert(fieldTexts['ffxiv_ipc_actor_control_self.data2'] == 'Max: 4294967295')
+parse('ffxiv_ipc_actor_control_self', replace(progress, 0, string.pack('<I2', 65535)))
+assert(fieldTexts['ffxiv_ipc_actor_control_self.data1'] == 'data1: 2147483649')
+assert(fieldTexts['ffxiv_ipc_actor_control_self.data2'] == 'data2: 4294967295')
+
+-- Synthetic completion bitmap and separate auxiliary flags, with ordered history.
+local achievementBytes = {}
+for i = 1, 552 do achievementBytes[i] = 0 end
+local completedIds = { 0, 7, 8, 31, 4077, 4079 }
+for _, id in ipairs(completedIds) do
+  local index = math.floor(id / 8) + 1
+  achievementBytes[index] = achievementBytes[index] + 2 ^ (id % 8)
+end
+local auxiliaryIndices = { 0, 7, 8, 127, 207 }
+for _, id in ipairs(auxiliaryIndices) do
+  local index = 520 + math.floor(id / 8) + 1
+  achievementBytes[index] = achievementBytes[index] + 2 ^ (id % 8)
+end
+for i, byte in ipairs(achievementBytes) do achievementBytes[i] = string.char(byte) end
+local completion = table.concat(achievementBytes)
+local history = { 501, 42, 903, 17, 600 }
+for index, id in ipairs(history) do
+  completion = replace(completion, 510 + (index - 1) * 2, string.pack('<I2', id))
+end
+completion = replace(completion, 546, string.rep('\165', 6))
+parse('ffxiv_ipc_achievement', completion)
+assert(#values['ffxiv_ipc_achievement.completed_achievement_ids'] == #completedIds)
+for index, id in ipairs(completedIds) do
+  assert(field('ffxiv_ipc_achievement.completed_achievement_ids', index) == id)
+end
+for index, id in ipairs(history) do assert(field('ffxiv_ipc_achievement.history', index) == id) end
+assert(#values['ffxiv_ipc_achievement.auxiliary_flag_indices'] == #auxiliaryIndices)
+for index, id in ipairs(auxiliaryIndices) do
+  assert(field('ffxiv_ipc_achievement.auxiliary_flag_indices', index) == id)
+end
+assert(field('ffxiv_ipc_achievement.unknown_tail') == string.rep('\165', 6))
+parse('ffxiv_ipc_achievement', string.rep('\0', 552))
+assert(values['ffxiv_ipc_achievement.completed_achievement_ids'] == nil)
+assert(values['ffxiv_ipc_achievement.auxiliary_flag_indices'] == nil)
+assert(#values['ffxiv_ipc_achievement.history'] == 5)
+assert(select(2, registry.getDissector(0x0188, 552, 'S')) == 'Achievement')
+assert(registry.getDissector(0x0188, 551, 'S') == nil)
+assert(registry.getDissector(0x0188, 552, 'C') == nil)
 
 -- Synthetic player spawn with distinct header, status, equipment and text values.
 local player = string.rep('\0', 664)

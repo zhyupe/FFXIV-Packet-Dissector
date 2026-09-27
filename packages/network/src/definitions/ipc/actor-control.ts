@@ -32,6 +32,11 @@ const actorControlField = createConditionFactory<
   [ActorControlType.AchievementMsg]: {
     data0: { label: 'Achievement' },
   },
+  [ActorControlType.AchievementSetRate]: {
+    data0: { label: 'Achievement' },
+    data1: { label: 'Current' },
+    data2: { label: 'Max' },
+  },
   [ActorControlType.FishingLightChange]: {
     data1: { label: 'Enabled' },
   },

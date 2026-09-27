@@ -2,7 +2,7 @@
 
 import { NormalizedOpcode } from '@/opcode'
 import type { StructConstructor } from '@/struct/struct'
-import { NearCompletionAchievements } from './achievement'
+import { Achievement, NearCompletionAchievements } from './achievement'
 import { ActionRequest, ActionRequestGroundTargeted } from './action-request'
 import { ActorCast } from './actor-cast'
 import {
@@ -243,6 +243,7 @@ function packetMapTypeConstraint<
 }
 
 export const PacketMap = packetMapTypeConstraint({
+  [NormalizedOpcode.Achievement]: Achievement,
   [NormalizedOpcode.ActionRequest]: ActionRequest,
   [NormalizedOpcode.ActionRequestGroundTargeted]: ActionRequestGroundTargeted,
   [NormalizedOpcode.ActorCast]: ActorCast,
@@ -422,6 +423,7 @@ export * from './common/status-effect'
 export * from './common/submarine'
 export * from './common/ward-land-item'
 export {
+  Achievement,
   ActionRequest,
   ActionRequestGroundTargeted,
   ActorCast,

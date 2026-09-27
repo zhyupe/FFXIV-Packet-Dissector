@@ -158,6 +158,7 @@ M.forward.actor_control_type = {
   LearnTeleport = 509,
   OpenRecommendationGuide = 512,
   ArmoryErrorMsg = 513,
+  AchievementSetRate = 514,
   AchievementPopup = 515,
   LogMsg = 517,
   AchievementMsg = 518,

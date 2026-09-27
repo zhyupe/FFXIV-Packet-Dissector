@@ -12,6 +12,7 @@ local label_data0_type = {
   [310] = "Marker",
   [320] = "Item",
   [325] = "Bait",
+  [514] = "Achievement",
   [515] = "Achievement",
   [518] = "Achievement",
   [521] = "ItemLevel",
@@ -27,12 +28,14 @@ local label_data1_type = {
   [23] = "Type",
   [125] = "NpcId",
   [300] = "Enabled",
+  [514] = "Current",
   [2366] = "Progress(%)",
 }
 local label_data2_type = {
   [7] = "Bouns(%)",
   [23] = "Value",
   [125] = "Radius",
+  [514] = "Max",
 }
 local label_data3_type = {
   [23] = "ActorId",
@@ -104,6 +107,8 @@ function ffxiv_ipc_actor_control_self.dissector(tvbuf, pktinfo, root)
   elseif type_val == 325 then
     data0_label_key = "Bait"
     data0_label_val = (db.Item[data0_val] or "Unknown") .. " (" .. data0_val .. ")"
+  elseif type_val == 514 then
+    data0_label_key = "Achievement"
   elseif type_val == 515 then
     data0_label_key = "Achievement"
   elseif type_val == 518 then
@@ -143,6 +148,8 @@ function ffxiv_ipc_actor_control_self.dissector(tvbuf, pktinfo, root)
     data1_label_val = string.format('%08x', data1_val)
   elseif type_val == 300 then
     data1_label_key = "Enabled"
+  elseif type_val == 514 then
+    data1_label_key = "Current"
   elseif type_val == 2366 then
     data1_label_key = "Progress(%)"
   end
@@ -159,6 +166,8 @@ function ffxiv_ipc_actor_control_self.dissector(tvbuf, pktinfo, root)
     data2_label_key = "Value"
   elseif type_val == 125 then
     data2_label_key = "Radius"
+  elseif type_val == 514 then
+    data2_label_key = "Max"
   end
   tree:add_le(actor_control_self_fields.data2, data2_tvbr, data2_val, data2_label_key .. ": " .. data2_label_val)
 
