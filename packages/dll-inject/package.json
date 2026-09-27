@@ -21,13 +21,13 @@
     ]
   },
   "scripts": {
-    "compile": "node-gyp rebuild",
+    "compile": "node scripts/build.js",
     "test": "npm run compile && node test/index.js",
-    "install": "node-gyp rebuild",
-    "rebuild": "node-gyp rebuild"
+    "install": "node scripts/build.js",
+    "rebuild": "node scripts/build.js"
   },
   "devDependencies": {
-    "node-gyp": "^13.0.0"
+    "node-gyp": "^13.0.2"
   },
   "dependencies": {
     "bindings": "^1.5.0",
