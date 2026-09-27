@@ -3,6 +3,7 @@
 ServerZoneIpc:
   direction: server-to-client
   packets:
+    CharaCard: {}
     UpdateEventScene2: {}
     UpdateEventScene4: {}
     UpdateEventScene8: {}

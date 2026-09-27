@@ -177,6 +177,7 @@ export const CN_7_56a: OpcodeMap = {
   0x02c7: [{ type: NormalizedOpcode.MapEffect8, outgoing: false }],
   0x02cd: [{ type: NormalizedOpcode.PartyMessage, outgoing: false }],
   0x02cf: [{ type: NormalizedOpcode.ExamineSearchInfo, outgoing: false }],
+  0x02d3: [{ type: NormalizedOpcode.CharaCard, outgoing: false }],
   0x02d4: [{ type: NormalizedOpcode.CFCancel, outgoing: false }],
   0x02d8: [{ type: NormalizedOpcode.BattleTalk8, outgoing: false }],
   0x02dc: [{ type: NormalizedOpcode.GCAffiliation, outgoing: false }],

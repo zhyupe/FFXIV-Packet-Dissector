@@ -29,6 +29,7 @@
   "CFPreferredRole": "0x01B2",
   "CFRegistered": "0x03A6",
   "ChangeClass": "0x01EA",
+  "CharaCard": "0x02D3",
   "ChatHandler": "0x0230",
   "ClientCountdownInitiate": "0x037E",
   "ClientTrigger": "0x0187",

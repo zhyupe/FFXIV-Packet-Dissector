@@ -23,6 +23,7 @@ import {
 import { AoeEffect8, AoeEffect16, AoeEffect24, AoeEffect32 } from './aoe-effect'
 import { CEDirector } from './ce-director'
 import { CFPreferredRole } from './cf-preferred-role'
+import { CharaCard, CharaCardData } from './chara-card'
 import { ClientAction } from './client-action'
 import { ClientTrigger } from './client-trigger'
 import {
@@ -284,6 +285,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.CEDirector]: CEDirector,
   [NormalizedOpcode.CFPreferredRole]: CFPreferredRole,
   [NormalizedOpcode.ChangeClass]: ChangeClass,
+  [NormalizedOpcode.CharaCard]: CharaCard,
   [NormalizedOpcode.ClientTrigger]: ClientTrigger,
   [NormalizedOpcode.CompanyAirshipStatus]: CompanyAirshipStatus,
   [NormalizedOpcode.CompanySubmersibleStatus]: CompanySubmersibleStatus,
@@ -477,6 +479,8 @@ export {
   CEDirector,
   CFPreferredRole,
   ChangeClass,
+  CharaCard,
+  CharaCardData,
   ClientAction,
   ClientTrigger,
   CompanyAirshipStatus,

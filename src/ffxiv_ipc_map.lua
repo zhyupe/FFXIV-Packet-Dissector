@@ -129,6 +129,14 @@ local M = {
     name = "ffxiv_ipc_change_class",
     length = 8,
   },
+  CharaCard = {
+    name = "ffxiv_ipc_chara_card",
+    length = 480,
+  },
+  CharaCardData = {
+    name = "ffxiv_ipc_chara_card_data",
+    length = 188,
+  },
   ClientTrigger = {
     name = "ffxiv_ipc_client_trigger",
     length = 32,

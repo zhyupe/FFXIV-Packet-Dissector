@@ -881,6 +881,12 @@ M.types = {
       outgoing = false,
     },
   },
+  [0x02d3] = {
+    [0] = {
+      type = "CharaCard",
+      outgoing = false,
+    },
+  },
   [0x02d4] = {
     [0] = {
       type = "CFCancel",

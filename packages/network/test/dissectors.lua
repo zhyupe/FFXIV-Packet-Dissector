@@ -357,6 +357,40 @@ assert(select(2, registry.getDissector(0x00D3, 520, 'S')) == 'NearCompletionAchi
 assert(registry.getDissector(0x00D3, 519, 'S') == nil)
 assert(registry.getDissector(0x00D3, 520, 'C') == nil)
 
+-- Artificial adventurer plate: wire hours remain independent of the host timezone.
+do
+  local card = string.rep('\0', 480)
+  card = replace(card, 8, string.pack('<I8', (1 << 60) + 1))
+  card = replace(card, 0x20, string.pack('<I2I2B', 31, 75, 19))
+  card = replace(card, 0x5e, string.char(1, 0, 128, 0, 1, 0))
+  card = replace(card, 0x69, string.char(9))
+  card = replace(card, 0x7c, string.pack('<I2', 123))
+  card = replace(card, 0xe0, string.pack('<I4', 70011))
+  card = replace(card, 0xe4, string.pack('<i4', -1))
+  card = replace(card, 0xe8, '  Synthetic\r说明\0ignored')
+  card = replace(card, 0x1a9, '测试\0ignored')
+  card = replace(card, 0x1c9, 'Synthetic FC\0ignored')
+  parse('ffxiv_ipc_chara_card', card)
+  assert(field('ffxiv_ipc_chara_card.account_id') == (1 << 60) + 1)
+  assert(field('ffxiv_ipc_chara_card.level') == 75)
+  assert(field('ffxiv_ipc_chara_card.timestamp') == -1)
+  assert(field('ffxiv_ipc_chara_card.search_comment') == '  Synthetic\r说明')
+  assert(field('ffxiv_ipc_chara_card.search_comment_raw') == card:sub(0xe8 + 1, 0x1a9))
+  assert(field('ffxiv_ipc_chara_card.name') == '测试')
+  assert(field('ffxiv_ipc_chara_card.free_company') == 'Synthetic FC')
+  assert(field('ffxiv_ipc_chara_card_data.active_hours_weekdays', 1) == 0)
+  assert(field('ffxiv_ipc_chara_card_data.active_hours_weekdays', 2) == 23)
+  assert(field('ffxiv_ipc_chara_card_data.active_hours_weekends') == 8)
+  assert(field('ffxiv_ipc_chara_card_data.play_styles', 6) == 9)
+  assert(field('ffxiv_ipc_chara_card_data.item_ids', 12) == 70011)
+  assert(field('ffxiv_ipc_chara_card_data.animation_progress') == 12.3)
+  assert(fieldDefinitions['ffxiv_ipc_chara_card.class_job'].valueNames[19] == 'Test Job')
+  assert(fieldDefinitions['ffxiv_ipc_chara_card.world_id'].valueNames[31] == 'Test World')
+  assert(select(2, registry.getDissector(0x02D3, 480, 'S')) == 'CharaCard')
+  assert(registry.getDissector(0x02D3, 479, 'S') == nil)
+  assert(registry.getDissector(0x02D3, 480, 'C') == nil)
+end
+
 -- Artificial segmented listings, including 64-bit masks and bounded UTF-8 text.
 do
   local listing = string.rep('\0', 400)

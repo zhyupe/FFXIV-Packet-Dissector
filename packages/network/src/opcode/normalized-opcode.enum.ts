@@ -31,6 +31,7 @@ export enum NormalizedOpcode {
   CFPreferredRole = 'CFPreferredRole',
   CFRegistered = 'CFRegistered',
   ChangeClass = 'ChangeClass',
+  CharaCard = 'CharaCard',
   ChatHandler = 'ChatHandler',
   ClientCountdownInitiate = 'ClientCountdownInitiate',
   ClientTrigger = 'ClientTrigger',
