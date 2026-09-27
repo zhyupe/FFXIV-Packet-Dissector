@@ -1,6 +1,8 @@
-PlayerSpawn, Achievement, ContentFinderNotify, PartyFinderList and CharaCard layouts reference
+PlayerSpawn, Achievement, ContentFinderNotify, PartyFinderList, CharaCard and
+FashionReport layouts reference
 SpawnPlayerPacket, CommonSpawnData, AchievementsPacket, QueueUpdatePacket,
-CrossRealmListingSegmentPacket, CharaCardPacket and CharaCardData from
+CrossRealmListingSegmentPacket, CharaCardPacket, CharaCardData and
+FashionCheckManager.PreviewData from
 https://github.com/aers/FFXIVClientStructs
 
 MIT License

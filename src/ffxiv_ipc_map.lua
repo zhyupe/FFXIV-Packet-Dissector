@@ -337,6 +337,10 @@ local M = {
     name = "ffxiv_ipc_examine_item_materia",
     length = 4,
   },
+  FashionReport = {
+    name = "ffxiv_ipc_fashion_report",
+    length = 32,
+  },
   FateInfo = {
     name = "ffxiv_ipc_fate_info",
     length = 24,

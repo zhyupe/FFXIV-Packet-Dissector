@@ -357,6 +357,26 @@ assert(select(2, registry.getDissector(0x00D3, 520, 'S')) == 'NearCompletionAchi
 assert(registry.getDissector(0x00D3, 519, 'S') == nil)
 assert(registry.getDissector(0x00D3, 520, 'C') == nil)
 
+-- Artificial fashion preview: uint16 row IDs and empty slots retain their positions.
+do
+  local preview = string.pack('<BBI2', 87, 2, 0xabcd)
+  for i = 0, 10 do
+    preview = preview .. string.pack('<I2', i == 10 and 0xffff or (i % 2 == 1 and 0 or 0x8000 + i))
+  end
+  preview = preview .. string.rep(string.char(0xa5), 6)
+  parse('ffxiv_ipc_fashion_report', preview)
+  assert(field('ffxiv_ipc_fashion_report.high_score') == 87)
+  assert(field('ffxiv_ipc_fashion_report.remaining_attempts') == 2)
+  assert(field('ffxiv_ipc_fashion_report.weekly_theme') == 0xabcd)
+  assert(#values['ffxiv_ipc_fashion_report.item_themes'] == 11)
+  assert(field('ffxiv_ipc_fashion_report.item_themes', 2) == 0)
+  assert(field('ffxiv_ipc_fashion_report.item_themes', 11) == 0xffff)
+  assert(field('ffxiv_ipc_fashion_report.unknown_tail') == string.rep(string.char(0xa5), 6))
+  assert(select(2, registry.getDissector(0x036C, 32, 'S')) == 'FashionReport')
+  assert(registry.getDissector(0x036C, 31, 'S') == nil)
+  assert(registry.getDissector(0x036C, 32, 'C') == nil)
+end
+
 -- Artificial adventurer plate: wire hours remain independent of the host timezone.
 do
   local card = string.rep('\0', 480)

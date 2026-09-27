@@ -94,6 +94,7 @@ import {
 } from './event-play'
 import { EventStart } from './event-start'
 import { Examine, ExamineItemData, ExamineItemMateria } from './examine'
+import { FashionReport } from './fashion-report'
 import { FateInfo } from './fate-info'
 import { FatePosition } from './fate-position'
 import { FauxHollowHandler } from './faux-hollow-handler'
@@ -325,6 +326,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.EventPlay8]: EventPlay8,
   [NormalizedOpcode.EventStart]: EventStart,
   [NormalizedOpcode.Examine]: Examine,
+  [NormalizedOpcode.FashionReport]: FashionReport,
   [NormalizedOpcode.FateInfo]: FateInfo,
   [NormalizedOpcode.FellowshipInfo]: FellowshipInfo,
   [NormalizedOpcode.FellowshipInfoQuery]: FellowshipInfoQuery,
@@ -542,6 +544,7 @@ export {
   Examine,
   ExamineItemData,
   ExamineItemMateria,
+  FashionReport,
   FateInfo,
   FatePosition,
   FauxHollowHandler,
