@@ -59,8 +59,36 @@ that the dissectors would work in the international server.
 
 ## IPC Protocol Schema
 
-This repository uses a JSON-based schema to describe IPC packets and generate dissectors. See `types` folder
-for structure described in TypeScript.
+Packet structures live in `packages/network/src/definitions/ipc`. Their field metadata
+generates the Wireshark Lua dissectors in `src/` and also drives the TypeScript reader.
+
+```sh
+pnpm install
+pnpm --filter network sync
+pnpm --filter network generate
+pnpm --filter network typecheck
+pnpm --filter network test
+# From the repository root, with Lua 5.3 or newer:
+lua packages/network/test/dissectors.lua src/*_gen.lua
+```
+
+`sync` reads the `FFXIVOpcodes` aliases from
+[opcode-worker's packets.yaml](https://github.com/zhyupe/ffxiv-opcode-worker/blob/master/packets.yaml)
+and caches the validated file for one hour. ACT and OverlayPlugin mappings are not
+applied to this opcode source. To use a local checkout, run
+`pnpm --filter network sync --packets /path/to/ffxiv-opcode-worker/packets.yaml`.
+Packet categories and directions are read from the same catalog. Top-level IPC
+categories contain `direction` and `packets`; FFXIVOpcodes, ACT, and OverlayPlugin aliases
+remain attached to each project packet name. Direction is read directly from YAML
+and validated as `server-to-client` or `client-to-server`. Category names come
+from YAML without a built-in list; duplicate packet names across categories
+are rejected.
+
+`sync` refreshes the latest opcode table, including newly added upstream names;
+historical TypeScript opcode tables are retained. `generate` regenerates all Lua
+tables from the shared definitions. For offline tests, the requested 7.56a JSON is
+pinned in `packages/network/test/fixtures/7.56a.json`, alongside a `packets.yaml`
+snapshot for reproducible offline name normalization.
 
 ## LICENSE
 

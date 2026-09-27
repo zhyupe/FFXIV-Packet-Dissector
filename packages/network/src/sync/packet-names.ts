@@ -1,57 +1,135 @@
-// Names in cn-opcodes.csv take precedence over community aliases.
-// Additional names follow existing local definitions, then Sapphire/Dalamud.
-export const packetAliases: Record<string, string> = {
-  MapUpdate: 'MapMarker2',
-  MapUpdate4: 'MapMarker4',
-  MapUpdate8: 'MapMarker8',
-  MapUpdate16: 'MapMarker16',
-  MapUpdate32: 'MapMarker32',
-  MapUpdate64: 'MapMarker64',
-  MapUpdate128: 'MapMarker128',
+import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { parse } from 'yaml'
 
-  AirshipTimers: 'CompanyAirshipStatus',
-  SubmarineTimers: 'CompanySubmersibleStatus',
-  CFNotify: 'ContentFinderNotifyPop',
-  DesynthResult: 'ResumeEventScene16',
-  ResultDialog: 'ResumeEventScene8',
-  MiniCactpotInit: 'ResumeEventScene32',
-  HousingWardInfo: 'WardLandInfo',
-  BossSpawn: 'NpcSpawn2',
-  DespawnCharacter: 'ActorFreeSpawn',
-  Countdown: 'CountdownInitiate',
-  EnvironmentControl4: 'MapEffect4',
-  EnvironmentControl8: 'MapEffect8',
-  EnvironmentControl12: 'MapEffect12',
-  StatusEffectListBozja: 'StatusEffectList2',
-  StatusEffectListDouble: 'BossStatusEffectList',
-  StatusEffectListEureka: 'EurekaStatusEffectList',
-  StatusEffectListOccult: 'StatusEffectListForay3',
-  StatusEffectListPlayer: 'StatusEffectList3',
-  RSVData: 'RSV',
-  RSFData: 'RSF',
-  SystemLogMessage2: 'SystemLogMessage32',
-  SystemLogMessage4: 'SystemLogMessage48',
-  SystemLogMessage8: 'SystemLogMessage80',
-  SystemLogMessage16: 'SystemLogMessage144',
-  CFDutyInfo: 'ContentFinderDutyInfo',
-  UpdateRecastTimes: 'RecastGroup',
-  UpdateHate: 'HateList',
-  UpdateHater: 'HaterList',
-  ObjectDespawn: 'DeleteObject',
-  PlayerClassInfo: 'ChangeClass',
-  BlackList: 'GetBlacklistResult',
-  PlayerTitleList: 'TitleList',
+export const packetsUrl =
+  'https://raw.githubusercontent.com/zhyupe/ffxiv-opcode-worker/master/packets.yaml'
+
+export type PacketDirection = 'server-to-client' | 'client-to-server'
+export type PacketAliases = ReadonlyMap<string, string>
+export interface PacketMetadata {
+  category: string
+  direction: PacketDirection
+  names: Readonly<Record<string, string>>
+}
+export interface PacketCatalog {
+  aliases: PacketAliases
+  packets: ReadonlyMap<string, PacketMetadata>
 }
 
-export function canonicalPacketName(name: string): string {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return !!value && typeof value === 'object' && !Array.isArray(value)
+}
+
+export function parsePackets(source: string): PacketCatalog {
+  const definitions: unknown = parse(source)
+  if (!isRecord(definitions)) {
+    throw new Error('Expected IPC categories in packets.yaml')
+  }
+  const aliases = new Map<string, string>()
+  const packets = new Map<string, PacketMetadata>()
+  for (const [category, group] of Object.entries(definitions)) {
+    if (!category.trim() || !isRecord(group)) {
+      throw new Error(`Invalid IPC category: ${category}`)
+    }
+    const { direction } = group
+    if (direction !== 'server-to-client' && direction !== 'client-to-server') {
+      throw new Error(
+        `Invalid direction for ${category}: expected server-to-client or client-to-server`,
+      )
+    }
+    if (!isRecord(group.packets)) {
+      throw new Error(`Expected a packet mapping in ${category}`)
+    }
+    for (const [name, providers] of Object.entries(group.packets)) {
+      if (!name.trim() || !isRecord(providers)) {
+        throw new Error(`Invalid packet definition: ${category}.${name}`)
+      }
+      if (packets.has(name)) {
+        throw new Error(
+          `Duplicate project packet name across categories: ${name}`,
+        )
+      }
+      for (const [provider, alias] of Object.entries(providers)) {
+        if (!provider.trim() || typeof alias !== 'string' || !alias.trim()) {
+          throw new Error(`Invalid ${provider} name for ${name}`)
+        }
+      }
+      packets.set(name, {
+        category,
+        direction,
+        names: providers as Record<string, string>,
+      })
+      const alias = providers.FFXIVOpcodes as string | undefined
+      if (alias === undefined) continue
+      if (aliases.has(alias)) {
+        throw new Error(
+          `Ambiguous FFXIVOpcodes name ${alias}: ${aliases.get(alias)} and ${name}`,
+        )
+      }
+      aliases.set(alias, name)
+    }
+  }
+  for (const [alias, name] of aliases) {
+    if (alias !== name && packets.has(alias)) {
+      throw new Error(
+        `FFXIVOpcodes alias ${alias} is also a project packet name`,
+      )
+    }
+  }
+  return { aliases, packets }
+}
+
+export async function loadPackets({
+  file,
+  cacheDirectory = join(__dirname, 'cache'),
+  fetcher = fetch,
+}: {
+  file?: string
+  cacheDirectory?: string
+  fetcher?: typeof fetch
+} = {}): Promise<PacketCatalog> {
+  if (file) return parsePackets(readFileSync(file, 'utf8'))
+
+  const cacheFile = join(cacheDirectory, 'packets.cache')
+  try {
+    if (Date.now() - statSync(cacheFile).mtimeMs < 3600e3) {
+      return parsePackets(readFileSync(cacheFile, 'utf8'))
+    }
+  } catch {
+    // Missing or invalid cache entries are refreshed from the repository.
+  }
+
+  const response = await fetcher(packetsUrl, {
+    signal: AbortSignal.timeout(30_000),
+  })
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch ${packetsUrl}: ${response.status} ${response.statusText}`,
+    )
+  }
+  const source = await response.text()
+  const catalog = parsePackets(source)
+  mkdirSync(cacheDirectory, { recursive: true })
+  writeFileSync(cacheFile, source)
+  return catalog
+}
+
+export function canonicalPacketName(
+  name: string,
+  aliases: PacketAliases,
+): string {
   if (name === 'InventoryHandlerOffset') return 'InventoryModifyHandler'
-  return packetAliases[name] ?? name
+  return aliases.get(name) ?? name
 }
 
-export function normalizeOpcodeTable(table: Record<string, string>) {
+export function normalizeOpcodeTable(
+  table: Record<string, string>,
+  aliases: PacketAliases,
+) {
   const normalized: Record<string, string> = {}
   for (const [name, opcode] of Object.entries(table)) {
-    const canonical = canonicalPacketName(name)
+    const canonical = canonicalPacketName(name, aliases)
     const previous = normalized[canonical]
     if (previous && Number(previous) !== Number(opcode)) {
       throw new Error(
@@ -61,113 +139,4 @@ export function normalizeOpcodeTable(table: Record<string, string>) {
     normalized[canonical] = opcode
   }
   return normalized
-}
-
-// Direction from cn-opcodes.csv Scope; omitted where the source is unspecified.
-export const packetDirections: Record<string, boolean> = {
-  ActorCast: false,
-  ActorControl: false,
-  ActorControlSelf: false,
-  ActorControlTarget: false,
-  ActorFreeSpawn: false,
-  ActorGauge: false,
-  ActorMove: false,
-  ActorSetPos: false,
-  AirshipExplorationResult: false,
-  AirshipStatus: false,
-  AirshipStatusList: false,
-  AoeEffect16: false,
-  AoeEffect24: false,
-  AoeEffect32: false,
-  AoeEffect8: false,
-  BattleTalk2: false,
-  BossStatusEffectList: false,
-  CEDirector: false,
-  CFPreferredRole: false,
-  ChatHandler: true,
-  ClientTrigger: true,
-  CompanyAirshipStatus: false,
-  CompanySubmersibleStatus: false,
-  ContainerInfo: false,
-  ContentFinderNotifyPop: false,
-  CountdownInitiate: false,
-  CountdownCancel: false,
-  CurrencyCrystalInfo: false,
-  Effect: false,
-  EffectResult: false,
-  EnvironmentControl: false,
-  EventFinish: false,
-  EventPlay: false,
-  EventPlay32: false,
-  EventPlay64: false,
-  EventPlay4: false,
-  EventStart: false,
-  Examine: false,
-  ExamineSearchInfo: false,
-  FateInfo: false,
-  FreeCompanyDialog: false,
-  FreeCompanyInfo: false,
-  InitZone: false,
-  InventoryActionAck: false,
-  InventoryHandlerOffset: true,
-  InventoryModifyHandler: true,
-  InventoryTransaction: false,
-  InventoryTransactionFinish: false,
-  IslandWorkshopSupplyDemand: false,
-  ItemInfo: false,
-  ItemMarketBoardInfo: false,
-  Logout: false,
-  MarketBoardItemListing: false,
-  MarketBoardItemListingCount: false,
-  MarketBoardItemListingHistory: false,
-  MarketBoardPurchase: false,
-  MarketBoardPurchaseHandler: true,
-  MarketBoardRequestItemListingInfo: true,
-  MarketBoardSearchResult: false,
-  NpcSpawn: false,
-  NpcSpawn2: false,
-  NpcYell: false,
-  ObjectSpawn: false,
-  PlaceFieldMarker: false,
-  PlaceFieldMarkerPreset: false,
-  PlayerSetup: false,
-  PlayerSpawn: false,
-  PlayerStats: false,
-  Playtime: false,
-  PrepareZoning: false,
-  ResumeEventScene16: false,
-  ResumeEventScene32: false,
-  ResumeEventScene8: false,
-  RetainerInformation: false,
-  RSV: false,
-  SetSearchInfoHandler: true,
-  StatusEffectList: false,
-  StatusEffectList2: false,
-  StatusEffectList3: false,
-  SubmarineExplorationResult: false,
-  SubmarineProgressionStatus: false,
-  SubmarineStatusList: false,
-  SystemLogMessage: false,
-  UpdateClassInfo: false,
-  UpdateHpMpTp: false,
-  UpdateInventorySlot: false,
-  UpdatePositionHandler: true,
-  UpdatePositionInstance: true,
-  UpdateSearchInfo: false,
-  WardLandInfo: false,
-  WeatherChange: false,
-  WorldVisitQueue: false,
-  MapEffect4: false,
-  MapEffect8: false,
-  MapEffect12: false,
-  StatusEffectListForay3: false,
-  ActionRequest: true,
-  ActionRequestGroundTargeted: true,
-  ClientCountdownInitiate: true,
-  LogoutHandler: true,
-  ClientVersionInfo: true,
-  ReqCharCreate: true,
-  ReqCharDelete: true,
-  ReqCharList: true,
-  ReqEnterWorld: true,
 }

@@ -6,6 +6,7 @@ M.types = {
   [0x0002] = {
     [0] = {
       title = "LobbyError",
+      outgoing = false,
     },
   },
   [0x0003] = {
@@ -41,31 +42,37 @@ M.types = {
   [0x000c] = {
     [0] = {
       title = "LobbyServiceAccountList",
+      outgoing = false,
     },
   },
   [0x000d] = {
     [0] = {
       title = "LobbyCharList",
+      outgoing = false,
     },
   },
   [0x000e] = {
     [0] = {
       title = "LobbyCharCreate",
+      outgoing = false,
     },
   },
   [0x000f] = {
     [0] = {
       title = "LobbyEnterWorld",
+      outgoing = false,
     },
   },
   [0x0015] = {
     [0] = {
       title = "LobbyServerList",
+      outgoing = false,
     },
   },
   [0x0017] = {
     [0] = {
       title = "LobbyRetainerList",
+      outgoing = false,
     },
   },
   [0x0066] = {
@@ -127,11 +134,13 @@ M.types = {
   [0x009a] = {
     [0] = {
       title = "IslandWorkshopFavors",
+      outgoing = false,
     },
   },
   [0x009b] = {
     [0] = {
       title = "BalloonTalk8",
+      outgoing = false,
       name = "ffxiv_ipc_balloon_talk8",
       length = 72,
     },
@@ -139,11 +148,13 @@ M.types = {
   [0x00a1] = {
     [0] = {
       title = "RetainerSaleHistory",
+      outgoing = false,
     },
   },
   [0x00a7] = {
     [0] = {
       title = "SocialRequestResponse",
+      outgoing = false,
     },
   },
   [0x00a8] = {
@@ -157,6 +168,7 @@ M.types = {
   [0x00b0] = {
     [0] = {
       title = "EffectResultBasic4",
+      outgoing = false,
       name = "ffxiv_ipc_effect_result_basic4",
       length = 72,
     },
@@ -164,6 +176,7 @@ M.types = {
   [0x00b5] = {
     [0] = {
       title = "EffectResult4",
+      outgoing = false,
       name = "ffxiv_ipc_effect_result4",
       length = 360,
     },
@@ -171,6 +184,7 @@ M.types = {
   [0x00b9] = {
     [0] = {
       title = "GatheringLog",
+      outgoing = false,
       name = "ffxiv_ipc_gathering_log",
       length = 104,
     },
@@ -186,6 +200,7 @@ M.types = {
   [0x00c5] = {
     [0] = {
       title = "ContentFinderDutyInfo",
+      outgoing = false,
       name = "ffxiv_ipc_content_finder_duty_info",
       length = 8,
     },
@@ -193,6 +208,7 @@ M.types = {
   [0x00c7] = {
     [0] = {
       title = "EffectResultBasic32",
+      outgoing = false,
       name = "ffxiv_ipc_effect_result_basic32",
       length = 520,
     },
@@ -208,6 +224,7 @@ M.types = {
   [0x00d6] = {
     [0] = {
       title = "FirstAttack",
+      outgoing = false,
       name = "ffxiv_ipc_first_attack",
       length = 16,
     },
@@ -231,6 +248,7 @@ M.types = {
   [0x00e7] = {
     [0] = {
       title = "EffectResultBasic8",
+      outgoing = false,
       name = "ffxiv_ipc_effect_result_basic8",
       length = 136,
     },
@@ -270,6 +288,7 @@ M.types = {
   [0x00ff] = {
     [0] = {
       title = "ServerNoticeShort",
+      outgoing = false,
       name = "ffxiv_ipc_server_notice_short",
       length = 1,
     },
@@ -277,11 +296,13 @@ M.types = {
   [0x0101] = {
     [0] = {
       title = "GetBlacklistResult",
+      outgoing = false,
     },
   },
   [0x0102] = {
     [0] = {
       title = "RSF",
+      outgoing = false,
       name = "ffxiv_ipc_rsf",
       length = 72,
     },
@@ -289,11 +310,13 @@ M.types = {
   [0x010f] = {
     [0] = {
       title = "ModelEquip",
+      outgoing = false,
     },
   },
   [0x0110] = {
     [0] = {
       title = "FishCaught",
+      outgoing = false,
       name = "ffxiv_ipc_fish_caught",
       length = 16,
     },
@@ -301,6 +324,7 @@ M.types = {
   [0x0114] = {
     [0] = {
       title = "BattleTalk4",
+      outgoing = false,
       name = "ffxiv_ipc_battle_talk4",
       length = 48,
     },
@@ -308,6 +332,7 @@ M.types = {
   [0x0115] = {
     [0] = {
       title = "MapMarker2",
+      outgoing = false,
       name = "ffxiv_ipc_map_marker2",
       length = 30,
     },
@@ -323,6 +348,7 @@ M.types = {
   [0x011e] = {
     [0] = {
       title = "MarketBoardSale",
+      outgoing = false,
       name = "ffxiv_ipc_market_board_sale",
       length = 24,
     },
@@ -338,6 +364,7 @@ M.types = {
   [0x012d] = {
     [0] = {
       title = "DeleteObject",
+      outgoing = false,
       name = "ffxiv_ipc_delete_object",
       length = 1,
     },
@@ -369,6 +396,7 @@ M.types = {
   [0x013d] = {
     [0] = {
       title = "UpdateClassInfoEureka",
+      outgoing = false,
       name = "ffxiv_ipc_update_class_info_eureka",
       length = 20,
     },
@@ -376,6 +404,7 @@ M.types = {
   [0x0145] = {
     [0] = {
       title = "UpdateClassInfoOccult",
+      outgoing = false,
       name = "ffxiv_ipc_update_class_info_occult",
       length = 20,
     },
@@ -383,6 +412,7 @@ M.types = {
   [0x0148] = {
     [0] = {
       title = "EffectResult16",
+      outgoing = false,
       name = "ffxiv_ipc_effect_result16",
       length = 1416,
     },
@@ -390,6 +420,7 @@ M.types = {
   [0x014b] = {
     [0] = {
       title = "UpdateDutyRecastTimes5",
+      outgoing = false,
       name = "ffxiv_ipc_update_duty_recast_times5",
       length = 40,
     },
@@ -405,6 +436,7 @@ M.types = {
   [0x0152] = {
     [0] = {
       title = "Init",
+      outgoing = false,
       name = "ffxiv_ipc_init",
       length = 16,
     },
@@ -420,6 +452,7 @@ M.types = {
   [0x015e] = {
     [0] = {
       title = "EventPlay255",
+      outgoing = false,
       name = "ffxiv_ipc_event_play255",
       length = 1048,
     },
@@ -443,6 +476,7 @@ M.types = {
   [0x0165] = {
     [0] = {
       title = "MapMarker8",
+      outgoing = false,
       name = "ffxiv_ipc_map_marker8",
       length = 108,
     },
@@ -458,6 +492,7 @@ M.types = {
   [0x0178] = {
     [0] = {
       title = "MapMarker64",
+      outgoing = false,
       name = "ffxiv_ipc_map_marker64",
       length = 836,
     },
@@ -479,11 +514,13 @@ M.types = {
   [0x0191] = {
     [0] = {
       title = "UpdateParty",
+      outgoing = false,
     },
   },
   [0x0192] = {
     [0] = {
       title = "PlayerBlueMageActions",
+      outgoing = false,
       name = "ffxiv_ipc_player_blue_mage_actions",
       length = 96,
     },
@@ -515,6 +552,7 @@ M.types = {
   [0x01a1] = {
     [0] = {
       title = "MapMarker128",
+      outgoing = false,
       name = "ffxiv_ipc_map_marker128",
       length = 1668,
     },
@@ -530,6 +568,7 @@ M.types = {
   [0x01a9] = {
     [0] = {
       title = "SocialMessage",
+      outgoing = false,
     },
   },
   [0x01af] = {
@@ -565,6 +604,7 @@ M.types = {
   [0x01ba] = {
     [0] = {
       title = "ItemMarketBoardSummary",
+      outgoing = false,
       name = "ffxiv_ipc_item_market_board_summary",
       length = 8,
     },
@@ -588,6 +628,7 @@ M.types = {
   [0x01c0] = {
     [0] = {
       title = "EurekaStatusEffectList",
+      outgoing = false,
       name = "ffxiv_ipc_eureka_status_effect_list",
       length = 384,
     },
@@ -619,6 +660,7 @@ M.types = {
   [0x01d2] = {
     [0] = {
       title = "SystemLogMessage48",
+      outgoing = false,
       name = "ffxiv_ipc_system_log_message48",
       length = 48,
     },
@@ -650,6 +692,7 @@ M.types = {
   [0x01df] = {
     [0] = {
       title = "PlayerAddedToBlacklist",
+      outgoing = false,
     },
   },
   [0x01e1] = {
@@ -669,6 +712,7 @@ M.types = {
   [0x01ea] = {
     [0] = {
       title = "ChangeClass",
+      outgoing = false,
       name = "ffxiv_ipc_change_class",
       length = 8,
     },
@@ -692,11 +736,13 @@ M.types = {
   [0x01f4] = {
     [0] = {
       title = "UpdateAllianceNormal",
+      outgoing = false,
     },
   },
   [0x01f7] = {
     [0] = {
       title = "RecastGroup",
+      outgoing = false,
       name = "ffxiv_ipc_recast_group",
       length = 640,
     },
@@ -720,6 +766,7 @@ M.types = {
   [0x01fe] = {
     [0] = {
       title = "TitleList",
+      outgoing = false,
       name = "ffxiv_ipc_title_list",
       length = 116,
     },
@@ -727,6 +774,7 @@ M.types = {
   [0x0203] = {
     [0] = {
       title = "PlayerStateFlags",
+      outgoing = false,
       name = "ffxiv_ipc_player_state_flags",
       length = 16,
     },
@@ -780,6 +828,7 @@ M.types = {
   [0x022e] = {
     [0] = {
       title = "HaterList",
+      outgoing = false,
       name = "ffxiv_ipc_hater_list",
       length = 260,
     },
@@ -817,11 +866,13 @@ M.types = {
   [0x024e] = {
     [0] = {
       title = "UpdateAllianceSmallMemberPositions",
+      outgoing = false,
     },
   },
   [0x0250] = {
     [0] = {
       title = "ServerNotice",
+      outgoing = false,
       name = "ffxiv_ipc_server_notice",
       length = 1,
     },
@@ -829,6 +880,7 @@ M.types = {
   [0x0257] = {
     [0] = {
       title = "PlayerRetainerInfo",
+      outgoing = false,
     },
   },
   [0x025f] = {
@@ -842,11 +894,13 @@ M.types = {
   [0x0262] = {
     [0] = {
       title = "IslandWorkshopGranaryResult",
+      outgoing = false,
     },
   },
   [0x0264] = {
     [0] = {
       title = "MapMarker16",
+      outgoing = false,
       name = "ffxiv_ipc_map_marker16",
       length = 212,
     },
@@ -870,6 +924,7 @@ M.types = {
   [0x026a] = {
     [0] = {
       title = "CraftingLog",
+      outgoing = false,
       name = "ffxiv_ipc_crafting_log",
       length = 801,
     },
@@ -877,6 +932,7 @@ M.types = {
   [0x026b] = {
     [0] = {
       title = "SystemLogMessage144",
+      outgoing = false,
       name = "ffxiv_ipc_system_log_message144",
       length = 144,
     },
@@ -884,6 +940,7 @@ M.types = {
   [0x026c] = {
     [0] = {
       title = "SystemLogMessage80",
+      outgoing = false,
       name = "ffxiv_ipc_system_log_message80",
       length = 80,
     },
@@ -897,6 +954,7 @@ M.types = {
   [0x0294] = {
     [0] = {
       title = "EffectResultBasic16",
+      outgoing = false,
       name = "ffxiv_ipc_effect_result_basic16",
       length = 264,
     },
@@ -920,6 +978,7 @@ M.types = {
   [0x029f] = {
     [0] = {
       title = "HateList",
+      outgoing = false,
       name = "ffxiv_ipc_hate_list",
       length = 68,
     },
@@ -935,6 +994,7 @@ M.types = {
   [0x02a8] = {
     [0] = {
       title = "MapMarker4",
+      outgoing = false,
       name = "ffxiv_ipc_map_marker4",
       length = 56,
     },
@@ -950,6 +1010,7 @@ M.types = {
   [0x02b2] = {
     [0] = {
       title = "EffectResult8",
+      outgoing = false,
       name = "ffxiv_ipc_effect_result8",
       length = 712,
     },
@@ -957,6 +1018,7 @@ M.types = {
   [0x02b9] = {
     [0] = {
       title = "EffectResultBasic",
+      outgoing = false,
       name = "ffxiv_ipc_effect_result_basic",
       length = 24,
     },
@@ -964,6 +1026,7 @@ M.types = {
   [0x02bf] = {
     [0] = {
       title = "StatusEffectListPlayerDouble",
+      outgoing = false,
       name = "ffxiv_ipc_status_effect_list_player_double",
       length = 720,
     },
@@ -971,6 +1034,7 @@ M.types = {
   [0x02c2] = {
     [0] = {
       title = "SystemLogMessage32",
+      outgoing = false,
       name = "ffxiv_ipc_system_log_message32",
       length = 32,
     },
@@ -986,6 +1050,7 @@ M.types = {
   [0x02cd] = {
     [0] = {
       title = "PartyMessage",
+      outgoing = false,
     },
   },
   [0x02cf] = {
@@ -997,11 +1062,13 @@ M.types = {
   [0x02d4] = {
     [0] = {
       title = "CFCancel",
+      outgoing = false,
     },
   },
   [0x02d8] = {
     [0] = {
       title = "BattleTalk8",
+      outgoing = false,
       name = "ffxiv_ipc_battle_talk8",
       length = 64,
     },
@@ -1009,11 +1076,13 @@ M.types = {
   [0x02dc] = {
     [0] = {
       title = "GCAffiliation",
+      outgoing = false,
     },
   },
   [0x02df] = {
     [0] = {
       title = "MapMarker32",
+      outgoing = false,
       name = "ffxiv_ipc_map_marker32",
       length = 420,
     },
@@ -1029,6 +1098,7 @@ M.types = {
   [0x02e5] = {
     [0] = {
       title = "BalloonTalk2",
+      outgoing = false,
       name = "ffxiv_ipc_balloon_talk2",
       length = 48,
     },
@@ -1036,16 +1106,19 @@ M.types = {
   [0x02e6] = {
     [0] = {
       title = "PartyFinderList",
+      outgoing = false,
     },
   },
   [0x02ec] = {
     [0] = {
       title = "PlayerRemovedFromBlacklist",
+      outgoing = false,
     },
   },
   [0x02ed] = {
     [0] = {
       title = "LogMessage",
+      outgoing = false,
       name = "ffxiv_ipc_log_message",
       length = 48,
     },
@@ -1053,6 +1126,7 @@ M.types = {
   [0x02f3] = {
     [0] = {
       title = "SocialList",
+      outgoing = false,
     },
   },
   [0x02f4] = {
@@ -1090,6 +1164,7 @@ M.types = {
   [0x0312] = {
     [0] = {
       title = "RetainerSummary",
+      outgoing = false,
       name = "ffxiv_ipc_retainer_summary",
       length = 24,
     },
@@ -1143,6 +1218,7 @@ M.types = {
   [0x0331] = {
     [0] = {
       title = "BalloonTalk4",
+      outgoing = false,
       name = "ffxiv_ipc_balloon_talk4",
       length = 56,
     },
@@ -1158,6 +1234,7 @@ M.types = {
   [0x0345] = {
     [0] = {
       title = "UpdateClassInfoBozja",
+      outgoing = false,
       name = "ffxiv_ipc_update_class_info_bozja",
       length = 20,
     },
@@ -1165,6 +1242,7 @@ M.types = {
   [0x034b] = {
     [0] = {
       title = "EventPlay8",
+      outgoing = false,
       name = "ffxiv_ipc_event_play8",
       length = 64,
     },
@@ -1196,6 +1274,7 @@ M.types = {
   [0x0352] = {
     [0] = {
       title = "UpdateAllianceSmall",
+      outgoing = false,
     },
   },
   [0x0358] = {
@@ -1217,6 +1296,7 @@ M.types = {
   [0x0364] = {
     [0] = {
       title = "SetOnlineStatus",
+      outgoing = false,
       name = "ffxiv_ipc_set_online_status",
       length = 8,
     },
@@ -1224,11 +1304,13 @@ M.types = {
   [0x0369] = {
     [0] = {
       title = "ExamineFreeCompanyInfo",
+      outgoing = false,
     },
   },
   [0x036c] = {
     [0] = {
       title = "FashionReport",
+      outgoing = false,
     },
   },
   [0x037a] = {
@@ -1256,6 +1338,7 @@ M.types = {
   [0x0389] = {
     [0] = {
       title = "SocialMessage2",
+      outgoing = false,
     },
   },
   [0x038a] = {
@@ -1269,6 +1352,7 @@ M.types = {
   [0x038c] = {
     [0] = {
       title = "RetainerState",
+      outgoing = false,
       name = "ffxiv_ipc_retainer_state",
       length = 56,
     },
@@ -1284,11 +1368,13 @@ M.types = {
   [0x0395] = {
     [0] = {
       title = "UpdateAllianceNormalMemberPositions",
+      outgoing = false,
     },
   },
   [0x0396] = {
     [0] = {
       title = "EventPlay16",
+      outgoing = false,
       name = "ffxiv_ipc_event_play16",
       length = 96,
     },
@@ -1304,6 +1390,7 @@ M.types = {
   [0x03a2] = {
     [0] = {
       title = "EventPlay128",
+      outgoing = false,
       name = "ffxiv_ipc_event_play128",
       length = 544,
     },
@@ -1311,11 +1398,13 @@ M.types = {
   [0x03a6] = {
     [0] = {
       title = "CFRegistered",
+      outgoing = false,
     },
   },
   [0x03a8] = {
     [0] = {
       title = "UpdateDutyRecastTimes",
+      outgoing = false,
       name = "ffxiv_ipc_update_duty_recast_times",
       length = 16,
     },
@@ -1331,6 +1420,7 @@ M.types = {
   [0x03ad] = {
     [0] = {
       title = "IslandWorkshopDemandResearch",
+      outgoing = false,
     },
   },
   [0x03ae] = {
@@ -1360,6 +1450,7 @@ M.types = {
   [0x03d6] = {
     [0] = {
       title = "EffectResultBasic64",
+      outgoing = false,
       name = "ffxiv_ipc_effect_result_basic64",
       length = 1032,
     },
@@ -1367,6 +1458,7 @@ M.types = {
   [0x03d9] = {
     [0] = {
       title = "UpdatePartyMemberPositions",
+      outgoing = false,
     },
   },
   [0x03dc] = {
@@ -1388,6 +1480,7 @@ M.types = {
   [0x03e6] = {
     [0] = {
       title = "InitSearchInfo",
+      outgoing = false,
     },
   },
 }

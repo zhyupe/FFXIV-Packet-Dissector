@@ -1,0 +1,312 @@
+# IPC categories follow FFXIVOpcodes (without the Type suffix).
+# Packet keys are project names; values contain provider-specific aliases.
+ServerZoneIpc:
+  direction: server-to-client
+  packets:
+    ActorCast:
+      ACT: ActorCast
+    ActorControl:
+      ACT: ActorControl
+    ActorControlSelf:
+      ACT: ActorControlSelf
+    ActorControlTarget:
+      ACT: ActorControlTarget
+    ActorFreeSpawn:
+      FFXIVOpcodes: DespawnCharacter
+    ActorGauge:
+      ACT: ActorGauge
+    ActorMove:
+      ACT: ActorMove
+      OverlayPlugin: ActorMove
+    ActorSetPos:
+      ACT: ActorSetPos
+      OverlayPlugin: ActorSetPos
+    AirshipExplorationResult: {}
+    AirshipStatus: {}
+    AirshipStatusList: {}
+    AoeEffect16:
+      ACT: Ability16
+    AoeEffect24:
+      ACT: Ability24
+    AoeEffect32:
+      ACT: Ability32
+    AoeEffect8:
+      ACT: Ability8
+    BalloonTalk2: {}
+    BalloonTalk4: {}
+    BalloonTalk8: {}
+    BattleTalk2:
+      OverlayPlugin: BattleTalk2
+    BattleTalk4: {}
+    BattleTalk8: {}
+    BossStatusEffectList:
+      FFXIVOpcodes: StatusEffectListDouble
+      ACT: BossStatusEffectList
+    CEDirector:
+      OverlayPlugin: CEDirector
+    CFCancel: {}
+    CFPreferredRole: {}
+    CFRegistered: {}
+    ChangeClass:
+      FFXIVOpcodes: PlayerClassInfo
+    CompanyAirshipStatus:
+      FFXIVOpcodes: AirshipTimers
+    CompanySubmersibleStatus:
+      FFXIVOpcodes: SubmarineTimers
+    ContainerInfo: {}
+    ContentFinderDutyInfo:
+      FFXIVOpcodes: CFDutyInfo
+    ContentFinderNotifyPop:
+      FFXIVOpcodes: CFNotify
+    CountdownCancel:
+      OverlayPlugin: CountdownCancel
+    CountdownInitiate:
+      FFXIVOpcodes: Countdown
+      OverlayPlugin: Countdown
+    CraftingLog: {}
+    CraftStatus: {}
+    CurrencyCrystalInfo: {}
+    DeleteObject:
+      FFXIVOpcodes: ObjectDespawn
+    Effect:
+      ACT: Ability1
+    EffectResult:
+      ACT: EffectResult
+    EffectResult16: {}
+    EffectResult4: {}
+    EffectResult8: {}
+    EffectResultBasic:
+      ACT: EffectResultBasic
+    EffectResultBasic16: {}
+    EffectResultBasic32: {}
+    EffectResultBasic4: {}
+    EffectResultBasic64: {}
+    EffectResultBasic8: {}
+    EnvironmentControl:
+      OverlayPlugin: MapEffect
+    EurekaStatusEffectList:
+      FFXIVOpcodes: StatusEffectListEureka
+    EventFinish: {}
+    EventPlay: {}
+    EventPlay128: {}
+    EventPlay16: {}
+    EventPlay255: {}
+    EventPlay32: {}
+    EventPlay4: {}
+    EventPlay64: {}
+    EventPlay8: {}
+    EventStart: {}
+    Examine: {}
+    ExamineFreeCompanyInfo: {}
+    ExamineSearchInfo: {}
+    FashionReport: {}
+    FateInfo: {}
+    FirstAttack: {}
+    FishCaught: {}
+    FreeCompanyDialog: {}
+    FreeCompanyInfo: {}
+    GatheringLog: {}
+    GCAffiliation: {}
+    GetBlacklistResult:
+      FFXIVOpcodes: BlackList
+    GroupMessage: {}
+    HateList:
+      FFXIVOpcodes: UpdateHate
+    HaterList:
+      FFXIVOpcodes: UpdateHater
+    HousingInfo: {}
+    Init: {}
+    InitSearchInfo: {}
+    InitZone: {}
+    InventoryActionAck: {}
+    InventoryTransaction: {}
+    InventoryTransactionFinish: {}
+    IslandWorkshopDemandResearch: {}
+    IslandWorkshopFavors: {}
+    IslandWorkshopGranaryResult: {}
+    IslandWorkshopSupplyDemand: {}
+    ItemInfo: {}
+    ItemMarketBoardInfo: {}
+    ItemMarketBoardSummary: {}
+    LogMessage: {}
+    Logout: {}
+    MapEffect12:
+      FFXIVOpcodes: EnvironmentControl12
+      OverlayPlugin: MapEffect12
+    MapEffect4:
+      FFXIVOpcodes: EnvironmentControl4
+      OverlayPlugin: MapEffect4
+    MapEffect8:
+      FFXIVOpcodes: EnvironmentControl8
+      OverlayPlugin: MapEffect8
+    MapMarker128:
+      FFXIVOpcodes: MapUpdate128
+    MapMarker16:
+      FFXIVOpcodes: MapUpdate16
+    MapMarker2:
+      FFXIVOpcodes: MapUpdate
+    MapMarker32:
+      FFXIVOpcodes: MapUpdate32
+    MapMarker4:
+      FFXIVOpcodes: MapUpdate4
+    MapMarker64:
+      FFXIVOpcodes: MapUpdate64
+    MapMarker8:
+      FFXIVOpcodes: MapUpdate8
+    MarketBoardItemListing: {}
+    MarketBoardItemListingCount: {}
+    MarketBoardItemListingHistory: {}
+    MarketBoardPurchase: {}
+    MarketBoardSale: {}
+    MarketBoardSearchResult: {}
+    ModelEquip: {}
+    NpcSpawn:
+      ACT: NpcSpawn
+    NpcSpawn2:
+      FFXIVOpcodes: BossSpawn
+      ACT: NpcSpawn2
+    NpcYell:
+      OverlayPlugin: NpcYell
+    ObjectSpawn: {}
+    PartyFinderList: {}
+    PartyMessage: {}
+    PlaceFieldMarker:
+      ACT: Waymark
+    PlaceFieldMarkerPreset:
+      ACT: PresetWaymark
+    PlayerAddedToBlacklist: {}
+    PlayerBlueMageActions: {}
+    PlayerRemovedFromBlacklist: {}
+    PlayerRetainerInfo: {}
+    PlayerSetup: {}
+    PlayerSpawn:
+      ACT: PlayerSpawn
+    PlayerStateFlags: {}
+    PlayerStats: {}
+    Playtime: {}
+    PrepareZoning: {}
+    PublicMessage: {}
+    RecastGroup:
+      FFXIVOpcodes: UpdateRecastTimes
+    ResumeEventScene16:
+      FFXIVOpcodes: DesynthResult
+    ResumeEventScene32:
+      FFXIVOpcodes: MiniCactpotInit
+    ResumeEventScene8:
+      FFXIVOpcodes: ResultDialog
+    RetainerInformation: {}
+    RetainerSaleHistory: {}
+    RetainerState: {}
+    RetainerSummary: {}
+    RSF:
+      FFXIVOpcodes: RSFData
+    RSV:
+      FFXIVOpcodes: RSVData
+      OverlayPlugin: RSVData
+    ServerNotice: {}
+    ServerNoticeShort: {}
+    SetOnlineStatus: {}
+    SocialList: {}
+    SocialMessage: {}
+    SocialMessage2: {}
+    SocialRequestResponse: {}
+    StatusEffectList:
+      ACT: StatusEffectList
+    StatusEffectList2:
+      FFXIVOpcodes: StatusEffectListBozja
+      ACT: StatusEffectList2
+    StatusEffectList3:
+      FFXIVOpcodes: StatusEffectListPlayer
+      ACT: StatusEffectList3
+    StatusEffectListForay3:
+      FFXIVOpcodes: StatusEffectListOccult
+      ACT: StatusEffectListForay3
+    StatusEffectListPlayerDouble: {}
+    SubmarineExplorationResult: {}
+    SubmarineProgressionStatus: {}
+    SubmarineStatusList: {}
+    SystemLogMessage:
+      ACT: SystemLogMessage
+    SystemLogMessage144:
+      FFXIVOpcodes: SystemLogMessage16
+    SystemLogMessage32:
+      FFXIVOpcodes: SystemLogMessage2
+    SystemLogMessage48:
+      FFXIVOpcodes: SystemLogMessage4
+    SystemLogMessage80:
+      FFXIVOpcodes: SystemLogMessage8
+    TitleList:
+      FFXIVOpcodes: PlayerTitleList
+    TripleTriadGameData: {}
+    TripleTriadGameDesc: {}
+    TripleTriadPlaceCardRecv: {}
+    UpdateAllianceNormal: {}
+    UpdateAllianceNormalMemberPositions: {}
+    UpdateAllianceSmall: {}
+    UpdateAllianceSmallMemberPositions: {}
+    UpdateClassInfo: {}
+    UpdateClassInfoBozja: {}
+    UpdateClassInfoEureka: {}
+    UpdateClassInfoOccult: {}
+    UpdateDutyRecastTimes: {}
+    UpdateDutyRecastTimes5: {}
+    UpdateHpMpTp:
+      ACT: UpdateHpMpTp
+    UpdateInventorySlot: {}
+    UpdateParty: {}
+    UpdatePartyMemberPositions: {}
+    UpdateSearchInfo: {}
+    WardLandInfo:
+      FFXIVOpcodes: HousingWardInfo
+    WeatherChange: {}
+    WorldVisitQueue: {}
+
+ClientZoneIpc:
+  direction: client-to-server
+  packets:
+    ActionRequest: {}
+    ActionRequestGroundTargeted: {}
+    ActionSend: {}
+    ChatHandler: {}
+    ClientCountdownInitiate: {}
+    ClientTrigger: {}
+    EventAction: {}
+    InventoryHandlerOffset: {}
+    InventoryModifyHandler: {}
+    LogoutHandler: {}
+    MarketBoardPurchaseHandler: {}
+    MarketBoardQueryItemCount: {}
+    MarketBoardRequestItemListingInfo: {}
+    SetSearchInfoHandler: {}
+    TripleTriadPlaceCardSend: {}
+    TripleTriadSelectDeck: {}
+    UpdatePositionHandler: {}
+    UpdatePositionInstance: {}
+
+ServerLobbyIpc:
+  direction: server-to-client
+  packets:
+    LobbyCharCreate: {}
+    LobbyCharList: {}
+    LobbyEnterWorld: {}
+    LobbyError: {}
+    LobbyRetainerList: {}
+    LobbyServerList: {}
+    LobbyServiceAccountList: {}
+
+ClientLobbyIpc:
+  direction: client-to-server
+  packets:
+    ClientVersionInfo: {}
+    ReqCharCreate: {}
+    ReqCharDelete: {}
+    ReqCharList: {}
+    ReqEnterWorld: {}
+
+ServerChatIpc:
+  direction: server-to-client
+  packets: {}
+
+ClientChatIpc:
+  direction: client-to-server
+  packets: {}

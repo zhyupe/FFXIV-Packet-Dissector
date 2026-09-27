@@ -82,6 +82,9 @@ importers:
       tsx:
         specifier: ^4.19.3
         version: 4.22.4
+      yaml:
+        specifier: ^2.9.1
+        version: 2.9.1
     devDependencies:
       '@tsconfig/node20':
         specifier: 'catalog:'
@@ -997,6 +1000,11 @@ packages:
     resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==}
     engines: {node: '>=18'}
 
+  yaml@2.9.1:
+    resolution: {integrity: sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
 snapshots:
 
   '@babel/generator@8.0.0-rc.6':
@@ -1666,3 +1674,5 @@ snapshots:
       isexe: 4.0.0
 
   yallist@5.0.0: {}
+
+  yaml@2.9.1: {}

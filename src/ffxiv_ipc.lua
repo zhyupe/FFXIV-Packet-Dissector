@@ -45,6 +45,10 @@ local dissectIPC
 local data = Dissector.get("data")
 
 function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
+    if tvbuf:len() < FFXIV_IPC_HDR_LEN then
+        data:call(tvbuf, pktinfo, root)
+        return tvbuf:len()
+    end
     local tree = root:add(ffxiv_ipc, tvbuf)
     local direction_mark = getDirectionMark(pktinfo)
 
@@ -99,7 +103,7 @@ function ffxiv_ipc.dissector(tvbuf, pktinfo, root)
 
     local tvb = data_tvbr:tvb()
 
-    local dissector, title = ipc_type.getDissector(type_val, tvb:len())
+    local dissector, title = ipc_type.getDissector(type_val, tvb:len(), direction_mark)
     if title ~= nil then
         tree:add(ipc_hdr_fields.title, title)
         tree:append_text(", " .. title)

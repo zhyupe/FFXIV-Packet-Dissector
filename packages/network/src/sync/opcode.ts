@@ -7,7 +7,11 @@ import {
   writeFileSync,
 } from 'node:fs'
 import { join } from 'node:path'
-import { normalizeOpcodeTable, packetDirections } from './packet-names'
+import {
+  loadPackets,
+  normalizeOpcodeTable,
+  type PacketCatalog,
+} from './packet-names'
 import { codePath, formatCode, readCode, writeCode } from './utils'
 
 const urls = {
@@ -48,12 +52,15 @@ function generateOpcodeFile(
   version: string,
   table: Record<string, string>,
   opcodeTypes: string[],
+  catalog: PacketCatalog,
 ) {
   const opcodes: Record<
     string,
     Array<{ type: string; size?: number; outgoing?: boolean }>
   > = {}
-  for (const [name, _opcode] of Object.entries(normalizeOpcodeTable(table))) {
+  for (const [name, _opcode] of Object.entries(
+    normalizeOpcodeTable(table, catalog.aliases),
+  )) {
     if (!name || !_opcode) {
       console.log(`Invalid row: ${version}, ${name}, ${_opcode}`)
       continue
@@ -70,7 +77,9 @@ function generateOpcodeFile(
 
     opcodes[opcode].push({
       type: name,
-      outgoing: packetDirections[name],
+      outgoing: catalog.packets.has(name)
+        ? catalog.packets.get(name)?.direction === 'client-to-server'
+        : undefined,
     })
   }
 
@@ -155,8 +164,9 @@ ${opcodes.map((item) => `  ${item} = '${item}',`).join('\n')}
 `
 }
 
-export async function syncOpcodes() {
+export async function syncOpcodes(packetsFile?: string) {
   mkdirSync(cacheDir, { recursive: true })
+  const catalog = await loadPackets({ file: packetsFile })
 
   const cnVersions: string[] = await request(
     urls.opcodeVersions,
@@ -172,7 +182,9 @@ export async function syncOpcodes() {
     `opcode-${latestVersion}`,
   )
 
-  const opcodeTypeSet = new Set(Object.keys(normalizeOpcodeTable(latestTable)))
+  const opcodeTypeSet = new Set(
+    Object.keys(normalizeOpcodeTable(latestTable, catalog.aliases)),
+  )
   try {
     const existed = readCode('opcode/normalized-opcode.enum.ts')
     const matches = existed.matchAll(/(\w+) = ['"](\w+)['"]/g)
@@ -198,7 +210,10 @@ export async function syncOpcodes() {
     }
 
     const table = await request(urls.opcodeJson(version), `opcode-${version}`)
-    writeCode(codeFile, generateOpcodeFile('CN', version, table, opcodeTypes))
+    writeCode(
+      codeFile,
+      generateOpcodeFile('CN', version, table, opcodeTypes, catalog),
+    )
   }
 
   writeCode(`opcode/index.ts`, generateIndexFile())
