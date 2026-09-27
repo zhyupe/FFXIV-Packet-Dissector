@@ -112,6 +112,16 @@ export abstract class Struct {
       }
     }
 
+    const divisor = config.format?.divisor
+    if (divisor !== undefined) {
+      const divide = (raw: unknown) => {
+        if (typeof raw !== 'number') {
+          throw new TypeError('Field divisor requires numeric values')
+        }
+        return raw / divisor
+      }
+      return Array.isArray(value) ? value.map(divide) : divide(value)
+    }
     return value
   }
 

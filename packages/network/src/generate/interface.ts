@@ -21,6 +21,8 @@ export interface IPCEnum {
 }
 
 export interface IPCFieldFormat {
+  /** Divides numeric wire values when reading and displaying fixed-point fields. */
+  divisor?: number
   /**
    * Overrides field label
    */

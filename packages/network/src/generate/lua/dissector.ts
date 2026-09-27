@@ -33,7 +33,8 @@ const typeDefaults: Record<string, Partial<IPCFieldFormat>> = {
   },
 }
 
-const protoFieldType = ({ type, length }: IPCField) => {
+const protoFieldType = ({ type, length, format }: IPCField) => {
+  if (format?.divisor !== undefined) return 'double'
   if (type === 'uint') {
     return `uint${(length ?? 4) * 8}`
   }
@@ -424,6 +425,7 @@ class DissectorFile {
     const { format = {} } = item
 
     let indent = '  '
+    const division = format.divisor === undefined ? '' : ` / ${format.divisor}`
     let prefix = `${indent}-- dissect the ${fieldKey} field\n`
     let suffix = ''
 
@@ -447,7 +449,7 @@ ${indent}local ${fieldKey}_count = ${item.count}
 
 ${indent}while ${fieldKey}_pos + ${fieldKey}_len <= len do
 ${indent}  local ${fieldKey}_tvbr = tvbuf:range(${fieldKey}_pos, ${fieldKey}_len)
-${indent}  local ${fieldKey}_val  = ${fieldKey}_tvbr:${valueMethod}
+${indent}  local ${fieldKey}_val  = ${fieldKey}_tvbr:${valueMethod}${division}
 ${indent}  tree:${addMethod}(${this.snakeName}_fields.${fieldKey}, ${fieldKey}_tvbr, ${fieldKey}_val)${
         format.append ? this.#renderAppend(item, `${indent}  `) : ''
       }
@@ -462,7 +464,7 @@ ${indent}end`
     }
 
     let content = `${indent}local ${fieldKey}_tvbr = tvbuf:range(${item.offset}${item.length ? `, ${item.length}` : ''})
-${indent}local ${fieldKey}_val  = ${fieldKey}_tvbr:${format.tvb_method || tvbMethod(item)}`
+${indent}local ${fieldKey}_val  = ${fieldKey}_tvbr:${format.tvb_method || tvbMethod(item)}${division}`
 
     let labelKeyVar: string | null = null
     let labelValVar: string | null = null

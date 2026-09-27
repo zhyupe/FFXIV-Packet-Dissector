@@ -122,6 +122,20 @@ assert(registry.getDissector(0x0131, 95, 'S') == nil)
 assert(registry.getDissector(0xFFFF, 1024, 'S') == nil)
 assert(select(2, registry.getDissector(0x0351, 288, 'S')) == 'EventPlay64')
 
+-- Synthetic fixed-point values; no captured payloads or player identifiers.
+local jobs = { 'carpenter', 'blacksmith', 'armorer', 'goldsmith', 'leatherworker', 'weaver', 'alchemist', 'culinarian' }
+local levels, rawLevels = {}, { 0, 1, 100, 101, 12345, 23456, 34567, 0xffffffff }
+for index, value in ipairs(rawLevels) do levels[index] = string.pack('<I4', value) end
+parse('ffxiv_ipc_desynthesis_levels', table.concat(levels))
+for index, job in ipairs(jobs) do
+  local key = 'ffxiv_ipc_desynthesis_levels.' .. job
+  assert(field(key) == rawLevels[index] / 100)
+  assert(fieldDefinitions[key].kind == 'double', 'fixed-point levels must retain fractions')
+end
+assert(select(2, registry.getDissector(0x025D, 32, 'S')) == 'DesynthesisLevels')
+assert(registry.getDissector(0x025D, 31, 'S') == nil)
+assert(registry.getDissector(0x025D, 32, 'C') == nil)
+
 -- If multiple known prefixes fit, selection must be stable and choose the longest.
 local resolve = require('ffxiv_ipc_resolver').getDissector
 local choices = {

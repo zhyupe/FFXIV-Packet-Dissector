@@ -49,6 +49,7 @@ import { ContentFinderTriggerRouttle } from './content-finder-trigger-routtle'
 import { CountdownCancel, CountdownInitiate } from './countdown'
 import { CraftStatus } from './craft-status'
 import { CurrencyCrystalInfo } from './currency-crystal-info'
+import { DesynthesisLevels } from './desynthesis-levels'
 import { Effect } from './effect'
 import {
   AddStatusEffectItem,
@@ -278,6 +279,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.CraftingLog]: CraftingLog,
   [NormalizedOpcode.CurrencyCrystalInfo]: CurrencyCrystalInfo,
   [NormalizedOpcode.DeleteObject]: DeleteObject,
+  [NormalizedOpcode.DesynthesisLevels]: DesynthesisLevels,
   [NormalizedOpcode.Effect]: Effect,
   [NormalizedOpcode.EffectResult]: EffectResult,
   [NormalizedOpcode.EffectResult16]: EffectResult16,
@@ -470,6 +472,7 @@ export {
   CraftStatus,
   CurrencyCrystalInfo,
   DeleteObject,
+  DesynthesisLevels,
   Effect,
   EffectResult,
   EffectResult4,

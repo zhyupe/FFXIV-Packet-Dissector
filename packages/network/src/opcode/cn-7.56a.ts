@@ -139,6 +139,7 @@ export const CN_7_56a: OpcodeMap = {
   ],
   0x0250: [{ type: NormalizedOpcode.ServerNotice, outgoing: false }],
   0x0257: [{ type: NormalizedOpcode.PlayerRetainerInfo, outgoing: false }],
+  0x025d: [{ type: NormalizedOpcode.DesynthesisLevels, outgoing: false }],
   0x025f: [{ type: NormalizedOpcode.ActorControl, outgoing: false }],
   0x0262: [
     { type: NormalizedOpcode.IslandWorkshopGranaryResult, outgoing: false },

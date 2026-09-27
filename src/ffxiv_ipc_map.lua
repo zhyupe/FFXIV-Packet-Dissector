@@ -177,6 +177,10 @@ local M = {
     name = "ffxiv_ipc_delete_object",
     length = 1,
   },
+  DesynthesisLevels = {
+    name = "ffxiv_ipc_desynthesis_levels",
+    length = 32,
+  },
   Effect = {
     name = "ffxiv_ipc_effect",
     length = 120,

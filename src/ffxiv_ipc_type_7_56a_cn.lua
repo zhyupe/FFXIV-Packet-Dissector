@@ -703,6 +703,12 @@ M.types = {
       outgoing = false,
     },
   },
+  [0x025d] = {
+    [0] = {
+      type = "DesynthesisLevels",
+      outgoing = false,
+    },
+  },
   [0x025f] = {
     [0] = {
       type = "ActorControl",

@@ -42,6 +42,7 @@
   "CraftingLog": "0x026A",
   "CurrencyCrystalInfo": "0x01A6",
   "DeleteObject": "0x012D",
+  "DesynthesisLevels": "0x025D",
   "Effect": "0x0313",
   "EffectResult": "0x0131",
   "EffectResult16": "0x0148",

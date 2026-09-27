@@ -44,6 +44,7 @@ export enum NormalizedOpcode {
   CraftingLog = 'CraftingLog',
   CurrencyCrystalInfo = 'CurrencyCrystalInfo',
   DeleteObject = 'DeleteObject',
+  DesynthesisLevels = 'DesynthesisLevels',
   Effect = 'Effect',
   EffectResult = 'EffectResult',
   EffectResult16 = 'EffectResult16',

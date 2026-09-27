@@ -68,6 +68,7 @@ ServerZoneIpc:
     CurrencyCrystalInfo: {}
     DeleteObject:
       FFXIVOpcodes: ObjectDespawn
+    DesynthesisLevels: {}
     Effect:
       ACT: Ability1
     EffectResult:

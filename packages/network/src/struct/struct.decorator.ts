@@ -79,6 +79,12 @@ export function field(
 }
 
 export function format(format: IPCFieldFormat): PropertyDecorator {
+  if (
+    format.divisor !== undefined &&
+    (!Number.isFinite(format.divisor) || format.divisor <= 0)
+  ) {
+    throw new RangeError('Field divisor must be a positive finite number')
+  }
   return setField((_, prev) => ({ ...prev, format }))
 }
 
