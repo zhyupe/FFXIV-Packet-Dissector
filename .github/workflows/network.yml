@@ -1,6 +1,10 @@
 name: Sync and generate network
 
 on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
 permissions:
