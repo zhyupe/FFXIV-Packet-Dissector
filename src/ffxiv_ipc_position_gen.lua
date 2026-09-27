@@ -13,6 +13,10 @@ ffxiv_ipc_position.fields = position_fields
 function ffxiv_ipc_position.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_position, tvbuf)
   local len = tvbuf:len()
+  if len < 12 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated Position payload")
+    return len
+  end
 
   -- dissect the x field
   local x_tvbr = tvbuf:range(0, 4)

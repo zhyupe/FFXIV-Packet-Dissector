@@ -47,6 +47,10 @@ ffxiv_ipc_player_setup.fields = player_setup_fields
 function ffxiv_ipc_player_setup.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_player_setup, tvbuf)
   local len = tvbuf:len()
+  if len < 1938 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated PlayerSetup payload")
+    return len
+  end
 
   -- dissect the content_id field
   local content_id_tvbr = tvbuf:range(0, 8)
@@ -222,7 +226,7 @@ function ffxiv_ipc_player_setup.dissector(tvbuf, pktinfo, root)
 
   -- dissect the companion_name field
   local companion_name_tvbr = tvbuf:range(538, 21)
-  local companion_name_val  = companion_name_tvbr:string(ENC_UTF_8)
+  local companion_name_val  = companion_name_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(player_setup_fields.companion_name, companion_name_tvbr, companion_name_val)
 
   -- dissect the companion_def_rank field
@@ -242,7 +246,7 @@ function ffxiv_ipc_player_setup.dissector(tvbuf, pktinfo, root)
 
   -- dissect the nickname field
   local nickname_tvbr = tvbuf:range(584, 32)
-  local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
+  local nickname_val  = nickname_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(player_setup_fields.nickname, nickname_tvbr, nickname_val)
 
   -- dissect the sightseeing_log field

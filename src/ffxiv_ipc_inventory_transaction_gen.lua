@@ -22,6 +22,10 @@ ffxiv_ipc_inventory_transaction.fields = inventory_transaction_fields
 function ffxiv_ipc_inventory_transaction.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_inventory_transaction, tvbuf)
   local len = tvbuf:len()
+  if len < 36 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated InventoryTransaction payload")
+    return len
+  end
 
   -- dissect the sequence field
   local sequence_tvbr = tvbuf:range(0, 4)

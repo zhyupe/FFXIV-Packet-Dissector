@@ -12,6 +12,10 @@ ffxiv_ipc_aoe_effect8.fields = aoe_effect8_fields
 function ffxiv_ipc_aoe_effect8.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_aoe_effect8, tvbuf)
   local len = tvbuf:len()
+  if len < 632 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated AoeEffect8 payload")
+    return len
+  end
 
   -- dissect header
   local header_dissector = Dissector.get('ffxiv_ipc_effect_header')

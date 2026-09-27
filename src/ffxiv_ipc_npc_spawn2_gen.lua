@@ -57,6 +57,10 @@ ffxiv_ipc_npc_spawn2.fields = npc_spawn2_fields
 function ffxiv_ipc_npc_spawn2.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_npc_spawn2, tvbuf)
   local len = tvbuf:len()
+  if len < 624 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated NpcSpawn2 payload")
+    return len
+  end
 
   -- dissect the title field
   local title_tvbr = tvbuf:range(0, 2)
@@ -323,7 +327,7 @@ function ffxiv_ipc_npc_spawn2.dissector(tvbuf, pktinfo, root)
 
   -- dissect the nickname field
   local nickname_tvbr = tvbuf:range(578, 32)
-  local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
+  local nickname_val  = nickname_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(npc_spawn2_fields.nickname, nickname_tvbr, nickname_val)
 
   local nickname_display = ", nickname: " .. nickname_val
@@ -337,7 +341,7 @@ function ffxiv_ipc_npc_spawn2.dissector(tvbuf, pktinfo, root)
 
   -- dissect the fc_tag field
   local fc_tag_tvbr = tvbuf:range(614, 10)
-  local fc_tag_val  = fc_tag_tvbr:string(ENC_UTF_8)
+  local fc_tag_val  = fc_tag_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(npc_spawn2_fields.fc_tag, fc_tag_tvbr, fc_tag_val)
 
   return len

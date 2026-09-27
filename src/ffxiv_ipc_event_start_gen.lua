@@ -12,6 +12,10 @@ ffxiv_ipc_event_start.fields = event_start_fields
 function ffxiv_ipc_event_start.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_event_start, tvbuf)
   local len = tvbuf:len()
+  if len < 12 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated EventStart payload")
+    return len
+  end
 
   -- dissect the actor_id field
   local actor_id_tvbr = tvbuf:range(0, 8)

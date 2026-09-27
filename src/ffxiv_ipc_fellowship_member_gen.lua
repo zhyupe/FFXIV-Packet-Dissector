@@ -17,6 +17,10 @@ ffxiv_ipc_fellowship_member.fields = fellowship_member_fields
 function ffxiv_ipc_fellowship_member.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_member, tvbuf)
   local len = tvbuf:len()
+  if len < 480 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated FellowshipMember payload")
+    return len
+  end
 
   -- dissect the id field
   local id_tvbr = tvbuf:range(0, 8)

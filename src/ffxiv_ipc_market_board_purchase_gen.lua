@@ -14,6 +14,10 @@ ffxiv_ipc_market_board_purchase.fields = market_board_purchase_fields
 function ffxiv_ipc_market_board_purchase.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_market_board_purchase, tvbuf)
   local len = tvbuf:len()
+  if len < 12 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated MarketBoardPurchase payload")
+    return len
+  end
 
   -- dissect the item_id field
   local item_id_tvbr = tvbuf:range(0, 4)

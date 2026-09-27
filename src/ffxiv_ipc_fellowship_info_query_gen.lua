@@ -15,6 +15,10 @@ ffxiv_ipc_fellowship_info_query.fields = fellowship_info_query_fields
 function ffxiv_ipc_fellowship_info_query.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_info_query, tvbuf)
   local len = tvbuf:len()
+  if len < 24 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated FellowshipInfoQuery payload")
+    return len
+  end
 
   -- dissect the id field
   local id_tvbr = tvbuf:range(0, 8)

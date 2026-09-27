@@ -13,6 +13,10 @@ ffxiv_ipc_market_board_item_listing_history.fields = market_board_item_listing_h
 function ffxiv_ipc_market_board_item_listing_history.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_market_board_item_listing_history, tvbuf)
   local len = tvbuf:len()
+  if len < 964 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated MarketBoardItemListingHistory payload")
+    return len
+  end
 
   -- dissect the item_catalog_id field
   local item_catalog_id_tvbr = tvbuf:range(0, 4)

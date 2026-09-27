@@ -12,6 +12,10 @@ ffxiv_ipc_airship_exploration_result.fields = airship_exploration_result_fields
 function ffxiv_ipc_airship_exploration_result.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_airship_exploration_result, tvbuf)
   local len = tvbuf:len()
+  if len < 284 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated AirshipExplorationResult payload")
+    return len
+  end
 
   -- dissect the rating field
   local rating_tvbr = tvbuf:range(0, 2)

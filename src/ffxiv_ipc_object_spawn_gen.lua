@@ -30,6 +30,10 @@ ffxiv_ipc_object_spawn.fields = object_spawn_fields
 function ffxiv_ipc_object_spawn.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_object_spawn, tvbuf)
   local len = tvbuf:len()
+  if len < 64 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ObjectSpawn payload")
+    return len
+  end
 
   -- dissect the spawn_index field
   local spawn_index_tvbr = tvbuf:range(0, 1)

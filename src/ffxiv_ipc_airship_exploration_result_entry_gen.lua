@@ -34,6 +34,10 @@ ffxiv_ipc_airship_exploration_result_entry.fields = airship_exploration_result_e
 function ffxiv_ipc_airship_exploration_result_entry.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_airship_exploration_result_entry, tvbuf)
   local len = tvbuf:len()
+  if len < 56 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated AirshipExplorationResultEntry payload")
+    return len
+  end
 
   -- dissect the exp field
   local exp_tvbr = tvbuf:range(0, 4)

@@ -24,6 +24,10 @@ ffxiv_ipc_free_company_dialog.fields = free_company_dialog_fields
 function ffxiv_ipc_free_company_dialog.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_free_company_dialog, tvbuf)
   local len = tvbuf:len()
+  if len < 79 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated FreeCompanyDialog payload")
+    return len
+  end
 
   -- dissect the free_company_id field
   local free_company_id_tvbr = tvbuf:range(0, 8)
@@ -77,7 +81,7 @@ function ffxiv_ipc_free_company_dialog.dissector(tvbuf, pktinfo, root)
 
   -- dissect the fc_name field
   local fc_name_tvbr = tvbuf:range(50, 21)
-  local fc_name_val  = fc_name_tvbr:string(ENC_UTF_8)
+  local fc_name_val  = fc_name_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(free_company_dialog_fields.fc_name, fc_name_tvbr, fc_name_val)
 
   local fc_name_display = ", fcName: " .. fc_name_val
@@ -91,7 +95,7 @@ function ffxiv_ipc_free_company_dialog.dissector(tvbuf, pktinfo, root)
 
   -- dissect the fc_tag field
   local fc_tag_tvbr = tvbuf:range(72, 6)
-  local fc_tag_val  = fc_tag_tvbr:string(ENC_UTF_8)
+  local fc_tag_val  = fc_tag_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(free_company_dialog_fields.fc_tag, fc_tag_tvbr, fc_tag_val)
 
   local fc_tag_display = ", fcTag: " .. fc_tag_val

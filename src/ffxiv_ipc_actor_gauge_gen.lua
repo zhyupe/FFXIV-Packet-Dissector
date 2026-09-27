@@ -14,6 +14,10 @@ ffxiv_ipc_actor_gauge.fields = actor_gauge_fields
 function ffxiv_ipc_actor_gauge.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_gauge, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ActorGauge payload")
+    return len
+  end
 
   -- dissect the param1 field
   local param1_tvbr = tvbuf:range(0, 4)

@@ -14,6 +14,10 @@ ffxiv_ipc_content_finder_duty_info.fields = content_finder_duty_info_fields
 function ffxiv_ipc_content_finder_duty_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_duty_info, tvbuf)
   local len = tvbuf:len()
+  if len < 8 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ContentFinderDutyInfo payload")
+    return len
+  end
 
   -- dissect the penalty_time field
   local penalty_time_tvbr = tvbuf:range(0, 1)

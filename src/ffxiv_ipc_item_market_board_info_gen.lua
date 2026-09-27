@@ -15,6 +15,10 @@ ffxiv_ipc_item_market_board_info.fields = item_market_board_info_fields
 function ffxiv_ipc_item_market_board_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_item_market_board_info, tvbuf)
   local len = tvbuf:len()
+  if len < 20 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ItemMarketBoardInfo payload")
+    return len
+  end
 
   -- dissect the sequence field
   local sequence_tvbr = tvbuf:range(0, 4)

@@ -35,6 +35,10 @@ ffxiv_ipc_market_board_listing.fields = market_board_listing_fields
 function ffxiv_ipc_market_board_listing.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_market_board_listing, tvbuf)
   local len = tvbuf:len()
+  if len < 144 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated MarketBoardListing payload")
+    return len
+  end
 
   -- dissect the listing_id field
   local listing_id_tvbr = tvbuf:range(0, 8)
@@ -120,7 +124,7 @@ function ffxiv_ipc_market_board_listing.dissector(tvbuf, pktinfo, root)
   -- dissect the retainer_name field
   if tvbuf:len() >= 102 then
     local retainer_name_tvbr = tvbuf:range(70, 32)
-    local retainer_name_val  = retainer_name_tvbr:string(ENC_UTF_8)
+    local retainer_name_val  = retainer_name_tvbr:string(ENC_UTF_8):match("^[^%z]*")
     tree:add(market_board_listing_fields.retainer_name, retainer_name_tvbr, retainer_name_val)
 
     local retainer_name_display = ", retainerName: " .. retainer_name_val
@@ -131,7 +135,7 @@ function ffxiv_ipc_market_board_listing.dissector(tvbuf, pktinfo, root)
   -- dissect the player_name field
   if tvbuf:len() >= 134 then
     local player_name_tvbr = tvbuf:range(102, 32)
-    local player_name_val  = player_name_tvbr:string(ENC_UTF_8)
+    local player_name_val  = player_name_tvbr:string(ENC_UTF_8):match("^[^%z]*")
     tree:add(market_board_listing_fields.player_name, player_name_tvbr, player_name_val)
 
     local player_name_display = ", playerName: " .. player_name_val

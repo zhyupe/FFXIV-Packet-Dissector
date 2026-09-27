@@ -15,6 +15,10 @@ ffxiv_ipc_actor_set_pos.fields = actor_set_pos_fields
 function ffxiv_ipc_actor_set_pos.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_set_pos, tvbuf)
   local len = tvbuf:len()
+  if len < 20 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ActorSetPos payload")
+    return len
+  end
 
   -- dissect the r16 field
   local r16_tvbr = tvbuf:range(0, 2)

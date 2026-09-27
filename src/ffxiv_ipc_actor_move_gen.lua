@@ -19,6 +19,10 @@ ffxiv_ipc_actor_move.fields = actor_move_fields
 function ffxiv_ipc_actor_move.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_move, tvbuf)
   local len = tvbuf:len()
+  if len < 12 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ActorMove payload")
+    return len
+  end
 
   -- dissect the head_rotation field
   local head_rotation_tvbr = tvbuf:range(0, 1)

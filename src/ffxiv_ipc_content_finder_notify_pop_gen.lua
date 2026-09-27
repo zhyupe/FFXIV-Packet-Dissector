@@ -27,6 +27,10 @@ ffxiv_ipc_content_finder_notify_pop.fields = content_finder_notify_pop_fields
 function ffxiv_ipc_content_finder_notify_pop.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_content_finder_notify_pop, tvbuf)
   local len = tvbuf:len()
+  if len < 32 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ContentFinderNotifyPop payload")
+    return len
+  end
 
   -- dissect the unknown1 field
   local unknown1_tvbr = tvbuf:range(0, 2)

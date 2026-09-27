@@ -13,6 +13,10 @@ ffxiv_ipc_update_hp_mp_tp.fields = update_hp_mp_tp_fields
 function ffxiv_ipc_update_hp_mp_tp.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_hp_mp_tp, tvbuf)
   local len = tvbuf:len()
+  if len < 8 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated UpdateHpMpTp payload")
+    return len
+  end
 
   -- dissect the hp field
   local hp_tvbr = tvbuf:range(0, 4)

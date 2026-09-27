@@ -15,6 +15,10 @@ ffxiv_ipc_update_position_handler.fields = update_position_handler_fields
 function ffxiv_ipc_update_position_handler.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_position_handler, tvbuf)
   local len = tvbuf:len()
+  if len < 20 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated UpdatePositionHandler payload")
+    return len
+  end
 
   -- dissect the rotation field
   local rotation_tvbr = tvbuf:range(0, 4)

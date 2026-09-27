@@ -14,6 +14,10 @@ ffxiv_ipc_inventory_transaction_finish.fields = inventory_transaction_finish_fie
 function ffxiv_ipc_inventory_transaction_finish.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_inventory_transaction_finish, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated InventoryTransactionFinish payload")
+    return len
+  end
 
   -- dissect the sequence_id0 field
   local sequence_id0_tvbr = tvbuf:range(0, 4)

@@ -17,6 +17,10 @@ ffxiv_ipc_market_board_history_listing.fields = market_board_history_listing_fie
 function ffxiv_ipc_market_board_history_listing.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_market_board_history_listing, tvbuf)
   local len = tvbuf:len()
+  if len < 48 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated MarketBoardHistoryListing payload")
+    return len
+  end
 
   -- dissect the sale_price field
   local sale_price_tvbr = tvbuf:range(0, 4)
@@ -45,7 +49,7 @@ function ffxiv_ipc_market_board_history_listing.dissector(tvbuf, pktinfo, root)
 
   -- dissect the buyer_name field
   local buyer_name_tvbr = tvbuf:range(14, 32)
-  local buyer_name_val  = buyer_name_tvbr:string(ENC_UTF_8)
+  local buyer_name_val  = buyer_name_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(market_board_history_listing_fields.buyer_name, buyer_name_tvbr, buyer_name_val)
 
   local buyer_name_display = ", buyerName: " .. buyer_name_val

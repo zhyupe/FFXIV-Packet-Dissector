@@ -10,6 +10,10 @@ ffxiv_ipc_submarine_status_list.fields = submarine_status_list_fields
 function ffxiv_ipc_submarine_status_list.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_submarine_status_list, tvbuf)
   local len = tvbuf:len()
+  if len < 240 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated SubmarineStatusList payload")
+    return len
+  end
 
   -- dissect items
   local items_dissector = Dissector.get('ffxiv_ipc_submarine_status_item')

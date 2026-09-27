@@ -17,6 +17,10 @@ ffxiv_ipc_inventory_modify_handler.fields = inventory_modify_handler_fields
 function ffxiv_ipc_inventory_modify_handler.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_inventory_modify_handler, tvbuf)
   local len = tvbuf:len()
+  if len < 44 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated InventoryModifyHandler payload")
+    return len
+  end
 
   -- dissect the sequence field
   local sequence_tvbr = tvbuf:range(0, 4)

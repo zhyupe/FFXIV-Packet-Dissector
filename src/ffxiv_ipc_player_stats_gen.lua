@@ -40,6 +40,10 @@ ffxiv_ipc_player_stats.fields = player_stats_fields
 function ffxiv_ipc_player_stats.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_player_stats, tvbuf)
   local len = tvbuf:len()
+  if len < 120 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated PlayerStats payload")
+    return len
+  end
 
   -- dissect the strength field
   local strength_tvbr = tvbuf:range(0, 4)

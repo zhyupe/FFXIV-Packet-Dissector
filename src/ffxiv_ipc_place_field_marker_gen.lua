@@ -15,6 +15,10 @@ ffxiv_ipc_place_field_marker.fields = place_field_marker_fields
 function ffxiv_ipc_place_field_marker.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_place_field_marker, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated PlaceFieldMarker payload")
+    return len
+  end
 
   -- dissect the type field
   local type_tvbr = tvbuf:range(0, 1)

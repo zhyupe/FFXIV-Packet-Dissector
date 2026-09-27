@@ -20,6 +20,10 @@ ffxiv_ipc_fellowship_message_board_item.fields = fellowship_message_board_item_f
 function ffxiv_ipc_fellowship_message_board_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_message_board_item, tvbuf)
   local len = tvbuf:len()
+  if len < 152 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated FellowshipMessageBoardItem payload")
+    return len
+  end
 
   -- dissect the unique_id field
   local unique_id_tvbr = tvbuf:range(0, 8)
@@ -53,12 +57,12 @@ function ffxiv_ipc_fellowship_message_board_item.dissector(tvbuf, pktinfo, root)
 
   -- dissect the nickname field
   local nickname_tvbr = tvbuf:range(18, 32)
-  local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
+  local nickname_val  = nickname_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(fellowship_message_board_item_fields.nickname, nickname_tvbr, nickname_val)
 
   -- dissect the content field
   local content_tvbr = tvbuf:range(50, 102)
-  local content_val  = content_tvbr:string(ENC_UTF_8)
+  local content_val  = content_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(fellowship_message_board_item_fields.content, content_tvbr, content_val)
 
   return len

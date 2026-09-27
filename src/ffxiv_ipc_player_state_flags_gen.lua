@@ -23,6 +23,10 @@ ffxiv_ipc_player_state_flags.fields = player_state_flags_fields
 function ffxiv_ipc_player_state_flags.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_player_state_flags, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated PlayerStateFlags payload")
+    return len
+  end
 
   -- dissect the flags0 field
   local flags0_tvbr = tvbuf:range(0, 1)

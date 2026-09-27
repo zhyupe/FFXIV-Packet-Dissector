@@ -14,6 +14,10 @@ ffxiv_ipc_inventory_action_ack.fields = inventory_action_ack_fields
 function ffxiv_ipc_inventory_action_ack.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_inventory_action_ack, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated InventoryActionAck payload")
+    return len
+  end
 
   -- dissect the sequence field
   local sequence_tvbr = tvbuf:range(0, 4)

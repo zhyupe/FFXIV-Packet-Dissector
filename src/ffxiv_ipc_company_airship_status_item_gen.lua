@@ -19,6 +19,10 @@ ffxiv_ipc_company_airship_status_item.fields = company_airship_status_item_field
 function ffxiv_ipc_company_airship_status_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_airship_status_item, tvbuf)
   local len = tvbuf:len()
+  if len < 36 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated CompanyAirshipStatusItem payload")
+    return len
+  end
 
   -- dissect the return_time field
   local return_time_tvbr = tvbuf:range(0, 4)
@@ -33,7 +37,7 @@ function ffxiv_ipc_company_airship_status_item.dissector(tvbuf, pktinfo, root)
   -- dissect the name field
   if tvbuf:len() >= 29 then
     local name_tvbr = tvbuf:range(6, 23)
-    local name_val  = name_tvbr:string(ENC_UTF_8)
+    local name_val  = name_tvbr:string(ENC_UTF_8):match("^[^%z]*")
     tree:add(company_airship_status_item_fields.name, name_tvbr, name_val)
 
     local name_display = ", name: " .. name_val

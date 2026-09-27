@@ -23,6 +23,10 @@ ffxiv_ipc_fellowship_member_item.fields = fellowship_member_item_fields
 function ffxiv_ipc_fellowship_member_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_member_item, tvbuf)
   local len = tvbuf:len()
+  if len < 56 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated FellowshipMemberItem payload")
+    return len
+  end
 
   -- dissect the unique_id field
   local unique_id_tvbr = tvbuf:range(0, 8)
@@ -71,7 +75,7 @@ function ffxiv_ipc_fellowship_member_item.dissector(tvbuf, pktinfo, root)
 
   -- dissect the nickname field
   local nickname_tvbr = tvbuf:range(23, 32)
-  local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
+  local nickname_val  = nickname_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(fellowship_member_item_fields.nickname, nickname_tvbr, nickname_val)
 
   -- dissect the padding field

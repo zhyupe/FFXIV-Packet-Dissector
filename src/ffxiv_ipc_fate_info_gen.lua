@@ -19,6 +19,10 @@ ffxiv_ipc_fate_info.fields = fate_info_fields
 function ffxiv_ipc_fate_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fate_info, tvbuf)
   local len = tvbuf:len()
+  if len < 24 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated FateInfo payload")
+    return len
+  end
 
   -- dissect the fate field
   local fate_tvbr = tvbuf:range(0, 2)

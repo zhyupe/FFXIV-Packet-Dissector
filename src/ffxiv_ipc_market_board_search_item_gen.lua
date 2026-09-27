@@ -15,6 +15,10 @@ ffxiv_ipc_market_board_search_item.fields = market_board_search_item_fields
 function ffxiv_ipc_market_board_search_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_market_board_search_item, tvbuf)
   local len = tvbuf:len()
+  if len < 8 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated MarketBoardSearchItem payload")
+    return len
+  end
 
   -- dissect the item_catalog_id field
   local item_catalog_id_tvbr = tvbuf:range(0, 4)

@@ -26,6 +26,10 @@ ffxiv_ipc_examine.fields = examine_fields
 function ffxiv_ipc_examine.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_examine, tvbuf)
   local len = tvbuf:len()
+  if len < 656 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated Examine payload")
+    return len
+  end
 
   -- dissect the unknown0 field
   local unknown0_tvbr = tvbuf:range(0, 2)
@@ -111,7 +115,7 @@ function ffxiv_ipc_examine.dissector(tvbuf, pktinfo, root)
   -- dissect the nickname field
   if tvbuf:len() >= 656 then
     local nickname_tvbr = tvbuf:range(624, 32)
-    local nickname_val  = nickname_tvbr:string(ENC_UTF_8)
+    local nickname_val  = nickname_tvbr:string(ENC_UTF_8):match("^[^%z]*")
     tree:add(examine_fields.nickname, nickname_tvbr, nickname_val)
 
     local nickname_display = ", nickname: " .. nickname_val

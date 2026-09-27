@@ -15,6 +15,10 @@ ffxiv_ipc_ward_land_info.fields = ward_land_info_fields
 function ffxiv_ipc_ward_land_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_ward_land_info, tvbuf)
   local len = tvbuf:len()
+  if len < 2408 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated WardLandInfo payload")
+    return len
+  end
 
   -- dissect the section field
   local section_tvbr = tvbuf:range(2, 2)

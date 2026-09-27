@@ -11,6 +11,10 @@ ffxiv_ipc_set_online_status.fields = set_online_status_fields
 function ffxiv_ipc_set_online_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_set_online_status, tvbuf)
   local len = tvbuf:len()
+  if len < 8 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated SetOnlineStatus payload")
+    return len
+  end
 
   -- dissect the online_status_flags field
   local online_status_flags_tvbr = tvbuf:range(0, 8)

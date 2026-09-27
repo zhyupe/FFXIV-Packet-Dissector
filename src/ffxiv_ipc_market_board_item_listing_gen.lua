@@ -13,6 +13,10 @@ ffxiv_ipc_market_board_item_listing.fields = market_board_item_listing_fields
 function ffxiv_ipc_market_board_item_listing.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_market_board_item_listing, tvbuf)
   local len = tvbuf:len()
+  if len < 1444 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated MarketBoardItemListing payload")
+    return len
+  end
 
   -- dissect listings
   local listings_dissector = Dissector.get('ffxiv_ipc_market_board_listing')

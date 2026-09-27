@@ -14,6 +14,10 @@ ffxiv_ipc_fellowship_message_board.fields = fellowship_message_board_fields
 function ffxiv_ipc_fellowship_message_board.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_message_board, tvbuf)
   local len = tvbuf:len()
+  if len < 1536 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated FellowshipMessageBoard payload")
+    return len
+  end
 
   -- dissect the id field
   local id_tvbr = tvbuf:range(0, 8)

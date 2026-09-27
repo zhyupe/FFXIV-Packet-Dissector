@@ -39,6 +39,10 @@ ffxiv_ipc_init_zone.fields = init_zone_fields
 function ffxiv_ipc_init_zone.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_init_zone, tvbuf)
   local len = tvbuf:len()
+  if len < 96 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated InitZone payload")
+    return len
+  end
 
   -- dissect the server_id field
   local server_id_tvbr = tvbuf:range(0, 2)

@@ -59,6 +59,10 @@ ffxiv_ipc_actor_control.fields = actor_control_fields
 function ffxiv_ipc_actor_control.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_control, tvbuf)
   local len = tvbuf:len()
+  if len < 24 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ActorControl payload")
+    return len
+  end
 
   -- dissect the type field
   local type_tvbr = tvbuf:range(0, 2)

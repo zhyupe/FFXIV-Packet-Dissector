@@ -14,6 +14,10 @@ ffxiv_ipc_status_effect.fields = status_effect_fields
 function ffxiv_ipc_status_effect.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_status_effect, tvbuf)
   local len = tvbuf:len()
+  if len < 12 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated StatusEffect payload")
+    return len
+  end
 
   -- dissect the id field
   local id_tvbr = tvbuf:range(0, 2)

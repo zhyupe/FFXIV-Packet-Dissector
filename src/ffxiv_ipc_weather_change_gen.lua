@@ -12,6 +12,10 @@ ffxiv_ipc_weather_change.fields = weather_change_fields
 function ffxiv_ipc_weather_change.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_weather_change, tvbuf)
   local len = tvbuf:len()
+  if len < 8 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated WeatherChange payload")
+    return len
+  end
 
   -- dissect the weather_id field
   local weather_id_tvbr = tvbuf:range(0, 4)

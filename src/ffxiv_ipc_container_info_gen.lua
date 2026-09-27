@@ -16,6 +16,10 @@ ffxiv_ipc_container_info.fields = container_info_fields
 function ffxiv_ipc_container_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_container_info, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ContainerInfo payload")
+    return len
+  end
 
   -- dissect the container_sequence field
   local container_sequence_tvbr = tvbuf:range(0, 4)

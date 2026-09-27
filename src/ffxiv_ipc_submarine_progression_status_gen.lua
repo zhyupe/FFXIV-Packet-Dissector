@@ -13,6 +13,10 @@ ffxiv_ipc_submarine_progression_status.fields = submarine_progression_status_fie
 function ffxiv_ipc_submarine_progression_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_submarine_progression_status, tvbuf)
   local len = tvbuf:len()
+  if len < 31 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated SubmarineProgressionStatus payload")
+    return len
+  end
 
   -- dissect the unlocked_submarine_count field
   local unlocked_submarine_count_tvbr = tvbuf:range(0, 1)

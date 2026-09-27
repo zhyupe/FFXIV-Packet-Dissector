@@ -12,6 +12,10 @@ ffxiv_ipc_effect.fields = effect_fields
 function ffxiv_ipc_effect.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_effect, tvbuf)
   local len = tvbuf:len()
+  if len < 120 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated Effect payload")
+    return len
+  end
 
   -- dissect header
   local header_dissector = Dissector.get('ffxiv_ipc_effect_header')

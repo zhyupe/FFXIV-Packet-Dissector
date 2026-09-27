@@ -14,6 +14,10 @@ ffxiv_ipc_free_company_info.fields = free_company_info_fields
 function ffxiv_ipc_free_company_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_free_company_info, tvbuf)
   local len = tvbuf:len()
+  if len < 80 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated FreeCompanyInfo payload")
+    return len
+  end
 
   -- dissect the free_company_id field
   local free_company_id_tvbr = tvbuf:range(0, 8)

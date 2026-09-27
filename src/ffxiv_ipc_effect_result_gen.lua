@@ -20,6 +20,10 @@ ffxiv_ipc_effect_result.fields = effect_result_fields
 function ffxiv_ipc_effect_result.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_effect_result, tvbuf)
   local len = tvbuf:len()
+  if len < 42 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated EffectResult payload")
+    return len
+  end
 
   -- dissect the last_buff_packet_id field
   local last_buff_packet_id_tvbr = tvbuf:range(0, 4)

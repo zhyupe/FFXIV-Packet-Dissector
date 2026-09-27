@@ -13,6 +13,10 @@ ffxiv_ipc_island_workshop_supply_demand.fields = island_workshop_supply_demand_f
 function ffxiv_ipc_island_workshop_supply_demand.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_island_workshop_supply_demand, tvbuf)
   local len = tvbuf:len()
+  if len < 2 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated IslandWorkshopSupplyDemand payload")
+    return len
+  end
 
   -- dissect the popularity field
   local popularity_tvbr = tvbuf:range(0, 1)

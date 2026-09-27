@@ -35,6 +35,10 @@ ffxiv_ipc_submarine_exploration_result_entry.fields = submarine_exploration_resu
 function ffxiv_ipc_submarine_exploration_result_entry.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_submarine_exploration_result_entry, tvbuf)
   local len = tvbuf:len()
+  if len < 56 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated SubmarineExplorationResultEntry payload")
+    return len
+  end
 
   -- dissect the sector_id field
   local sector_id_tvbr = tvbuf:range(0, 1)

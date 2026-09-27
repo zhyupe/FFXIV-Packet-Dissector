@@ -17,6 +17,10 @@ ffxiv_ipc_airship_status_list.fields = airship_status_list_fields
 function ffxiv_ipc_airship_status_list.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_airship_status_list, tvbuf)
   local len = tvbuf:len()
+  if len < 158 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated AirshipStatusList payload")
+    return len
+  end
 
   -- dissect the unlocked_airship_count field
   local unlocked_airship_count_tvbr = tvbuf:range(0, 1)

@@ -18,6 +18,10 @@ ffxiv_ipc_update_class_info.fields = update_class_info_fields
 function ffxiv_ipc_update_class_info.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_class_info, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated UpdateClassInfo payload")
+    return len
+  end
 
   -- dissect the class_id field
   local class_id_tvbr = tvbuf:range(0, 1)

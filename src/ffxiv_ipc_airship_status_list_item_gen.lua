@@ -16,6 +16,10 @@ ffxiv_ipc_airship_status_list_item.fields = airship_status_list_item_fields
 function ffxiv_ipc_airship_status_list_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_airship_status_list_item, tvbuf)
   local len = tvbuf:len()
+  if len < 36 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated AirshipStatusListItem payload")
+    return len
+  end
 
   -- dissect the birthdate field
   local birthdate_tvbr = tvbuf:range(0, 4)
@@ -39,7 +43,7 @@ function ffxiv_ipc_airship_status_list_item.dissector(tvbuf, pktinfo, root)
 
   -- dissect the name field
   local name_tvbr = tvbuf:range(12, 20)
-  local name_val  = name_tvbr:string(ENC_UTF_8)
+  local name_val  = name_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(airship_status_list_item_fields.name, name_tvbr, name_val)
 
   local name_display = ", name: " .. name_val

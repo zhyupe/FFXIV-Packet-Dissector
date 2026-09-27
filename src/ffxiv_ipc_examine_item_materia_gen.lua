@@ -12,6 +12,10 @@ ffxiv_ipc_examine_item_materia.fields = examine_item_materia_fields
 function ffxiv_ipc_examine_item_materia.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_examine_item_materia, tvbuf)
   local len = tvbuf:len()
+  if len < 4 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ExamineItemMateria payload")
+    return len
+  end
 
   -- dissect the materia_id field
   local materia_id_tvbr = tvbuf:range(0, 2)

@@ -30,6 +30,10 @@ ffxiv_ipc_submarine_status_item.fields = submarine_status_item_fields
 function ffxiv_ipc_submarine_status_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_submarine_status_item, tvbuf)
   local len = tvbuf:len()
+  if len < 60 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated SubmarineStatusItem payload")
+    return len
+  end
 
   -- dissect the status field
   local status_tvbr = tvbuf:range(0, 2)
@@ -68,7 +72,7 @@ function ffxiv_ipc_submarine_status_item.dissector(tvbuf, pktinfo, root)
 
   -- dissect the name field
   local name_tvbr = tvbuf:range(22, 20)
-  local name_val  = name_tvbr:string(ENC_UTF_8)
+  local name_val  = name_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(submarine_status_item_fields.name, name_tvbr, name_val)
 
   -- dissect the padding1 field

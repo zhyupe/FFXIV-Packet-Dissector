@@ -17,6 +17,10 @@ ffxiv_ipc_fish_caught.fields = fish_caught_fields
 function ffxiv_ipc_fish_caught.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fish_caught, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated FishCaught payload")
+    return len
+  end
 
   -- dissect the item_id field
   local item_id_tvbr = tvbuf:range(0, 4)

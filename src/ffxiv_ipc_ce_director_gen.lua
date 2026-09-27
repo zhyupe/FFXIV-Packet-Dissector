@@ -18,6 +18,10 @@ ffxiv_ipc_ce_director.fields = ce_director_fields
 function ffxiv_ipc_ce_director.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_ce_director, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated CEDirector payload")
+    return len
+  end
 
   -- dissect the time_start field
   local time_start_tvbr = tvbuf:range(0, 4)

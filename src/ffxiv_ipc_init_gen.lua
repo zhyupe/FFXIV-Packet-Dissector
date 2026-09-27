@@ -13,6 +13,10 @@ ffxiv_ipc_init.fields = init_fields
 function ffxiv_ipc_init.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_init, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated Init payload")
+    return len
+  end
 
   -- dissect the unknown field
   local unknown_tvbr = tvbuf:range(0, 8)

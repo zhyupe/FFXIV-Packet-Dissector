@@ -11,6 +11,10 @@ ffxiv_ipc_playtime.fields = playtime_fields
 function ffxiv_ipc_playtime.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_playtime, tvbuf)
   local len = tvbuf:len()
+  if len < 4 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated Playtime payload")
+    return len
+  end
 
   -- dissect the playtime field
   local playtime_tvbr = tvbuf:range(0, 4)

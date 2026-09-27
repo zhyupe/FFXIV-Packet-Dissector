@@ -23,6 +23,10 @@ ffxiv_ipc_system_log_message.fields = system_log_message_fields
 function ffxiv_ipc_system_log_message.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_system_log_message, tvbuf)
   local len = tvbuf:len()
+  if len < 24 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated SystemLogMessage payload")
+    return len
+  end
 
   -- dissect the event_id field
   local event_id_tvbr = tvbuf:range(0, 4)
@@ -60,7 +64,7 @@ function ffxiv_ipc_system_log_message.dissector(tvbuf, pktinfo, root)
   end
   tree:add_le(system_log_message_fields.param1, param1_tvbr, param1_val, param1_label_key .. ": " .. param1_label_val)
 
-  local param1_display = ", " .. (label_param1_event_id[event_id_val]) .. ": " .. (function()
+  local param1_display = ", " .. (label_param1_event_id[event_id_val] or "param1") .. ": " .. (function()
     local _append = param1_append_mode
     if _append == "enum" then
       return param1_label_val

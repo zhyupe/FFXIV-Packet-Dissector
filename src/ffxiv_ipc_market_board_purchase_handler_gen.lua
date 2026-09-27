@@ -17,6 +17,10 @@ ffxiv_ipc_market_board_purchase_handler.fields = market_board_purchase_handler_f
 function ffxiv_ipc_market_board_purchase_handler.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_market_board_purchase_handler, tvbuf)
   local len = tvbuf:len()
+  if len < 28 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated MarketBoardPurchaseHandler payload")
+    return len
+  end
 
   -- dissect the retainer_id field
   local retainer_id_tvbr = tvbuf:range(0, 8)

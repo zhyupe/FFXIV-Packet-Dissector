@@ -20,6 +20,10 @@ ffxiv_ipc_update_position_instance.fields = update_position_instance_fields
 function ffxiv_ipc_update_position_instance.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_position_instance, tvbuf)
   local len = tvbuf:len()
+  if len < 40 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated UpdatePositionInstance payload")
+    return len
+  end
 
   -- dissect the unknown0 field
   local unknown0_tvbr = tvbuf:range(0, 4)

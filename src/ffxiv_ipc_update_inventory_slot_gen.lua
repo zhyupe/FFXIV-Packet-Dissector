@@ -40,6 +40,10 @@ ffxiv_ipc_update_inventory_slot.fields = update_inventory_slot_fields
 function ffxiv_ipc_update_inventory_slot.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_update_inventory_slot, tvbuf)
   local len = tvbuf:len()
+  if len < 64 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated UpdateInventorySlot payload")
+    return len
+  end
 
   -- dissect the index field
   local index_tvbr = tvbuf:range(0, 4)

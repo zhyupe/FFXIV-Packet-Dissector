@@ -11,6 +11,10 @@ ffxiv_ipc_event_play32.fields = event_play32_fields
 function ffxiv_ipc_event_play32.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_event_play32, tvbuf)
   local len = tvbuf:len()
+  if len < 156 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated EventPlay32 payload")
+    return len
+  end
 
   -- dissect header
   local header_dissector = Dissector.get('ffxiv_ipc_event_play_header')

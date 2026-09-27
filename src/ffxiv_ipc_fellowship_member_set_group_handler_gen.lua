@@ -14,6 +14,10 @@ ffxiv_ipc_fellowship_member_set_group_handler.fields = fellowship_member_set_gro
 function ffxiv_ipc_fellowship_member_set_group_handler.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_fellowship_member_set_group_handler, tvbuf)
   local len = tvbuf:len()
+  if len < 24 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated FellowshipMemberSetGroupHandler payload")
+    return len
+  end
 
   -- dissect the id field
   local id_tvbr = tvbuf:range(0, 8)

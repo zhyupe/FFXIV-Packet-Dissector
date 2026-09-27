@@ -10,6 +10,10 @@ ffxiv_ipc_company_submersible_status.fields = company_submersible_status_fields
 function ffxiv_ipc_company_submersible_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_submersible_status, tvbuf)
   local len = tvbuf:len()
+  if len < 144 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated CompanySubmersibleStatus payload")
+    return len
+  end
 
   -- dissect company_submersible_status_item
   local company_submersible_status_item_dissector = Dissector.get('ffxiv_ipc_company_submersible_status_item')

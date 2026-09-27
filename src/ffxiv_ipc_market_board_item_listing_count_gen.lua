@@ -12,6 +12,10 @@ ffxiv_ipc_market_board_item_listing_count.fields = market_board_item_listing_cou
 function ffxiv_ipc_market_board_item_listing_count.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_market_board_item_listing_count, tvbuf)
   local len = tvbuf:len()
+  if len < 8 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated MarketBoardItemListingCount payload")
+    return len
+  end
 
   -- dissect the status field
   local status_tvbr = tvbuf:range(0, 4)

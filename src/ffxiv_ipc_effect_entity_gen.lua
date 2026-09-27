@@ -21,6 +21,10 @@ ffxiv_ipc_effect_entity.fields = effect_entity_fields
 function ffxiv_ipc_effect_entity.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_effect_entity, tvbuf)
   local len = tvbuf:len()
+  if len < 8 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated EffectEntity payload")
+    return len
+  end
 
   -- dissect the type field
   local type_tvbr = tvbuf:range(0, 1)

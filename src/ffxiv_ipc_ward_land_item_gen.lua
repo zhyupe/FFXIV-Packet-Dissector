@@ -14,6 +14,10 @@ ffxiv_ipc_ward_land_item.fields = ward_land_item_fields
 function ffxiv_ipc_ward_land_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_ward_land_item, tvbuf)
   local len = tvbuf:len()
+  if len < 40 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated WardLandItem payload")
+    return len
+  end
 
   -- dissect the price field
   local price_tvbr = tvbuf:range(0, 4)
@@ -43,7 +47,7 @@ function ffxiv_ipc_ward_land_item.dissector(tvbuf, pktinfo, root)
 
   -- dissect the name field
   local name_tvbr = tvbuf:range(8, 32)
-  local name_val  = name_tvbr:string(ENC_UTF_8)
+  local name_val  = name_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(ward_land_item_fields.name, name_tvbr, name_val)
 
   return len

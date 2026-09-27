@@ -12,6 +12,10 @@ ffxiv_ipc_logout.fields = logout_fields
 function ffxiv_ipc_logout.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_logout, tvbuf)
   local len = tvbuf:len()
+  if len < 8 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated Logout payload")
+    return len
+  end
 
   -- dissect the flags1 field
   local flags1_tvbr = tvbuf:range(0, 4)

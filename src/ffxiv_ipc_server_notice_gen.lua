@@ -12,6 +12,10 @@ ffxiv_ipc_server_notice.fields = server_notice_fields
 function ffxiv_ipc_server_notice.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_server_notice, tvbuf)
   local len = tvbuf:len()
+  if len < 1 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ServerNotice payload")
+    return len
+  end
 
   -- dissect the padding field
   local padding_tvbr = tvbuf:range(0, 1)
@@ -21,7 +25,7 @@ function ffxiv_ipc_server_notice.dissector(tvbuf, pktinfo, root)
   -- dissect the content field
   if tvbuf:len() >= 1 then
     local content_tvbr = tvbuf:range(1)
-    local content_val  = content_tvbr:string(ENC_UTF_8)
+    local content_val  = content_tvbr:string(ENC_UTF_8):match("^[^%z]*")
     tree:add(server_notice_fields.content, content_tvbr, content_val)
   end
 

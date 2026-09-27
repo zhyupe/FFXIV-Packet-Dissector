@@ -34,6 +34,10 @@ ffxiv_ipc_airship_status.fields = airship_status_fields
 function ffxiv_ipc_airship_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_airship_status, tvbuf)
   local len = tvbuf:len()
+  if len < 72 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated AirshipStatus payload")
+    return len
+  end
 
   -- dissect the return_time field
   local return_time_tvbr = tvbuf:range(0, 4)
@@ -122,7 +126,7 @@ function ffxiv_ipc_airship_status.dissector(tvbuf, pktinfo, root)
 
   -- dissect the name field
   local name_tvbr = tvbuf:range(35, 20)
-  local name_val  = name_tvbr:string(ENC_UTF_8)
+  local name_val  = name_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(airship_status_fields.name, name_tvbr, name_val)
 
   local name_display = ", name: " .. name_val

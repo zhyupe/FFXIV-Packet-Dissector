@@ -35,6 +35,10 @@ ffxiv_ipc_client_trigger.fields = client_trigger_fields
 function ffxiv_ipc_client_trigger.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_client_trigger, tvbuf)
   local len = tvbuf:len()
+  if len < 32 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ClientTrigger payload")
+    return len
+  end
 
   -- dissect the command_id field
   local command_id_tvbr = tvbuf:range(0, 2)

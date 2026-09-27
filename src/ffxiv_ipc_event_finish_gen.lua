@@ -11,6 +11,10 @@ ffxiv_ipc_event_finish.fields = event_finish_fields
 function ffxiv_ipc_event_finish.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_event_finish, tvbuf)
   local len = tvbuf:len()
+  if len < 4 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated EventFinish payload")
+    return len
+  end
 
   -- dissect the event_id field
   local event_id_tvbr = tvbuf:range(0, 4)

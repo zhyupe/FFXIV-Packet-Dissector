@@ -18,6 +18,10 @@ ffxiv_ipc_examine_item_data.fields = examine_item_data_fields
 function ffxiv_ipc_examine_item_data.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_examine_item_data, tvbuf)
   local len = tvbuf:len()
+  if len < 40 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ExamineItemData payload")
+    return len
+  end
 
   -- dissect the catalog_id field
   local catalog_id_tvbr = tvbuf:range(0, 4)

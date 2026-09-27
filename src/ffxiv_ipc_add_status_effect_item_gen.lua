@@ -18,6 +18,10 @@ ffxiv_ipc_add_status_effect_item.fields = add_status_effect_item_fields
 function ffxiv_ipc_add_status_effect_item.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_add_status_effect_item, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated AddStatusEffectItem payload")
+    return len
+  end
 
   -- dissect the status field
   local status_tvbr = tvbuf:range(0, 2)

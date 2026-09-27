@@ -25,6 +25,10 @@ ffxiv_ipc_event_play_header.fields = event_play_header_fields
 function ffxiv_ipc_event_play_header.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_event_play_header, tvbuf)
   local len = tvbuf:len()
+  if len < 28 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated EventPlayHeader payload")
+    return len
+  end
 
   -- dissect the actor_id field
   local actor_id_tvbr = tvbuf:range(0, 8)

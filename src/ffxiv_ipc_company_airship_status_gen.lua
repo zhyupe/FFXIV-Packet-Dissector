@@ -10,6 +10,10 @@ ffxiv_ipc_company_airship_status.fields = company_airship_status_fields
 function ffxiv_ipc_company_airship_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_company_airship_status, tvbuf)
   local len = tvbuf:len()
+  if len < 144 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated CompanyAirshipStatus payload")
+    return len
+  end
 
   -- dissect company_airship_status_item
   local company_airship_status_item_dissector = Dissector.get('ffxiv_ipc_company_airship_status_item')

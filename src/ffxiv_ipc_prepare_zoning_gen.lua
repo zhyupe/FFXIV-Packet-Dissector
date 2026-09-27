@@ -20,6 +20,10 @@ ffxiv_ipc_prepare_zoning.fields = prepare_zoning_fields
 function ffxiv_ipc_prepare_zoning.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_prepare_zoning, tvbuf)
   local len = tvbuf:len()
+  if len < 16 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated PrepareZoning payload")
+    return len
+  end
 
   -- dissect the log_message field
   local log_message_tvbr = tvbuf:range(0, 4)

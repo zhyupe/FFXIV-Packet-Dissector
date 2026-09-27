@@ -21,6 +21,10 @@ ffxiv_ipc_boss_status_effect_list.fields = boss_status_effect_list_fields
 function ffxiv_ipc_boss_status_effect_list.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_boss_status_effect_list, tvbuf)
   local len = tvbuf:len()
+  if len < 740 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated BossStatusEffectList payload")
+    return len
+  end
 
   -- dissect status_effects2
   local status_effects2_dissector = Dissector.get('ffxiv_ipc_status_effect')

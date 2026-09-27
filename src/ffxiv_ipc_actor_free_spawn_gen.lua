@@ -12,6 +12,10 @@ ffxiv_ipc_actor_free_spawn.fields = actor_free_spawn_fields
 function ffxiv_ipc_actor_free_spawn.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_actor_free_spawn, tvbuf)
   local len = tvbuf:len()
+  if len < 8 then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated ActorFreeSpawn payload")
+    return len
+  end
 
   -- dissect the unknown field
   local unknown_tvbr = tvbuf:range(0, 4)
