@@ -3,53 +3,77 @@
 local ffxiv_ipc_player_spawn = Proto("ffxiv_ipc_player_spawn", "FFXIV-IPC PlayerSpawn")
 
 local player_spawn_fields = {
-  title             = ProtoField.uint16("ffxiv_ipc_player_spawn.title", "title", base.DEC),
-  current_world_id  = ProtoField.uint16("ffxiv_ipc_player_spawn.current_world_id", "currentWorldId", base.DEC),
-  home_world_id     = ProtoField.uint16("ffxiv_ipc_player_spawn.home_world_id", "homeWorldId", base.DEC),
-  gm_rank           = ProtoField.uint8("ffxiv_ipc_player_spawn.gm_rank", "gmRank", base.DEC),
-  online_status     = ProtoField.uint8("ffxiv_ipc_player_spawn.online_status", "onlineStatus", base.DEC),
-  pose              = ProtoField.uint8("ffxiv_ipc_player_spawn.pose", "pose", base.DEC),
-  target_id         = ProtoField.bytes("ffxiv_ipc_player_spawn.target_id", "targetId", base.NONE),
-  main_weapon_model = ProtoField.bytes("ffxiv_ipc_player_spawn.main_weapon_model", "mainWeaponModel", base.NONE),
-  sec_weapon_model  = ProtoField.bytes("ffxiv_ipc_player_spawn.sec_weapon_model", "secWeaponModel", base.NONE),
-  craft_tool_model  = ProtoField.bytes("ffxiv_ipc_player_spawn.craft_tool_model", "craftToolModel", base.NONE),
-  b_npc_base        = ProtoField.uint32("ffxiv_ipc_player_spawn.b_npc_base", "bNPCBase", base.DEC),
-  b_npc_name        = ProtoField.uint32("ffxiv_ipc_player_spawn.b_npc_name", "bNPCName", base.DEC),
-  level_id          = ProtoField.uint32("ffxiv_ipc_player_spawn.level_id", "levelId", base.DEC),
-  director_id       = ProtoField.uint32("ffxiv_ipc_player_spawn.director_id", "directorId", base.DEC),
-  owner_id          = ProtoField.uint32("ffxiv_ipc_player_spawn.owner_id", "ownerId", base.DEC),
-  parent_actor_id   = ProtoField.uint32("ffxiv_ipc_player_spawn.parent_actor_id", "parentActorId", base.DEC),
-  hp_max            = ProtoField.uint32("ffxiv_ipc_player_spawn.hp_max", "hpMax", base.DEC),
-  hp_cur            = ProtoField.uint32("ffxiv_ipc_player_spawn.hp_cur", "hpCur", base.DEC),
-  display_flags     = ProtoField.uint32("ffxiv_ipc_player_spawn.display_flags", "displayFlags", base.DEC),
-  fate_id           = ProtoField.uint16("ffxiv_ipc_player_spawn.fate_id", "fateID", base.DEC),
-  mp_cur            = ProtoField.uint16("ffxiv_ipc_player_spawn.mp_cur", "mpCur", base.DEC),
-  tp_cur            = ProtoField.uint16("ffxiv_ipc_player_spawn.tp_cur", "tpCur", base.DEC),
-  mp_max            = ProtoField.uint16("ffxiv_ipc_player_spawn.mp_max", "mpMax", base.DEC),
-  model_chara       = ProtoField.uint16("ffxiv_ipc_player_spawn.model_chara", "modelChara", base.DEC),
-  rotation          = ProtoField.uint16("ffxiv_ipc_player_spawn.rotation", "rotation", base.DEC),
-  active_minion     = ProtoField.uint16("ffxiv_ipc_player_spawn.active_minion", "activeMinion", base.DEC),
-  spawn_index       = ProtoField.uint8("ffxiv_ipc_player_spawn.spawn_index", "spawnIndex", base.DEC),
-  state             = ProtoField.uint8("ffxiv_ipc_player_spawn.state", "state", base.DEC),
-  persistent_emote  = ProtoField.uint8("ffxiv_ipc_player_spawn.persistent_emote", "persistentEmote", base.DEC),
-  model_type        = ProtoField.uint8("ffxiv_ipc_player_spawn.model_type", "modelType", base.DEC),
-  subtype           = ProtoField.uint8("ffxiv_ipc_player_spawn.subtype", "subtype", base.DEC),
-  voice             = ProtoField.uint8("ffxiv_ipc_player_spawn.voice", "voice", base.DEC),
-  enemy_type        = ProtoField.uint8("ffxiv_ipc_player_spawn.enemy_type", "enemyType", base.DEC),
-  level             = ProtoField.uint8("ffxiv_ipc_player_spawn.level", "level", base.DEC),
-  class_job         = ProtoField.uint8("ffxiv_ipc_player_spawn.class_job", "classJob", base.DEC),
-  current_mount     = ProtoField.uint8("ffxiv_ipc_player_spawn.current_mount", "currentMount", base.DEC),
-  mount_head        = ProtoField.uint8("ffxiv_ipc_player_spawn.mount_head", "mountHead", base.DEC),
-  mount_body        = ProtoField.uint8("ffxiv_ipc_player_spawn.mount_body", "mountBody", base.DEC),
-  mount_feet        = ProtoField.uint8("ffxiv_ipc_player_spawn.mount_feet", "mountFeet", base.DEC),
-  mount_color       = ProtoField.uint8("ffxiv_ipc_player_spawn.mount_color", "mountColor", base.DEC),
-  scale             = ProtoField.uint8("ffxiv_ipc_player_spawn.scale", "scale", base.DEC),
-  elemental_level   = ProtoField.uint16("ffxiv_ipc_player_spawn.elemental_level", "elementalLevel", base.DEC),
-  element           = ProtoField.uint16("ffxiv_ipc_player_spawn.element", "element", base.DEC),
-  models            = ProtoField.int32("ffxiv_ipc_player_spawn.models", "models", base.DEC),
-  nickname          = ProtoField.string("ffxiv_ipc_player_spawn.nickname", "nickname", base.UNICODE),
-  look              = ProtoField.bytes("ffxiv_ipc_player_spawn.look", "look", base.NONE),
-  fc_tag            = ProtoField.string("ffxiv_ipc_player_spawn.fc_tag", "fcTag", base.UNICODE),
+  account_id               = ProtoField.uint64("ffxiv_ipc_player_spawn.account_id", "accountId", base.DEC),
+  content_id               = ProtoField.uint64("ffxiv_ipc_player_spawn.content_id", "contentId", base.DEC),
+  title                    = ProtoField.uint16("ffxiv_ipc_player_spawn.title", "title", base.DEC),
+  timeline_base_override   = ProtoField.uint16("ffxiv_ipc_player_spawn.timeline_base_override", "timelineBaseOverride", base.DEC),
+  current_world_id         = ProtoField.uint16("ffxiv_ipc_player_spawn.current_world_id", "currentWorldId", base.DEC),
+  home_world_id            = ProtoField.uint16("ffxiv_ipc_player_spawn.home_world_id", "homeWorldId", base.DEC),
+  gm_rank                  = ProtoField.uint8("ffxiv_ipc_player_spawn.gm_rank", "gmRank", base.DEC),
+  unknown19                = ProtoField.uint16("ffxiv_ipc_player_spawn.unknown19", "unknown19", base.DEC),
+  online_status            = ProtoField.uint8("ffxiv_ipc_player_spawn.online_status", "onlineStatus", base.DEC),
+  pose                     = ProtoField.uint8("ffxiv_ipc_player_spawn.pose", "pose", base.DEC),
+  unknown1_d               = ProtoField.uint16("ffxiv_ipc_player_spawn.unknown1_d", "unknown1D", base.DEC),
+  unknown1_f               = ProtoField.uint8("ffxiv_ipc_player_spawn.unknown1_f", "unknown1F", base.DEC),
+  target_id                = ProtoField.bytes("ffxiv_ipc_player_spawn.target_id", "targetId", base.NONE),
+  free_company_crest       = ProtoField.bytes("ffxiv_ipc_player_spawn.free_company_crest", "freeCompanyCrest", base.NONE),
+  main_weapon_model        = ProtoField.bytes("ffxiv_ipc_player_spawn.main_weapon_model", "mainWeaponModel", base.NONE),
+  sec_weapon_model         = ProtoField.bytes("ffxiv_ipc_player_spawn.sec_weapon_model", "secWeaponModel", base.NONE),
+  craft_tool_model         = ProtoField.bytes("ffxiv_ipc_player_spawn.craft_tool_model", "craftToolModel", base.NONE),
+  combat_tagger_id         = ProtoField.bytes("ffxiv_ipc_player_spawn.combat_tagger_id", "combatTaggerId", base.NONE),
+  b_npc_base               = ProtoField.uint32("ffxiv_ipc_player_spawn.b_npc_base", "bNPCBase", base.DEC),
+  b_npc_name               = ProtoField.uint32("ffxiv_ipc_player_spawn.b_npc_name", "bNPCName", base.DEC),
+  level_id                 = ProtoField.uint32("ffxiv_ipc_player_spawn.level_id", "levelId", base.DEC),
+  object_type              = ProtoField.uint32("ffxiv_ipc_player_spawn.object_type", "objectType", base.DEC),
+  director_id              = ProtoField.uint32("ffxiv_ipc_player_spawn.director_id", "directorId", base.DEC),
+  owner_id                 = ProtoField.uint32("ffxiv_ipc_player_spawn.owner_id", "ownerId", base.DEC),
+  tether_target_id         = ProtoField.uint32("ffxiv_ipc_player_spawn.tether_target_id", "tetherTargetId", base.DEC),
+  hp_max                   = ProtoField.uint32("ffxiv_ipc_player_spawn.hp_max", "hpMax", base.DEC),
+  hp_cur                   = ProtoField.uint32("ffxiv_ipc_player_spawn.hp_cur", "hpCur", base.DEC),
+  display_flags            = ProtoField.uint32("ffxiv_ipc_player_spawn.display_flags", "displayFlags", base.DEC),
+  fate_id                  = ProtoField.uint16("ffxiv_ipc_player_spawn.fate_id", "fateID", base.DEC),
+  resource_points_max      = ProtoField.uint16("ffxiv_ipc_player_spawn.resource_points_max", "resourcePointsMax", base.DEC),
+  resource_points          = ProtoField.uint16("ffxiv_ipc_player_spawn.resource_points", "resourcePoints", base.DEC),
+  behavior                 = ProtoField.uint16("ffxiv_ipc_player_spawn.behavior", "behavior", base.DEC),
+  model_chara              = ProtoField.uint16("ffxiv_ipc_player_spawn.model_chara", "modelChara", base.DEC),
+  rotation                 = ProtoField.uint16("ffxiv_ipc_player_spawn.rotation", "rotation", base.DEC),
+  current_mount            = ProtoField.uint16("ffxiv_ipc_player_spawn.current_mount", "currentMount", base.DEC),
+  active_minion            = ProtoField.uint16("ffxiv_ipc_player_spawn.active_minion", "activeMinion", base.DEC),
+  follow_mount_id          = ProtoField.uint16("ffxiv_ipc_player_spawn.follow_mount_id", "followMountId", base.DEC),
+  ornament_id              = ProtoField.uint16("ffxiv_ipc_player_spawn.ornament_id", "ornamentId", base.DEC),
+  tether_id                = ProtoField.uint16("ffxiv_ipc_player_spawn.tether_id", "tetherId", base.DEC),
+  spawn_index              = ProtoField.uint8("ffxiv_ipc_player_spawn.spawn_index", "spawnIndex", base.DEC),
+  character_mode           = ProtoField.uint8("ffxiv_ipc_player_spawn.character_mode", "characterMode", base.DEC),
+  mode_param               = ProtoField.uint8("ffxiv_ipc_player_spawn.mode_param", "modeParam", base.DEC),
+  object_kind              = ProtoField.uint8("ffxiv_ipc_player_spawn.object_kind", "objectKind", base.DEC),
+  subtype                  = ProtoField.uint8("ffxiv_ipc_player_spawn.subtype", "subtype", base.DEC),
+  voice                    = ProtoField.uint8("ffxiv_ipc_player_spawn.voice", "voice", base.DEC),
+  free_company_crest_flags = ProtoField.uint8("ffxiv_ipc_player_spawn.free_company_crest_flags", "freeCompanyCrestFlags", base.DEC),
+  battalion                = ProtoField.uint8("ffxiv_ipc_player_spawn.battalion", "battalion", base.DEC),
+  level                    = ProtoField.uint8("ffxiv_ipc_player_spawn.level", "level", base.DEC),
+  class_job                = ProtoField.uint8("ffxiv_ipc_player_spawn.class_job", "classJob", base.DEC),
+  event_state              = ProtoField.uint8("ffxiv_ipc_player_spawn.event_state", "eventState", base.DEC),
+  is_hidden                = ProtoField.uint8("ffxiv_ipc_player_spawn.is_hidden", "isHidden", base.DEC),
+  combat_tag_type          = ProtoField.uint8("ffxiv_ipc_player_spawn.combat_tag_type", "combatTagType", base.DEC),
+  mount_head               = ProtoField.uint8("ffxiv_ipc_player_spawn.mount_head", "mountHead", base.DEC),
+  mount_body               = ProtoField.uint8("ffxiv_ipc_player_spawn.mount_body", "mountBody", base.DEC),
+  mount_feet               = ProtoField.uint8("ffxiv_ipc_player_spawn.mount_feet", "mountFeet", base.DEC),
+  mount_color              = ProtoField.uint8("ffxiv_ipc_player_spawn.mount_color", "mountColor", base.DEC),
+  status_loop_vfx_id       = ProtoField.uint8("ffxiv_ipc_player_spawn.status_loop_vfx_id", "statusLoopVfxId", base.DEC),
+  foray_rank               = ProtoField.uint8("ffxiv_ipc_player_spawn.foray_rank", "forayRank", base.DEC),
+  foray_element            = ProtoField.uint8("ffxiv_ipc_player_spawn.foray_element", "forayElement", base.DEC),
+  model_scale_id           = ProtoField.uint8("ffxiv_ipc_player_spawn.model_scale_id", "modelScaleId", base.DEC),
+  model_state              = ProtoField.uint8("ffxiv_ipc_player_spawn.model_state", "modelState", base.DEC),
+  model_attribute_flags    = ProtoField.uint8("ffxiv_ipc_player_spawn.model_attribute_flags", "modelAttributeFlags", base.DEC),
+  animation_state          = ProtoField.uint8("ffxiv_ipc_player_spawn.animation_state", "animationState", base.DEC),
+  unknown_a6               = ProtoField.bytes("ffxiv_ipc_player_spawn.unknown_a6", "unknownA6", base.NONE),
+  models                   = ProtoField.uint32("ffxiv_ipc_player_spawn.models", "models", base.DEC),
+  model_stain2_ids         = ProtoField.uint8("ffxiv_ipc_player_spawn.model_stain2_ids", "modelStain2Ids", base.DEC),
+  glasses_ids              = ProtoField.uint16("ffxiv_ipc_player_spawn.glasses_ids", "glassesIds", base.DEC),
+  nickname                 = ProtoField.string("ffxiv_ipc_player_spawn.nickname", "nickname", base.UNICODE),
+  look                     = ProtoField.bytes("ffxiv_ipc_player_spawn.look", "look", base.NONE),
+  fc_tag                   = ProtoField.string("ffxiv_ipc_player_spawn.fc_tag", "fcTag", base.UNICODE),
+  unknown_tail             = ProtoField.bytes("ffxiv_ipc_player_spawn.unknown_tail", "unknownTail", base.NONE),
 }
 
 ffxiv_ipc_player_spawn.fields = player_spawn_fields
@@ -57,229 +81,334 @@ ffxiv_ipc_player_spawn.fields = player_spawn_fields
 function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_player_spawn, tvbuf)
   local len = tvbuf:len()
-  if len < 624 then
+  if len < 664 then
     tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated PlayerSpawn payload")
     return len
   end
 
+  -- dissect the account_id field
+  local account_id_tvbr = tvbuf:range(0, 8)
+  local account_id_val  = account_id_tvbr:le_uint64()
+  tree:add_le(player_spawn_fields.account_id, account_id_tvbr, account_id_val)
+
+  -- dissect the content_id field
+  local content_id_tvbr = tvbuf:range(8, 8)
+  local content_id_val  = content_id_tvbr:le_uint64()
+  tree:add_le(player_spawn_fields.content_id, content_id_tvbr, content_id_val)
+
   -- dissect the title field
-  local title_tvbr = tvbuf:range(0, 2)
+  local title_tvbr = tvbuf:range(16, 2)
   local title_val  = title_tvbr:le_uint()
   tree:add_le(player_spawn_fields.title, title_tvbr, title_val)
 
+  -- dissect the timeline_base_override field
+  local timeline_base_override_tvbr = tvbuf:range(18, 2)
+  local timeline_base_override_val  = timeline_base_override_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.timeline_base_override, timeline_base_override_tvbr, timeline_base_override_val)
+
   -- dissect the current_world_id field
-  local current_world_id_tvbr = tvbuf:range(4, 2)
+  local current_world_id_tvbr = tvbuf:range(20, 2)
   local current_world_id_val  = current_world_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.current_world_id, current_world_id_tvbr, current_world_id_val)
 
   -- dissect the home_world_id field
-  local home_world_id_tvbr = tvbuf:range(6, 2)
+  local home_world_id_tvbr = tvbuf:range(22, 2)
   local home_world_id_val  = home_world_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.home_world_id, home_world_id_tvbr, home_world_id_val)
 
   -- dissect the gm_rank field
-  local gm_rank_tvbr = tvbuf:range(8, 1)
+  local gm_rank_tvbr = tvbuf:range(24, 1)
   local gm_rank_val  = gm_rank_tvbr:le_uint()
   tree:add_le(player_spawn_fields.gm_rank, gm_rank_tvbr, gm_rank_val)
 
+  -- dissect the unknown19 field
+  local unknown19_tvbr = tvbuf:range(25, 2)
+  local unknown19_val  = unknown19_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.unknown19, unknown19_tvbr, unknown19_val)
+
   -- dissect the online_status field
-  local online_status_tvbr = tvbuf:range(11, 1)
+  local online_status_tvbr = tvbuf:range(27, 1)
   local online_status_val  = online_status_tvbr:le_uint()
   tree:add_le(player_spawn_fields.online_status, online_status_tvbr, online_status_val)
 
   -- dissect the pose field
-  local pose_tvbr = tvbuf:range(12, 1)
+  local pose_tvbr = tvbuf:range(28, 1)
   local pose_val  = pose_tvbr:le_uint()
   tree:add_le(player_spawn_fields.pose, pose_tvbr, pose_val)
 
+  -- dissect the unknown1_d field
+  local unknown1_d_tvbr = tvbuf:range(29, 2)
+  local unknown1_d_val  = unknown1_d_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.unknown1_d, unknown1_d_tvbr, unknown1_d_val)
+
+  -- dissect the unknown1_f field
+  local unknown1_f_tvbr = tvbuf:range(31, 1)
+  local unknown1_f_val  = unknown1_f_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.unknown1_f, unknown1_f_tvbr, unknown1_f_val)
+
   -- dissect the target_id field
-  local target_id_tvbr = tvbuf:range(16, 8)
+  local target_id_tvbr = tvbuf:range(32, 8)
   local target_id_val  = target_id_tvbr:raw()
   tree:add(player_spawn_fields.target_id, target_id_tvbr, target_id_val)
 
+  -- dissect the free_company_crest field
+  local free_company_crest_tvbr = tvbuf:range(40, 8)
+  local free_company_crest_val  = free_company_crest_tvbr:raw()
+  tree:add(player_spawn_fields.free_company_crest, free_company_crest_tvbr, free_company_crest_val)
+
   -- dissect the main_weapon_model field
-  local main_weapon_model_tvbr = tvbuf:range(32, 8)
+  local main_weapon_model_tvbr = tvbuf:range(48, 8)
   local main_weapon_model_val  = main_weapon_model_tvbr:raw()
   tree:add(player_spawn_fields.main_weapon_model, main_weapon_model_tvbr, main_weapon_model_val)
 
   -- dissect the sec_weapon_model field
-  local sec_weapon_model_tvbr = tvbuf:range(40, 8)
+  local sec_weapon_model_tvbr = tvbuf:range(56, 8)
   local sec_weapon_model_val  = sec_weapon_model_tvbr:raw()
   tree:add(player_spawn_fields.sec_weapon_model, sec_weapon_model_tvbr, sec_weapon_model_val)
 
   -- dissect the craft_tool_model field
-  local craft_tool_model_tvbr = tvbuf:range(48, 8)
+  local craft_tool_model_tvbr = tvbuf:range(64, 8)
   local craft_tool_model_val  = craft_tool_model_tvbr:raw()
   tree:add(player_spawn_fields.craft_tool_model, craft_tool_model_tvbr, craft_tool_model_val)
 
+  -- dissect the combat_tagger_id field
+  local combat_tagger_id_tvbr = tvbuf:range(72, 8)
+  local combat_tagger_id_val  = combat_tagger_id_tvbr:raw()
+  tree:add(player_spawn_fields.combat_tagger_id, combat_tagger_id_tvbr, combat_tagger_id_val)
+
   -- dissect the b_npc_base field
-  local b_npc_base_tvbr = tvbuf:range(64, 4)
+  local b_npc_base_tvbr = tvbuf:range(80, 4)
   local b_npc_base_val  = b_npc_base_tvbr:le_uint()
   tree:add_le(player_spawn_fields.b_npc_base, b_npc_base_tvbr, b_npc_base_val)
 
   -- dissect the b_npc_name field
-  local b_npc_name_tvbr = tvbuf:range(68, 4)
+  local b_npc_name_tvbr = tvbuf:range(84, 4)
   local b_npc_name_val  = b_npc_name_tvbr:le_uint()
   tree:add_le(player_spawn_fields.b_npc_name, b_npc_name_tvbr, b_npc_name_val)
 
   -- dissect the level_id field
-  local level_id_tvbr = tvbuf:range(72, 4)
+  local level_id_tvbr = tvbuf:range(88, 4)
   local level_id_val  = level_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.level_id, level_id_tvbr, level_id_val)
 
+  -- dissect the object_type field
+  local object_type_tvbr = tvbuf:range(92, 4)
+  local object_type_val  = object_type_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.object_type, object_type_tvbr, object_type_val)
+
   -- dissect the director_id field
-  local director_id_tvbr = tvbuf:range(80, 4)
+  local director_id_tvbr = tvbuf:range(96, 4)
   local director_id_val  = director_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.director_id, director_id_tvbr, director_id_val)
 
   -- dissect the owner_id field
-  local owner_id_tvbr = tvbuf:range(84, 4)
+  local owner_id_tvbr = tvbuf:range(100, 4)
   local owner_id_val  = owner_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.owner_id, owner_id_tvbr, owner_id_val)
 
-  -- dissect the parent_actor_id field
-  local parent_actor_id_tvbr = tvbuf:range(88, 4)
-  local parent_actor_id_val  = parent_actor_id_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.parent_actor_id, parent_actor_id_tvbr, parent_actor_id_val)
+  -- dissect the tether_target_id field
+  local tether_target_id_tvbr = tvbuf:range(104, 4)
+  local tether_target_id_val  = tether_target_id_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.tether_target_id, tether_target_id_tvbr, tether_target_id_val)
 
   -- dissect the hp_max field
-  local hp_max_tvbr = tvbuf:range(92, 4)
+  local hp_max_tvbr = tvbuf:range(108, 4)
   local hp_max_val  = hp_max_tvbr:le_uint()
   tree:add_le(player_spawn_fields.hp_max, hp_max_tvbr, hp_max_val)
 
   -- dissect the hp_cur field
-  local hp_cur_tvbr = tvbuf:range(96, 4)
+  local hp_cur_tvbr = tvbuf:range(112, 4)
   local hp_cur_val  = hp_cur_tvbr:le_uint()
   tree:add_le(player_spawn_fields.hp_cur, hp_cur_tvbr, hp_cur_val)
 
   -- dissect the display_flags field
-  local display_flags_tvbr = tvbuf:range(100, 4)
+  local display_flags_tvbr = tvbuf:range(116, 4)
   local display_flags_val  = display_flags_tvbr:le_uint()
   tree:add_le(player_spawn_fields.display_flags, display_flags_tvbr, display_flags_val)
 
   -- dissect the fate_id field
-  local fate_id_tvbr = tvbuf:range(104, 2)
+  local fate_id_tvbr = tvbuf:range(120, 2)
   local fate_id_val  = fate_id_tvbr:le_uint()
   tree:add_le(player_spawn_fields.fate_id, fate_id_tvbr, fate_id_val)
 
-  -- dissect the mp_cur field
-  local mp_cur_tvbr = tvbuf:range(106, 2)
-  local mp_cur_val  = mp_cur_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.mp_cur, mp_cur_tvbr, mp_cur_val)
+  -- dissect the resource_points_max field
+  local resource_points_max_tvbr = tvbuf:range(122, 2)
+  local resource_points_max_val  = resource_points_max_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.resource_points_max, resource_points_max_tvbr, resource_points_max_val)
 
-  -- dissect the tp_cur field
-  local tp_cur_tvbr = tvbuf:range(108, 2)
-  local tp_cur_val  = tp_cur_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.tp_cur, tp_cur_tvbr, tp_cur_val)
+  -- dissect the resource_points field
+  local resource_points_tvbr = tvbuf:range(124, 2)
+  local resource_points_val  = resource_points_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.resource_points, resource_points_tvbr, resource_points_val)
 
-  -- dissect the mp_max field
-  local mp_max_tvbr = tvbuf:range(110, 2)
-  local mp_max_val  = mp_max_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.mp_max, mp_max_tvbr, mp_max_val)
+  -- dissect the behavior field
+  local behavior_tvbr = tvbuf:range(126, 2)
+  local behavior_val  = behavior_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.behavior, behavior_tvbr, behavior_val)
 
   -- dissect the model_chara field
-  local model_chara_tvbr = tvbuf:range(112, 2)
+  local model_chara_tvbr = tvbuf:range(128, 2)
   local model_chara_val  = model_chara_tvbr:le_uint()
   tree:add_le(player_spawn_fields.model_chara, model_chara_tvbr, model_chara_val)
 
   -- dissect the rotation field
-  local rotation_tvbr = tvbuf:range(114, 2)
+  local rotation_tvbr = tvbuf:range(130, 2)
   local rotation_val  = rotation_tvbr:le_uint()
   tree:add_le(player_spawn_fields.rotation, rotation_tvbr, rotation_val)
 
+  -- dissect the current_mount field
+  local current_mount_tvbr = tvbuf:range(132, 2)
+  local current_mount_val  = current_mount_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.current_mount, current_mount_tvbr, current_mount_val)
+
   -- dissect the active_minion field
-  local active_minion_tvbr = tvbuf:range(116, 2)
+  local active_minion_tvbr = tvbuf:range(134, 2)
   local active_minion_val  = active_minion_tvbr:le_uint()
   tree:add_le(player_spawn_fields.active_minion, active_minion_tvbr, active_minion_val)
 
+  -- dissect the follow_mount_id field
+  local follow_mount_id_tvbr = tvbuf:range(136, 2)
+  local follow_mount_id_val  = follow_mount_id_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.follow_mount_id, follow_mount_id_tvbr, follow_mount_id_val)
+
+  -- dissect the ornament_id field
+  local ornament_id_tvbr = tvbuf:range(138, 2)
+  local ornament_id_val  = ornament_id_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.ornament_id, ornament_id_tvbr, ornament_id_val)
+
+  -- dissect the tether_id field
+  local tether_id_tvbr = tvbuf:range(140, 2)
+  local tether_id_val  = tether_id_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.tether_id, tether_id_tvbr, tether_id_val)
+
   -- dissect the spawn_index field
-  local spawn_index_tvbr = tvbuf:range(118, 1)
+  local spawn_index_tvbr = tvbuf:range(142, 1)
   local spawn_index_val  = spawn_index_tvbr:le_uint()
   tree:add_le(player_spawn_fields.spawn_index, spawn_index_tvbr, spawn_index_val)
 
-  -- dissect the state field
-  local state_tvbr = tvbuf:range(119, 1)
-  local state_val  = state_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.state, state_tvbr, state_val)
+  -- dissect the character_mode field
+  local character_mode_tvbr = tvbuf:range(143, 1)
+  local character_mode_val  = character_mode_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.character_mode, character_mode_tvbr, character_mode_val)
 
-  -- dissect the persistent_emote field
-  local persistent_emote_tvbr = tvbuf:range(120, 1)
-  local persistent_emote_val  = persistent_emote_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.persistent_emote, persistent_emote_tvbr, persistent_emote_val)
+  -- dissect the mode_param field
+  local mode_param_tvbr = tvbuf:range(144, 1)
+  local mode_param_val  = mode_param_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.mode_param, mode_param_tvbr, mode_param_val)
 
-  -- dissect the model_type field
-  local model_type_tvbr = tvbuf:range(121, 1)
-  local model_type_val  = model_type_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.model_type, model_type_tvbr, model_type_val)
+  -- dissect the object_kind field
+  local object_kind_tvbr = tvbuf:range(145, 1)
+  local object_kind_val  = object_kind_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.object_kind, object_kind_tvbr, object_kind_val)
 
   -- dissect the subtype field
-  local subtype_tvbr = tvbuf:range(122, 1)
+  local subtype_tvbr = tvbuf:range(146, 1)
   local subtype_val  = subtype_tvbr:le_uint()
   tree:add_le(player_spawn_fields.subtype, subtype_tvbr, subtype_val)
 
   -- dissect the voice field
-  local voice_tvbr = tvbuf:range(123, 1)
+  local voice_tvbr = tvbuf:range(147, 1)
   local voice_val  = voice_tvbr:le_uint()
   tree:add_le(player_spawn_fields.voice, voice_tvbr, voice_val)
 
-  -- dissect the enemy_type field
-  local enemy_type_tvbr = tvbuf:range(126, 1)
-  local enemy_type_val  = enemy_type_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.enemy_type, enemy_type_tvbr, enemy_type_val)
+  -- dissect the free_company_crest_flags field
+  local free_company_crest_flags_tvbr = tvbuf:range(148, 1)
+  local free_company_crest_flags_val  = free_company_crest_flags_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.free_company_crest_flags, free_company_crest_flags_tvbr, free_company_crest_flags_val)
+
+  -- dissect the battalion field
+  local battalion_tvbr = tvbuf:range(149, 1)
+  local battalion_val  = battalion_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.battalion, battalion_tvbr, battalion_val)
 
   -- dissect the level field
-  local level_tvbr = tvbuf:range(127, 1)
+  local level_tvbr = tvbuf:range(150, 1)
   local level_val  = level_tvbr:le_uint()
   tree:add_le(player_spawn_fields.level, level_tvbr, level_val)
 
   -- dissect the class_job field
-  local class_job_tvbr = tvbuf:range(128, 1)
+  local class_job_tvbr = tvbuf:range(151, 1)
   local class_job_val  = class_job_tvbr:le_uint()
   tree:add_le(player_spawn_fields.class_job, class_job_tvbr, class_job_val)
 
-  -- dissect the current_mount field
-  local current_mount_tvbr = tvbuf:range(132, 1)
-  local current_mount_val  = current_mount_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.current_mount, current_mount_tvbr, current_mount_val)
+  -- dissect the event_state field
+  local event_state_tvbr = tvbuf:range(152, 1)
+  local event_state_val  = event_state_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.event_state, event_state_tvbr, event_state_val)
+
+  -- dissect the is_hidden field
+  local is_hidden_tvbr = tvbuf:range(153, 1)
+  local is_hidden_val  = is_hidden_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.is_hidden, is_hidden_tvbr, is_hidden_val)
+
+  -- dissect the combat_tag_type field
+  local combat_tag_type_tvbr = tvbuf:range(154, 1)
+  local combat_tag_type_val  = combat_tag_type_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.combat_tag_type, combat_tag_type_tvbr, combat_tag_type_val)
 
   -- dissect the mount_head field
-  local mount_head_tvbr = tvbuf:range(133, 1)
+  local mount_head_tvbr = tvbuf:range(155, 1)
   local mount_head_val  = mount_head_tvbr:le_uint()
   tree:add_le(player_spawn_fields.mount_head, mount_head_tvbr, mount_head_val)
 
   -- dissect the mount_body field
-  local mount_body_tvbr = tvbuf:range(134, 1)
+  local mount_body_tvbr = tvbuf:range(156, 1)
   local mount_body_val  = mount_body_tvbr:le_uint()
   tree:add_le(player_spawn_fields.mount_body, mount_body_tvbr, mount_body_val)
 
   -- dissect the mount_feet field
-  local mount_feet_tvbr = tvbuf:range(135, 1)
+  local mount_feet_tvbr = tvbuf:range(157, 1)
   local mount_feet_val  = mount_feet_tvbr:le_uint()
   tree:add_le(player_spawn_fields.mount_feet, mount_feet_tvbr, mount_feet_val)
 
   -- dissect the mount_color field
-  local mount_color_tvbr = tvbuf:range(136, 1)
+  local mount_color_tvbr = tvbuf:range(158, 1)
   local mount_color_val  = mount_color_tvbr:le_uint()
   tree:add_le(player_spawn_fields.mount_color, mount_color_tvbr, mount_color_val)
 
-  -- dissect the scale field
-  local scale_tvbr = tvbuf:range(137, 1)
-  local scale_val  = scale_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.scale, scale_tvbr, scale_val)
+  -- dissect the status_loop_vfx_id field
+  local status_loop_vfx_id_tvbr = tvbuf:range(159, 1)
+  local status_loop_vfx_id_val  = status_loop_vfx_id_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.status_loop_vfx_id, status_loop_vfx_id_tvbr, status_loop_vfx_id_val)
 
-  -- dissect the elemental_level field
-  local elemental_level_tvbr = tvbuf:range(138, 2)
-  local elemental_level_val  = elemental_level_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.elemental_level, elemental_level_tvbr, elemental_level_val)
+  -- dissect the foray_rank field
+  local foray_rank_tvbr = tvbuf:range(160, 1)
+  local foray_rank_val  = foray_rank_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.foray_rank, foray_rank_tvbr, foray_rank_val)
 
-  -- dissect the element field
-  local element_tvbr = tvbuf:range(140, 2)
-  local element_val  = element_tvbr:le_uint()
-  tree:add_le(player_spawn_fields.element, element_tvbr, element_val)
+  -- dissect the foray_element field
+  local foray_element_tvbr = tvbuf:range(161, 1)
+  local foray_element_val  = foray_element_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.foray_element, foray_element_tvbr, foray_element_val)
+
+  -- dissect the model_scale_id field
+  local model_scale_id_tvbr = tvbuf:range(162, 1)
+  local model_scale_id_val  = model_scale_id_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.model_scale_id, model_scale_id_tvbr, model_scale_id_val)
+
+  -- dissect the model_state field
+  local model_state_tvbr = tvbuf:range(163, 1)
+  local model_state_val  = model_state_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.model_state, model_state_tvbr, model_state_val)
+
+  -- dissect the model_attribute_flags field
+  local model_attribute_flags_tvbr = tvbuf:range(164, 1)
+  local model_attribute_flags_val  = model_attribute_flags_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.model_attribute_flags, model_attribute_flags_tvbr, model_attribute_flags_val)
+
+  -- dissect the animation_state field
+  local animation_state_tvbr = tvbuf:range(165, 1)
+  local animation_state_val  = animation_state_tvbr:le_uint()
+  tree:add_le(player_spawn_fields.animation_state, animation_state_tvbr, animation_state_val)
+
+  -- dissect the unknown_a6 field
+  local unknown_a6_tvbr = tvbuf:range(166, 2)
+  local unknown_a6_val  = unknown_a6_tvbr:raw()
+  tree:add(player_spawn_fields.unknown_a6, unknown_a6_tvbr, unknown_a6_val)
 
   -- dissect status_effects
   local status_effects_dissector = Dissector.get('ffxiv_ipc_status_effect')
-  local status_effects_pos = 144
+  local status_effects_pos = 168
   local status_effects_len = 12
   local status_effects_count = 30
 
@@ -295,7 +424,7 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
 
   -- dissect position
   local position_dissector = Dissector.get('ffxiv_ipc_position')
-  local position_pos = 504
+  local position_pos = 528
   local position_len = 12
   local position_count = 1
 
@@ -310,13 +439,13 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
   end
 
   -- dissect the models field
-  local models_pos = 516
+  local models_pos = 540
   local models_len = 4
   local models_count = 10
 
   while models_pos + models_len <= len do
     local models_tvbr = tvbuf:range(models_pos, models_len)
-    local models_val  = models_tvbr:le_int()
+    local models_val  = models_tvbr:le_uint()
     tree:add_le(player_spawn_fields.models, models_tvbr, models_val)
     models_pos = models_pos + models_len
     models_count = models_count - 1
@@ -325,8 +454,40 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
     end
   end
 
+  -- dissect the model_stain2_ids field
+  local model_stain2_ids_pos = 580
+  local model_stain2_ids_len = 1
+  local model_stain2_ids_count = 10
+
+  while model_stain2_ids_pos + model_stain2_ids_len <= len do
+    local model_stain2_ids_tvbr = tvbuf:range(model_stain2_ids_pos, model_stain2_ids_len)
+    local model_stain2_ids_val  = model_stain2_ids_tvbr:le_uint()
+    tree:add_le(player_spawn_fields.model_stain2_ids, model_stain2_ids_tvbr, model_stain2_ids_val)
+    model_stain2_ids_pos = model_stain2_ids_pos + model_stain2_ids_len
+    model_stain2_ids_count = model_stain2_ids_count - 1
+    if model_stain2_ids_count <= 0 then
+      break
+    end
+  end
+
+  -- dissect the glasses_ids field
+  local glasses_ids_pos = 590
+  local glasses_ids_len = 2
+  local glasses_ids_count = 2
+
+  while glasses_ids_pos + glasses_ids_len <= len do
+    local glasses_ids_tvbr = tvbuf:range(glasses_ids_pos, glasses_ids_len)
+    local glasses_ids_val  = glasses_ids_tvbr:le_uint()
+    tree:add_le(player_spawn_fields.glasses_ids, glasses_ids_tvbr, glasses_ids_val)
+    glasses_ids_pos = glasses_ids_pos + glasses_ids_len
+    glasses_ids_count = glasses_ids_count - 1
+    if glasses_ids_count <= 0 then
+      break
+    end
+  end
+
   -- dissect the nickname field
-  local nickname_tvbr = tvbuf:range(578, 32)
+  local nickname_tvbr = tvbuf:range(594, 32)
   local nickname_val  = nickname_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(player_spawn_fields.nickname, nickname_tvbr, nickname_val)
 
@@ -335,14 +496,19 @@ function ffxiv_ipc_player_spawn.dissector(tvbuf, pktinfo, root)
   tree:append_text(nickname_display)
 
   -- dissect the look field
-  local look_tvbr = tvbuf:range(588, 26)
+  local look_tvbr = tvbuf:range(626, 26)
   local look_val  = look_tvbr:raw()
   tree:add(player_spawn_fields.look, look_tvbr, look_val)
 
   -- dissect the fc_tag field
-  local fc_tag_tvbr = tvbuf:range(614, 10)
+  local fc_tag_tvbr = tvbuf:range(652, 6)
   local fc_tag_val  = fc_tag_tvbr:string(ENC_UTF_8):match("^[^%z]*")
   tree:add(player_spawn_fields.fc_tag, fc_tag_tvbr, fc_tag_val)
+
+  -- dissect the unknown_tail field
+  local unknown_tail_tvbr = tvbuf:range(658, 6)
+  local unknown_tail_val  = unknown_tail_tvbr:raw()
+  tree:add(player_spawn_fields.unknown_tail, unknown_tail_tvbr, unknown_tail_val)
 
   return len
 end

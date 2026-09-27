@@ -551,7 +551,7 @@ local M = {
   },
   PlayerSpawn = {
     name = "ffxiv_ipc_player_spawn",
-    length = 624,
+    length = 664,
   },
   PlayerStateFlags = {
     name = "ffxiv_ipc_player_state_flags",
