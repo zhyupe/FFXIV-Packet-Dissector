@@ -71,6 +71,7 @@ import { FellowshipMember, FellowshipMemberItem } from './fellowship-member'
 import { FellowshipMemberSetGroupHandler } from './fellowship-member-set-group-handler'
 import { FellowshipMessageBoard } from './fellowship-message-board'
 import { FellowshipMessageBoardQuery } from './fellowship-message-board-query'
+import { FishCaught } from './fish-caught'
 import { FishEvent } from './fish-event'
 import { FreeCompanyDialog } from './free-company-dialog'
 import { FreeCompanyInfo } from './free-company-info'
@@ -183,6 +184,7 @@ export const PacketMap = packetMapTypeConstraint({
     FellowshipMemberSetGroupHandler,
   [NormalizedOpcode.FellowshipMessageBoard]: FellowshipMessageBoard,
   [NormalizedOpcode.FellowshipMessageBoardQuery]: FellowshipMessageBoardQuery,
+  [NormalizedOpcode.FishCaught]: FishCaught,
   [NormalizedOpcode.FreeCompanyDialog]: FreeCompanyDialog,
   [NormalizedOpcode.FreeCompanyInfo]: FreeCompanyInfo,
   [NormalizedOpcode.Init]: Init,
@@ -317,6 +319,7 @@ export {
   FellowshipMessageBoard,
   FellowshipMessageBoardQuery,
   FellowshipNoteItem,
+  FishCaught,
   FishEvent,
   FreeCompanyDialog,
   FreeCompanyInfo,
