@@ -69,6 +69,7 @@ ServerZoneIpc:
     DeleteObject:
       FFXIVOpcodes: ObjectDespawn
     DesynthesisLevels: {}
+    DomanEnclaveState: {}
     Effect:
       ACT: Ability1
     EffectResult:

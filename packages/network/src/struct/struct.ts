@@ -126,14 +126,17 @@ export abstract class Struct {
     }
 
     const divisor = config.format?.divisor
-    if (divisor !== undefined) {
-      const divide = (raw: unknown) => {
+    const addend = config.format?.addend
+    if (divisor !== undefined || addend !== undefined) {
+      const convert = (raw: unknown) => {
         if (typeof raw !== 'number') {
-          throw new TypeError('Field divisor requires numeric values')
+          throw new TypeError(
+            'Field numeric conversion requires numeric values',
+          )
         }
-        return raw / divisor
+        return raw / (divisor ?? 1) + (addend ?? 0)
       }
-      return Array.isArray(value) ? value.map(divide) : divide(value)
+      return Array.isArray(value) ? value.map(convert) : convert(value)
     }
     return value
   }

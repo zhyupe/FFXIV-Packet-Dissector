@@ -204,6 +204,7 @@ export const CN_7_56a: OpcodeMap = {
   0x032f: [{ type: NormalizedOpcode.WeatherChange, outgoing: false }],
   0x0331: [{ type: NormalizedOpcode.BalloonTalk4, outgoing: false }],
   0x0333: [{ type: NormalizedOpcode.ContentFinderNotifyPop, outgoing: false }],
+  0x0340: [{ type: NormalizedOpcode.DomanEnclaveState, outgoing: false }],
   0x0345: [{ type: NormalizedOpcode.UpdateClassInfoBozja, outgoing: false }],
   0x034b: [{ type: NormalizedOpcode.EventPlay8, outgoing: false }],
   0x034d: [{ type: NormalizedOpcode.MarketBoardItemListing, outgoing: false }],

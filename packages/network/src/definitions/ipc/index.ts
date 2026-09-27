@@ -51,6 +51,7 @@ import { CountdownCancel, CountdownInitiate } from './countdown'
 import { CraftStatus } from './craft-status'
 import { CurrencyCrystalInfo } from './currency-crystal-info'
 import { DesynthesisLevels } from './desynthesis-levels'
+import { DomanEnclaveState } from './doman-enclave'
 import { Effect } from './effect'
 import {
   AddStatusEffectItem,
@@ -281,6 +282,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.CurrencyCrystalInfo]: CurrencyCrystalInfo,
   [NormalizedOpcode.DeleteObject]: DeleteObject,
   [NormalizedOpcode.DesynthesisLevels]: DesynthesisLevels,
+  [NormalizedOpcode.DomanEnclaveState]: DomanEnclaveState,
   [NormalizedOpcode.Effect]: Effect,
   [NormalizedOpcode.EffectResult]: EffectResult,
   [NormalizedOpcode.EffectResult16]: EffectResult16,
@@ -475,6 +477,7 @@ export {
   CurrencyCrystalInfo,
   DeleteObject,
   DesynthesisLevels,
+  DomanEnclaveState,
   Effect,
   EffectResult,
   EffectResult4,

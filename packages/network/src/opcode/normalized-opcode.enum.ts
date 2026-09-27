@@ -45,6 +45,7 @@ export enum NormalizedOpcode {
   CurrencyCrystalInfo = 'CurrencyCrystalInfo',
   DeleteObject = 'DeleteObject',
   DesynthesisLevels = 'DesynthesisLevels',
+  DomanEnclaveState = 'DomanEnclaveState',
   Effect = 'Effect',
   EffectResult = 'EffectResult',
   EffectResult16 = 'EffectResult16',

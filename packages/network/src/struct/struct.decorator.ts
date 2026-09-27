@@ -79,6 +79,9 @@ export function field(
 }
 
 export function format(format: IPCFieldFormat): PropertyDecorator {
+  if (format.addend !== undefined && !Number.isFinite(format.addend)) {
+    throw new RangeError('Field addend must be a finite number')
+  }
   if (
     format.divisor !== undefined &&
     (!Number.isFinite(format.divisor) || format.divisor <= 0)

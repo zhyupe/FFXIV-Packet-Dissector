@@ -181,6 +181,10 @@ local M = {
     name = "ffxiv_ipc_desynthesis_levels",
     length = 32,
   },
+  DomanEnclaveState = {
+    name = "ffxiv_ipc_doman_enclave_state",
+    length = 16,
+  },
   Effect = {
     name = "ffxiv_ipc_effect",
     length = 120,

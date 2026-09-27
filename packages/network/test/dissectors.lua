@@ -122,6 +122,28 @@ assert(registry.getDissector(0x0131, 95, 'S') == nil)
 assert(registry.getDissector(0xFFFF, 1024, 'S') == nil)
 assert(select(2, registry.getDissector(0x0351, 288, 'S')) == 'EventPlay64')
 
+-- Synthetic Doman state keeps unknown bytes nonzero to check the 16-bit widths.
+for _, donated in ipairs({ 0, 1234, 2468, 65535 }) do
+  for _, factor in ipairs({ 0, 35, 255 }) do
+    local bytes = string.char(12, 1) .. string.pack('<I2', donated)
+      .. string.char(factor, 2, 1, 0x5a) .. string.pack('<I2', 54321) .. string.rep('\165', 6)
+    parse('ffxiv_ipc_doman_enclave_state', bytes)
+    assert(field('ffxiv_ipc_doman_enclave_state.current_milestone') == 12)
+    assert(field('ffxiv_ipc_doman_enclave_state.is_accepting_donations') == 1)
+    assert(field('ffxiv_ipc_doman_enclave_state.donated') == donated)
+    assert(field('ffxiv_ipc_doman_enclave_state.price_ratio_percent') == factor + 100)
+    assert(field('ffxiv_ipc_doman_enclave_state.refresh_ui') == 2)
+    assert(field('ffxiv_ipc_doman_enclave_state.refresh_zone') == 1)
+    assert(field('ffxiv_ipc_doman_enclave_state.unknown7') == 0x5a)
+    assert(field('ffxiv_ipc_doman_enclave_state.allowance') == 54321)
+    assert(field('ffxiv_ipc_doman_enclave_state.unknown_tail') == string.rep('\165', 6))
+  end
+end
+assert(fieldDefinitions['ffxiv_ipc_doman_enclave_state.price_ratio_percent'].kind == 'double')
+assert(select(2, registry.getDissector(0x0340, 16, 'S')) == 'DomanEnclaveState')
+assert(registry.getDissector(0x0340, 15, 'S') == nil)
+assert(registry.getDissector(0x0340, 16, 'C') == nil)
+
 -- Artificial membership bits exercise both slots and the entire bitmap capacity.
 local achievementIds = { 0, 7, 8, 19, 4077, 4078, 4079 }
 for slot = 0, 1 do

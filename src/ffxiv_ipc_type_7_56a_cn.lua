@@ -991,6 +991,12 @@ M.types = {
       outgoing = false,
     },
   },
+  [0x0340] = {
+    [0] = {
+      type = "DomanEnclaveState",
+      outgoing = false,
+    },
+  },
   [0x0345] = {
     [0] = {
       type = "UpdateClassInfoBozja",
