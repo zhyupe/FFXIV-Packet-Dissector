@@ -333,6 +333,16 @@ M.forward.client_trigger_command_id = {
 }
 M.reverse.client_trigger_command_id = makeValString(M.forward.client_trigger_command_id)
 
+M.forward.contents_finder_queue_state = {
+  None = 0,
+  Pending = 1,
+  Queued = 2,
+  Ready = 3,
+  Accepted = 4,
+  InContent = 5,
+}
+M.reverse.contents_finder_queue_state = makeValString(M.forward.contents_finder_queue_state)
+
 M.forward.event_id = {
   Fishing = 1376257,
 }

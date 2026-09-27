@@ -943,6 +943,12 @@ M.types = {
       outgoing = false,
     },
   },
+  [0x0310] = {
+    [0] = {
+      type = "ContentFinderNotify",
+      outgoing = false,
+    },
+  },
   [0x0312] = {
     [0] = {
       type = "RetainerSummary",

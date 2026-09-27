@@ -191,6 +191,7 @@ export const CN_7_56a: OpcodeMap = {
     { type: NormalizedOpcode.MarketBoardPurchaseHandler, outgoing: true },
   ],
   0x030a: [{ type: NormalizedOpcode.AoeEffect24, outgoing: false }],
+  0x0310: [{ type: NormalizedOpcode.ContentFinderNotify, outgoing: false }],
   0x0312: [{ type: NormalizedOpcode.RetainerSummary, outgoing: false }],
   0x0313: [{ type: NormalizedOpcode.Effect, outgoing: false }],
   0x0314: [{ type: NormalizedOpcode.UpdateClassInfo, outgoing: false }],

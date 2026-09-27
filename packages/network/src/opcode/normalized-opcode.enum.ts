@@ -39,6 +39,7 @@ export enum NormalizedOpcode {
   CompanySubmersibleStatus = 'CompanySubmersibleStatus',
   ContainerInfo = 'ContainerInfo',
   ContentFinderDutyInfo = 'ContentFinderDutyInfo',
+  ContentFinderNotify = 'ContentFinderNotify',
   ContentFinderNotifyPop = 'ContentFinderNotifyPop',
   CountdownCancel = 'CountdownCancel',
   CountdownInitiate = 'CountdownInitiate',

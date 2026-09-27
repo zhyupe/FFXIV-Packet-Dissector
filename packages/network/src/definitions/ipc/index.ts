@@ -276,6 +276,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.CompanySubmersibleStatus]: CompanySubmersibleStatus,
   [NormalizedOpcode.ContainerInfo]: ContainerInfo,
   [NormalizedOpcode.ContentFinderDutyInfo]: ContentFinderDutyInfo,
+  [NormalizedOpcode.ContentFinderNotify]: ContentFinderNotify,
   [NormalizedOpcode.ContentFinderNotifyPop]: ContentFinderNotifyPop,
   [NormalizedOpcode.CountdownCancel]: CountdownCancel,
   [NormalizedOpcode.CountdownInitiate]: CountdownInitiate,

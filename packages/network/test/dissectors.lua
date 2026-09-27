@@ -71,6 +71,8 @@ package.preload.ffxiv_db = function()
     ClassJob = { [19] = 'Test Job' },
     LogMessage = { [77] = 'Test Log Message' },
     PlaceName = { [42] = 'Test Place' },
+    ContentFinderCondition = { [42] = 'Test Duty' },
+    ContentRoulette = { [7] = 'Test Roulette' },
   }, { __index = function() return {} end })
 end
 for _, file in ipairs(arg) do dofile(file) end
@@ -123,6 +125,39 @@ assert(registry.getDissector(0x0187, 32, 'S') == nil)
 assert(registry.getDissector(0x0131, 95, 'S') == nil)
 assert(registry.getDissector(0xFFFF, 1024, 'S') == nil)
 assert(select(2, registry.getDissector(0x0351, 288, 'S')) == 'EventPlay64')
+
+-- Synthetic queue update with independent fields and full-width duty IDs.
+local queueUpdate = string.rep('\0', 40)
+queueUpdate = replace(queueUpdate, 0, string.char(2, 19, 10) .. string.rep('\165', 5))
+queueUpdate = replace(queueUpdate, 8, string.pack('<I8', 0x0123456789ABCDEF))
+queueUpdate = replace(queueUpdate, 16, string.char(7, 90, 90, 129))
+queueUpdate = replace(queueUpdate, 20, string.pack('<I4I4I4I4I4', 42, 0, 0x12345678, 0x80000001, 0xFFFFFFFF))
+parse('ffxiv_ipc_content_finder_notify', queueUpdate)
+assert(field('ffxiv_ipc_content_finder_notify.type') == 2)
+assert(fieldDefinitions['ffxiv_ipc_content_finder_notify.type'].valueNames[2] == 'Queued')
+assert(fieldDefinitions['ffxiv_ipc_content_finder_notify.class_job'].valueNames[19] == 'Test Job')
+assert(field('ffxiv_ipc_content_finder_notify.class_job') == 19)
+assert(field('ffxiv_ipc_content_finder_notify.language_flags') == 10)
+assert(field('ffxiv_ipc_content_finder_notify.unknown1') == string.rep('\165', 5))
+assert(field('ffxiv_ipc_content_finder_notify.flags') == 0x0123456789ABCDEF)
+assert(field('ffxiv_ipc_content_finder_notify.roulette') == 7)
+assert(fieldDefinitions['ffxiv_ipc_content_finder_notify.roulette'].valueNames[7] == 'Test Roulette')
+assert(field('ffxiv_ipc_content_finder_notify.unknown2') == string.char(90, 90))
+assert(field('ffxiv_ipc_content_finder_notify.queue_start_flags') == 129)
+local queueDuties = { 42, 0, 0x12345678, 0x80000001, 0xFFFFFFFF }
+assert(#values['ffxiv_ipc_content_finder_notify_instance.content'] == #queueDuties)
+for index, id in ipairs(queueDuties) do
+  assert(field('ffxiv_ipc_content_finder_notify_instance.content', index) == id)
+end
+assert(fieldDefinitions['ffxiv_ipc_content_finder_notify_instance.content'].valueNames[42] == 'Test Duty')
+parse('ffxiv_ipc_content_finder_notify', string.rep('\0', 40))
+assert(#values['ffxiv_ipc_content_finder_notify_instance.content'] == 5)
+for index = 1, 5 do
+  assert(field('ffxiv_ipc_content_finder_notify_instance.content', index) == 0)
+end
+assert(select(2, registry.getDissector(0x0310, 40, 'S')) == 'ContentFinderNotify')
+assert(registry.getDissector(0x0310, 39, 'S') == nil)
+assert(registry.getDissector(0x0310, 40, 'C') == nil)
 
 -- Synthetic progress response: counts remain unsigned, without percentage scaling.
 local progress = string.pack('<I2I2I4I4I4', 514, 0, 42, 0x80000001, 0xFFFFFFFF) .. string.rep('\0', 16)

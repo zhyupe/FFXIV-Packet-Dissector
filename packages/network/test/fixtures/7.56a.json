@@ -37,6 +37,7 @@
   "CompanySubmersibleStatus": "0x01EC",
   "ContainerInfo": "0x01B3",
   "ContentFinderDutyInfo": "0x00C5",
+  "ContentFinderNotify": "0x0310",
   "ContentFinderNotifyPop": "0x0333",
   "CountdownCancel": "0x01B9",
   "CountdownInitiate": "0x034E",

@@ -157,6 +157,14 @@ local M = {
     name = "ffxiv_ipc_content_finder_duty_info",
     length = 8,
   },
+  ContentFinderNotify = {
+    name = "ffxiv_ipc_content_finder_notify",
+    length = 40,
+  },
+  ContentFinderNotifyInstance = {
+    name = "ffxiv_ipc_content_finder_notify_instance",
+    length = 4,
+  },
   ContentFinderNotifyPop = {
     name = "ffxiv_ipc_content_finder_notify_pop",
     length = 32,

@@ -1,45 +1,58 @@
+import { Base } from '@/generate/lua/wireshark'
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
-import { child, field, format, ipcIf } from '@/struct/struct.decorator'
+import { child, field, format, ipcEnum, ipcIf } from '@/struct/struct.decorator'
 
 @ipcIf('content')
 export class ContentFinderNotifyInstance extends Struct {
   static byteLength = 4
 
-  @field(FieldType.uint, 0, 2)
+  @field(FieldType.uint, 0, 4)
   @format({ db: 'ContentFinderCondition', append: 'enum' })
   content!: number
-
-  @field(FieldType.uint, 2, 2)
-  unknown!: number
 }
 
+@ipcEnum('ContentsFinderQueueState', {
+  None: 0,
+  Pending: 1,
+  Queued: 2,
+  Ready: 3,
+  Accepted: 4,
+  InContent: 5,
+})
 export class ContentFinderNotify extends Struct {
   @field(FieldType.byte, 0)
-  @format({ enum: 'MatchEventType' })
+  @format({ enum: 'ContentsFinderQueueState' })
   type!: number
 
   @field(FieldType.byte, 1)
   @format({ db: 'ClassJob' })
   classJob!: number
 
-  @field(FieldType.uint, 2, 2)
-  unknown1!: number
+  @field(FieldType.byte, 2)
+  @format({ base: Base.HEX })
+  languageFlags!: number
 
-  @field(FieldType.uint, 4, 2)
-  unknown2!: number
+  @field(FieldType.bytes, 3, 5)
+  unknown1!: Buffer
 
-  @field(FieldType.uint, 6, 2)
-  unknown3!: number
+  @field(FieldType.biguint, 8, 8)
+  @format({ base: Base.HEX })
+  flags!: bigint
 
-  @field(FieldType.uint, 8, 2)
+  @field(FieldType.byte, 16)
   @format({ db: 'ContentRoulette' })
   roulette!: number
 
-  @field(FieldType.uint, 10, 2)
-  unknown5!: number
+  @field(FieldType.bytes, 17, 2)
+  unknown2!: Buffer
 
-  @field(FieldType.array, 12, 5 * ContentFinderNotifyInstance.byteLength)
+  // Bit 0 is passed to ContentsFinderQueueInfo.UpdateQueueState as beganQueue.
+  @field(FieldType.byte, 19)
+  @format({ base: Base.HEX })
+  queueStartFlags!: number
+
+  @field(FieldType.array, 20, 5 * ContentFinderNotifyInstance.byteLength)
   @child(ContentFinderNotifyInstance)
   contentFinderNotifyInstance!: ContentFinderNotifyInstance[]
 }

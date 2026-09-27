@@ -57,6 +57,7 @@ ServerZoneIpc:
     ContainerInfo: {}
     ContentFinderDutyInfo:
       FFXIVOpcodes: CFDutyInfo
+    ContentFinderNotify: {}
     ContentFinderNotifyPop:
       FFXIVOpcodes: CFNotify
     CountdownCancel:
