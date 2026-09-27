@@ -126,6 +126,42 @@ assert(registry.getDissector(0x0131, 95, 'S') == nil)
 assert(registry.getDissector(0xFFFF, 1024, 'S') == nil)
 assert(select(2, registry.getDissector(0x0351, 288, 'S')) == 'EventPlay64')
 
+-- Synthetic event parameters; capacity and active count are distinct.
+local eventVariants = {
+  { 'update_event_scene2', 'update_event_scene_header', 2, 0x034A, 'S', 'UpdateEventScene2', true },
+  { 'update_event_scene4', 'update_event_scene_header', 4, 0x00AE, 'S', 'UpdateEventScene4', true },
+  { 'update_event_scene8', 'update_event_scene_header', 8, 0x01C1, 'S', 'UpdateEventScene8', true },
+  { 'update_event_scene16', 'update_event_scene_header', 16, 0x03D3, 'S', 'UpdateEventScene16', true },
+  { 'resume_event_scene2', 'resume_event_scene_header', 2, 0x01AB, 'S', 'ResumeEventScene2', false },
+  { 'yield_event_scene2', 'yield_event_scene_header', 2, 0x008C, 'C', 'YieldEventScene2', false },
+  { 'yield_event_scene4', 'yield_event_scene_header', 4, 0x030A, 'C', 'YieldEventScene4', false },
+  { 'yield_event_scene8', 'yield_event_scene_header', 8, 0x03AA, 'C', 'YieldEventScene8', false },
+}
+for _, variant in ipairs(eventVariants) do
+  local name, header, capacity, opcode, direction, title, update = table.unpack(variant)
+  local packet = string.pack('<I4I2BB', 0x12340056, 0x4321, update and capacity - 1 or 0xA5, update and 0x5A or capacity - 1)
+  for i = 0, capacity - 1 do packet = packet .. string.pack('<I4', 0x80000000 + i) end
+  parse('ffxiv_ipc_' .. name, packet)
+  assert(field('ffxiv_ipc_' .. header .. '.event_id') == 0x12340056)
+  assert(field('ffxiv_ipc_' .. header .. '.scene') == 0x4321)
+  assert(field('ffxiv_ipc_' .. header .. '.param_count') == capacity - 1)
+  local discriminator = update and 'unknown' or (direction == 'C' and 'yield_id' or 'resume_id')
+  assert(field('ffxiv_ipc_' .. header .. '.' .. discriminator) == (update and 0x5A or 0xA5))
+  assert(#values['ffxiv_ipc_' .. name .. '.entities'] == capacity)
+  for i = 1, capacity do assert(field('ffxiv_ipc_' .. name .. '.entities', i) == 0x80000000 + i - 1) end
+  assert(select(2, registry.getDissector(opcode, #packet, direction)) == title)
+  assert(registry.getDissector(opcode, #packet - 1, direction) == nil)
+  assert(registry.getDissector(opcode, #packet, direction == 'C' and 'S' or 'C') == nil)
+end
+local eventReturn = string.pack('<I4I2BBI4I4', 0x12340056, 0x4321, 0xA5, 2, 0x89ABCDEF, 0xFEDCBA98)
+parse('ffxiv_ipc_event_handler_return', eventReturn)
+assert(field('ffxiv_ipc_event_handler_return.error_code') == 0xA5)
+assert(field('ffxiv_ipc_event_handler_return.param_count') == 2)
+assert(field('ffxiv_ipc_event_handler_return.params', 1) == 0x89ABCDEF)
+assert(field('ffxiv_ipc_event_handler_return.params', 2) == 0xFEDCBA98)
+assert(select(2, registry.getDissector(0x03D6, 16, 'C')) == 'EventHandlerReturn')
+assert(registry.getDissector(0x03D6, 16, 'S') == nil)
+
 -- Synthetic queue update with independent fields and full-width duty IDs.
 local queueUpdate = string.rep('\0', 40)
 queueUpdate = replace(queueUpdate, 0, string.char(2, 19, 10) .. string.rep('\165', 5))

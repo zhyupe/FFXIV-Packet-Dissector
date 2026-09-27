@@ -3,6 +3,11 @@
 ServerZoneIpc:
   direction: server-to-client
   packets:
+    UpdateEventScene2: {}
+    UpdateEventScene4: {}
+    UpdateEventScene8: {}
+    UpdateEventScene16: {}
+    ResumeEventScene2: {}
     Achievement: {}
     ActorCast:
       ACT: ActorCast
@@ -269,6 +274,10 @@ ServerZoneIpc:
 ClientZoneIpc:
   direction: client-to-server
   packets:
+    YieldEventScene2: {}
+    YieldEventScene4: {}
+    YieldEventScene8: {}
+    EventHandlerReturn: {}
     ActionRequest: {}
     ActionRequestGroundTargeted: {}
     ActionSend: {}

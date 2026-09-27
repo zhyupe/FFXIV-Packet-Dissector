@@ -273,6 +273,10 @@ local M = {
     name = "ffxiv_ipc_event_finish",
     length = 4,
   },
+  EventHandlerReturn = {
+    name = "ffxiv_ipc_event_handler_return",
+    length = 16,
+  },
   EventPlay = {
     name = "ffxiv_ipc_event_play",
     length = 40,
@@ -593,6 +597,10 @@ local M = {
     name = "ffxiv_ipc_resume_event_scene16",
     length = 72,
   },
+  ResumeEventScene2 = {
+    name = "ffxiv_ipc_resume_event_scene2",
+    length = 16,
+  },
   ResumeEventScene32 = {
     name = "ffxiv_ipc_resume_event_scene32",
     length = 136,
@@ -729,6 +737,26 @@ local M = {
     name = "ffxiv_ipc_update_duty_recast_times5",
     length = 40,
   },
+  UpdateEventScene16 = {
+    name = "ffxiv_ipc_update_event_scene16",
+    length = 72,
+  },
+  UpdateEventScene2 = {
+    name = "ffxiv_ipc_update_event_scene2",
+    length = 16,
+  },
+  UpdateEventScene4 = {
+    name = "ffxiv_ipc_update_event_scene4",
+    length = 24,
+  },
+  UpdateEventScene8 = {
+    name = "ffxiv_ipc_update_event_scene8",
+    length = 40,
+  },
+  UpdateEventSceneHeader = {
+    name = "ffxiv_ipc_update_event_scene_header",
+    length = 8,
+  },
   UpdateHpMpTp = {
     name = "ffxiv_ipc_update_hp_mp_tp",
     length = 8,
@@ -755,6 +783,22 @@ local M = {
   },
   WeatherChange = {
     name = "ffxiv_ipc_weather_change",
+    length = 8,
+  },
+  YieldEventScene2 = {
+    name = "ffxiv_ipc_yield_event_scene2",
+    length = 16,
+  },
+  YieldEventScene4 = {
+    name = "ffxiv_ipc_yield_event_scene4",
+    length = 24,
+  },
+  YieldEventScene8 = {
+    name = "ffxiv_ipc_yield_event_scene8",
+    length = 40,
+  },
+  YieldEventSceneHeader = {
+    name = "ffxiv_ipc_yield_event_scene_header",
     length = 8,
   },
 }

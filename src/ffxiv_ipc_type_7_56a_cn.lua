@@ -110,6 +110,10 @@ M.types = {
       type = "AoeEffect16",
       outgoing = false,
     },
+    [1] = {
+      type = "YieldEventScene2",
+      outgoing = true,
+    },
   },
   [0x0093] = {
     [0] = {
@@ -144,6 +148,12 @@ M.types = {
   [0x00a8] = {
     [0] = {
       type = "SystemLogMessage",
+      outgoing = false,
+    },
+  },
+  [0x00ae] = {
+    [0] = {
+      type = "UpdateEventScene4",
       outgoing = false,
     },
   },
@@ -469,6 +479,12 @@ M.types = {
       outgoing = false,
     },
   },
+  [0x01ab] = {
+    [0] = {
+      type = "ResumeEventScene2",
+      outgoing = false,
+    },
+  },
   [0x01af] = {
     [0] = {
       type = "LogoutHandler",
@@ -514,6 +530,12 @@ M.types = {
   [0x01c0] = {
     [0] = {
       type = "EurekaStatusEffectList",
+      outgoing = false,
+    },
+  },
+  [0x01c1] = {
+    [0] = {
+      type = "UpdateEventScene8",
       outgoing = false,
     },
   },
@@ -942,6 +964,10 @@ M.types = {
       type = "AoeEffect24",
       outgoing = false,
     },
+    [1] = {
+      type = "YieldEventScene4",
+      outgoing = true,
+    },
   },
   [0x0310] = {
     [0] = {
@@ -1012,6 +1038,12 @@ M.types = {
   [0x0345] = {
     [0] = {
       type = "UpdateClassInfoBozja",
+      outgoing = false,
+    },
+  },
+  [0x034a] = {
+    [0] = {
+      type = "UpdateEventScene2",
       outgoing = false,
     },
   },
@@ -1158,6 +1190,10 @@ M.types = {
       type = "AoeEffect32",
       outgoing = false,
     },
+    [1] = {
+      type = "YieldEventScene8",
+      outgoing = true,
+    },
   },
   [0x03ad] = {
     [0] = {
@@ -1183,10 +1219,20 @@ M.types = {
       outgoing = false,
     },
   },
+  [0x03d3] = {
+    [0] = {
+      type = "UpdateEventScene16",
+      outgoing = false,
+    },
+  },
   [0x03d6] = {
     [0] = {
       type = "EffectResultBasic64",
       outgoing = false,
+    },
+    [1] = {
+      type = "EventHandlerReturn",
+      outgoing = true,
     },
   },
   [0x03d9] = {

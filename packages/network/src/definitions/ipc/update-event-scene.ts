@@ -3,7 +3,7 @@ import { Struct } from '@/struct/struct'
 import { field } from '@/struct/struct.decorator'
 import { createListStructFactory } from './factory/list'
 
-class ResumeEventSceneHeader extends Struct {
+class UpdateEventSceneHeader extends Struct {
   static byteLength = 8
 
   @field(FieldType.uint, 0, 4)
@@ -12,19 +12,22 @@ class ResumeEventSceneHeader extends Struct {
   @field(FieldType.uint, 4, 2)
   scene!: number
 
+  // Only the first paramCount uint32 entries are scene parameters.
   @field(FieldType.byte, 6)
-  resumeId!: number
+  paramCount!: number
 
   @field(FieldType.byte, 7)
-  paramCount!: number
+  unknown!: number
 }
+
 const factory = createListStructFactory(
-  ResumeEventSceneHeader,
+  UpdateEventSceneHeader,
   8,
   FieldType.uint,
   4,
 )
-export const ResumeEventScene2 = factory(2)
-export const ResumeEventScene8 = factory(8)
-export const ResumeEventScene16 = factory(16)
-export const ResumeEventScene32 = factory(32)
+
+export const UpdateEventScene2 = factory(2)
+export const UpdateEventScene4 = factory(4)
+export const UpdateEventScene8 = factory(8)
+export const UpdateEventScene16 = factory(16)

@@ -179,6 +179,7 @@ import {
 } from './recast-group'
 import { RSF, RSV } from './reserved-data'
 import {
+  ResumeEventScene2,
   ResumeEventScene8,
   ResumeEventScene16,
   ResumeEventScene32,
@@ -227,12 +228,23 @@ import {
   UpdateClassInfoEureka,
   UpdateClassInfoOccult,
 } from './update-class-info'
+import {
+  UpdateEventScene2,
+  UpdateEventScene4,
+  UpdateEventScene8,
+  UpdateEventScene16,
+} from './update-event-scene'
 import { UpdateHpMpTp } from './update-hp-mp-tp'
 import { ItemInfo, UpdateInventorySlot } from './update-inventory-slot'
 import { UpdatePositionHandler } from './update-position-handler'
 import { UpdatePositionInstance } from './update-position-instance'
 import { WardLandInfo } from './ward-land-info'
 import { WeatherChange } from './weather-change'
+import {
+  YieldEventScene2,
+  YieldEventScene4,
+  YieldEventScene8,
+} from './yield-event-scene'
 
 function packetMapTypeConstraint<
   T extends Partial<Record<NormalizedOpcode, StructConstructor>>,
@@ -299,6 +311,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.EnvironmentControl]: EnvironmentControl,
   [NormalizedOpcode.EurekaStatusEffectList]: EurekaStatusEffectList,
   [NormalizedOpcode.EventFinish]: EventFinish,
+  [NormalizedOpcode.EventHandlerReturn]: EventHandlerReturn,
   [NormalizedOpcode.EventPlay]: EventPlay,
   [NormalizedOpcode.EventPlay128]: EventPlay128,
   [NormalizedOpcode.EventPlay16]: EventPlay16,
@@ -373,6 +386,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.RSV]: RSV,
   [NormalizedOpcode.RecastGroup]: RecastGroup,
   [NormalizedOpcode.ResumeEventScene16]: ResumeEventScene16,
+  [NormalizedOpcode.ResumeEventScene2]: ResumeEventScene2,
   [NormalizedOpcode.ResumeEventScene32]: ResumeEventScene32,
   [NormalizedOpcode.ResumeEventScene8]: ResumeEventScene8,
   [NormalizedOpcode.RetainerInformation]: RetainerInformation,
@@ -401,12 +415,19 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.UpdateClassInfoOccult]: UpdateClassInfoOccult,
   [NormalizedOpcode.UpdateDutyRecastTimes]: UpdateDutyRecastTimes,
   [NormalizedOpcode.UpdateDutyRecastTimes5]: UpdateDutyRecastTimes5,
+  [NormalizedOpcode.UpdateEventScene16]: UpdateEventScene16,
+  [NormalizedOpcode.UpdateEventScene2]: UpdateEventScene2,
+  [NormalizedOpcode.UpdateEventScene4]: UpdateEventScene4,
+  [NormalizedOpcode.UpdateEventScene8]: UpdateEventScene8,
   [NormalizedOpcode.UpdateHpMpTp]: UpdateHpMpTp,
   [NormalizedOpcode.UpdateInventorySlot]: UpdateInventorySlot,
   [NormalizedOpcode.UpdatePositionHandler]: UpdatePositionHandler,
   [NormalizedOpcode.UpdatePositionInstance]: UpdatePositionInstance,
   [NormalizedOpcode.WardLandInfo]: WardLandInfo,
   [NormalizedOpcode.WeatherChange]: WeatherChange,
+  [NormalizedOpcode.YieldEventScene2]: YieldEventScene2,
+  [NormalizedOpcode.YieldEventScene4]: YieldEventScene4,
+  [NormalizedOpcode.YieldEventScene8]: YieldEventScene8,
 })
 
 export * from './common/action-effect-display-type.enum'
@@ -596,6 +617,7 @@ export {
   PrepareZoning,
   PublicMessage,
   RecastGroup,
+  ResumeEventScene2,
   ResumeEventScene8,
   ResumeEventScene16,
   ResumeEventScene32,
@@ -633,10 +655,17 @@ export {
   UpdateClassInfoOccult,
   UpdateDutyRecastTimes,
   UpdateDutyRecastTimes5,
+  UpdateEventScene2,
+  UpdateEventScene4,
+  UpdateEventScene8,
+  UpdateEventScene16,
   UpdateHpMpTp,
   UpdateInventorySlot,
   UpdatePositionHandler,
   UpdatePositionInstance,
   WardLandInfo,
   WeatherChange,
+  YieldEventScene2,
+  YieldEventScene4,
+  YieldEventScene8,
 }

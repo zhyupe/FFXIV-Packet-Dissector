@@ -60,6 +60,7 @@
   "EnvironmentControl": "0x0198",
   "EurekaStatusEffectList": "0x01C0",
   "EventFinish": "0x00D9",
+  "EventHandlerReturn": "0x03D6",
   "EventPlay": "0x01FD",
   "EventPlay128": "0x03A2",
   "EventPlay16": "0x0396",
@@ -152,6 +153,7 @@
   "ReqCharList": "0x0003",
   "ReqEnterWorld": "0x0004",
   "ResumeEventScene16": "0x00FB",
+  "ResumeEventScene2": "0x01AB",
   "ResumeEventScene32": "0x024D",
   "ResumeEventScene8": "0x0267",
   "RetainerInformation": "0x02F5",
@@ -192,6 +194,10 @@
   "UpdateClassInfoOccult": "0x0145",
   "UpdateDutyRecastTimes": "0x03A8",
   "UpdateDutyRecastTimes5": "0x014B",
+  "UpdateEventScene16": "0x03D3",
+  "UpdateEventScene2": "0x034A",
+  "UpdateEventScene4": "0x00AE",
+  "UpdateEventScene8": "0x01C1",
   "UpdateHpMpTp": "0x011B",
   "UpdateInventorySlot": "0x02A2",
   "UpdateParty": "0x0191",
@@ -201,5 +207,8 @@
   "UpdateSearchInfo": "0x0220",
   "WardLandInfo": "0x0363",
   "WeatherChange": "0x032F",
-  "WorldVisitQueue": "0x01E8"
+  "WorldVisitQueue": "0x01E8",
+  "YieldEventScene2": "0x008C",
+  "YieldEventScene4": "0x030A",
+  "YieldEventScene8": "0x03AA"
 }
