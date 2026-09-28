@@ -587,7 +587,43 @@ local M = {
   },
   PlayerSetup = {
     name = "ffxiv_ipc_player_setup",
-    length = 1938,
+    length = 2951,
+  },
+  PlayerSetupCompletion = {
+    name = "ffxiv_ipc_player_setup_completion",
+    length = 437,
+  },
+  PlayerSetupContent = {
+    name = "ffxiv_ipc_player_setup_content",
+    length = 485,
+  },
+  PlayerSetupHeader = {
+    name = "ffxiv_ipc_player_setup_header",
+    length = 188,
+  },
+  PlayerSetupHuntDaily = {
+    name = "ffxiv_ipc_player_setup_hunt_daily",
+    length = 7,
+  },
+  PlayerSetupHuntElite = {
+    name = "ffxiv_ipc_player_setup_hunt_elite",
+    length = 2,
+  },
+  PlayerSetupHuntGroup = {
+    name = "ffxiv_ipc_player_setup_hunt_group",
+    length = 23,
+  },
+  PlayerSetupHunts = {
+    name = "ffxiv_ipc_player_setup_hunts",
+    length = 124,
+  },
+  PlayerSetupProgress = {
+    name = "ffxiv_ipc_player_setup_progress",
+    length = 550,
+  },
+  PlayerSetupUnlocks = {
+    name = "ffxiv_ipc_player_setup_unlocks",
+    length = 1167,
   },
   PlayerSpawn = {
     name = "ffxiv_ipc_player_spawn",
