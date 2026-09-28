@@ -167,7 +167,18 @@ import {
   PlayerBlueMageActions,
   TitleList,
 } from './player-collections'
-import { PlayerSetup } from './player-setup'
+import {
+  PlayerSetup,
+  PlayerSetupCompletion,
+  PlayerSetupContent,
+  PlayerSetupHeader,
+  PlayerSetupHuntDaily,
+  PlayerSetupHuntElite,
+  PlayerSetupHuntGroup,
+  PlayerSetupHunts,
+  PlayerSetupProgress,
+  PlayerSetupUnlocks,
+} from './player-setup'
 import { PlayerSpawn } from './player-spawn'
 import { PlayerStateFlags } from './player-state-flags'
 import { PlayerStats } from './player-stats'
@@ -623,6 +634,15 @@ export {
   PlaceFieldMarkerPreset,
   PlayerBlueMageActions,
   PlayerSetup,
+  PlayerSetupCompletion,
+  PlayerSetupContent,
+  PlayerSetupHeader,
+  PlayerSetupHuntDaily,
+  PlayerSetupHuntElite,
+  PlayerSetupHuntGroup,
+  PlayerSetupHunts,
+  PlayerSetupProgress,
+  PlayerSetupUnlocks,
   PlayerSpawn,
   PlayerStateFlags,
   PlayerStats,
