@@ -11,6 +11,13 @@ Copy all the files under `src/` to [the plugin folder](https://www.wireshark.org
 
 For Windows users, `mklink.bat` is provided to create a symbolic link from the plugin folder to the cloned repository.
 
+### Desktop GUI
+
+The [Windows desktop GUI](packages/desktop/README.md) provides process selection,
+independent forwarder and wizard controls, graphical wizard inputs and result export.
+It uses Tauri with a bundled Node.js backend; users do not need to install Node.js.
+The **Desktop Windows** workflow builds an NSIS installer and a portable ZIP.
+
 ### Run the forwarder
 
 The [forwarder](packages/forwarder) can read raw packets from the game and send them to loopback udp ports. Therefore you can use Wireshark and this dissector

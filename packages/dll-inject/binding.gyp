@@ -17,7 +17,6 @@
         }
       },
       "defines": [
-        "NAPI_VERSION=<(napi_build_version)",
         "NOMINMAX"
       ]
     }

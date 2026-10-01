@@ -300,3 +300,39 @@ NAN_METHOD(getPIDByName)
 	Local<Int32> res = Nan::New(val);
 	info.GetReturnValue().Set(res);
 }
+// Enumeration never requests injection rights or changes the target process ACL.
+NAN_METHOD(listGameProcesses)
+{
+  auto result = Nan::New<v8::Array>();
+  HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  if (snapshot == INVALID_HANDLE_VALUE) {
+    Nan::ThrowError("PROCESS_ENUMERATION_FAILED");
+    return;
+  }
+  PROCESSENTRY32W entry = {};
+  entry.dwSize = sizeof(entry);
+  uint32_t index = 0;
+  if (Process32FirstW(snapshot, &entry)) do {
+    if (_wcsicmp(entry.szExeFile, L"ffxiv_dx11.exe") != 0) continue;
+    HANDLE process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, entry.th32ProcessID);
+    if (!process) continue;
+    wchar_t path[32768];
+    DWORD size = 32768;
+    FILETIME created, exited, kernel, user;
+    if (QueryFullProcessImageNameW(process, 0, path, &size) &&
+        GetProcessTimes(process, &created, &exited, &kernel, &user)) {
+      ULARGE_INTEGER timestamp;
+      timestamp.LowPart = created.dwLowDateTime;
+      timestamp.HighPart = created.dwHighDateTime;
+      auto item = Nan::New<v8::Object>();
+      Nan::Set(item, Nan::New("pid").ToLocalChecked(), Nan::New(static_cast<uint32_t>(entry.th32ProcessID)));
+      Nan::Set(item, Nan::New("startedAt").ToLocalChecked(), Nan::New(std::to_string(timestamp.QuadPart)).ToLocalChecked());
+      Nan::Set(item, Nan::New("executable").ToLocalChecked(),
+        Nan::New(reinterpret_cast<const uint16_t*>(path), size).ToLocalChecked());
+      Nan::Set(result, index++, item);
+    }
+    CloseHandle(process);
+  } while (Process32NextW(snapshot, &entry));
+  CloseHandle(snapshot);
+  info.GetReturnValue().Set(result);
+}

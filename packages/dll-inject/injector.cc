@@ -5,6 +5,7 @@ using namespace Nan;
 
 NAN_MODULE_INIT(InitAll)
 {
+	Set(target, New("listGameProcesses").ToLocalChecked(), GetFunction(New<FunctionTemplate>(listGameProcesses)).ToLocalChecked());
 	Set(target, New("injectPID").ToLocalChecked(), GetFunction(New<FunctionTemplate>(injectPID)).ToLocalChecked());
 	Set(target, New("getPIDByName").ToLocalChecked(), GetFunction(New<FunctionTemplate>(getPIDByName)).ToLocalChecked());
 }

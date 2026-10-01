@@ -9,7 +9,9 @@
     }
   },
   "scripts": {
-    "build": "tsdown src/index.mts --dts"
+    "build": "tsdown src/index.mts --dts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.mts"
   },
   "dependencies": {
     "dll-inject": "workspace:^"
@@ -18,6 +20,7 @@
     "@tsconfig/node20": "catalog:",
     "@types/node": "catalog:",
     "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "tsx": "catalog:"
   }
 }

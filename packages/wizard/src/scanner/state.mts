@@ -1,239 +1,274 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
-import type { Answers } from 'inquirer'
+import { EventEmitter } from 'node:events'
+import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import { dirname } from 'node:path'
 import type { DeucalionPacket } from 'pcap'
-import { hex, PacketSource } from './helper.mjs'
-import type { OpcodeResult, Scanner, ScannerPrompt } from './interface.mjs'
+import type { Answers, OpcodeResult, Scanner } from './interface.mjs'
 
-export interface StateOptions {
-  outDir: string
-  version: string
-  onPromptStateChange?: (active: boolean) => void
+export const SCANNER_REVISION = 1
+export type WizardStatus =
+  | 'idle'
+  | 'input'
+  | 'running'
+  | 'stopped'
+  | 'completed'
+  | 'conflict'
+  | 'failed'
+export interface WizardSnapshot {
+  status: WizardStatus
+  mode: 'sequence' | 'single'
+  current: string | null
+  inputToken: number
+  fields: Scanner['fields']
+  steps: Pick<Scanner, 'name' | 'instruction' | 'source'>[]
+  results: [string, OpcodeResult][]
+  error: string
+  conflict: string | null
+}
+export function atomicJson(path: string, value: unknown) {
+  mkdirSync(dirname(path), { recursive: true })
+  const temporary = `${path}.tmp`
+  writeFileSync(temporary, JSON.stringify(value, null, 2), 'utf8')
+  renameSync(temporary, path)
 }
 
-export class StateManager {
+export class WizardEngine extends EventEmitter {
+  private status: WizardStatus = 'idle'
+  private index = 0
+  private mode: 'sequence' | 'single' = 'sequence'
+  private token = 0
+  private answers: Answers = Object.create(null)
+  private context: Answers = Object.create(null)
+  private results = new Map<string, OpcodeResult>()
+  private error = ''
+  private conflict: string | null = null
+
   constructor(
     private scanners: Scanner[],
-    private options: StateOptions,
+    private statePath?: string,
   ) {
-    this.#readState()
-    this.readyPromise = this.nextScanner().then(() => {
-      this.ready = true
-    })
-
-    const { outDir, version } = options
-    try {
-      mkdirSync(join(outDir, version), { recursive: true })
-    } catch (e) {
-      //
-    }
+    super()
+    if (new Set(scanners.map((s) => s.name)).size !== scanners.length)
+      throw new Error('DUPLICATE_SCANNER')
+    if (statePath) this.restore(statePath)
   }
 
-  #recognizedClientOpcodes = new Set<number>()
-  #recognizedServerOpcodes = new Set<number>()
-  #state = new Map<string, OpcodeResult>()
-
-  #scannerIndex = -1
-  #scannerAnswer: Answers = {}
-
-  #context: Record<string, string> = {}
-  public finished = false
-  public ready = false
-  public readyPromise: Promise<void>
-
-  async handle(packet: DeucalionPacket): Promise<boolean> {
-    if (this.finished) {
-      return false
+  snapshot(): WizardSnapshot {
+    const scanner = this.scanners[this.index]
+    return {
+      status: this.status,
+      mode: this.mode,
+      current: scanner?.name ?? null,
+      inputToken: this.token,
+      fields:
+        this.status === 'input'
+          ? scanner.fields.filter((f) => !(f.key in this.answers))
+          : [],
+      steps: this.scanners.map(({ name, instruction, source }) => ({
+        name,
+        instruction,
+        source,
+      })),
+      results: Array.from(this.results.entries()),
+      error: this.error,
+      conflict: this.conflict,
     }
-
-    if (!this.ready) {
-      await this.readyPromise
-    }
-
-    const scanner = this.scanners[this.#scannerIndex]
-    if (packet.origin !== scanner.source) {
-      return false
-    }
-
-    const opcode = packet.header.type
-    if (this.#isRecognized(packet.origin, opcode)) {
-      return false
-    }
-
-    const result = await scanner.handler(
-      packet,
-      this.#scannerAnswer,
-      this.#context,
-    )
-
-    if (result) {
-      this.#setRecognized(scanner.name, {
-        ...result,
-        value: opcode,
-        source: scanner.source,
-      })
-      return true
-    }
-
-    return false
+  }
+  private changed() {
+    this.emit('changed', this.snapshot())
   }
 
-  async nextScanner() {
-    ++this.#scannerIndex
-    while (this.#scannerIndex < this.scanners.length) {
-      const scanner = this.scanners[this.#scannerIndex]
-      const state = this.#state.get(scanner.name)
-      if (state?.value) {
-        this.#scannerIndex += 1
-        console.log(
-          '[%d/%d] (%s) %s: %s',
-          this.#scannerIndex,
-          this.scanners.length,
-          scanner.source,
-          scanner.name,
-          hex(state.value),
-        )
-        this.#getRecognizedSet(scanner.source).add(state.value)
-        continue
-      }
-
-      console.log(
-        '[%d/%d] (%s) %s: %s',
-        this.#scannerIndex,
-        this.scanners.length,
-        scanner.source,
-        scanner.name,
-        scanner.instruction,
+  start(mode: 'sequence' | 'single' = 'sequence', name?: string) {
+    if (name !== undefined) {
+      const index = this.scanners.findIndex((s) => s.name === name)
+      if (index < 0) throw new Error('UNKNOWN_STEP')
+      this.index = index
+    }
+    this.mode = mode
+    if (mode === 'sequence')
+      while (
+        this.index < this.scanners.length &&
+        this.results.has(this.scanners[this.index].name)
       )
-
-      if (scanner.prompt) {
-        await this.#inquire(scanner.name, scanner.prompt)
-        this.#writeState()
-      }
-
-      break
-    }
-
-    if (this.#scannerIndex >= this.scanners.length) {
-      this.finished = true
-      return null
-    }
+        this.index++
+    this.prepare()
+  }
+  selectStep(name: string) {
+    this.start('single', name)
   }
 
-  output() {
-    this.#writeJson(
-      'opcode.json',
-      Array.from(this.#state.entries())
-        .filter(([_, { value }]) => value)
-        .map(([name, { value, comment }]) => [name, hex(value!), comment]),
-      true,
+  private prepare() {
+    this.token++
+    this.error = ''
+    this.conflict = null
+    this.answers = Object.create(null)
+    const scanner = this.scanners[this.index]
+    if (!scanner) this.status = 'completed'
+    else {
+      for (const field of scanner.fields)
+        if (field.key.startsWith('$') && field.key in this.context)
+          this.answers[field.key] = this.context[field.key]
+      this.status = scanner.fields.some((f) => !(f.key in this.answers))
+        ? 'input'
+        : 'running'
+    }
+    this.save()
+    this.changed()
+  }
+
+  submitInputs(token: number, answers: Answers) {
+    if (token !== this.token || this.status !== 'input')
+      throw new Error('STALE_INPUT')
+    const scanner = this.scanners[this.index]
+    const pending: Answers = Object.create(null)
+    for (const field of scanner.fields) {
+      const value = this.answers[field.key] ?? answers[field.key]
+      if (
+        field.type === 'number'
+          ? typeof value !== 'number' || !Number.isFinite(value) || value < 0
+          : typeof value !== 'string' ||
+            value.length > 4096 ||
+            (field.required && !value.trim())
+      )
+        throw new Error('INVALID_INPUT')
+      pending[field.key] = value
+    }
+    this.answers = pending
+    for (const field of scanner.fields)
+      if (field.key.startsWith('$'))
+        this.context[field.key] = pending[field.key]
+    this.status = 'running'
+    this.changed()
+  }
+
+  write(packet: DeucalionPacket) {
+    if (this.status !== 'running') return
+    const scanner = this.scanners[this.index]
+    if (!scanner || scanner.source !== packet.origin) return
+    // Exclude other recognized opcodes, but allow the current step to be re-recognized.
+    const owner = [...this.results].find(
+      ([name, r]) =>
+        name !== scanner.name &&
+        r.source === packet.origin &&
+        r.value === packet.header.type,
     )
-    console.log('Written opcode.json')
+    try {
+      const found = scanner.handler(packet, this.answers, this.context)
+      if (!found) return
+      if (owner) {
+        this.status = 'conflict'
+        this.conflict = owner[0]
+        this.changed()
+        return
+      }
+      const comment =
+        found.comment && /^Base offset: 0x[0-9a-f]+$/i.test(found.comment)
+          ? found.comment
+          : undefined
+      this.results.set(scanner.name, {
+        source: packet.origin,
+        value: packet.header.type,
+        ...(comment ? { comment } : {}),
+      })
+      this.save()
+      if (this.mode === 'single') {
+        this.status = 'stopped'
+        this.changed()
+      } else {
+        this.index++
+        this.start('sequence')
+      }
+    } catch (error) {
+      if (error instanceof RangeError) return // A non-matching short packet is not a scanner result.
+      this.status = 'failed'
+      this.error =
+        error instanceof Error && error.message === 'SAVE_FAILED'
+          ? 'SAVE_FAILED'
+          : 'SCANNER_OR_SAVE_FAILED'
+      this.changed()
+    }
   }
 
   skip() {
-    if (this.finished) {
-      return
+    this.index++
+    this.mode = 'sequence'
+    this.start('sequence')
+  }
+  stop(clearInputs = false) {
+    this.status = 'stopped'
+    this.token++
+    this.answers = Object.create(null)
+    if (clearInputs) this.context = Object.create(null)
+    this.save()
+    this.changed()
+  }
+  save() {
+    if (!this.statePath) return
+    try {
+      atomicJson(this.statePath, {
+        revision: SCANNER_REVISION,
+        current: this.scanners[this.index]?.name ?? null,
+        results: [...this.results],
+      })
+      if (this.error === 'SAVE_FAILED') {
+        this.error = ''
+        this.status = 'stopped'
+        this.changed()
+      }
+    } catch {
+      this.status = 'failed'
+      this.error = 'SAVE_FAILED'
+      this.changed()
+      throw new Error('SAVE_FAILED')
     }
-
-    void this.nextScanner()
   }
-
-  stop() {
-    if (this.finished) {
-      return
-    }
-
-    this.finished = true
-  }
-
-  #getRecognizedSet(source: PacketSource) {
-    if (source === PacketSource.Client) {
-      return this.#recognizedClientOpcodes
-    } else {
-      return this.#recognizedServerOpcodes
-    }
-  }
-
-  #isRecognized(source: PacketSource, opcode: number) {
-    return this.#getRecognizedSet(source).has(opcode)
-  }
-
-  #setRecognized(name: string, result: OpcodeResult) {
-    this.#getRecognizedSet(result.source).add(result.value)
-    this.#state.set(name, result)
-    this.#writeState()
-
-    console.log(
-      '  %s: %s;%s',
+  exportResults() {
+    return [...this.results].map(([name, result]) => [
       name,
-      hex(result.value),
-      result.comment ? ` // ${result.comment}` : '',
-    )
+      `0x${result.value.toString(16).padStart(4, '0')}`,
+      result.comment ?? null,
+    ])
   }
 
-  #path(name: string, withVersion = false) {
-    const { outDir, version } = this.options
-    const dir = withVersion ? join(outDir, version) : outDir
-    return join(dir, name)
-  }
-
-  #readJson(name: string, withVersion = false) {
+  private restore(path: string) {
+    let data: any
     try {
-      return JSON.parse(readFileSync(this.#path(name, withVersion), 'utf-8'))
-    } catch (e: any) {
-      if (e.code === 'ENOENT') {
-        return null
-      }
-
-      throw e
+      const text = readFileSync(path, 'utf8')
+      if (text.length > 1024 * 1024) throw new Error('STATE_TOO_LARGE')
+      data = JSON.parse(text)
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') return
+      throw new Error('STATE_READ_FAILED')
     }
-  }
-
-  #writeJson(name: string, content: any, withVersion = false) {
-    writeFileSync(
-      this.#path(name, withVersion),
-      JSON.stringify(content, null, 2),
-    )
-  }
-
-  #readState() {
-    this.#state = new Map(this.#readJson('state.json', true))
-    this.#context = this.#readJson('context.json') || {}
-  }
-
-  #writeState() {
-    this.#writeJson('state.json', Array.from(this.#state.entries()), true)
-    this.#writeJson('context.json', this.#context)
-  }
-
-  async #inquire<T extends Answers>(name: string, prompts: ScannerPrompt<T>) {
-    const answers: Answers = {}
-    const prefix = `${name}:`
-    for (const [key, value] of Object.entries(this.#context)) {
-      if (key[0] === '$') {
-        answers[key] = value
-      } else if (key.startsWith(prefix)) {
-        answers[key.slice(prefix.length)] = value
-      }
+    if (data.revision !== SCANNER_REVISION) return
+    if (!Array.isArray(data.results)) throw new Error('INVALID_STATE')
+    const seen = new Set<string>()
+    for (const entry of data.results) {
+      if (!Array.isArray(entry) || entry.length !== 2)
+        throw new Error('INVALID_STATE')
+      const [name, r] = entry
+      const scanner = this.scanners.find((s) => s.name === name)
+      if (
+        !scanner ||
+        this.results.has(name) ||
+        !r ||
+        r.source !== scanner.source ||
+        !Number.isInteger(r.value) ||
+        r.value < 0 ||
+        r.value > 65535 ||
+        seen.has(`${r.source}:${r.value}`)
+      )
+        throw new Error('INVALID_STATE')
+      seen.add(`${r.source}:${r.value}`)
+      this.results.set(name, {
+        source: r.source,
+        value: r.value,
+        ...(/^Base offset: 0x[0-9a-f]+$/i.test(r.comment ?? '')
+          ? { comment: r.comment }
+          : {}),
+      })
     }
-
-    this.options.onPromptStateChange?.(true)
-
-    try {
-      await prompts(answers as T)
-      console.log(name, answers)
-      this.#scannerAnswer = answers
-
-      for (const [key, value] of Object.entries(answers)) {
-        if (key[0] === '$') {
-          this.#context[key] = value
-        } else {
-          this.#context[`${prefix}${key}`] = value
-        }
-      }
-    } finally {
-      this.options.onPromptStateChange?.(false)
-    }
+    const index = this.scanners.findIndex((s) => s.name === data.current)
+    this.index =
+      data.current === null ? this.scanners.length : Math.max(0, index)
   }
 }

@@ -23,6 +23,7 @@ export function verifyDeucalion({ dll, shasum }: DeucalionOptions) {
     if (e.code === 'ENOENT') {
       throw new Error(`deucalion.dll not found in ${dll}`)
     }
+    throw e
   }
 }
 

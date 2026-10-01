@@ -1,32 +1,15 @@
-import { execSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
-import { existsSync, readFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
-import iconv from 'iconv-lite'
-
-function getGameExecutable() {
-  const cmd = `wmic process where "name='ffxiv_dx11.exe'" get ExecutablePath`
-  const result = execSync(cmd)
-
-  const exe = iconv.decode(result, 'gbk').split('\n')[1]?.trim()
-  if (existsSync(exe)) {
-    return exe
-  }
-
-  return null
+import { readFileSync } from 'node:fs'
+import { getGameProcesses, type GameProcess } from 'pcap'
+export function getGameVersion(
+  process: GameProcess | undefined = getGameProcesses()[0],
+) {
+  return process?.version ?? null
 }
-
-export function getGameHash() {
-  const exe = getGameExecutable()
-  if (!exe) return null
-
-  const buf = readFileSync(exe)
-  return createHash('sha1').update(buf).digest().toString()
-}
-
-export function getGameVersion() {
-  const exe = getGameExecutable()
-  if (!exe) return null
-
-  return readFileSync(join(dirname(exe), 'ffxivgame.ver'), 'utf-8')
+export function getGameHash(
+  process: GameProcess | undefined = getGameProcesses()[0],
+) {
+  return process
+    ? createHash('sha1').update(readFileSync(process.executable)).digest('hex')
+    : null
 }

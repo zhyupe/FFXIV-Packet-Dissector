@@ -1,6 +1,5 @@
 /** biome-ignore-all lint/suspicious/noDoubleEquals: Migrate C# file */
 
-import { input, number } from '@inquirer/prompts'
 import {
   basicSynthesis,
   darkMatter,
@@ -23,7 +22,7 @@ import {
   PacketSource,
   Vector3,
 } from './helper.mjs'
-import type { Scanner, ScannerPrompt } from './interface.mjs'
+import type { Scanner, InputField } from './interface.mjs'
 
 interface ImportedPacket {
   /** Includes Header(32 bytes) */
@@ -34,24 +33,13 @@ interface ImportedPacket {
   Type: number
 }
 
-type QuickPrompt = string[] | Record<string, string> | ScannerPrompt<any>
-
+type QuickPrompt = string[] | Record<string, string> | InputField[]
 const bigIntZero = BigInt(0)
 const emptyHeader = Buffer.alloc(Offsets.IpcData)
-
-const buildPrompt = (prompt: QuickPrompt) => {
-  if (typeof prompt === 'function') {
-    return prompt
-  }
-
-  return async (values: Record<number | string, string>) => {
-    for (const [key, message] of Object.entries(prompt)) {
-      values[key] = await input({
-        message,
-        default: values[key],
-      })
-    }
-  }
+const buildFields = (prompt?: QuickPrompt): InputField[] => {
+  if (!prompt) return []
+  if (Array.isArray(prompt) && typeof prompt[0] === 'object') return prompt as InputField[]
+  return Object.entries(prompt).map(([key, label]) => ({ key, label: label as string, type: 'text', required: true }))
 }
 
 export const getImportedScanners = () => {
@@ -71,7 +59,7 @@ export const getImportedScanners = () => {
       name,
       instruction: tutorial,
       source,
-      prompt: prompt ? buildPrompt(prompt) : undefined,
+      fields: buildFields(prompt),
       handler: (packet, answer, context) => {
         const store = { Text: '', context }
         const result = handler(
@@ -124,11 +112,7 @@ export const getImportedScanners = () => {
 
       return packetHp == $maxHP && (packetMp === 10000 || packetMp === 0)
     },
-    async (v) => {
-      v.$maxHP = await number({
-        message: 'Please enter your max HP:',
-      })
-    },
+    [{ key: '$maxHP', label: 'Please enter your max HP:', type: 'number', required: true }],
   )
   //=================
   RegisterScanner(
@@ -824,11 +808,7 @@ export const getImportedScanners = () => {
         packet.PacketSize == 112 && packet.Data[Offsets.IpcData + 45] == $fcRank
       )
     },
-    async (v) => {
-      v.$fcRank = await number({
-        message: 'Please enter your Free Company rank:',
-      })
-    },
+    [{ key: '$fcRank', label: 'Please enter your Free Company rank:', type: 'number', required: true }],
   )
   RegisterScanner(
     'FreeCompanyDialog',
@@ -1125,5 +1105,20 @@ export const getImportedScanners = () => {
   //   },
   // )
 
+  const sharedFields = new Map(scanners.flatMap((s) => s.fields.filter((f) => f.key.startsWith('$')).map((f) => [f.key, f] as const)))
+  const dependencies: Record<string, string[]> = {
+    PlayerStats: ['$maxHP'], FreeCompanyDialog: ['$fcRank'],
+    AirshipStatus: ['$airshipName'], AirshipStatusList: ['$airshipName'],
+    SubmarineStatusList: ['$submarineName'],
+  }
+  // Shared context inputs must also be available when selecting a step directly.
+  for (const scanner of scanners) {
+    const keys = dependencies[scanner.name] ?? []
+    for (const key of keys) {
+      const field = sharedFields.get(key)
+      if (!field) throw new Error(`Missing input declaration: ${key}`)
+      if (!scanner.fields.some((f) => f.key === key)) scanner.fields.push(field)
+    }
+  }
   return scanners
 }

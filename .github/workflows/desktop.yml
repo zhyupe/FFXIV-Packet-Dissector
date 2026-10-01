@@ -1,0 +1,51 @@
+name: Desktop Windows
+on:
+  push:
+    paths: ['packages/desktop/**', 'packages/pcap/**', 'packages/forwarder/**', 'packages/wizard/**', 'packages/dll-inject/**', 'pnpm-lock.yaml', '.github/workflows/desktop.yml']
+  pull_request:
+    paths: ['packages/desktop/**', 'packages/pcap/**', 'packages/forwarder/**', 'packages/wizard/**', 'packages/dll-inject/**', 'pnpm-lock.yaml', '.github/workflows/desktop.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.6.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.22.2'
+          cache: pnpm
+      - uses: dtolnay/rust-toolchain@stable
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm --filter dll-inject compile
+      - run: pnpm --filter pcap build
+      - run: pnpm --filter forwarder build
+      - run: pnpm --filter wizard build
+      - run: pnpm --filter pcap --filter forwarder --filter wizard --filter desktop typecheck
+      - run: pnpm --filter pcap --filter forwarder --filter wizard --filter desktop test
+      - run: pnpm --filter desktop build
+      - run: pnpm --filter desktop prepare:runtime
+      - run: pnpm --filter desktop smoke:runtime
+      - run: pnpm --filter desktop exec playwright install chromium
+      - run: pnpm --filter desktop test:ui
+      - run: cargo test --manifest-path packages/desktop/src-tauri/Cargo.toml --locked
+      - run: pnpm --filter desktop package
+      - name: Create portable ZIP
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force packages/desktop/portable/runtime
+          Copy-Item packages/desktop/src-tauri/target/release/ffxiv-packet-desktop.exe packages/desktop/portable/
+          Copy-Item packages/desktop/src-tauri/resources/* packages/desktop/portable/runtime/ -Recurse
+          Copy-Item packages/desktop/README.md packages/desktop/portable/README.md
+          Compress-Archive packages/desktop/portable/* packages/desktop/ffxiv-packet-desktop-windows-x64.zip
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ffxiv-packet-desktop-windows-x64
+          path: |
+            packages/desktop/src-tauri/target/release/bundle/nsis/*.exe
+            packages/desktop/ffxiv-packet-desktop-windows-x64.zip

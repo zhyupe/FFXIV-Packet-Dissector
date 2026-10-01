@@ -7,6 +7,7 @@
 // Implementations are in functions.cc
 
 NAN_METHOD(injectPID);
+NAN_METHOD(listGameProcesses);
 NAN_METHOD(isProcessRunning);
 NAN_METHOD(isProcessRunningPID);
 NAN_METHOD(getPIDByName);

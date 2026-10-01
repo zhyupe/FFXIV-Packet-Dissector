@@ -1,23 +1,26 @@
-import type { Answers } from 'inquirer'
 import type { DeucalionPacket } from 'pcap'
 import type { PacketSource } from './helper.mjs'
 
+export type Answers = Record<string, string | number>
+export interface InputField {
+  key: string
+  label: string
+  type: 'text' | 'number'
+  required: boolean
+}
 export interface OpcodeResult {
   source: PacketSource
   value: number
   comment?: string
 }
-
-export type ScannerPrompt<T> = (answer: T) => Promise<void>
-
-export interface Scanner<T extends Answers = Answers> {
+export interface Scanner {
   name: string
   instruction: string
   source: PacketSource
-  prompt?: ScannerPrompt<T>
+  fields: InputField[]
   handler: (
     packet: DeucalionPacket,
     answer: Answers,
-    context: Record<string, any>,
+    context: Answers,
   ) => Pick<OpcodeResult, 'comment'> | null
 }

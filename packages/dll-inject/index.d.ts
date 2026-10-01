@@ -1,6 +1,8 @@
-declare module "dll-inject" {
-  export function injectPID(pid: number, dllFile: string): number;
-  export function isProcessRunning(processName: string): boolean;
-  export function isProcessRunningPID(pid: number): boolean;
-  export function getPIDByName(processName: string): number;
+export interface GameProcess {
+  pid: number
+  startedAt: string
+  executable: string
 }
+export function listGameProcesses(): GameProcess[]
+export function injectPID(pid: number, dllFile: string): number
+export function getPIDByName(processName: string): number

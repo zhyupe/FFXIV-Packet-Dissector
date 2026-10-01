@@ -6,11 +6,17 @@
     ".": {
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.mts"
+    },
+    "./core": {
+      "import": "./dist/forwarder.mjs",
+      "types": "./dist/forwarder.d.mts"
     }
   },
   "scripts": {
-    "build": "tsdown src/index.mts",
-    "start": "node dist/index.mjs"
+    "build": "tsdown src/index.mts src/forwarder.mts --dts",
+    "start": "node dist/index.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.mts"
   },
   "dependencies": {
     "pcap": "workspace:^"
@@ -18,6 +24,8 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "tsx": "catalog:",
+    "@tsconfig/node20": "catalog:"
   }
 }

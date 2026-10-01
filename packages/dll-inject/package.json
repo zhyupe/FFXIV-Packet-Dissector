@@ -3,7 +3,7 @@
   "version": "0.0.17",
   "description": "LoadLibrary-based DLL injection for Windows aiming at injecting stuff for FFXIV",
   "main": "index.js",
-  "types": "./lib/index.d.ts",
+  "types": "./index.d.ts",
   "repository": {
     "type": "git",
     "url": "git@github.com:Supamiu/dll-inject.git"
@@ -14,12 +14,6 @@
     "win32"
   ],
   "gypfile": "true",
-  "binary": {
-    "napi_versions": [
-      2,
-      3
-    ]
-  },
   "scripts": {
     "compile": "node scripts/build.js",
     "test": "npm run compile && node test/index.js",

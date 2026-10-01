@@ -1,62 +1,46 @@
-import { exec } from 'node:child_process'
+import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
 import dllInject from 'dll-inject'
 import { ErrorCodes } from './interface.mjs'
 
-const { getPIDByName, injectPID } = dllInject
-
-async function getXIVPIDFromTasklist(): Promise<{
-  name: string
+export interface GameProcess {
   pid: number
-} | null> {
-  return new Promise<{ name: string; pid: number } | null>(
-    (resolve, reject) => {
-      exec('tasklist', (err, stdout) => {
-        if (err) {
-          reject(err)
-        }
-        resolve(
-          stdout
-            .split('\n')
-            .map((line) => {
-              const match = /(ffxiv_dx11.exe)\s+(\d+)/gm.exec(line)
-              if (match) {
-                return {
-                  name: match[1],
-                  pid: +match[2],
-                }
-              }
+  startedAt: string
+  executable: string
+  version: string
+}
 
-              return null
-            })
-            .find(Boolean) || null,
-        )
-      })
-    },
+export function getGameProcesses(): GameProcess[] {
+  return dllInject.listGameProcesses().map((process) => {
+    let version = 'unknown'
+    try {
+      version = readFileSync(
+        join(dirname(process.executable), 'ffxivgame.ver'),
+        'utf8',
+      ).trim()
+    } catch {}
+    return { ...process, version }
+  })
+}
+
+export function validateTarget(
+  target: Pick<GameProcess, 'pid' | 'startedAt'>,
+): GameProcess {
+  const process = getGameProcesses().find(
+    (p) => p.pid === target.pid && p.startedAt === target.startedAt,
   )
+  if (!process) throw new Error('PROCESS_CHANGED_OR_EXITED')
+  return process
 }
 
 export async function getXIVPID(): Promise<number> {
-  const fromInjector = getPIDByName('ffxiv_dx11.exe')
-  if (fromInjector > 0) {
-    return fromInjector
-  } else {
-    console.log('Process not found, falling back to tasklist')
-
-    const fromTaskList = await getXIVPIDFromTasklist()
-    if (fromTaskList) {
-      console.log('Found XIV process in tasklist')
-      return fromTaskList.pid
-    } else {
-      throw new Error('GAME_NOT_RUNNING')
-    }
-  }
+  const process = getGameProcesses()[0]
+  if (!process) throw new Error('GAME_NOT_RUNNING')
+  return process.pid
 }
 
 export async function injectDll(pid: number, dll: string) {
-  const res = injectPID(pid, dll)
-  if (res !== 0) {
-    throw new Error(
-      `Dll-inject returned non-zero code: [${res}] ${ErrorCodes[res]}`,
-    )
-  }
+  const result = dllInject.injectPID(pid, dll)
+  if (result !== 0)
+    throw new Error(`INJECTION_FAILED:${ErrorCodes[result] ?? result}`)
 }

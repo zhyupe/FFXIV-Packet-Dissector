@@ -1,0 +1,10 @@
+dist/
+dist-service/
+src-tauri/target/
+src-tauri/gen/
+src-tauri/resources/
+playwright-report/
+test-results/
+
+portable/
+ffxiv-packet-desktop-windows-x64.zip
