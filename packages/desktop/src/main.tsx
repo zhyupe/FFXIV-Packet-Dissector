@@ -304,7 +304,7 @@ function App() {
         </TabsList>
         <Badge
           variant="secondary"
-          className={`connection-status ${connected ? 'bg-emerald-50 text-emerald-800' : ''}`}
+          className={`connection-status ${connected ? 'connected' : ''}`}
         >
           {labels[state.connection]}
         </Badge>
@@ -329,7 +329,7 @@ function App() {
         </Alert>
       )}
       {notice && (
-        <Alert role="status" className="service-message text-emerald-800">
+        <Alert role="status" className="service-message">
           <AlertDescription className="text-inherit">{notice}</AlertDescription>
         </Alert>
       )}

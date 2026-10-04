@@ -54,6 +54,14 @@ h3 {
   padding: 4px 12px;
   font-size: 13px;
 }
+.connection-status.connected {
+  background: var(--status-background);
+  color: var(--status-foreground);
+}
+.service-message[role="status"] {
+  color: var(--status-foreground);
+  background: var(--status-background);
+}
 .connection-detail {
   padding: 0 var(--page-padding) 12px;
   font-size: 13px;
@@ -79,22 +87,22 @@ h3 {
   border-radius: 0;
 }
 .workspace-tab[data-state="active"] {
-  color: var(--primary);
+  color: var(--accent-foreground);
 }
 .workspace-tab::after {
   bottom: -1px;
-  background: var(--primary);
+  background: var(--palette-orange);
 }
 .dot {
   display: inline-block;
   width: 10px;
   height: 10px;
   flex-shrink: 0;
-  background: #a7b4bc;
+  background: var(--status-inactive);
   border-radius: 50%;
 }
 .dot.on {
-  background: #3a9270;
+  background: var(--status-active);
 }
 main {
   flex: 1;
@@ -263,7 +271,7 @@ code {
   font-variant-numeric: tabular-nums;
 }
 .step-number.done {
-  color: #287d60;
+  color: var(--palette-rust);
 }
 .wizard-detail {
   min-width: 0;
@@ -314,8 +322,8 @@ code {
 }
 .waiting {
   margin: 24px 0;
-  background: #eaf2ee;
-  color: #33654c;
+  background: var(--status-background);
+  color: var(--status-foreground);
 }
 .results-heading {
   display: flex;

@@ -31,24 +31,32 @@
 
 :root {
   --radius: 0.5rem;
-  --background: #f5f6f8;
-  --foreground: #23313a;
+  --palette-amber: #eca106;
+  --palette-orange: #d34f1e;
+  --palette-rust: #91300a;
+  --palette-brown: #5f1b00;
+  --background: #fcfaf8;
+  --foreground: var(--palette-brown);
   --card: #ffffff;
-  --card-foreground: #23313a;
+  --card-foreground: var(--palette-brown);
   --popover: #ffffff;
-  --popover-foreground: #23313a;
-  --primary: #146a81;
-  --primary-foreground: #ffffff;
-  --secondary: #eaf0f3;
-  --secondary-foreground: #52636e;
-  --muted: #eef1f4;
-  --muted-foreground: #62747f;
-  --accent: #e6eff2;
-  --accent-foreground: #146a81;
-  --destructive: #a13d35;
-  --border: #dce2e6;
-  --input: #cbd4db;
-  --ring: #146a81;
+  --popover-foreground: var(--palette-brown);
+  --primary: var(--palette-amber);
+  --primary-foreground: var(--palette-brown);
+  --secondary: #f4ebe5;
+  --secondary-foreground: var(--palette-rust);
+  --muted: #f7f1ec;
+  --muted-foreground: #806351;
+  --accent: #fcebc9;
+  --accent-foreground: var(--palette-rust);
+  --destructive: var(--palette-rust);
+  --border: #e8d9ce;
+  --input: #d4bcac;
+  --ring: var(--palette-orange);
+  --status-active: var(--palette-orange);
+  --status-inactive: #c5b6ab;
+  --status-background: #fcebc9;
+  --status-foreground: var(--palette-brown);
 }
 
 @layer base {
