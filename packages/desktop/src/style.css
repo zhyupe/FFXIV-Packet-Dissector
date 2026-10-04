@@ -118,6 +118,8 @@ h3 {
 }
 .connection-status {
   min-width: 76px;
+  margin-left: auto;
+  align-self: center;
 }
 .connection-detail {
   padding: 0 var(--page-padding) 12px;
@@ -128,7 +130,7 @@ h3 {
 nav {
   display: flex;
   gap: 8px;
-  padding: 0 calc(var(--page-padding) - 12px);
+  padding: 0 var(--page-padding) 0 calc(var(--page-padding) - 12px);
   border-bottom: 1px solid var(--border);
   background: #fff;
 }
@@ -156,8 +158,8 @@ nav button[aria-current]:hover:not(:disabled) {
 }
 .dot {
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
   flex-shrink: 0;
   background: #a7b4bc;
   border-radius: 50%;
@@ -520,9 +522,6 @@ td:first-child {
   }
   .process-bar select {
     flex-basis: calc(100% - 80px);
-  }
-  .connection-status {
-    margin-left: auto;
   }
   .wizard-page {
     grid-template-columns: 200px minmax(0, 1fr);

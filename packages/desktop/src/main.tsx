@@ -238,9 +238,6 @@ function App() {
                 ? '切换连接'
                 : '连接'}
         </button>
-        <span className={`pill connection-status ${connected ? 'live' : ''}`}>
-          {labels[state.connection]}
-        </span>
       </section>
       {connected && state.target && !sameTarget && (
         <div className="connection-detail">
@@ -262,6 +259,9 @@ function App() {
           Wizard{' '}
           <span className={wizard?.status === 'running' ? 'dot on' : 'dot'} />
         </button>
+        <span className={`pill connection-status ${connected ? 'live' : ''}`}>
+          {labels[state.connection]}
+        </span>
       </nav>
       {error && (
         <div className="alert" role="alert">
