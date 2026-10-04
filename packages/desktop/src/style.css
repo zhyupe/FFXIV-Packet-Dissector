@@ -289,9 +289,35 @@ code {
   font-size: 13px;
 }
 .step-list {
+  --scrollbar-thumb: transparent;
   flex: 1;
   min-height: 0;
   overflow: auto;
+  scrollbar-gutter: stable;
+}
+.step-list::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.step-list::-webkit-scrollbar-track,
+.step-list::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.step-list::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.step-list::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+.step-list:hover,
+.step-list:focus-within {
+  --scrollbar-thumb: #9aabb5;
+}
+.step-list::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
 }
 .step-list button {
   display: flex;
