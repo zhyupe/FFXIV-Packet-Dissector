@@ -84,6 +84,46 @@ Real-machine checks, kept outside automated fixtures:
 7. Launch extcap from Wireshark; discovery must not inject and capture stop must exit.
 8. Restore saved results without automatic injection or restored personal inputs.
 
+## Cross-compiling Windows executables on Linux
+
+Tauri supports the MSVC target through
+[cargo-xwin](https://v2.tauri.app/distribute/windows-installer/#build-windows-apps-on-linux-and-macos).
+Install LLVM (including `llvm-rc`), LLD (including `lld-link`), and Clang, in
+addition to the Rust, Node and pnpm build prerequisites. For Debian/Ubuntu:
+
+```sh
+sudo apt-get install clang lld llvm
+rustup target add x86_64-pc-windows-msvc
+cargo install --locked --version 0.23.1 cargo-xwin
+```
+
+After the dependency installation and contract/rule generation steps above, run
+from the repository root:
+
+```sh
+export CARGO_TARGET_DIR="$PWD/target"
+export XWIN_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ffxiv-xwin"
+pnpm --filter desktop exec tauri build --ci --no-bundle \
+  --runner cargo-xwin --target x86_64-pc-windows-msvc -- --locked
+cargo xwin build -p ffxiv-extcap --release --locked \
+  --target x86_64-pc-windows-msvc
+```
+
+`cargo-xwin` downloads the Microsoft SDK/CRT on the first build. Both executables
+are written to `target/x86_64-pc-windows-msvc/release/`. The frontend and icon are
+embedded by the Tauri build; Deucalion resources, Lua dissectors and licenses
+still need to accompany the executables as described in the portable layout.
+`--no-bundle` means NSIS and WiX are unnecessary.
+
+Verified with Rust 1.98.1, cargo-xwin 0.23.1 and LLVM 19.1.7 on Linux: both the
+desktop and extcap release builds linked successfully and produced x86-64 PE32+
+executables without application source changes. Missing Microsoft CRT PDB files
+can produce non-fatal `LNK4099` debug-information warnings during linking.
+
+This compiles Windows executables; it does not run Windows tests or validate
+WebView2, injection or Wireshark interoperability. `build-desktop.ps1` and the
+release workflow continue to use Windows for the full portable packaging process.
+
 ## Desktop releases
 
 Push an annotated `desktop-v<version>` tag to build and publish a portable release.
