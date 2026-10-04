@@ -37,6 +37,21 @@ The Windows workflow calls this same script. Its manual **run_tests** input enab
 tests; push/PR builds leave tests off. The separate Core workflow still runs its
 Linux checks independently.
 
+### CI caches
+
+Windows desktop builds and Linux core checks cache the pnpm store using
+`pnpm-lock.yaml`, plus Cargo downloads and compiled dependencies in the root
+`target` directory using [rust-cache](https://github.com/Swatinem/rust-cache).
+Rust cache keys account for the compiler, Cargo manifests and lockfiles, toolchain
+configuration and build environment. Windows and Linux caches are separate;
+Windows runs with tests enabled also use a separate key from build-only runs.
+
+The first successful run populates each cache. Later compatible runs reuse it;
+cache misses still perform a normal build. Workspace crates, frontend assets and
+the portable ZIP are rebuilt, and tests remain opt-in for desktop builds. No
+`node_modules` or final release ZIP is cached. To discard the Rust caches, delete
+them from the repository's Actions cache page or change the workflows' cache keys.
+
 ## Core development on Linux
 
 ```sh

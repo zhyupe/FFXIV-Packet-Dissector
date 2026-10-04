@@ -26,6 +26,12 @@ jobs:
           node-version: '22.22.2'
           cache: pnpm
       - uses: dtolnay/rust-toolchain@stable
+      - name: Cache Rust dependencies and build artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: '. -> target'
+          key: desktop-x86_64-pc-windows-msvc-tests-${{ inputs.run_tests || false }}
+          cache-bin: false
       - name: Build portable application
         shell: pwsh
         env:
