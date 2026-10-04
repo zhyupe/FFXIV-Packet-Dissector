@@ -178,85 +178,75 @@ function App() {
   const activeStep = wizard?.steps.find((s) => s.name === wizard.current)
   const results = new Map(wizard?.results ?? [])
   const disabled = busy
+  const connecting = state.connection === 'connecting'
+  const sameTarget =
+    connected && state.target && selected === processKey(state.target)
+  const disconnectAction = connecting || sameTarget
+  const visibleSteps =
+    wizard?.steps
+      .map((item, index) => ({ ...item, number: index + 1 }))
+      .filter((item) =>
+        item.name.toLowerCase().includes(query.toLowerCase()),
+      ) ?? []
   return (
     <div className="shell">
-      <header className="app-header">
-        <div className="app-mark" aria-hidden="true">
-          ↔
-        </div>
-        <div>
-          <h1>FFXIV Packet Dissector</h1>
-          <p>采集与协议识别工作台</p>
-        </div>
-        <span className={`pill ${connected ? 'live' : ''}`}>
-          <i />
-          {labels[state.connection]}
-        </span>
-      </header>
       <section className="process-bar" aria-label="游戏进程">
-        <div className="process-select">
-          <label htmlFor="process">游戏进程</label>
-          <select
-            id="process"
-            value={selected}
-            onChange={(e) => setSelected(e.target.value)}
-            disabled={disabled}
-          >
-            {!processes.length && (
-              <option value="">未发现可访问的游戏进程</option>
-            )}
-            {processes.map((p) => (
-              <option key={processKey(p)} value={processKey(p)}>
-                PID {p.pid} · {p.version} · {p.executable}
-              </option>
-            ))}
-          </select>
-        </div>
-        <button onClick={() => void refresh()} disabled={disabled}>
+        <label htmlFor="process">游戏进程</label>
+        <select
+          id="process"
+          value={selected}
+          onChange={(e) => setSelected(e.target.value)}
+          disabled={disabled || connecting}
+        >
+          {!processes.length && <option value="">未发现游戏进程</option>}
+          {processes.map((p) => (
+            <option key={processKey(p)} value={processKey(p)}>
+              PID {p.pid} · {p.version} · {p.executable}
+            </option>
+          ))}
+        </select>
+        <button
+          onClick={() => void refresh()}
+          disabled={disabled || connecting}
+        >
           刷新
         </button>
         <button
-          className="primary"
+          className={disconnectAction ? undefined : 'primary'}
           disabled={
-            disabled ||
-            !target ||
-            state.connection === 'connecting' ||
-            (connected &&
-              state.target &&
-              selected === processKey(state.target)) ||
-            false
+            connecting ? false : disabled || (!disconnectAction && !target)
           }
-          onClick={() =>
-            target &&
-            void run('connect', {
-              pid: target.pid,
-              startedAt: target.startedAt,
-            })
+          title={
+            connected && !sameTarget
+              ? '切换进程将停止采集输出与识别'
+              : undefined
           }
+          onClick={() => {
+            if (disconnectAction) void run('disconnect')
+            else if (target)
+              void run('connect', {
+                pid: target.pid,
+                startedAt: target.startedAt,
+              })
+          }}
         >
-          {connected ? '切换并连接' : '连接并注入'}
+          {connecting
+            ? '取消连接'
+            : sameTarget
+              ? '断开'
+              : connected
+                ? '切换连接'
+                : '连接'}
         </button>
-        <button
-          disabled={!['connected', 'connecting'].includes(state.connection)}
-          onClick={() => void run('disconnect')}
-        >
-          {state.connection === 'connecting' ? '取消连接' : '断开'}
-        </button>
+        <span className={`pill connection-status ${connected ? 'live' : ''}`}>
+          {labels[state.connection]}
+        </span>
       </section>
-      <div className="connection-detail">
-        {state.target ? (
-          <>
-            当前：PID {state.target.pid}
-            <span>{state.target.version}</span>
-            <span className="path" title={state.target.executable}>
-              {state.target.executable}
-            </span>
-          </>
-        ) : (
-          '启动游戏后刷新列表，选择要连接的进程。'
-        )}
-        <span className="hint">切换进程会停止转发与识别</span>
-      </div>
+      {connected && state.target && !sameTarget && (
+        <div className="connection-detail">
+          当前连接：PID {state.target.pid} · {state.target.version}
+        </div>
+      )}
       <nav aria-label="工作区">
         <button
           aria-current={page === 'forwarder' ? 'page' : undefined}
@@ -294,14 +284,19 @@ function App() {
       <main>
         {page === 'forwarder' ? (
           <section className="forwarder-page">
-            <div className="section-heading">
-              <div>
-                <span className="eyebrow">WIRESHARK CAPTURE</span>
-                <h2>实时查看游戏通信</h2>
-                <p>
-                  默认通过命名管道直接交给 Wireshark；也可切换为兼容 UDP 输出。
-                </p>
-              </div>
+            <div className="output-controls">
+              <label htmlFor="output-mode">输出方式</label>
+              <select
+                id="output-mode"
+                value={outputMode}
+                disabled={state.forwarder.running || disabled}
+                onChange={(e) =>
+                  setOutputMode(e.target.value as 'pipe' | 'udp')
+                }
+              >
+                <option value="pipe">Wireshark 命名管道</option>
+                <option value="udp">UDP 兼容输出</option>
+              </select>
               <button
                 className={state.forwarder.running ? 'danger' : 'primary'}
                 disabled={disabled || !connected}
@@ -314,25 +309,11 @@ function App() {
               >
                 {state.forwarder.running ? '停用转发' : '启用转发'}
               </button>
-            </div>
-            <div className="output-controls">
-              <label>
-                输出方式{' '}
-                <select
-                  aria-label="输出方式"
-                  value={outputMode}
-                  disabled={state.forwarder.running || disabled}
-                  onChange={(e) =>
-                    setOutputMode(e.target.value as 'pipe' | 'udp')
-                  }
-                >
-                  <option value="pipe">Wireshark 命名管道</option>
-                  <option value="udp">UDP 兼容输出</option>
-                </select>
-              </label>
               <button
                 disabled={
-                  !state.forwarder.running || state.forwarder.mode !== 'pipe'
+                  disabled ||
+                  !state.forwarder.running ||
+                  state.forwarder.mode !== 'pipe'
                 }
                 onClick={() =>
                   void bridge
@@ -347,27 +328,29 @@ function App() {
               <div>
                 <span>客户端 → 服务端</span>
                 <strong>{state.forwarder.sent.toLocaleString()}</strong>
-                <small>已转发的数据包</small>
               </div>
               <div>
                 <span>服务端 → 客户端</span>
                 <strong>{state.forwarder.received.toLocaleString()}</strong>
-                <small>已转发的数据包</small>
               </div>
               <div>
                 <span>未能转发</span>
                 <strong>{state.forwarder.dropped.toLocaleString()}</strong>
-                <small>超出大小或队列限制、发送失败</small>
               </div>
             </div>
             <div className="filter">
-              <label>{outputMode === 'pipe' ? '管道地址' : '捕获过滤器'}</label>
-              <code>
-                {outputMode === 'pipe'
-                  ? state.forwarder.pipe || '启用后显示'
-                  : 'udp and host 127.0.0.11'}
-              </code>
+              <span>{outputMode === 'pipe' ? '管道地址' : '捕获过滤器'}</span>
+              {outputMode === 'pipe' && !state.forwarder.pipe ? (
+                <span className="filter-value placeholder">启用后显示</span>
+              ) : (
+                <code className="filter-value">
+                  {outputMode === 'pipe'
+                    ? state.forwarder.pipe
+                    : 'udp and host 127.0.0.11'}
+                </code>
+              )}
               <button
+                disabled={outputMode === 'pipe' && !state.forwarder.pipe}
                 onClick={() =>
                   void navigator.clipboard
                     .writeText(
@@ -375,8 +358,14 @@ function App() {
                         ? state.forwarder.pipe
                         : 'udp and host 127.0.0.11',
                     )
-                    .then(() => setNotice('过滤器已复制'))
-                    .catch(() => setError('复制失败，请手动选择过滤器文本。'))
+                    .then(() =>
+                      setNotice(
+                        outputMode === 'pipe'
+                          ? '管道地址已复制'
+                          : '过滤器已复制',
+                      ),
+                    )
+                    .catch(() => setError('复制失败，请手动选择文本。'))
                 }
               >
                 复制
@@ -406,9 +395,6 @@ function App() {
                 </div>
               </dl>
             )}
-            <p className="footnote">
-              停用转发不会停止 Wizard。切换工作区也不会中断正在运行的任务。
-            </p>
           </section>
         ) : (
           <section className="wizard-page">
@@ -426,51 +412,52 @@ function App() {
                 onChange={(e) => setQuery(e.target.value)}
               />
               <div className="step-list">
-                {wizard?.steps
-                  .filter((s) =>
-                    s.name.toLowerCase().includes(query.toLowerCase()),
-                  )
-                  .map((s, i) => (
-                    <button
-                      key={s.name}
-                      aria-pressed={step?.name === s.name}
-                      onClick={() => setViewStep(s.name)}
+                {!wizard && (
+                  <p className="empty">
+                    {error ? '步骤加载失败' : '正在加载步骤…'}
+                  </p>
+                )}
+                {wizard && !visibleSteps.length && (
+                  <p className="empty">未找到匹配步骤</p>
+                )}
+                {visibleSteps.map((s) => (
+                  <button
+                    key={s.name}
+                    aria-pressed={step?.name === s.name}
+                    onClick={() => setViewStep(s.name)}
+                  >
+                    <span
+                      className={
+                        results.has(s.name) ? 'step-number done' : 'step-number'
+                      }
                     >
-                      <span
-                        className={
-                          results.has(s.name)
-                            ? 'step-number done'
-                            : 'step-number'
-                        }
-                      >
-                        {results.has(s.name)
-                          ? '✓'
-                          : String(i + 1).padStart(2, '0')}
-                      </span>
-                      <span>
-                        {s.name}
-                        <small>
-                          {s.source === 'S'
-                            ? '服务端 → 客户端'
-                            : '客户端 → 服务端'}
-                        </small>
-                      </span>
-                      {wizard.current === s.name && <span className="dot on" />}
-                    </button>
-                  ))}
+                      {results.has(s.name)
+                        ? '✓'
+                        : String(s.number).padStart(2, '0')}
+                    </span>
+                    <span>
+                      {s.name}
+                      <small>
+                        {s.source === 'S'
+                          ? '服务端 → 客户端'
+                          : '客户端 → 服务端'}
+                      </small>
+                    </span>
+                    {wizard?.current === s.name &&
+                      ['input', 'running'].includes(wizard.status) && (
+                        <span className="dot on" />
+                      )}
+                  </button>
+                ))}
               </div>
             </aside>
             <div className="wizard-detail">
               <div className="section-heading">
-                <div>
-                  <span className="eyebrow">OPCODE WIZARD</span>
-                  <h2>{step?.name ?? '开始协议识别'}</h2>
-                </div>
+                <h2>{step?.name ?? '选择步骤'}</h2>
                 <span className="pill">{labels[wizard?.status ?? 'idle']}</span>
               </div>
               <p className="instruction">
-                {step?.instruction ||
-                  '连接游戏进程后，按照步骤提示在游戏内操作。'}
+                {step?.instruction || '从左侧选择要识别的包。'}
               </p>
               <div className="toolbar">
                 <button
@@ -481,7 +468,7 @@ function App() {
                     void run('wizard.start')
                   }}
                 >
-                  顺序执行／恢复
+                  顺序识别
                 </button>
                 <button
                   disabled={disabled || !connected || !step}
@@ -542,7 +529,6 @@ function App() {
                   }}
                 >
                   <h3>填写 {activeStep?.name} 所需信息</h3>
-                  <p>输入仅用于当前连接，不会保存到磁盘。</p>
                   {wizard.fields.map((field) => (
                     <label key={field.key}>
                       {field.label}
@@ -584,7 +570,7 @@ function App() {
                 </h3>
                 <div>
                   <button
-                    disabled={disabled || !wizard}
+                    disabled={disabled || !wizard || !state.target}
                     onClick={() => void run('wizard.save')}
                   >
                     保存进度
@@ -620,26 +606,10 @@ function App() {
                 </table>
                 {!results.size && <p className="empty">尚无识别结果</p>}
               </div>
-              <p className="footnote">
-                识别结果来自现有扫描规则，仍需结合客户端结构人工核验。
-              </p>
             </div>
           </section>
         )}
       </main>
-      <footer>
-        <span>
-          <i className={state.forwarder.running ? 'dot on' : 'dot'} />
-          采集输出：{state.forwarder.running ? '运行中' : '已停用'}
-        </span>
-        <span>
-          <i className={wizard?.status === 'running' ? 'dot on' : 'dot'} />
-          Wizard：{labels[wizard?.status ?? 'idle']}
-        </span>
-        <span className="footer-right">
-          进度不保存原始包 · Wireshark 可保存采集内容
-        </span>
-      </footer>
     </div>
   )
 }

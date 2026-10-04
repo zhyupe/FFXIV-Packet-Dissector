@@ -35,13 +35,14 @@ impl App {
         data_dir: PathBuf,
         dll: PathBuf,
     ) -> Result<(Self, mpsc::Receiver<Vec<u8>>)> {
-        ffxiv_wizard_engine::validate_manifest(&manifest)?;
+        // The rule catalog is available before capture or progress storage starts.
+        let catalog = Engine::new(manifest.clone())?.snapshot();
         let state = Snapshot {
             session_id: 0,
             connection: "disconnected".into(),
             target: None,
             forwarder: OutputStatus::default(),
-            wizard: None,
+            wizard: Some(catalog.clone()),
             error: String::new(),
         };
         let (tx, rx) = mpsc::channel(32);
@@ -50,6 +51,7 @@ impl App {
         let cancel = Arc::new(Mutex::new(None));
         let core = Core {
             manifest,
+            catalog,
             data_dir,
             dll,
             state,
@@ -109,6 +111,7 @@ impl App {
 }
 struct Core {
     manifest: Manifest,
+    catalog: WizardSnapshot,
     data_dir: PathBuf,
     dll: PathBuf,
     state: Snapshot,
@@ -135,9 +138,11 @@ impl Core {
             self.wizard.as_ref().is_some_and(Engine::is_running),
             Ordering::Release,
         );
-        if let Some(w) = &self.wizard {
-            self.state.wizard = Some(w.snapshot());
-        }
+        self.state.wizard = Some(
+            self.wizard
+                .as_ref()
+                .map_or_else(|| self.catalog.clone(), Engine::snapshot),
+        );
         if let Some(o) = &self.output {
             self.state.forwarder = o.status.lock().unwrap().clone();
         }
@@ -232,7 +237,7 @@ impl Core {
                 self.disconnect().await?;
                 self.store = None;
                 self.wizard = None;
-                self.state.wizard = None;
+                self.state.wizard = Some(self.catalog.clone());
                 self.state.target = None;
                 self.state.session_id = self
                     .state
@@ -493,6 +498,39 @@ mod tests {
         serde_json::from_value(json!({"version":1,"hash":"a".repeat(64),"steps":[{"name":"Synthetic","instruction":"Synthetic operation","source":"S","category":"ServerZoneIpc","channel":1,"fields":[],"length":{"min":4,"max":4,"oneOf":[4]},"probe":null}]})).unwrap()
     }
     #[tokio::test]
+    async fn bundled_catalog_is_available_without_a_game() {
+        let manifest: Manifest = serde_json::from_str(include_str!(
+            "../../../packages/wizard/generated/manifest.json"
+        ))
+        .unwrap();
+        let expected = serde_json::to_value(&manifest.steps).unwrap();
+        let (app, _worker) = App::start(
+            manifest,
+            std::env::temp_dir().join("unused-bundled-catalog-profile"),
+            PathBuf::new(),
+        )
+        .unwrap();
+        assert!(!app
+            .snapshots
+            .borrow()
+            .wizard
+            .as_ref()
+            .unwrap()
+            .steps
+            .is_empty());
+        let snapshot = app.request("snapshot", json!({}), 0).await.unwrap();
+        assert_eq!(snapshot["wizard"]["steps"], expected);
+        assert_eq!(snapshot["connection"], "disconnected");
+        assert!(snapshot["target"].is_null());
+        assert_eq!(
+            app.request("wizard.select", json!({"name": expected[0]["name"]}), 0)
+                .await
+                .unwrap_err(),
+            "NOT_CONNECTED"
+        );
+        app.request("shutdown", json!({}), 0).await.unwrap();
+    }
+    #[tokio::test]
     async fn session_validation_and_shutdown_are_serialized() {
         let (app, _worker) = App::start(
             synthetic_manifest(),
@@ -506,6 +544,17 @@ mod tests {
         );
         let snapshot = app.request("snapshot", json!({}), 0).await.unwrap();
         assert_eq!(snapshot["connection"], "disconnected");
+        assert_eq!(snapshot["wizard"]["steps"][0]["name"], "Synthetic");
+        assert_eq!(snapshot["wizard"]["status"], "idle");
+        assert_eq!(snapshot["wizard"]["results"], json!([]));
+        assert_eq!(
+            app.request("wizard.start", json!({}), 0).await.unwrap_err(),
+            "NOT_CONNECTED"
+        );
+        assert_eq!(
+            app.request("wizard.save", json!({}), 0).await.unwrap_err(),
+            "STATE_UNAVAILABLE"
+        );
         app.request("shutdown", json!({}), 0).await.unwrap();
     }
     #[tokio::test]

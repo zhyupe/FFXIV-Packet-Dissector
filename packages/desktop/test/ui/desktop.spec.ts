@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test'
+import manifest from 'wizard/manifest' with { type: 'json' }
 
 test.beforeEach(async ({ page }) => {
   page.on('pageerror', error => { console.error(error.message) })
   page.on('console', message => { if (message.type() === 'error') console.error(message.text()) })
-  await page.addInitScript(() => {
+  await page.addInitScript((catalog) => {
     const processes = [
       {
         pid: 123,
@@ -52,7 +53,10 @@ test.beforeEach(async ({ page }) => {
       error: '',
       conflict: null,
     })
+    state.wizard = { ...wizard(), current: catalog[0].name, steps: catalog }
     Object.assign(window, {
+      __desktopNoProcesses: () => { processes.length = 0 },
+      __desktopConnecting: () => { state.connection = 'connecting'; changed(copy()) },
       __desktopEvents: events,
       __desktopFail: () => { state.connection='failed';state.forwarder.running=false;if(state.wizard)state.wizard.status='stopped';changed(copy());failed('PIPE_CLOSED') },
       __DESKTOP_TEST_BRIDGE__: {
@@ -105,21 +109,21 @@ test.beforeEach(async ({ page }) => {
         },
       },
     })
-  })
+  }, manifest.steps)
 })
 
 test('no automatic connection; page navigation does not stop independent services', async ({
   page,
 }) => {
   await page.goto('/')
-  await expect(page.getByRole('button', { name: '连接并注入' })).toBeEnabled()
+  await expect(page.getByRole('button', { name: '连接' })).toBeEnabled()
   expect(
     await page.evaluate(() => (window as any).__desktopEvents),
   ).not.toContain('connect')
-  await page.getByRole('button', { name: '连接并注入' }).click()
+  await page.getByRole('button', { name: '连接' }).click()
   await page.getByRole('button', { name: '启用转发' }).click()
   await page.getByRole('button', { name: 'Wizard', exact: true }).click()
-  await page.getByRole('button', { name: '顺序执行／恢复' }).click()
+  await page.getByRole('button', { name: '顺序识别' }).click()
   await page.getByLabel('测试输入').fill('Synthetic UI input')
   await page.getByRole('button', { name: '提交并等待数据' }).click()
   await expect(page.getByRole('status')).toContainText('正在等待')
@@ -135,10 +139,10 @@ test('switching process stops both and direct steps have a fresh form', async ({
   page,
 }) => {
   await page.goto('/')
-  await page.getByRole('button', { name: '连接并注入' }).click()
+  await page.getByRole('button', { name: '连接' }).click()
   await page.getByRole('button', { name: '启用转发' }).click()
   await page.getByRole('combobox', { name: '游戏进程' }).selectOption('456:2')
-  await page.getByRole('button', { name: '切换并连接' }).click()
+  await page.getByRole('button', { name: '切换连接' }).click()
   await expect(page.getByRole('button', { name: '启用转发' })).toBeEnabled()
   await page.getByRole('button', { name: 'Wizard', exact: true }).click()
   await page.getByRole('button', { name: /AnotherStep/ }).click()
@@ -153,11 +157,66 @@ test('capture failure stops visible work and does not reconnect automatically', 
   page,
 }) => {
   await page.goto('/')
-  await page.getByRole('button', { name: '连接并注入' }).click()
+  await page.getByRole('button', { name: '连接' }).click()
   await page.getByRole('button', { name: '启用转发' }).click()
   await page.evaluate(() => (window as any).__desktopFail())
   await expect(page.getByRole('alert')).toContainText('游戏采集连接已关闭')
   await expect(page.getByRole('button', { name: '启用转发' })).toBeDisabled()
   const events = await page.evaluate(() => (window as any).__desktopEvents)
   expect(events.filter((s: string) => s === 'connect')).toHaveLength(1)
+})
+
+
+test('bundled wizard steps are browsable before connecting, with recognition disabled', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Wizard', exact: true }).click()
+  await expect(page.locator('.step-list button')).toHaveCount(manifest.steps.length)
+  await expect(page.getByRole('button', { name: '顺序识别' })).toBeDisabled()
+  await expect(page.getByRole('button', { name: '保存进度' })).toBeDisabled()
+  const selected = manifest.steps[3]
+  await page.getByLabel('筛选步骤').fill(selected.name)
+  await page.locator('.step-list button').filter({ hasText: selected.name }).first().click()
+  await expect(page.locator('.wizard-detail h2')).toHaveText(selected.name)
+  await expect(page.getByRole('button', { name: '识别此步骤', exact: true })).toBeDisabled()
+  await page.getByLabel('筛选步骤').fill('no-such-synthetic-step')
+  await expect(page.getByText('未找到匹配步骤')).toBeVisible()
+  await page.getByLabel('筛选步骤').clear()
+  await page.screenshot({ path: 'test-results/wizard-catalog.png', fullPage: true })
+})
+
+test('one connection action follows connect, switch, disconnect and cancel states', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.getByRole('button', { name: '断开', exact: true })).toHaveCount(0)
+  await page.getByRole('button', { name: '连接', exact: true }).click()
+  await expect(page.getByRole('button', { name: '连接', exact: true })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: '断开', exact: true })).toBeEnabled()
+  await page.getByRole('combobox', { name: '游戏进程' }).selectOption('456:2')
+  await expect(page.getByRole('button', { name: '断开', exact: true })).toHaveCount(0)
+  await expect(page.getByRole('button', { name: '切换连接', exact: true })).toBeEnabled()
+  await page.getByRole('combobox', { name: '游戏进程' }).selectOption('123:1')
+  await page.getByRole('button', { name: '断开', exact: true }).click()
+  await expect(page.getByRole('button', { name: '连接', exact: true })).toBeEnabled()
+  await page.evaluate(() => (window as any).__desktopConnecting())
+  await page.getByRole('button', { name: '取消连接', exact: true }).click()
+  await expect(page.getByRole('button', { name: '连接', exact: true })).toBeEnabled()
+})
+
+test('compact layout fits the minimum window and tabs have no hover background', async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 610 })
+  await page.goto('/')
+  await page.evaluate(() => (window as any).__desktopNoProcesses())
+  await page.getByRole('button', { name: '刷新', exact: true }).click()
+  await expect(page.getByRole('button', { name: '连接', exact: true })).toBeDisabled()
+  await expect(page.getByRole('button', { name: '复制', exact: true })).toBeDisabled()
+  const tab = page.getByRole('button', { name: 'Wizard', exact: true })
+  await tab.hover()
+  await expect(tab).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+  expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  const status = page.locator('.connection-status')
+  expect(await status.evaluate(el => getComputedStyle(el).paddingLeft === getComputedStyle(el).paddingRight)).toBe(true)
+  await page.screenshot({ path: 'test-results/capture-compact.png', fullPage: true })
+  await tab.click()
+  await expect(page.locator('.step-list button')).toHaveCount(manifest.steps.length)
+  expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.screenshot({ path: 'test-results/wizard-compact.png', fullPage: true })
 })

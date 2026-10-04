@@ -26,6 +26,9 @@ session, not a connection to an existing Desktop instance.
 
 ## Wizard and progress
 
+The bundled step list is available for browsing and filtering before connecting.
+Recognition starts only after a game process is connected.
+
 Sequence mode preserves the original scanner order. Direct selection includes
 missing prerequisites. Inputs and context are held only in memory; a new game
 session requires them again. Results are isolated by installation, build and rule
