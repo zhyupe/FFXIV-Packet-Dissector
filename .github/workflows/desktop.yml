@@ -1,6 +1,8 @@
 name: Desktop Windows
 on:
   push:
+    branches: ['**']
+    tags: ['desktop-v*']
     paths: ['crates/**', 'xtask/**', 'resources/**', 'packages/desktop/**', 'packages/contracts/**', 'packages/wizard/**', 'src/**', 'Cargo.*', 'rust-toolchain.toml', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'package.json', 'build-desktop.ps1', '.gitattributes', '.github/workflows/desktop.yml']
   pull_request:
     paths: ['crates/**', 'xtask/**', 'resources/**', 'packages/desktop/**', 'packages/contracts/**', 'packages/wizard/**', 'src/**', 'Cargo.*', 'rust-toolchain.toml', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'package.json', 'build-desktop.ps1', '.gitattributes', '.github/workflows/desktop.yml']
@@ -42,3 +44,27 @@ jobs:
           name: ffxiv-packet-desktop-windows-x64
           path: packages/desktop/ffxiv-packet-desktop-windows-x64.zip
           if-no-files-found: error
+  release:
+    if: startsWith(github.ref, 'refs/tags/desktop-v')
+    needs: windows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: ffxiv-packet-desktop-windows-x64
+          path: release
+      - name: Publish portable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          cd release
+          sha256sum ffxiv-packet-desktop-windows-x64.zip > SHA256SUMS
+          gh release create "$RELEASE_TAG" \
+            ffxiv-packet-desktop-windows-x64.zip SHA256SUMS \
+            --verify-tag --title "Desktop ${RELEASE_TAG#desktop-}" \
+            --notes-file ../docs/desktop-release.md

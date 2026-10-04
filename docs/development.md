@@ -84,5 +84,10 @@ Real-machine checks, kept outside automated fixtures:
 7. Launch extcap from Wireshark; discovery must not inject and capture stop must exit.
 8. Restore saved results without automatic injection or restored personal inputs.
 
-`tools/benchmarks/measure-node-icu.ps1` is retained only as a historical build-size
-experiment; its output is not part of the release or required by the application.
+## Desktop releases
+
+Push an annotated `desktop-v<version>` tag to build and publish a portable release.
+The Desktop Windows workflow attaches the ZIP and `SHA256SUMS` only after the
+Windows build succeeds. Branch and pull-request builds continue to upload Actions
+artifacts without creating releases. Update `docs/desktop-release.md` when the
+release contents or requirements change.
