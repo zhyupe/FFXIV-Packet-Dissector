@@ -1,0 +1,690 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Contracts",
+  "description": "All public types are reachable from one schema; generated contracts are checked in CI.",
+  "type": "object",
+  "required": [
+    "manifest",
+    "snapshot",
+    "target",
+    "worker_result",
+    "worker_task"
+  ],
+  "properties": {
+    "manifest": {
+      "$ref": "#/definitions/Manifest"
+    },
+    "snapshot": {
+      "$ref": "#/definitions/Snapshot"
+    },
+    "target": {
+      "$ref": "#/definitions/Target"
+    },
+    "worker_result": {
+      "$ref": "#/definitions/WorkerResult"
+    },
+    "worker_task": {
+      "$ref": "#/definitions/WorkerTask"
+    }
+  },
+  "definitions": {
+    "Condition": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "conditions",
+            "op"
+          ],
+          "properties": {
+            "conditions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Condition"
+              }
+            },
+            "op": {
+              "type": "string",
+              "enum": [
+                "all"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "conditions",
+            "op"
+          ],
+          "properties": {
+            "conditions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Condition"
+              }
+            },
+            "op": {
+              "type": "string",
+              "enum": [
+                "any"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "equals",
+            "offset",
+            "op",
+            "width"
+          ],
+          "properties": {
+            "equals": {
+              "$ref": "#/definitions/ValueRef"
+            },
+            "mask": {
+              "default": null,
+              "type": [
+                "integer",
+                "null"
+              ],
+              "format": "uint32",
+              "minimum": 0.0
+            },
+            "offset": {
+              "type": "integer",
+              "format": "uint",
+              "minimum": 0.0
+            },
+            "op": {
+              "type": "string",
+              "enum": [
+                "field"
+              ]
+            },
+            "width": {
+              "type": "integer",
+              "format": "uint8",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GameProcess": {
+      "type": "object",
+      "required": [
+        "executable",
+        "pid",
+        "startedAt",
+        "version"
+      ],
+      "properties": {
+        "executable": {
+          "type": "string"
+        },
+        "pid": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "startedAt": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "InputField": {
+      "type": "object",
+      "required": [
+        "key",
+        "label",
+        "required",
+        "type"
+      ],
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "shared": {
+          "default": false,
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Length": {
+      "type": "object",
+      "required": [
+        "max"
+      ],
+      "properties": {
+        "max": {
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "min": {
+          "default": 0,
+          "type": "integer",
+          "format": "uint",
+          "minimum": 0.0
+        },
+        "oneOf": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "uint",
+            "minimum": 0.0
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Manifest": {
+      "type": "object",
+      "required": [
+        "hash",
+        "steps",
+        "version"
+      ],
+      "properties": {
+        "hash": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Step"
+          }
+        },
+        "version": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "OpcodeResult": {
+      "type": "object",
+      "required": [
+        "category",
+        "source",
+        "value"
+      ],
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "comment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "value": {
+          "type": "integer",
+          "format": "uint16",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "OutputStatus": {
+      "type": "object",
+      "required": [
+        "clientPort",
+        "dropped",
+        "error",
+        "mode",
+        "pipe",
+        "received",
+        "running",
+        "sent",
+        "serverPort"
+      ],
+      "properties": {
+        "clientPort": {
+          "type": "integer",
+          "format": "uint16",
+          "minimum": 0.0
+        },
+        "dropped": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "error": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "pipe": {
+          "type": "string"
+        },
+        "received": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "running": {
+          "type": "boolean"
+        },
+        "sent": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "serverPort": {
+          "type": "integer",
+          "format": "uint16",
+          "minimum": 0.0
+        }
+      }
+    },
+    "Snapshot": {
+      "type": "object",
+      "required": [
+        "connection",
+        "error",
+        "forwarder",
+        "sessionId"
+      ],
+      "properties": {
+        "connection": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        },
+        "forwarder": {
+          "$ref": "#/definitions/OutputStatus"
+        },
+        "sessionId": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "target": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/GameProcess"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wizard": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/WizardSnapshot"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "Step": {
+      "type": "object",
+      "required": [
+        "category",
+        "channel",
+        "fields",
+        "instruction",
+        "length",
+        "name",
+        "source"
+      ],
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "continuation": {
+          "description": "Continue the preceding observation window without replaying across user interactions.",
+          "default": false,
+          "type": "boolean"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InputField"
+          }
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "length": {
+          "$ref": "#/definitions/Length"
+        },
+        "name": {
+          "type": "string"
+        },
+        "probe": {
+          "default": null,
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Condition"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "produces": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requires": {
+          "default": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Target": {
+      "type": "object",
+      "required": [
+        "pid",
+        "startedAt"
+      ],
+      "properties": {
+        "pid": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "startedAt": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ValueRef": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "constant"
+              ]
+            },
+            "value": {
+              "type": "integer",
+              "format": "uint32",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "key",
+            "kind"
+          ],
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "input"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "WizardSnapshot": {
+      "type": "object",
+      "required": [
+        "error",
+        "fields",
+        "inputToken",
+        "mode",
+        "results",
+        "status",
+        "steps",
+        "unsaved"
+      ],
+      "properties": {
+        "conflict": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "error": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InputField"
+          }
+        },
+        "inputToken": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "mode": {
+          "type": "string"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/definitions/OpcodeResult"
+              }
+            ],
+            "maxItems": 2,
+            "minItems": 2
+          }
+        },
+        "status": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Step"
+          }
+        },
+        "unsaved": {
+          "type": "boolean"
+        }
+      }
+    },
+    "WorkerResult": {
+      "type": "object",
+      "required": [
+        "inputGeneration",
+        "matched",
+        "packetSequence",
+        "ruleId",
+        "rulePackHash",
+        "runId",
+        "sessionId",
+        "version"
+      ],
+      "properties": {
+        "baseOffset": {
+          "default": null,
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint16",
+          "minimum": 0.0
+        },
+        "error": {
+          "default": false,
+          "type": "boolean"
+        },
+        "inputGeneration": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "matched": {
+          "type": "boolean"
+        },
+        "packetSequence": {
+          "type": "string"
+        },
+        "ruleId": {
+          "type": "string"
+        },
+        "rulePackHash": {
+          "type": "string"
+        },
+        "runId": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "sessionId": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "updates": {
+          "default": {},
+          "type": "object",
+          "additionalProperties": true
+        },
+        "version": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "WorkerTask": {
+      "type": "object",
+      "required": [
+        "context",
+        "inputGeneration",
+        "inputs",
+        "packetSequence",
+        "ruleId",
+        "rulePackHash",
+        "runId",
+        "sessionId",
+        "sourceActor",
+        "targetActor",
+        "version"
+      ],
+      "properties": {
+        "context": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "inputGeneration": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "packetSequence": {
+          "type": "string"
+        },
+        "ruleId": {
+          "type": "string"
+        },
+        "rulePackHash": {
+          "type": "string"
+        },
+        "runId": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "sessionId": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "sourceActor": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "targetActor": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "version": {
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

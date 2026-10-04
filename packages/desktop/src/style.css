@@ -1,5 +1,5 @@
 :root {
-  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
   color: #23313a;
   background: #f5f6f8;
   font-synthesis: none;
@@ -273,7 +273,7 @@ main {
   user-select: all;
 }
 code {
-  font-family: Consolas, 'Cascadia Code', monospace;
+  font-family: Consolas, "Cascadia Code", monospace;
 }
 .endpoints {
   margin: 28px 0;
@@ -344,7 +344,7 @@ code {
   margin-bottom: 3px;
   font-size: 12px;
 }
-.step-list button[aria-pressed='true'] {
+.step-list button[aria-pressed="true"] {
   background: white;
   border-color: #d1dce3;
   box-shadow: 0 1px 2px #23313a08;
@@ -539,4 +539,14 @@ footer > span {
   .section-heading h2 {
     font-size: 20px;
   }
+}
+
+.output-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.output-controls select {
+  margin-left: 12px;
 }

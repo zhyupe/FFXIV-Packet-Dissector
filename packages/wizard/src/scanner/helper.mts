@@ -1,11 +1,12 @@
-import { Origin } from 'pcap'
-
-export { Origin as PacketSource }
+export enum PacketSource {
+  Client = 'C',
+  Server = 'S',
+}
 
 export const Encoding = {
   UTF8: {
     GetBytes(input: string) {
-      return Buffer.from(input)
+      return new TextEncoder().encode(input)
     },
   },
 }
@@ -17,26 +18,54 @@ export const int = {
 }
 
 export const BitConverter = {
-  ToInt64(input: Buffer, offset: number) {
-    return input.readBigInt64LE(offset)
+  ToInt64(input: Uint8Array, offset: number) {
+    return new DataView(
+      input.buffer,
+      input.byteOffset,
+      input.byteLength,
+    ).getBigInt64(offset, true)
   },
-  ToInt32(input: Buffer, offset: number) {
-    return input.readInt32LE(offset)
+  ToInt32(input: Uint8Array, offset: number) {
+    return new DataView(
+      input.buffer,
+      input.byteOffset,
+      input.byteLength,
+    ).getInt32(offset, true)
   },
-  ToInt16(input: Buffer, offset: number) {
-    return input.readInt16LE(offset)
+  ToInt16(input: Uint8Array, offset: number) {
+    return new DataView(
+      input.buffer,
+      input.byteOffset,
+      input.byteLength,
+    ).getInt16(offset, true)
   },
-  ToUInt64(input: Buffer, offset: number) {
-    return input.readBigUInt64LE(offset)
+  ToUInt64(input: Uint8Array, offset: number) {
+    return new DataView(
+      input.buffer,
+      input.byteOffset,
+      input.byteLength,
+    ).getBigUint64(offset, true)
   },
-  ToUInt32(input: Buffer, offset: number) {
-    return input.readUInt32LE(offset)
+  ToUInt32(input: Uint8Array, offset: number) {
+    return new DataView(
+      input.buffer,
+      input.byteOffset,
+      input.byteLength,
+    ).getUint32(offset, true)
   },
-  ToUInt16(input: Buffer, offset: number) {
-    return input.readUInt16LE(offset)
+  ToUInt16(input: Uint8Array, offset: number) {
+    return new DataView(
+      input.buffer,
+      input.byteOffset,
+      input.byteLength,
+    ).getUint16(offset, true)
   },
-  ToSingle(input: Buffer, offset: number) {
-    return input.readFloatLE(offset)
+  ToSingle(input: Uint8Array, offset: number) {
+    return new DataView(
+      input.buffer,
+      input.byteOffset,
+      input.byteLength,
+    ).getFloat32(offset, true)
   },
 }
 
@@ -48,13 +77,13 @@ export const Offsets = {
   IpcType: 0x12,
   ServerId: 0x16,
   Timestamp: 0x18,
-  IpcData: 0x20,
+  IpcData: 0,
 } as const
 
-export const IncludesBytes = (source: Buffer, search: Buffer) => {
-  if (search == null) return false
+export const IncludesBytes = (source: Uint8Array, search: Uint8Array) => {
+  if (search == null || search.length === 0) return false
 
-  for (let i = 0; i < source.length - search.length; ++i) {
+  for (let i = 0; i <= source.length - search.length; ++i) {
     let result = true
     for (let j = 0; j < search.length; ++j) {
       if (search[j] !== source[i + j]) {

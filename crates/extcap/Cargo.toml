@@ -1,0 +1,15 @@
+[package]
+name = "ffxiv-extcap"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+ffxiv-protocol = { path = "../protocol" }
+ffxiv-capture-core = { path = "../capture-core" }
+ffxiv-capture-output = { path = "../capture-output" }
+ffxiv-game-process = { path = "../game-process" }
+tokio.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows-sys.workspace = true

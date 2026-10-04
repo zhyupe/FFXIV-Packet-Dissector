@@ -12,6 +12,9 @@ local function makeValString(enumTable)
 end
 
 local function getDirectionMark(pktinfo)
+    if pktinfo.private.ffxiv_direction ~= nil then
+        return pktinfo.private.ffxiv_direction
+    end
     local src = tostring(pktinfo.net_src or "")
     if src == CLIENT_IP then
         return "C"

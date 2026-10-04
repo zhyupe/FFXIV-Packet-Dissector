@@ -1,0 +1,9 @@
+[package]
+name = "ffxiv-capture-output"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+ffxiv-protocol = { path = "../protocol" }
+tokio.workspace = true

@@ -1,0 +1,1 @@
+{"name":"@ffxiv/contracts","private":true,"type":"module","exports":{".":"./generated/types.ts"},"scripts":{"generate":"node generate.mjs"}}

@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "io.github.zhyupe.ffxiv-packet-dissector",
   "build": {
-    "beforeDevCommand": "pnpm dev:web",
+    "beforeDevCommand": "pnpm prepare:resources && pnpm --filter wizard build && pnpm dev:web",
     "devUrl": "http://127.0.0.1:1420",
-    "beforeBuildCommand": "pnpm build",
+    "beforeBuildCommand": "pnpm prepare:resources && pnpm build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -21,28 +21,13 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; connect-src ipc: http://ipc.localhost; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+      "csp": "default-src 'self'; connect-src ipc: http://ipc.localhost; style-src 'self' 'unsafe-inline'; img-src 'self' data:; worker-src 'self' blob:"
     }
   },
   "bundle": {
-    "active": true,
-    "targets": [
-      "nsis"
-    ],
+    "active": false,
     "resources": {
-      "resources/": "runtime/"
-    },
-    "windows": {
-      "webviewInstallMode": {
-        "type": "downloadBootstrapper",
-        "silent": true
-      },
-      "nsis": {
-        "languages": [
-          "SimpChinese",
-          "English"
-        ]
-      }
+      "resources/": "./"
     },
     "icon": [
       "icons/icon.ico",

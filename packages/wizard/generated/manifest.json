@@ -1,0 +1,1685 @@
+{
+  "version": 1,
+  "hash": "751d681a1aa476009406e52792528bdbee030ddcd2317c3ef18610787aa8ee46",
+  "steps": [
+    {
+      "name": "PlayerSetup",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please log in.",
+      "fields": [
+        {
+          "key": "$playerName",
+          "label": "Please enter your character name:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "UpdateHpMpTp",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please alter your HP or MP and allow your stats to regenerate completely.",
+      "fields": [
+        {
+          "key": "$maxHP",
+          "label": "Please enter your max HP:",
+          "type": "number",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 8,
+        "max": 16,
+        "oneOf": [
+          8,
+          16
+        ]
+      },
+      "probe": {
+        "op": "all",
+        "conditions": [
+          {
+            "op": "field",
+            "offset": 0,
+            "width": 4,
+            "equals": {
+              "kind": "input",
+              "key": "$maxHP"
+            }
+          },
+          {
+            "op": "any",
+            "conditions": [
+              {
+                "op": "field",
+                "offset": 4,
+                "width": 2,
+                "equals": {
+                  "kind": "constant",
+                  "value": 10000
+                }
+              },
+              {
+                "op": "field",
+                "offset": 4,
+                "width": 2,
+                "equals": {
+                  "kind": "constant",
+                  "value": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "UpdateClassInfo",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Switch to the job you entered level for.",
+      "fields": [
+        {
+          "key": "0",
+          "label": "Please enter your the level for any crafter job:",
+          "type": "text",
+          "required": true,
+          "shared": false
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 16,
+        "max": 16,
+        "oneOf": [
+          16
+        ]
+      },
+      "probe": {
+        "op": "field",
+        "offset": 4,
+        "width": 2,
+        "equals": {
+          "kind": "input",
+          "key": "0"
+        }
+      }
+    },
+    {
+      "name": "EventPlay64",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Use Trial Synthesis from any recipes, and use Basic Synthesis",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "PlayerStats",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Switch back to the job you entered HP for.",
+      "fields": [
+        {
+          "key": "$maxHP",
+          "label": "Please enter your max HP:",
+          "type": "number",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 144,
+        "max": 144,
+        "oneOf": [
+          144
+        ]
+      },
+      "probe": {
+        "op": "all",
+        "conditions": [
+          {
+            "op": "field",
+            "offset": 24,
+            "width": 4,
+            "equals": {
+              "kind": "input",
+              "key": "$maxHP"
+            }
+          },
+          {
+            "op": "any",
+            "conditions": [
+              {
+                "op": "field",
+                "offset": 28,
+                "width": 4,
+                "equals": {
+                  "kind": "constant",
+                  "value": 10000
+                }
+              },
+              {
+                "op": "field",
+                "offset": 28,
+                "width": 4,
+                "equals": {
+                  "kind": "constant",
+                  "value": 0
+                }
+              }
+            ]
+          },
+          {
+            "op": "any",
+            "conditions": [
+              {
+                "op": "field",
+                "offset": 32,
+                "width": 4,
+                "equals": {
+                  "kind": "constant",
+                  "value": 10000
+                }
+              },
+              {
+                "op": "field",
+                "offset": 32,
+                "width": 4,
+                "equals": {
+                  "kind": "constant",
+                  "value": 0
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "UpdatePositionHandler",
+      "category": "ClientZoneIpc",
+      "source": "C",
+      "channel": 1,
+      "instruction": "Please move your character.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ClientTrigger",
+      "category": "ClientZoneIpc",
+      "source": "C",
+      "channel": 1,
+      "instruction": "Please draw your weapon.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 32,
+        "max": 32,
+        "oneOf": [
+          32
+        ]
+      },
+      "probe": {
+        "op": "field",
+        "offset": 0,
+        "width": 4,
+        "equals": {
+          "kind": "constant",
+          "value": 1
+        }
+      }
+    },
+    {
+      "name": "ActorControl",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ActorControlSelf",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please enter sanctuary and wait for rested bonus gains.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ActorControlTarget",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please mark yourself with the \"1\" marker.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "Playtime",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please type /playtime.",
+      "fields": [
+        {
+          "key": "0",
+          "label": "Type /playtime, and input the days you played:",
+          "type": "text",
+          "required": true,
+          "shared": false
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "SetSearchInfoHandler",
+      "category": "ClientZoneIpc",
+      "source": "C",
+      "channel": 1,
+      "instruction": "Please set that search comment in-game.",
+      "fields": [
+        {
+          "key": "$searchText",
+          "label": "Please enter a somewhat lengthy search message here, before entering it in-game:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "UpdateSearchInfo",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [
+        {
+          "key": "$searchText",
+          "label": "Please enter a somewhat lengthy search message here, before entering it in-game:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [
+        "SetSearchInfoHandler"
+      ],
+      "continuation": true,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ExamineSearchInfo",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Open your search information with the \"View Search Info\" button.",
+      "fields": [
+        {
+          "key": "$searchText",
+          "label": "Please enter a somewhat lengthy search message here, before entering it in-game:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [
+        "SetSearchInfoHandler"
+      ],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ActorCast",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please teleport to Limsa Lominsa Lower Decks.",
+      "fields": [
+        {
+          "key": "$lightningCrystals",
+          "label": "Please enter the number of Lightning Crystals you have:",
+          "type": "number",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "CurrencyCrystalInfo",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [
+        {
+          "key": "$lightningCrystals",
+          "label": "Please enter the number of Lightning Crystals you have:",
+          "type": "number",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [
+        "ActorCast"
+      ],
+      "continuation": true,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "InitZone",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [
+        "ActorCast"
+      ],
+      "continuation": true,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "WeatherChange",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [
+        "ActorCast"
+      ],
+      "continuation": true,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ActorMove",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please wait. (Teleport to Limsa Lominsa Lower Decks if you haven't)",
+      "fields": [],
+      "requires": [
+        "ActorCast"
+      ],
+      "continuation": true,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "PlayerSpawn",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please wait for another player to spawn in your vicinity.",
+      "fields": [
+        {
+          "key": "0",
+          "label": "Please enter your world ID:",
+          "type": "text",
+          "required": true,
+          "shared": false
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "Examine",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please examine that character's equipment.",
+      "fields": [
+        {
+          "key": "0",
+          "label": "Please enter a nearby character's name:",
+          "type": "text",
+          "required": true,
+          "shared": false
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "WardLandInfo",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please view a housing ward from a city aetheryte/ferry.",
+      "fields": [
+        {
+          "key": "0",
+          "label": "Please enter the name of whoever owns the first house in the ward (if it's an FC, their shortname):",
+          "type": "text",
+          "required": true,
+          "shared": false
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "WorldVisitQueue",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Visit another world.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 16,
+        "max": 16,
+        "oneOf": [
+          16
+        ]
+      },
+      "probe": {
+        "op": "all",
+        "conditions": [
+          {
+            "op": "field",
+            "offset": 0,
+            "width": 4,
+            "equals": {
+              "kind": "constant",
+              "value": 3
+            }
+          },
+          {
+            "op": "field",
+            "offset": 4,
+            "width": 4,
+            "equals": {
+              "kind": "constant",
+              "value": 0
+            }
+          },
+          {
+            "op": "field",
+            "offset": 8,
+            "width": 4,
+            "equals": {
+              "kind": "constant",
+              "value": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PrepareZoning",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Waiting",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ContainerInfo",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please wait.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ItemInfo",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please open your chocobo saddlebag.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ActorSetPos",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Teleport to Martet (Aethernet Shard).",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "PlaceFieldMarker",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please target The Market Aethernet Shard and type /waymark A <t>",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "PlaceFieldMarkerPreset",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please type /waymark clear",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "EffectResult",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Switch to Fisher and enable snagging.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "EventStart",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please begin fishing and put your rod away immediately.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "SystemLogMessage",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "EventPlay",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "EventFinish",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "EventPlay4",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please cast your line and catch a fish at Limsa Lominsa.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "UpdateInventorySlot",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Waiting for the fish appears in your inventory.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "FishCaught",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ResumeEventScene16",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please desynth the fish (You can also purchase a Merlthor Goby, Lominsan Anchovy or Harbor Herring from marketboard). If you got items other than Fine Sand and Allagan Tin Piece, please desynth again.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "InventoryModifyHandler",
+      "category": "ClientZoneIpc",
+      "source": "C",
+      "channel": 1,
+      "instruction": "Please drop the Fine Sand or Allagan Tin Piece.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [
+        "inventoryOperation"
+      ],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "InventoryActionAck",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please wait.",
+      "fields": [],
+      "requires": [
+        "InventoryModifyHandler"
+      ],
+      "continuation": true,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "InventoryTransaction",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please wait.",
+      "fields": [],
+      "requires": [
+        "InventoryModifyHandler"
+      ],
+      "continuation": true,
+      "produces": [
+        "inventoryOperation"
+      ],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "InventoryTransactionFinish",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please wait.",
+      "fields": [],
+      "requires": [
+        "InventoryTransaction"
+      ],
+      "continuation": true,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "MarketBoardSearchResult",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please click \"Catalysts\" on the market board.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "MarketBoardRequestItemListingInfo",
+      "category": "ClientZoneIpc",
+      "source": "C",
+      "channel": 1,
+      "instruction": "Please open the market board listings for any Dark Matter.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "MarketBoardItemListingCount",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [],
+      "continuation": true,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "MarketBoardItemListingHistory",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "MarketBoardItemListing",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [],
+      "continuation": true,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "MarketBoardPurchaseHandler",
+      "category": "ClientZoneIpc",
+      "source": "C",
+      "channel": 1,
+      "instruction": "Please purchase any Dark Matter",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "MarketBoardPurchase",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "继续观察上一项操作产生的数据。",
+      "fields": [],
+      "requires": [],
+      "continuation": true,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "RetainerInformation",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please use the Summoning Bell.",
+      "fields": [
+        {
+          "key": "$retainerName",
+          "label": "Please enter one of your retainers' names:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "NpcSpawn",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please summon that retainer.",
+      "fields": [
+        {
+          "key": "$retainerName",
+          "label": "Please enter one of your retainers' names:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [
+        "RetainerInformation"
+      ],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ItemMarketBoardInfo",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please put any item on sale for a unit price of 123456 and summon the retainer again",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 32,
+        "max": 32,
+        "oneOf": [
+          32
+        ]
+      },
+      "probe": {
+        "op": "field",
+        "offset": 16,
+        "width": 4,
+        "equals": {
+          "kind": "constant",
+          "value": 123456
+        }
+      }
+    },
+    {
+      "name": "FreeCompanyInfo",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Load a zone. (If you are running scanners by order, suggest teleporting to your FC house)",
+      "fields": [
+        {
+          "key": "$fcRank",
+          "label": "Please enter your Free Company rank:",
+          "type": "number",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "FreeCompanyDialog",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Open your Free Company window (press G or ;)",
+      "fields": [
+        {
+          "key": "$fcRank",
+          "label": "Please enter your Free Company rank:",
+          "type": "number",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ObjectSpawn",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please enter a furnished house. (Suggest teleporting to your FC house)",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "CompanyAirshipStatus",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Open your Estate tab from the Timers window if you have any airships on exploration.",
+      "fields": [
+        {
+          "key": "$airshipName",
+          "label": "Please enter your airship name:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "CompanySubmersibleStatus",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Open your Estate tab from the Timers window if you have any submarines on exploration.",
+      "fields": [
+        {
+          "key": "$submarineName",
+          "label": "Please enter your submarine name:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "AirshipStatusList",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Open your airship management console if you have any airships",
+      "fields": [
+        {
+          "key": "$airshipName",
+          "label": "Please enter your airship name:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "AirshipStatus",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Check the status of a specific airship if you have any airships",
+      "fields": [
+        {
+          "key": "$airshipName",
+          "label": "Please enter your airship name:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "AirshipExplorationResult",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Open a voyage log from an airship",
+      "fields": [
+        {
+          "key": "0",
+          "label": "Please enter the experience from the first sector (first destination in log, not the ones next to report rank and items):",
+          "type": "text",
+          "required": true,
+          "shared": false
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "SubmarineStatusList",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Open your submarine management console if you have any submarines",
+      "fields": [
+        {
+          "key": "$submarineName",
+          "label": "Please enter your submarine name:",
+          "type": "text",
+          "required": true,
+          "shared": true
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "SubmarineExplorationResult",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Open a voyage log from a submarine",
+      "fields": [
+        {
+          "key": "0",
+          "label": "Please enter the experience from the first sector (first destination in log, not the ones next to report rank and items):",
+          "type": "text",
+          "required": true,
+          "shared": false
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ChatHandler",
+      "category": "ClientZoneIpc",
+      "source": "C",
+      "channel": 1,
+      "instruction": "Please /say your message in-game:",
+      "fields": [
+        {
+          "key": "0",
+          "label": "Please enter a message to /say in-game:",
+          "type": "text",
+          "required": true,
+          "shared": false
+        }
+      ],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "BattleTalk2",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please enter Thornmarch (Hard) trial and attack the enmny with auto attack (For let them said the first dialog)",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "UpdatePositionInstance",
+      "category": "ClientZoneIpc",
+      "source": "C",
+      "channel": 1,
+      "instruction": "Please move your character in an/the instance.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "EffectResultBasic",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Switch to White Mage, and auto attack on an enemy.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "Effect",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Cast Dia on an enemy. Then wait for a damage tick.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "StatusEffectList",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please wait...",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ActorGauge",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Wait for gauge changes, then clear the lilies.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "CFPreferredRole",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please wait, this may take some time...",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ContentFinderNotifyPop",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Please enter the \"Sastasha\" as an undersized party.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "AoeEffect8",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Attack multiple enemies with Holy.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "AoeEffect16",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Attack multiple enemies (>8) with Holy.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "AoeEffect24",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Attack multiple enemies (>16) with Holy.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "AoeEffect32",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Attack multiple enemies (>24) with Holy.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    },
+    {
+      "name": "ResumeEventScene32",
+      "category": "ServerZoneIpc",
+      "source": "S",
+      "channel": 1,
+      "instruction": "Start playing Mini Cactpot.",
+      "fields": [],
+      "requires": [],
+      "continuation": false,
+      "produces": [],
+      "length": {
+        "min": 0,
+        "max": 1048576,
+        "oneOf": []
+      },
+      "probe": null
+    }
+  ]
+}

@@ -1,85 +1,44 @@
-# Desktop
+# Windows Desktop
 
-Windows x64 GUI for choosing a game process, sharing a Deucalion capture between
-UDP forwarding and the opcode wizard, and switching sessions. The UI is in Chinese.
+The portable application uses Tauri and a shared Rust capture core. It does not
+require or include Node.js. Windows x64 and an installed WebView2 runtime are
+required. No NSIS installer is published.
 
-## Windows users
+## Capture
 
-Use the NSIS installer from the **Desktop Windows** workflow artifact. Node.js is
-included; no developer tools are required. The installer downloads WebView2 if it
-is missing, so the first installation may require internet access. The portable
-ZIP requires an existing WebView2 runtime. Extract the whole directory, retaining
-`runtime/` beside `ffxiv-packet-desktop.exe`.
+1. Extract the complete ZIP; preserve its directory layout.
+2. Copy `wireshark/` contents into Wireshark's personal Lua plugin directory and
+   reload Lua plugins.
+3. Start the game, refresh the process list, select a process and connect.
+4. Enable the default named-pipe output, then click **打开 Wireshark**. If Wireshark
+   is not in its standard installation path, select `Wireshark.exe` in the dialog.
+5. Switch to Wizard as needed. Navigating pages does not stop either task.
 
-1. Start the game, refresh the process list, then select its PID and installation.
-2. Click **连接并注入**. An existing Deucalion pipe is reused when available.
-3. Enable **Forwarder** to send the existing UDP format to the loopback interface.
-   In Wireshark, capture using `udp and host 127.0.0.11`.
-4. Open **Wizard** to run sequentially or select a single step. Supply the requested
-   inputs, then perform the indicated action in the game. Legacy scanner rules
-   are reused; a discovered opcode still needs manual verification.
+The UDP compatibility mode uses a loopback capture interface and the filter
+`udp and host 127.0.0.11`. Stop output before changing modes. After Wireshark closes,
+stop/restart output before connecting a new reader.
 
-Page navigation leaves tasks running. The forwarder and wizard have independent
-stop controls. Switching processes saves results and stops both; start the desired
-functions manually after connecting. Disconnecting does not unload the injected DLL.
-Closing the app saves progress and shuts down its backend. There is no automatic
-injection, automatic background restart, or tray mode.
+To capture directly from Wireshark without opening Desktop, copy
+`extcap/ffxiv-extcap.exe` and the complete sibling `ffxiv-resources/` directory into
+Wireshark's personal extcap directory. Refresh interfaces and select the game PID.
+Enumeration is read-only; only starting capture can inject. This starts a separate
+session, not a connection to an existing Desktop instance.
 
-Results are isolated by executable path, build version and scanner revision under
-Tauri's application data directory (`io.github.zhyupe.ffxiv-packet-dissector`).
-Only recognition results and the current step are saved. Packet bodies and prompt
-inputs are never persisted or logged; inputs are requested again after switching
-sessions. Old `context.json` files are not imported. **导出 JSON** keeps the existing
-`[name, opcode, comment]` array format.
+## Wizard and progress
 
-## Windows development
+Sequence mode preserves the original scanner order. Direct selection includes
+missing prerequisites. Inputs and context are held only in memory; a new game
+session requires them again. Results are isolated by installation, build and rule
+pack, and exported through a file dialog in the existing opcode JSON format.
 
-Install Node **22.22.2 x64**, pnpm, Rust and the Visual Studio C++ build tools required
-by Tauri and node-gyp. Run from the repository root:
+Conflicting matches do not overwrite results. Save errors stop recognition and
+keep results available in memory for retry/export. Closing saves progress and
+releases the connection; disconnecting does not unload the injected DLL.
 
-```sh
-pnpm install --ignore-scripts
-pnpm --filter dll-inject compile
-pnpm --filter pcap build
-pnpm --filter forwarder build
-pnpm --filter wizard build
-pnpm --filter desktop build
-pnpm --filter desktop prepare:runtime
-pnpm --filter desktop smoke:runtime
-pnpm --filter desktop dev
-```
+No automatic injection or task resumption occurs at startup. Application logs and
+progress contain no raw packets or character data. Wireshark captures themselves
+contain game data and may be saved by Wireshark.
 
-`prepare:runtime` downloads and checks the pinned Node executable, verifies the native
-addon loads with that runtime, and assembles the resources. `dll-inject` uses NAN and
-must be built for the exact Node ABI shipped. There is no Electron ABI or separately
-installed Node dependency. Resource paths are absolute and do not depend on the
-working directory. Re-run resource preparation after changing the backend.
-
-Build NSIS with `pnpm --filter desktop package`. CI also produces a portable ZIP.
-Build inputs are locked with the workspace lockfile and `src-tauri/Cargo.lock`.
-Runtime downloads and build outputs are ignored by Git; existing third-party
-licenses and the Deucalion license accompany the distribution.
-
-## Architecture and checks
-
-React calls narrow Rust commands. Rust owns one Node child in a Windows Job Object
-and exchanges bounded, versioned JSON lines through stdin/stdout. stdout contains
-protocol messages only. Rust never exposes an arbitrary program path or shell to
-the renderer. The child owns one selected capture and fans out in memory; packet
-bodies are never sent to the UI. A broken backend stops visible work without
-re-injecting. An explicit stop/disconnect cancels an in-progress connection.
-
-```sh
-pnpm --filter pcap --filter forwarder --filter wizard --filter desktop typecheck
-pnpm --filter pcap --filter forwarder --filter wizard --filter desktop test
-pnpm --filter desktop exec playwright install chromium
-pnpm --filter desktop test:ui
-cargo test --manifest-path packages/desktop/src-tauri/Cargo.toml --locked
-```
-
-Core and UI tests use synthetic data and mock game processes. The Windows runtime
-smoke test checks the bundled Node/addon, process enumeration, protocol shutdown,
-Unicode paths and an empty PATH; it does not inject into a game. Release acceptance
-also requires a Windows game session: actual injection, compatible Wireshark UDP
-traffic, simultaneous wizard/forwarder, process switching, and no orphan backend
-after exit. Linux tests cannot substitute for that acceptance.
+Build from source with `./build-desktop.ps1` in the repository root. Add
+`-RunTests` to run tests; the default builds and packages only. Development
+instructions and architecture are in `docs/` in the source repository.

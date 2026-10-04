@@ -153,3 +153,5 @@ public/
 /tools/local/
 
 dist/
+/target/
+!resources/deucalion/deucalion.dll

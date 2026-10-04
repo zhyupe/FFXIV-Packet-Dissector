@@ -2,3 +2,12 @@
 /.yarn/releases/*    binary
 /.yarn/plugins/**/*  binary
 /.pnp.*              binary linguist-generated
+
+# Generated contracts and rule hashes must be identical on Linux and Windows.
+*.rs text eol=lf
+*.ts text eol=lf
+*.mts text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.dll binary

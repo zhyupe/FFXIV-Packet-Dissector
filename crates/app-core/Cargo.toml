@@ -1,0 +1,22 @@
+[package]
+name = "ffxiv-app-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+ffxiv-protocol = { path = "../protocol" }
+ffxiv-capture-core = { path = "../capture-core" }
+ffxiv-capture-output = { path = "../capture-output" }
+ffxiv-wizard-engine = { path = "../wizard-engine" }
+ffxiv-game-process = { path = "../game-process" }
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+tokio.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows-sys.workspace = true
+
+[dev-dependencies]
+bytes.workspace = true

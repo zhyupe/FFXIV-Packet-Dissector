@@ -1,0 +1,31 @@
+name: Rust core and rules
+on:
+  push:
+    paths: ['crates/**', 'xtask/**', 'packages/contracts/**', 'packages/wizard/**', 'Cargo.*', 'rust-toolchain.toml', 'resources/**', '.github/workflows/core.yml']
+  pull_request:
+    paths: ['crates/**', 'xtask/**', 'packages/contracts/**', 'packages/wizard/**', 'Cargo.*', 'rust-toolchain.toml', 'resources/**', '.github/workflows/core.yml']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.6.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.22.2'
+      - uses: dtolnay/rust-toolchain@stable
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: cargo run -p xtask --locked
+      - run: pnpm --filter @ffxiv/contracts generate
+      - run: pnpm --filter wizard build
+      - run: git diff --exit-code -- packages/contracts/generated packages/wizard/generated
+      - run: cargo test --workspace --exclude ffxiv-packet-desktop --locked
+      - run: pnpm --filter wizard typecheck
+      - run: pnpm --filter wizard test
+      - run: sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y tshark
+      - run: cargo test -p ffxiv-capture-output --test wireshark --locked -- --ignored
+      - run: cargo fmt --all --check

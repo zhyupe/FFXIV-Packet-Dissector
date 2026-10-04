@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import type { GameProcess } from 'pcap'
+import type { GameProcess } from '@ffxiv/contracts'
 import type { Action, Snapshot } from '../shared/protocol'
 import { bridge } from './bridge'
 import './style.css'
@@ -11,6 +11,8 @@ const empty: Snapshot = {
   target: null,
   forwarder: {
     running: false,
+    mode: 'pipe',
+    pipe: '',
     clientPort: 0,
     serverPort: 0,
     sent: 0,
@@ -35,14 +37,23 @@ const labels: Record<string, string> = {
   conflict: '结果冲突',
 }
 const errors: Record<string, string> = {
+  WORKER_FAILED: '复杂规则执行失败，请重新选择步骤。',
+  WORKER_TIMEOUT: '复杂规则执行超时，已停止本次识别。',
+  WIZARD_OVERFLOW: '候选包积压超过限制，请重新执行本次操作。',
+  PREREQUISITE_REQUIRED: '请先完成该步骤的前置操作。',
+  STATE_UNAVAILABLE:
+    '识别进度不可用，请解决存储问题后重新连接。采集输出仍可使用。',
+  BUILD_VERSION_UNKNOWN:
+    '无法读取游戏版本，已停用识别以避免混用进度；采集输出仍可使用。',
+  PROFILE_IN_USE: '另一个窗口正在使用这份识别进度。',
+  PIPE_CLOSED: '游戏采集连接已关闭。',
+  DLL_HASH_MISMATCH: '采集组件校验失败，请检查发行文件是否完整。',
   CONNECT_FAILED:
     '连接失败。请确认游戏仍在运行，且本工具与游戏的运行权限一致。',
   PROCESS_CHANGED_OR_EXITED: '选中的进程已退出或重新启动，请刷新进程列表。',
   SAVE_FAILED: '进度保存失败。请检查磁盘空间和目录权限，或先导出识别结果。',
   STATE_READ_FAILED: '已有进度无法读取，请检查应用数据目录。',
   INVALID_STATE: '已有进度格式不正确，请检查应用数据目录中的状态文件。',
-  BACKEND_EXITED: '后台已退出，采集已停止。请重新启动本程序。',
-  BACKEND_START_FAILED: '后台无法启动，请检查安装文件是否完整。',
   COMMAND_TIMEOUT: '操作超时，请断开后重试。',
   STALE_SESSION: '游戏连接已变更，请重新操作。',
   STALE_INPUT: '步骤已切换，请填写当前表单。',
@@ -64,15 +75,15 @@ function App() {
   const [processes, setProcesses] = useState<GameProcess[]>([])
   const [selected, setSelected] = useState('')
   const [page, setPage] = useState<'forwarder' | 'wizard'>('forwarder')
+  const [outputMode, setOutputMode] = useState<'pipe' | 'udp'>('pipe')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const [inputs, setInputs] = useState<Record<string, string>>({})
   const [query, setQuery] = useState('')
   const [viewStep, setViewStep] = useState('')
-  const dead = useRef(false)
   function update(next: Snapshot) {
-    if (next.sessionId < stateRef.current.sessionId || dead.current) return
+    if (next.sessionId < stateRef.current.sessionId) return
     stateRef.current = next
     setState(next)
   }
@@ -101,15 +112,6 @@ function App() {
     void bridge
       .subscribe(update, (code) => {
         setError(errorText(code))
-        if (code === 'BACKEND_EXITED') {
-          dead.current = true
-          setState((prev) => ({
-            ...prev,
-            connection: 'failed',
-            forwarder: { ...prev.forwarder, running: false },
-            wizard: prev.wizard ? { ...prev.wizard, status: 'stopped' } : null,
-          }))
-        }
       })
       .then((off) => {
         if (cancelled) {
@@ -147,6 +149,8 @@ function App() {
       )
       if (result && typeof result === 'object' && 'connection' in result)
         update(result as Snapshot)
+      if (['wizard.start', 'wizard.select', 'wizard.skip'].includes(action))
+        setViewStep('')
       if (action === 'wizard.save') setNotice('进度已保存')
     } catch (e) {
       setError(errorText(e))
@@ -173,7 +177,7 @@ function App() {
   )
   const activeStep = wizard?.steps.find((s) => s.name === wizard.current)
   const results = new Map(wizard?.results ?? [])
-  const disabled = busy || dead.current
+  const disabled = busy
   return (
     <div className="shell">
       <header className="app-header">
@@ -233,10 +237,7 @@ function App() {
           {connected ? '切换并连接' : '连接并注入'}
         </button>
         <button
-          disabled={
-            dead.current ||
-            !['connected', 'connecting'].includes(state.connection)
-          }
+          disabled={!['connected', 'connecting'].includes(state.connection)}
           onClick={() => void run('disconnect')}
         >
           {state.connection === 'connecting' ? '取消连接' : '断开'}
@@ -261,7 +262,7 @@ function App() {
           aria-current={page === 'forwarder' ? 'page' : undefined}
           onClick={() => setPage('forwarder')}
         >
-          Forwarder{' '}
+          采集输出{' '}
           <span className={state.forwarder.running ? 'dot on' : 'dot'} />
         </button>
         <button
@@ -295,18 +296,51 @@ function App() {
           <section className="forwarder-page">
             <div className="section-heading">
               <div>
-                <span className="eyebrow">WIRESHARK FORWARDER</span>
-                <h2>将游戏通信转发到本机</h2>
-                <p>在 Wireshark 中选择回环接口，使用下方过滤器捕获数据。</p>
+                <span className="eyebrow">WIRESHARK CAPTURE</span>
+                <h2>实时查看游戏通信</h2>
+                <p>
+                  默认通过命名管道直接交给 Wireshark；也可切换为兼容 UDP 输出。
+                </p>
               </div>
               <button
                 className={state.forwarder.running ? 'danger' : 'primary'}
                 disabled={disabled || !connected}
                 onClick={() =>
-                  void run('forwarder', { enabled: !state.forwarder.running })
+                  void run('forwarder', {
+                    enabled: !state.forwarder.running,
+                    mode: outputMode,
+                  })
                 }
               >
                 {state.forwarder.running ? '停用转发' : '启用转发'}
+              </button>
+            </div>
+            <div className="output-controls">
+              <label>
+                输出方式{' '}
+                <select
+                  aria-label="输出方式"
+                  value={outputMode}
+                  disabled={state.forwarder.running || disabled}
+                  onChange={(e) =>
+                    setOutputMode(e.target.value as 'pipe' | 'udp')
+                  }
+                >
+                  <option value="pipe">Wireshark 命名管道</option>
+                  <option value="udp">UDP 兼容输出</option>
+                </select>
+              </label>
+              <button
+                disabled={
+                  !state.forwarder.running || state.forwarder.mode !== 'pipe'
+                }
+                onClick={() =>
+                  void bridge
+                    .openWireshark?.()
+                    .catch((e) => setError(errorText(e)))
+                }
+              >
+                打开 Wireshark
               </button>
             </div>
             <div className="metrics">
@@ -327,12 +361,20 @@ function App() {
               </div>
             </div>
             <div className="filter">
-              <label>捕获过滤器</label>
-              <code>udp and host 127.0.0.11</code>
+              <label>{outputMode === 'pipe' ? '管道地址' : '捕获过滤器'}</label>
+              <code>
+                {outputMode === 'pipe'
+                  ? state.forwarder.pipe || '启用后显示'
+                  : 'udp and host 127.0.0.11'}
+              </code>
               <button
                 onClick={() =>
                   void navigator.clipboard
-                    .writeText('udp and host 127.0.0.11')
+                    .writeText(
+                      outputMode === 'pipe'
+                        ? state.forwarder.pipe
+                        : 'udp and host 127.0.0.11',
+                    )
                     .then(() => setNotice('过滤器已复制'))
                     .catch(() => setError('复制失败，请手动选择过滤器文本。'))
                 }
@@ -340,28 +382,30 @@ function App() {
                 复制
               </button>
             </div>
-            <dl className="endpoints">
-              <div>
-                <dt>客户端地址</dt>
-                <dd>
-                  127.0.0.11
-                  {state.forwarder.running &&
-                    ` : ${state.forwarder.clientPort}`}
-                </dd>
-              </div>
-              <div>
-                <dt>服务端地址</dt>
-                <dd>
-                  127.0.0.12
-                  {state.forwarder.running &&
-                    ` : ${state.forwarder.serverPort}`}
-                </dd>
-              </div>
-              <div>
-                <dt>转发状态</dt>
-                <dd>{state.forwarder.running ? '运行中' : '已停用'}</dd>
-              </div>
-            </dl>
+            {outputMode === 'udp' && (
+              <dl className="endpoints">
+                <div>
+                  <dt>客户端地址</dt>
+                  <dd>
+                    127.0.0.11
+                    {state.forwarder.running &&
+                      ` : ${state.forwarder.clientPort}`}
+                  </dd>
+                </div>
+                <div>
+                  <dt>服务端地址</dt>
+                  <dd>
+                    127.0.0.12
+                    {state.forwarder.running &&
+                      ` : ${state.forwarder.serverPort}`}
+                  </dd>
+                </div>
+                <div>
+                  <dt>转发状态</dt>
+                  <dd>{state.forwarder.running ? '运行中' : '已停用'}</dd>
+                </div>
+              </dl>
+            )}
             <p className="footnote">
               停用转发不会停止 Wizard。切换工作区也不会中断正在运行的任务。
             </p>
@@ -531,6 +575,9 @@ function App() {
                   冲突，未覆盖原结果。请选择相关步骤重新识别。
                 </div>
               )}
+              {wizard?.unsaved && (
+                <p role="status">识别结果尚未保存，请重试保存或导出。</p>
+              )}
               <div className="results-heading">
                 <h3>
                   识别结果 <span>{results.size}</span>
@@ -583,13 +630,15 @@ function App() {
       <footer>
         <span>
           <i className={state.forwarder.running ? 'dot on' : 'dot'} />
-          Forwarder：{state.forwarder.running ? '运行中' : '已停用'}
+          采集输出：{state.forwarder.running ? '运行中' : '已停用'}
         </span>
         <span>
           <i className={wizard?.status === 'running' ? 'dot on' : 'dot'} />
           Wizard：{labels[wizard?.status ?? 'idle']}
         </span>
-        <span className="footer-right">本地会话 · 不记录原始包</span>
+        <span className="footer-right">
+          进度不保存原始包 · Wireshark 可保存采集内容
+        </span>
       </footer>
     </div>
   )

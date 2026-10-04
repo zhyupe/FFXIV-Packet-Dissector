@@ -11,45 +11,27 @@ Copy all the files under `src/` to [the plugin folder](https://www.wireshark.org
 
 For Windows users, `mklink.bat` is provided to create a symbolic link from the plugin folder to the cloned repository.
 
-### Desktop GUI
+### Desktop GUI and Wireshark capture
 
-The [Windows desktop GUI](packages/desktop/README.md) provides process selection,
-independent forwarder and wizard controls, graphical wizard inputs and result export.
-It uses Tauri with a bundled Node.js backend; users do not need to install Node.js.
-The **Desktop Windows** workflow builds an NSIS installer and a portable ZIP.
+The [Windows desktop application](packages/desktop/README.md) provides process
+selection, independent capture output and wizard controls, graphical inputs and
+result export. Tauri calls the shared Rust core directly; the portable ZIP contains
+no Node.js runtime or native Node addon. WebView2 must already be installed.
 
-### Run the forwarder
+On Windows, run `./build-desktop.ps1` to build the portable ZIP. Tests are optional:
+use `./build-desktop.ps1 -RunTests` to include them.
 
-The [forwarder](packages/forwarder) can read raw packets from the game and send them to loopback udp ports. Therefore you can use Wireshark and this dissector
-without concern for the lower-level TCP layer.
+Default capture streams decoded IPC as pcapng over a named pipe into Wireshark.
+Install the Lua plugins, connect a game process, enable output and click **打开
+Wireshark**. The packaged extcap helper also allows selecting a game process
+directly in Wireshark without running Desktop. Interface discovery never injects.
 
-> Since patch 6.3, the game uses oodle for packet compression. It now requires a socket level state to retrive the raw packet data and therefore the
-> dissector can no longer directly read the communication.
->
-> Thankfully, the community developed [deucalion](https://github.com/ff14wed/deucalion) which could be injected into the game and directly read the
-> decompressed packets. The forwarder uses a modified version of [pcap-ffxiv](https://github.com/ffxiv-teamcraft/pcap-ffxiv), a deucalion wrapper
-> created by TeamCraft team.
+UDP loopback forwarding remains available in Desktop as a compatibility option:
+use `udp and host 127.0.0.11` on the loopback interface. Client and server addresses
+remain `127.0.0.11` and `127.0.0.12`. The old forwarder/wizard CLIs are removed.
 
-To use the forwarder, please follow the instructions:
-
-1. Install [Node.js](https://nodejs.org/) if you haven't.
-2. Install yarn by `npm i -g yarn` or enable corepack by `corepack enable`.
-3. Enter `packages/forwarder` directory, and run `yarn run build`.
-
-Steps above only need to be run once unless there are updates to the forwarder. You can then run `yarn run start` **after starting the game**.
-
-### Capture packets
-
-You can now start capturing packets on your **loopback device** with following filter:
-
-```
-# This filters all packets sent by the forwarder
-udp and host 127.0.0.11
-```
-
-Note that `127.0.0.11` represents the client, and `127.0.0.12` represents the server.
-
-![image](https://user-images.githubusercontent.com/2197479/68070741-31e87c00-fdad-11e9-9ced-86f2fce3d17e.png)
+See [architecture](docs/architecture.md), [wizard rules](docs/wizard-rules.md),
+[capture format](docs/capture-format.md), and [development](docs/development.md).
 
 ## Supported Packets
 

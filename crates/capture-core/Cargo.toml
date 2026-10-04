@@ -1,0 +1,11 @@
+[package]
+name = "ffxiv-capture-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+ffxiv-protocol = { path = "../protocol" }
+ffxiv-game-process = { path = "../game-process" }
+ffxiv-deucalion-client = { path = "../deucalion-client" }
+tokio.workspace = true

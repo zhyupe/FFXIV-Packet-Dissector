@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
+  page.on('pageerror', error => { console.error(error.message) })
+  page.on('console', message => { if (message.type() === 'error') console.error(message.text()) })
   await page.addInitScript(() => {
     const processes = [
       {
@@ -52,7 +54,7 @@ test.beforeEach(async ({ page }) => {
     })
     Object.assign(window, {
       __desktopEvents: events,
-      __desktopFail: () => failed('BACKEND_EXITED'),
+      __desktopFail: () => { state.connection='failed';state.forwarder.running=false;if(state.wizard)state.wizard.status='stopped';changed(copy());failed('PIPE_CLOSED') },
       __DESKTOP_TEST_BRIDGE__: {
         subscribe: async (
           handler: (state: any) => void,
@@ -80,6 +82,8 @@ test.beforeEach(async ({ page }) => {
           }
           if (action === 'forwarder') {
             state.forwarder.running = params.enabled
+            state.forwarder.mode = params.mode
+            state.forwarder.pipe = 'synthetic-pipe'
             state.forwarder.clientPort = 42000
             state.forwarder.serverPort = 42001
           }
@@ -119,7 +123,7 @@ test('no automatic connection; page navigation does not stop independent service
   await page.getByLabel('测试输入').fill('Synthetic UI input')
   await page.getByRole('button', { name: '提交并等待数据' }).click()
   await expect(page.getByRole('status')).toContainText('正在等待')
-  await page.getByRole('button', { name: 'Forwarder', exact: true }).click()
+  await page.getByRole('button', { name: '采集输出', exact: true }).click()
   await expect(page.getByRole('button', { name: '停用转发' })).toBeEnabled()
   await page.getByRole('button', { name: '停用转发' }).click()
   await page.getByRole('button', { name: 'Wizard', exact: true }).click()
@@ -145,14 +149,14 @@ test('switching process stops both and direct steps have a fresh form', async ({
   await expect(page.getByLabel('测试输入')).toHaveValue('')
 })
 
-test('background exit stops visible work and does not restart automatically', async ({
+test('capture failure stops visible work and does not reconnect automatically', async ({
   page,
 }) => {
   await page.goto('/')
   await page.getByRole('button', { name: '连接并注入' }).click()
   await page.getByRole('button', { name: '启用转发' }).click()
   await page.evaluate(() => (window as any).__desktopFail())
-  await expect(page.getByRole('alert')).toContainText('后台已退出')
+  await expect(page.getByRole('alert')).toContainText('游戏采集连接已关闭')
   await expect(page.getByRole('button', { name: '启用转发' })).toBeDisabled()
   const events = await page.evaluate(() => (window as any).__desktopEvents)
   expect(events.filter((s: string) => s === 'connect')).toHaveLength(1)

@@ -7,23 +7,18 @@
     "dev": "tauri dev",
     "dev:web": "vite --host 127.0.0.1",
     "build:web": "vite build",
-    "build:service": "esbuild server/index.mts --bundle --platform=node --format=esm --external:dll-inject --outfile=dist-service/service.mjs",
-    "build": "pnpm build:service && pnpm build:web",
-    "prepare:runtime": "node scripts/prepare-runtime.mjs",
+    "build": "pnpm --filter wizard build && pnpm build:web",
     "package": "tauri build",
     "typecheck": "tsc --noEmit",
-    "test": "pnpm build:service && node --import tsx --test test/*.test.mts",
     "test:ui": "playwright test",
-    "smoke:runtime": "node scripts/smoke-runtime.mjs"
+    "prepare:resources": "node scripts/prepare-resources.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "pcap": "workspace:^",
     "wizard": "workspace:^",
-    "forwarder": "workspace:^",
-    "dll-inject": "workspace:^"
+    "@ffxiv/contracts": "workspace:^"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.0.0",
@@ -32,7 +27,6 @@
     "@types/node": "catalog:",
     "@playwright/test": "^1.56.0",
     "vite": "^7.0.0",
-    "esbuild": "^0.28.1",
     "tsx": "catalog:",
     "typescript": "catalog:"
   }

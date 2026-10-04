@@ -3,5 +3,11 @@
   "private": true,
   "devDependencies": {
     "@biomejs/biome": "2.5.0"
+  },
+  "scripts": {
+    "contracts": "cargo run -p xtask && pnpm --filter @ffxiv/contracts generate",
+    "build:rules": "pnpm --filter wizard build",
+    "desktop": "pnpm --filter desktop dev",
+    "test:core": "cargo test --workspace --exclude ffxiv-packet-desktop"
   }
 }
