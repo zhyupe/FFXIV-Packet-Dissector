@@ -18,9 +18,8 @@ local update_inventory_slot_fields = {
   attribute2         = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.attribute2", "attribute2", base.DEC),
   condition          = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.condition", "condition", base.DEC),
   spiritbond         = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.spiritbond", "spiritbond", base.DEC),
-  stain              = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.stain", "stain", base.DEC),
-  glamour_catalog_id = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.glamour_catalog_id", "glamourCatalogId", base.DEC, db.Item),
-  unknown6           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.unknown6", "unknown6", base.DEC),
+  unknown38          = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.unknown38", "unknown38", base.DEC),
+  glamour_catalog_id = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.glamour_catalog_id", "glamourCatalogId", base.DEC, db.Item),
   materia1           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia1", "materia1", base.DEC),
   materia2           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia2", "materia2", base.DEC),
   materia3           = ProtoField.uint16("ffxiv_ipc_update_inventory_slot.materia3", "materia3", base.DEC),
@@ -31,8 +30,9 @@ local update_inventory_slot_fields = {
   materia3_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia3_tier", "materia3Tier", base.DEC),
   materia4_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia4_tier", "materia4Tier", base.DEC),
   materia5_tier      = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.materia5_tier", "materia5Tier", base.DEC),
-  unknown10          = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.unknown10", "unknown10", base.DEC),
-  unknown11          = ProtoField.uint32("ffxiv_ipc_update_inventory_slot.unknown11", "unknown11", base.DEC),
+  stain              = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.stain", "stain", base.DEC),
+  stain2             = ProtoField.uint8("ffxiv_ipc_update_inventory_slot.stain2", "stain2", base.DEC),
+  unknown61          = ProtoField.bytes("ffxiv_ipc_update_inventory_slot.unknown61", "unknown61", base.NONE),
 }
 
 ffxiv_ipc_update_inventory_slot.fields = update_inventory_slot_fields
@@ -117,20 +117,15 @@ function ffxiv_ipc_update_inventory_slot.dissector(tvbuf, pktinfo, root)
   local spiritbond_val  = spiritbond_tvbr:le_uint()
   tree:add_le(update_inventory_slot_fields.spiritbond, spiritbond_tvbr, spiritbond_val)
 
-  -- dissect the stain field
-  local stain_tvbr = tvbuf:range(38, 2)
-  local stain_val  = stain_tvbr:le_uint()
-  tree:add_le(update_inventory_slot_fields.stain, stain_tvbr, stain_val)
+  -- dissect the unknown38 field
+  local unknown38_tvbr = tvbuf:range(38, 2)
+  local unknown38_val  = unknown38_tvbr:le_uint()
+  tree:add_le(update_inventory_slot_fields.unknown38, unknown38_tvbr, unknown38_val)
 
   -- dissect the glamour_catalog_id field
-  local glamour_catalog_id_tvbr = tvbuf:range(40, 2)
+  local glamour_catalog_id_tvbr = tvbuf:range(40, 4)
   local glamour_catalog_id_val  = glamour_catalog_id_tvbr:le_uint()
   tree:add_le(update_inventory_slot_fields.glamour_catalog_id, glamour_catalog_id_tvbr, glamour_catalog_id_val)
-
-  -- dissect the unknown6 field
-  local unknown6_tvbr = tvbuf:range(42, 2)
-  local unknown6_val  = unknown6_tvbr:le_uint()
-  tree:add_le(update_inventory_slot_fields.unknown6, unknown6_tvbr, unknown6_val)
 
   -- dissect the materia1 field
   local materia1_tvbr = tvbuf:range(44, 2)
@@ -182,15 +177,20 @@ function ffxiv_ipc_update_inventory_slot.dissector(tvbuf, pktinfo, root)
   local materia5_tier_val  = materia5_tier_tvbr:le_uint()
   tree:add_le(update_inventory_slot_fields.materia5_tier, materia5_tier_tvbr, materia5_tier_val)
 
-  -- dissect the unknown10 field
-  local unknown10_tvbr = tvbuf:range(59, 1)
-  local unknown10_val  = unknown10_tvbr:le_uint()
-  tree:add_le(update_inventory_slot_fields.unknown10, unknown10_tvbr, unknown10_val)
+  -- dissect the stain field
+  local stain_tvbr = tvbuf:range(59, 1)
+  local stain_val  = stain_tvbr:le_uint()
+  tree:add_le(update_inventory_slot_fields.stain, stain_tvbr, stain_val)
 
-  -- dissect the unknown11 field
-  local unknown11_tvbr = tvbuf:range(60, 4)
-  local unknown11_val  = unknown11_tvbr:le_uint()
-  tree:add_le(update_inventory_slot_fields.unknown11, unknown11_tvbr, unknown11_val)
+  -- dissect the stain2 field
+  local stain2_tvbr = tvbuf:range(60, 1)
+  local stain2_val  = stain2_tvbr:le_uint()
+  tree:add_le(update_inventory_slot_fields.stain2, stain2_tvbr, stain2_val)
+
+  -- dissect the unknown61 field
+  local unknown61_tvbr = tvbuf:range(61, 3)
+  local unknown61_val  = unknown61_tvbr:raw()
+  tree:add(update_inventory_slot_fields.unknown61, unknown61_tvbr, unknown61_val)
 
   return len
 end

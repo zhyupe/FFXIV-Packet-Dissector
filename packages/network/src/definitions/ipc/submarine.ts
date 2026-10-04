@@ -103,9 +103,13 @@ export class SubmarineProgressionStatus extends Struct {
   @field(FieldType.byte, 0)
   unlockedSubmarineCount!: number
 
-  @field(FieldType.bytes, 1, 15)
-  unlockedSectors!: Buffer
+  // One bit per exploration point, indexed by point ID.
+  @field(FieldType.bitset, 1, 20)
+  unlockedSectors!: number[]
 
-  @field(FieldType.bytes, 16, 15)
-  exploredSectors!: Buffer
+  @field(FieldType.bitset, 21, 20)
+  exploredSectors!: number[]
+
+  @field(FieldType.bytes, 41, 7)
+  unknown41!: Buffer
 }

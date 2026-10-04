@@ -6,7 +6,9 @@ local inventory_transaction_finish_fields = {
   sequence_id0 = ProtoField.uint32("ffxiv_ipc_inventory_transaction_finish.sequence_id0", "sequenceId0", base.DEC),
   sequence_id1 = ProtoField.uint32("ffxiv_ipc_inventory_transaction_finish.sequence_id1", "sequenceId1", base.DEC),
   unknown1     = ProtoField.uint32("ffxiv_ipc_inventory_transaction_finish.unknown1", "unknown1", base.DEC),
-  unknown2     = ProtoField.uint32("ffxiv_ipc_inventory_transaction_finish.unknown2", "unknown2", base.DEC),
+  unknown12    = ProtoField.uint8("ffxiv_ipc_inventory_transaction_finish.unknown12", "unknown12", base.DEC),
+  packet_count = ProtoField.uint8("ffxiv_ipc_inventory_transaction_finish.packet_count", "packetCount", base.DEC),
+  unknown14    = ProtoField.bytes("ffxiv_ipc_inventory_transaction_finish.unknown14", "unknown14", base.NONE),
 }
 
 ffxiv_ipc_inventory_transaction_finish.fields = inventory_transaction_finish_fields
@@ -38,10 +40,20 @@ function ffxiv_ipc_inventory_transaction_finish.dissector(tvbuf, pktinfo, root)
   local unknown1_val  = unknown1_tvbr:le_uint()
   tree:add_le(inventory_transaction_finish_fields.unknown1, unknown1_tvbr, unknown1_val)
 
-  -- dissect the unknown2 field
-  local unknown2_tvbr = tvbuf:range(12, 4)
-  local unknown2_val  = unknown2_tvbr:le_uint()
-  tree:add_le(inventory_transaction_finish_fields.unknown2, unknown2_tvbr, unknown2_val)
+  -- dissect the unknown12 field
+  local unknown12_tvbr = tvbuf:range(12, 1)
+  local unknown12_val  = unknown12_tvbr:le_uint()
+  tree:add_le(inventory_transaction_finish_fields.unknown12, unknown12_tvbr, unknown12_val)
+
+  -- dissect the packet_count field
+  local packet_count_tvbr = tvbuf:range(13, 1)
+  local packet_count_val  = packet_count_tvbr:le_uint()
+  tree:add_le(inventory_transaction_finish_fields.packet_count, packet_count_tvbr, packet_count_val)
+
+  -- dissect the unknown14 field
+  local unknown14_tvbr = tvbuf:range(14, 2)
+  local unknown14_val  = unknown14_tvbr:raw()
+  tree:add(inventory_transaction_finish_fields.unknown14, unknown14_tvbr, unknown14_val)
 
   return len
 end

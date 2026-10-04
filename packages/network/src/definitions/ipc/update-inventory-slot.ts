@@ -1,37 +1,13 @@
 import { FieldType } from '@/struct/field-type.enum'
 import { Struct } from '@/struct/struct'
 import { field, format, ipcEnum } from '@/struct/struct.decorator'
-
-const ItemLocation = {
-  Inventory0: 0,
-  Inventory1: 1,
-  Inventory2: 2,
-  Inventory3: 3,
-  ArmouryEquipped: 1000,
-  Currency: 2000,
-  Crystal: 2001,
-  ArmouryOffHand: 3200,
-  ArmouryHead: 3201,
-  ArmouryBody: 3202,
-  ArmouryHands: 3203,
-  ArmouryWaist: 3204,
-  ArmouryLegs: 3205,
-  ArmouryFeet: 3206,
-  ArmouryEars: 3207,
-  ArmouryNeck: 3208,
-  ArmouryWrists: 3209,
-  ArmouryRightRing: 3210,
-  ArmouryLeftRing: 3211,
-  ArmouryRing: 3300,
-  SoulCrystal: 3400,
-  ArmouryMainHand: 3500,
-  Saddlebag0: 4000,
-  Saddlebag1: 4001,
-} as const
+import { ItemLocation } from './common/inventory'
 
 const ItemQuality = {
   NormalQuality: 0,
   HighQuality: 1,
+  CompanyCrestApplied: 2,
+  Relic: 4,
   Collectables: 8,
 } as const
 
@@ -72,6 +48,7 @@ export class UpdateInventorySlot extends Struct {
   @field(FieldType.byte, 33)
   attribute2!: number
 
+  // Raw durability: 30000 is full; zero is broken.
   @field(FieldType.uint, 34, 2)
   condition!: number
 
@@ -79,14 +56,11 @@ export class UpdateInventorySlot extends Struct {
   spiritbond!: number
 
   @field(FieldType.uint, 38, 2)
-  stain!: number
+  unknown38!: number
 
-  @field(FieldType.uint, 40, 2)
+  @field(FieldType.uint, 40, 4)
   @format({ db: 'Item' })
   glamourCatalogId!: number
-
-  @field(FieldType.uint, 42, 2)
-  unknown6!: number
 
   @field(FieldType.uint, 44, 2)
   materia1!: number
@@ -119,10 +93,13 @@ export class UpdateInventorySlot extends Struct {
   materia5Tier!: number
 
   @field(FieldType.byte, 59)
-  unknown10!: number
+  stain!: number
 
-  @field(FieldType.uint, 60, 4)
-  unknown11!: number
+  @field(FieldType.byte, 60)
+  stain2!: number
+
+  @field(FieldType.bytes, 61, 3)
+  unknown61!: Buffer
 }
 
 export class ItemInfo extends UpdateInventorySlot {}

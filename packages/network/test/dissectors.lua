@@ -704,4 +704,65 @@ do
   assert(experts == previous + 1 and next(values) == nil)
 end
 
+-- Independent synthetic inventory and submarine states, never capture excerpts.
+do
+  local progression = string.rep('\0', 48)
+  progression = replace(progression, 1, string.char(1))
+  progression = replace(progression, 20, string.char(0x80))
+  progression = replace(progression, 21, string.char(2))
+  progression = replace(progression, 40, string.char(0x40))
+  progression = replace(progression, 41, string.rep(string.char(0xa6), 7))
+  parse('ffxiv_ipc_submarine_progression_status', progression)
+  assert(field('ffxiv_ipc_submarine_progression_status.unlocked_sectors', 2) == 159)
+  assert(field('ffxiv_ipc_submarine_progression_status.explored_sectors') == 1)
+  assert(field('ffxiv_ipc_submarine_progression_status.explored_sectors', 2) == 158)
+  assert(field('ffxiv_ipc_submarine_progression_status.unknown41') == string.rep(string.char(0xa6), 7))
+
+  local item = string.rep('\0', 64)
+  item = replace(item, 8, string.pack('<I2', 25004))
+  item = replace(item, 34, string.pack('<I2I2I2I4', 12000, 4321, 0xabcd, 70000))
+  item = replace(item, 59, string.char(17, 23))
+  for _, name in ipairs({'item_info', 'update_inventory_slot'}) do
+    local prefix = 'ffxiv_ipc_' .. name
+    parse(prefix, item)
+    assert(field(prefix .. '.condition') == 12000)
+    assert(field(prefix .. '.spiritbond') == 4321)
+    assert(field(prefix .. '.glamour_catalog_id') == 70000)
+    assert(field(prefix .. '.stain') == 17 and field(prefix .. '.stain2') == 23)
+    assert(fieldDefinitions[prefix .. '.container_id'].valueNames[25004] == 'HousingInteriorPlacedItems2')
+    assert(fieldDefinitions[prefix .. '.container_id'].valueNames[27012] == 'Unknown27012')
+  end
+
+  local transaction = string.rep('\0', 48)
+  transaction = replace(transaction, 4, string.pack('<I4', 0x200))
+  transaction = replace(transaction, 16, string.pack('<i2', -1))
+  transaction = replace(transaction, 32, string.pack('<I4i2I2I4I4', 20004, 37, 0xabab, 59, 70000))
+  parse('ffxiv_ipc_inventory_transaction', transaction)
+  assert(field('ffxiv_ipc_inventory_transaction.slot_id') == -1)
+  assert(field('ffxiv_ipc_inventory_transaction.target_slot_id') == 37)
+  assert(field('ffxiv_ipc_inventory_transaction.target_stack_size') == 59)
+  assert(field('ffxiv_ipc_inventory_transaction.target_catalog_id') == 70000)
+  assert(fieldDefinitions['ffxiv_ipc_inventory_transaction.target_storage_id'].valueNames[20004] == 'FreeCompanyPage5')
+  assert(fieldDefinitions['ffxiv_ipc_inventory_transaction.type'].valueNames[0x200] == 'UpdateTargetSlot')
+  parse('ffxiv_ipc_inventory_transaction_finish', string.rep('\0', 13) .. string.char(9, 0xa6, 0xa6))
+  assert(field('ffxiv_ipc_inventory_transaction_finish.packet_count') == 9)
+
+  local completion = string.rep('\0', 4) .. string.pack('<i2BBI4I4I4I4', -2, 7, 3, 11, 22, 33, 0xf0000000)
+  parse('ffxiv_ipc_event_handler_return4', completion)
+  assert(field('ffxiv_ipc_event_handler_return4.scene') == -2)
+  assert(field('ffxiv_ipc_event_handler_return4.param_count') == 3)
+  assert(field('ffxiv_ipc_event_handler_return4.params', 4) == 0xf0000000)
+  assert(select(2, registry.getDissector(0x025f, 24, 'C')) == 'EventHandlerReturn4')
+  assert(select(2, registry.getDissector(0x025f, 24, 'S')) ~= 'EventHandlerReturn4')
+  assert(select(2, registry.getDissector(0x0346, 32, 'C')) == 'Ping')
+  assert(registry.getDissector(0x0346, 32, 'S') == nil)
+  local heartbeat = string.pack('<I4I4', 0xfffffffe, 45) .. string.rep(string.char(0xa6), 24)
+  parse('ffxiv_ipc_ping', heartbeat)
+  assert(field('ffxiv_ipc_ping.client_time') == 0xfffffffe)
+  assert(field('ffxiv_ipc_ping.round_trip_time') == 45)
+  parse('ffxiv_ipc_init', heartbeat)
+  assert(field('ffxiv_ipc_init.client_time') == 0xfffffffe)
+  assert(field('ffxiv_ipc_init.connection_flag') == 0xa6)
+end
+
 print(string.format('PASS: %d registered payloads, truncation guards, direction/alias dispatch, and binary fixtures', count))

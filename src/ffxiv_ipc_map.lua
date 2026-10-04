@@ -285,6 +285,10 @@ local M = {
     name = "ffxiv_ipc_event_handler_return",
     length = 16,
   },
+  EventHandlerReturn4 = {
+    name = "ffxiv_ipc_event_handler_return4",
+    length = 24,
+  },
   EventPlay = {
     name = "ffxiv_ipc_event_play",
     length = 40,
@@ -419,7 +423,7 @@ local M = {
   },
   Init = {
     name = "ffxiv_ipc_init",
-    length = 16,
+    length = 32,
   },
   InitZone = {
     name = "ffxiv_ipc_init_zone",
@@ -435,7 +439,7 @@ local M = {
   },
   InventoryTransaction = {
     name = "ffxiv_ipc_inventory_transaction",
-    length = 36,
+    length = 48,
   },
   InventoryTransactionFinish = {
     name = "ffxiv_ipc_inventory_transaction_finish",
@@ -572,6 +576,10 @@ local M = {
   PartyFinderListing = {
     name = "ffxiv_ipc_party_finder_listing",
     length = 400,
+  },
+  Ping = {
+    name = "ffxiv_ipc_ping",
+    length = 32,
   },
   PlaceFieldMarker = {
     name = "ffxiv_ipc_place_field_marker",
@@ -739,7 +747,7 @@ local M = {
   },
   SubmarineProgressionStatus = {
     name = "ffxiv_ipc_submarine_progression_status",
-    length = 31,
+    length = 48,
   },
   SubmarineStatusItem = {
     name = "ffxiv_ipc_submarine_status_item",

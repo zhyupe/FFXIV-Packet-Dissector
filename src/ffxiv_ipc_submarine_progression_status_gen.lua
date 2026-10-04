@@ -4,8 +4,9 @@ local ffxiv_ipc_submarine_progression_status = Proto("ffxiv_ipc_submarine_progre
 
 local submarine_progression_status_fields = {
   unlocked_submarine_count = ProtoField.uint8("ffxiv_ipc_submarine_progression_status.unlocked_submarine_count", "unlockedSubmarineCount", base.DEC),
-  unlocked_sectors         = ProtoField.bytes("ffxiv_ipc_submarine_progression_status.unlocked_sectors", "unlockedSectors", base.NONE),
-  explored_sectors         = ProtoField.bytes("ffxiv_ipc_submarine_progression_status.explored_sectors", "exploredSectors", base.NONE),
+  unlocked_sectors         = ProtoField.uint32("ffxiv_ipc_submarine_progression_status.unlocked_sectors", "unlockedSectors", base.DEC),
+  explored_sectors         = ProtoField.uint32("ffxiv_ipc_submarine_progression_status.explored_sectors", "exploredSectors", base.DEC),
+  unknown41                = ProtoField.bytes("ffxiv_ipc_submarine_progression_status.unknown41", "unknown41", base.NONE),
 }
 
 ffxiv_ipc_submarine_progression_status.fields = submarine_progression_status_fields
@@ -13,7 +14,7 @@ ffxiv_ipc_submarine_progression_status.fields = submarine_progression_status_fie
 function ffxiv_ipc_submarine_progression_status.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_submarine_progression_status, tvbuf)
   local len = tvbuf:len()
-  if len < 31 then
+  if len < 48 then
     tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated SubmarineProgressionStatus payload")
     return len
   end
@@ -24,14 +25,33 @@ function ffxiv_ipc_submarine_progression_status.dissector(tvbuf, pktinfo, root)
   tree:add_le(submarine_progression_status_fields.unlocked_submarine_count, unlocked_submarine_count_tvbr, unlocked_submarine_count_val)
 
   -- dissect the unlocked_sectors field
-  local unlocked_sectors_tvbr = tvbuf:range(1, 15)
-  local unlocked_sectors_val  = unlocked_sectors_tvbr:raw()
-  tree:add(submarine_progression_status_fields.unlocked_sectors, unlocked_sectors_tvbr, unlocked_sectors_val)
+  for unlocked_sectors_pos = 1, 21 - 1 do
+    local unlocked_sectors_tvbr = tvbuf:range(unlocked_sectors_pos, 1)
+    local unlocked_sectors_byte = unlocked_sectors_tvbr:le_uint()
+    for unlocked_sectors_bit = 0, 7 do
+      if math.floor(unlocked_sectors_byte / 2 ^ unlocked_sectors_bit) % 2 == 1 then
+        local unlocked_sectors_val = (unlocked_sectors_pos - 1) * 8 + unlocked_sectors_bit
+        tree:add_le(submarine_progression_status_fields.unlocked_sectors, unlocked_sectors_tvbr, unlocked_sectors_val)
+      end
+    end
+  end
 
   -- dissect the explored_sectors field
-  local explored_sectors_tvbr = tvbuf:range(16, 15)
-  local explored_sectors_val  = explored_sectors_tvbr:raw()
-  tree:add(submarine_progression_status_fields.explored_sectors, explored_sectors_tvbr, explored_sectors_val)
+  for explored_sectors_pos = 21, 41 - 1 do
+    local explored_sectors_tvbr = tvbuf:range(explored_sectors_pos, 1)
+    local explored_sectors_byte = explored_sectors_tvbr:le_uint()
+    for explored_sectors_bit = 0, 7 do
+      if math.floor(explored_sectors_byte / 2 ^ explored_sectors_bit) % 2 == 1 then
+        local explored_sectors_val = (explored_sectors_pos - 21) * 8 + explored_sectors_bit
+        tree:add_le(submarine_progression_status_fields.explored_sectors, explored_sectors_tvbr, explored_sectors_val)
+      end
+    end
+  end
+
+  -- dissect the unknown41 field
+  local unknown41_tvbr = tvbuf:range(41, 7)
+  local unknown41_val  = unknown41_tvbr:raw()
+  tree:add(submarine_progression_status_fields.unknown41, unknown41_tvbr, unknown41_val)
 
   return len
 end

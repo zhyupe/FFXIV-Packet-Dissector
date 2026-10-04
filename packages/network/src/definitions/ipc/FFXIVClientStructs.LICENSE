@@ -5,6 +5,9 @@ CrossRealmListingSegmentPacket, CharaCardPacket, CharaCardData and
 FashionCheckManager.PreviewData and FashionCheckManager.HighScoreData from
 https://github.com/aers/FFXIVClientStructs
 
+The common inventory container catalog and item flags also reference
+InventoryType and InventoryItem.ItemFlags from the same project.
+
 MIT License
 
 Copyright (c) 2021-2023 aers

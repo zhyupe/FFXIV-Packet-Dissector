@@ -280,6 +280,8 @@ ClientZoneIpc:
     YieldEventScene4: {}
     YieldEventScene8: {}
     EventHandlerReturn: {}
+    EventHandlerReturn4: {}
+    Ping: {}
     ActionRequest: {}
     ActionRequestGroundTargeted: {}
     ActionSend: {}

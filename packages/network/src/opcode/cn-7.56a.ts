@@ -151,7 +151,10 @@ export const CN_7_56a: OpcodeMap = {
   0x0250: [{ type: NormalizedOpcode.ServerNotice, outgoing: false }],
   0x0257: [{ type: NormalizedOpcode.PlayerRetainerInfo, outgoing: false }],
   0x025d: [{ type: NormalizedOpcode.DesynthesisLevels, outgoing: false }],
-  0x025f: [{ type: NormalizedOpcode.ActorControl, outgoing: false }],
+  0x025f: [
+    { type: NormalizedOpcode.ActorControl, outgoing: false },
+    { type: NormalizedOpcode.EventHandlerReturn4, outgoing: true },
+  ],
   0x0262: [
     { type: NormalizedOpcode.IslandWorkshopGranaryResult, outgoing: false },
   ],
@@ -219,6 +222,7 @@ export const CN_7_56a: OpcodeMap = {
   0x0333: [{ type: NormalizedOpcode.ContentFinderNotifyPop, outgoing: false }],
   0x0340: [{ type: NormalizedOpcode.DomanEnclaveState, outgoing: false }],
   0x0345: [{ type: NormalizedOpcode.UpdateClassInfoBozja, outgoing: false }],
+  0x0346: [{ type: NormalizedOpcode.Ping, outgoing: true }],
   0x034a: [{ type: NormalizedOpcode.UpdateEventScene2, outgoing: false }],
   0x034b: [{ type: NormalizedOpcode.EventPlay8, outgoing: false }],
   0x034d: [{ type: NormalizedOpcode.MarketBoardItemListing, outgoing: false }],

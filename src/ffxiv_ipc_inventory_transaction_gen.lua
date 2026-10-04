@@ -7,14 +7,19 @@ local ffxiv_ipc_inventory_transaction = Proto("ffxiv_ipc_inventory_transaction",
 
 local inventory_transaction_fields = {
   sequence          = ProtoField.uint32("ffxiv_ipc_inventory_transaction.sequence", "sequence", base.DEC),
-  type              = ProtoField.uint32("ffxiv_ipc_inventory_transaction.type", "type", base.DEC),
+  type              = ProtoField.uint32("ffxiv_ipc_inventory_transaction.type", "type", base.DEC, enum.reverse.inventory_transaction_type),
   owner_id          = ProtoField.uint32("ffxiv_ipc_inventory_transaction.owner_id", "ownerId", base.HEX),
   storage_id        = ProtoField.uint32("ffxiv_ipc_inventory_transaction.storage_id", "storageId", base.DEC, enum.reverse.item_location),
-  slot_id           = ProtoField.uint32("ffxiv_ipc_inventory_transaction.slot_id", "slotId", base.DEC),
+  slot_id           = ProtoField.int16("ffxiv_ipc_inventory_transaction.slot_id", "slotId", base.DEC),
+  unknown18         = ProtoField.bytes("ffxiv_ipc_inventory_transaction.unknown18", "unknown18", base.NONE),
   stack_size        = ProtoField.uint32("ffxiv_ipc_inventory_transaction.stack_size", "stackSize", base.DEC),
   catalog_id        = ProtoField.uint32("ffxiv_ipc_inventory_transaction.catalog_id", "catalogId", base.DEC, db.Item),
   some_actor_id     = ProtoField.uint32("ffxiv_ipc_inventory_transaction.some_actor_id", "someActorId", base.HEX),
-  target_storage_id = ProtoField.uint32("ffxiv_ipc_inventory_transaction.target_storage_id", "targetStorageId", base.HEX),
+  target_storage_id = ProtoField.uint32("ffxiv_ipc_inventory_transaction.target_storage_id", "targetStorageId", base.DEC, enum.reverse.item_location),
+  target_slot_id    = ProtoField.int16("ffxiv_ipc_inventory_transaction.target_slot_id", "targetSlotId", base.DEC),
+  unknown38         = ProtoField.bytes("ffxiv_ipc_inventory_transaction.unknown38", "unknown38", base.NONE),
+  target_stack_size = ProtoField.uint32("ffxiv_ipc_inventory_transaction.target_stack_size", "targetStackSize", base.DEC),
+  target_catalog_id = ProtoField.uint32("ffxiv_ipc_inventory_transaction.target_catalog_id", "targetCatalogId", base.DEC, db.Item),
 }
 
 ffxiv_ipc_inventory_transaction.fields = inventory_transaction_fields
@@ -22,7 +27,7 @@ ffxiv_ipc_inventory_transaction.fields = inventory_transaction_fields
 function ffxiv_ipc_inventory_transaction.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_inventory_transaction, tvbuf)
   local len = tvbuf:len()
-  if len < 36 then
+  if len < 48 then
     tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated InventoryTransaction payload")
     return len
   end
@@ -52,9 +57,14 @@ function ffxiv_ipc_inventory_transaction.dissector(tvbuf, pktinfo, root)
   tree:append_text(storage_id_display)
 
   -- dissect the slot_id field
-  local slot_id_tvbr = tvbuf:range(16, 4)
-  local slot_id_val  = slot_id_tvbr:le_uint()
+  local slot_id_tvbr = tvbuf:range(16, 2)
+  local slot_id_val  = slot_id_tvbr:le_int()
   tree:add_le(inventory_transaction_fields.slot_id, slot_id_tvbr, slot_id_val)
+
+  -- dissect the unknown18 field
+  local unknown18_tvbr = tvbuf:range(18, 2)
+  local unknown18_val  = unknown18_tvbr:raw()
+  tree:add(inventory_transaction_fields.unknown18, unknown18_tvbr, unknown18_val)
 
   -- dissect the stack_size field
   local stack_size_tvbr = tvbuf:range(20, 4)
@@ -83,6 +93,34 @@ function ffxiv_ipc_inventory_transaction.dissector(tvbuf, pktinfo, root)
   local target_storage_id_tvbr = tvbuf:range(32, 4)
   local target_storage_id_val  = target_storage_id_tvbr:le_uint()
   tree:add_le(inventory_transaction_fields.target_storage_id, target_storage_id_tvbr, target_storage_id_val)
+
+  local target_storage_id_display = ", targetStorageId: " .. (enum.reverse.item_location[target_storage_id_val] or "(unknown)")
+  pktinfo.cols.info:append(target_storage_id_display)
+  tree:append_text(target_storage_id_display)
+
+  -- dissect the target_slot_id field
+  local target_slot_id_tvbr = tvbuf:range(36, 2)
+  local target_slot_id_val  = target_slot_id_tvbr:le_int()
+  tree:add_le(inventory_transaction_fields.target_slot_id, target_slot_id_tvbr, target_slot_id_val)
+
+  -- dissect the unknown38 field
+  local unknown38_tvbr = tvbuf:range(38, 2)
+  local unknown38_val  = unknown38_tvbr:raw()
+  tree:add(inventory_transaction_fields.unknown38, unknown38_tvbr, unknown38_val)
+
+  -- dissect the target_stack_size field
+  local target_stack_size_tvbr = tvbuf:range(40, 4)
+  local target_stack_size_val  = target_stack_size_tvbr:le_uint()
+  tree:add_le(inventory_transaction_fields.target_stack_size, target_stack_size_tvbr, target_stack_size_val)
+
+  -- dissect the target_catalog_id field
+  local target_catalog_id_tvbr = tvbuf:range(44, 4)
+  local target_catalog_id_val  = target_catalog_id_tvbr:le_uint()
+  tree:add_le(inventory_transaction_fields.target_catalog_id, target_catalog_id_tvbr, target_catalog_id_val)
+
+  local target_catalog_id_display = ", targetCatalogId: " .. (db.Item[target_catalog_id_val] or "(unknown)")
+  pktinfo.cols.info:append(target_catalog_id_display)
+  tree:append_text(target_catalog_id_display)
 
   return len
 end

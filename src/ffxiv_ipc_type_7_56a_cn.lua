@@ -754,6 +754,10 @@ M.types = {
       type = "ActorControl",
       outgoing = false,
     },
+    [1] = {
+      type = "EventHandlerReturn4",
+      outgoing = true,
+    },
   },
   [0x0262] = {
     [0] = {
@@ -1051,6 +1055,12 @@ M.types = {
     [0] = {
       type = "UpdateClassInfoBozja",
       outgoing = false,
+    },
+  },
+  [0x0346] = {
+    [0] = {
+      type = "Ping",
+      outgoing = true,
     },
   },
   [0x034a] = {

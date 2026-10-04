@@ -13,6 +13,13 @@ export class InventoryTransactionFinish extends Struct {
   @field(FieldType.uint, 8, 4)
   unknown1!: number
 
-  @field(FieldType.uint, 12, 4)
-  unknown2!: number
+  @field(FieldType.byte, 12)
+  unknown12!: number
+
+  // Number of messages in the transaction group, including this finish message.
+  @field(FieldType.byte, 13)
+  packetCount!: number
+
+  @field(FieldType.bytes, 14, 2)
+  unknown14!: Buffer
 }

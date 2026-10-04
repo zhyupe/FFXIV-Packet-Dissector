@@ -4,7 +4,7 @@ local ffxiv_ipc_event_handler_return = Proto("ffxiv_ipc_event_handler_return", "
 
 local event_handler_return_fields = {
   event_id    = ProtoField.uint32("ffxiv_ipc_event_handler_return.event_id", "eventId", base.DEC),
-  scene       = ProtoField.uint16("ffxiv_ipc_event_handler_return.scene", "scene", base.DEC),
+  scene       = ProtoField.int16("ffxiv_ipc_event_handler_return.scene", "scene", base.DEC),
   error_code  = ProtoField.uint8("ffxiv_ipc_event_handler_return.error_code", "errorCode", base.DEC),
   param_count = ProtoField.uint8("ffxiv_ipc_event_handler_return.param_count", "paramCount", base.DEC),
   params      = ProtoField.uint32("ffxiv_ipc_event_handler_return.params", "params", base.DEC),
@@ -27,7 +27,7 @@ function ffxiv_ipc_event_handler_return.dissector(tvbuf, pktinfo, root)
 
   -- dissect the scene field
   local scene_tvbr = tvbuf:range(4, 2)
-  local scene_val  = scene_tvbr:le_uint()
+  local scene_val  = scene_tvbr:le_int()
   tree:add_le(event_handler_return_fields.scene, scene_tvbr, scene_val)
 
   -- dissect the error_code field

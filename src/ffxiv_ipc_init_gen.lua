@@ -3,9 +3,12 @@
 local ffxiv_ipc_init = Proto("ffxiv_ipc_init", "FFXIV-IPC Init")
 
 local init_fields = {
-  unknown  = ProtoField.uint64("ffxiv_ipc_init.unknown", "unknown", base.DEC),
-  char_id  = ProtoField.uint32("ffxiv_ipc_init.char_id", "charId", base.DEC),
-  unknown1 = ProtoField.uint32("ffxiv_ipc_init.unknown1", "unknown1", base.DEC),
+  client_time     = ProtoField.uint32("ffxiv_ipc_init.client_time", "clientTime", base.DEC),
+  unknown4        = ProtoField.uint32("ffxiv_ipc_init.unknown4", "unknown4", base.DEC),
+  connection_flag = ProtoField.uint8("ffxiv_ipc_init.connection_flag", "connectionFlag", base.DEC),
+  unknown9        = ProtoField.uint8("ffxiv_ipc_init.unknown9", "unknown9", base.DEC),
+  unknown10       = ProtoField.uint16("ffxiv_ipc_init.unknown10", "unknown10", base.DEC),
+  unknown12       = ProtoField.bytes("ffxiv_ipc_init.unknown12", "unknown12", base.NONE),
 }
 
 ffxiv_ipc_init.fields = init_fields
@@ -13,25 +16,40 @@ ffxiv_ipc_init.fields = init_fields
 function ffxiv_ipc_init.dissector(tvbuf, pktinfo, root)
   local tree = root:add(ffxiv_ipc_init, tvbuf)
   local len = tvbuf:len()
-  if len < 16 then
+  if len < 32 then
     tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated Init payload")
     return len
   end
 
-  -- dissect the unknown field
-  local unknown_tvbr = tvbuf:range(0, 8)
-  local unknown_val  = unknown_tvbr:le_uint64()
-  tree:add_le(init_fields.unknown, unknown_tvbr, unknown_val)
+  -- dissect the client_time field
+  local client_time_tvbr = tvbuf:range(0, 4)
+  local client_time_val  = client_time_tvbr:le_uint()
+  tree:add_le(init_fields.client_time, client_time_tvbr, client_time_val)
 
-  -- dissect the char_id field
-  local char_id_tvbr = tvbuf:range(8, 4)
-  local char_id_val  = char_id_tvbr:le_uint()
-  tree:add_le(init_fields.char_id, char_id_tvbr, char_id_val)
+  -- dissect the unknown4 field
+  local unknown4_tvbr = tvbuf:range(4, 4)
+  local unknown4_val  = unknown4_tvbr:le_uint()
+  tree:add_le(init_fields.unknown4, unknown4_tvbr, unknown4_val)
 
-  -- dissect the unknown1 field
-  local unknown1_tvbr = tvbuf:range(12, 4)
-  local unknown1_val  = unknown1_tvbr:le_uint()
-  tree:add_le(init_fields.unknown1, unknown1_tvbr, unknown1_val)
+  -- dissect the connection_flag field
+  local connection_flag_tvbr = tvbuf:range(8, 1)
+  local connection_flag_val  = connection_flag_tvbr:le_uint()
+  tree:add_le(init_fields.connection_flag, connection_flag_tvbr, connection_flag_val)
+
+  -- dissect the unknown9 field
+  local unknown9_tvbr = tvbuf:range(9, 1)
+  local unknown9_val  = unknown9_tvbr:le_uint()
+  tree:add_le(init_fields.unknown9, unknown9_tvbr, unknown9_val)
+
+  -- dissect the unknown10 field
+  local unknown10_tvbr = tvbuf:range(10, 2)
+  local unknown10_val  = unknown10_tvbr:le_uint()
+  tree:add_le(init_fields.unknown10, unknown10_tvbr, unknown10_val)
+
+  -- dissect the unknown12 field
+  local unknown12_tvbr = tvbuf:range(12, 20)
+  local unknown12_val  = unknown12_tvbr:raw()
+  tree:add(init_fields.unknown12, unknown12_tvbr, unknown12_val)
 
   return len
 end

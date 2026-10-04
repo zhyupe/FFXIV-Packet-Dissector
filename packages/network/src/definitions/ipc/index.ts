@@ -81,7 +81,7 @@ import {
   MapEffect12,
 } from './environment-control'
 import { EventFinish } from './event-finish'
-import { EventHandlerReturn } from './event-handler-return'
+import { EventHandlerReturn, EventHandlerReturn4 } from './event-handler-return'
 import {
   EventPlay,
   EventPlay4,
@@ -327,6 +327,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.EurekaStatusEffectList]: EurekaStatusEffectList,
   [NormalizedOpcode.EventFinish]: EventFinish,
   [NormalizedOpcode.EventHandlerReturn]: EventHandlerReturn,
+  [NormalizedOpcode.EventHandlerReturn4]: EventHandlerReturn4,
   [NormalizedOpcode.EventPlay]: EventPlay,
   [NormalizedOpcode.EventPlay128]: EventPlay128,
   [NormalizedOpcode.EventPlay16]: EventPlay16,
@@ -391,6 +392,7 @@ export const PacketMap = packetMapTypeConstraint({
   [NormalizedOpcode.NpcYell]: NpcYell,
   [NormalizedOpcode.ObjectSpawn]: ObjectSpawn,
   [NormalizedOpcode.PartyFinderList]: PartyFinderList,
+  [NormalizedOpcode.Ping]: Ping,
   [NormalizedOpcode.PlaceFieldMarker]: PlaceFieldMarker,
   [NormalizedOpcode.PlaceFieldMarkerPreset]: PlaceFieldMarkerPreset,
   [NormalizedOpcode.PlayerBlueMageActions]: PlayerBlueMageActions,
@@ -458,6 +460,7 @@ export * from './common/effect-entity'
 export * from './common/effect-header'
 export * from './common/event'
 export * from './common/faux-hollow'
+export * from './common/inventory'
 export * from './common/position'
 export * from './common/status-effect'
 export * from './common/submarine'
@@ -544,6 +547,7 @@ export {
   EurekaStatusEffectList,
   EventFinish,
   EventHandlerReturn,
+  EventHandlerReturn4,
   EventPlay,
   EventPlay4,
   EventPlay8,
