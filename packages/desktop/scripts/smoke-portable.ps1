@@ -1,8 +1,12 @@
 param([Parameter(Mandatory=$true)][string]$PortableRoot)
 $ErrorActionPreference = 'Stop'
-$releaseDirectory = (Resolve-Path $PortableRoot).Path
-if (Get-ChildItem $releaseDirectory -Recurse -Include node.exe,*.node,service.mjs) {
-    throw 'Unexpected Node runtime in portable release'
+$releaseDirectory = (Resolve-Path -LiteralPath $PortableRoot).Path
+# Filter explicitly to preserve literal paths on Windows PowerShell 5.1.
+$unexpectedArtifacts = @(Get-ChildItem -LiteralPath $releaseDirectory -Recurse -File -Force | Where-Object {
+    $_.Name -eq 'node.exe' -or $_.Extension -eq '.node' -or $_.Name -eq 'service.mjs'
+})
+if ($unexpectedArtifacts.Count -gt 0) {
+    throw "Unexpected Node runtime in portable release: $($unexpectedArtifacts.FullName -join ', ')"
 }
 & "$releaseDirectory/extcap/ffxiv-extcap.exe" --extcap-interfaces
 if ($LASTEXITCODE -ne 0) { throw 'Packaged extcap enumeration failed' }

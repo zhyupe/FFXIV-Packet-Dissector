@@ -78,8 +78,12 @@ try {
     Copy-Item -Path 'src/*' -Destination "$portableRoot/wireshark/" -Recurse
     Copy-Item -LiteralPath 'LICENSE' -Destination "$portableRoot/licenses/PROJECT-LICENSE"
     Copy-Item -LiteralPath 'packages/desktop/README.md' -Destination "$portableRoot/README.md"
-    if (Get-ChildItem -LiteralPath $portableRoot -Recurse -File -Include node.exe,*.node,service.mjs) {
-        throw 'Unexpected Node runtime artifact in the portable application.'
+    # Windows PowerShell 5.1 ignores -Include when combined with -LiteralPath.
+    $unexpectedArtifacts = @(Get-ChildItem -LiteralPath $portableRoot -Recurse -File -Force | Where-Object {
+        $_.Name -eq 'node.exe' -or $_.Extension -eq '.node' -or $_.Name -eq 'service.mjs'
+    })
+    if ($unexpectedArtifacts.Count -gt 0) {
+        throw "Unexpected Node runtime artifact in the portable application: $($unexpectedArtifacts.FullName -join ', ')"
     }
 
     if ($RunTests) {
