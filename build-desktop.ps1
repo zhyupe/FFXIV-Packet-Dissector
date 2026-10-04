@@ -77,6 +77,7 @@ try {
     Copy-Item -Path 'resources/deucalion/*' -Destination "$portableRoot/extcap/ffxiv-resources/"
     Copy-Item -Path 'src/*' -Destination "$portableRoot/wireshark/" -Recurse
     Copy-Item -LiteralPath 'LICENSE' -Destination "$portableRoot/licenses/PROJECT-LICENSE"
+    Copy-Item -LiteralPath 'packages/desktop/src/components/ui/LICENSE.md' -Destination "$portableRoot/licenses/SHADCN-LICENSE.md"
     Copy-Item -LiteralPath 'packages/desktop/README.md' -Destination "$portableRoot/README.md"
     # Windows PowerShell 5.1 ignores -Include when combined with -LiteralPath.
     $unexpectedArtifacts = @(Get-ChildItem -LiteralPath $portableRoot -Recurse -File -Force | Where-Object {

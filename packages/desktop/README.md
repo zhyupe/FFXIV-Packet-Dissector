@@ -45,3 +45,7 @@ contain game data and may be saved by Wireshark.
 Build from source with `./build-desktop.ps1` in the repository root. Add
 `-RunTests` to run tests; the default builds and packages only. Development
 instructions and architecture are in `docs/` in the source repository.
+
+The UI uses shadcn/ui components with Radix primitives and Tailwind CSS. Components
+are maintained in `src/components/ui`, theme tokens in `src/theme.css`, and layout
+in `src/style.css`. `components.json` configures the official shadcn generator.

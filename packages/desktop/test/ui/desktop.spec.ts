@@ -56,6 +56,11 @@ test.beforeEach(async ({ page }) => {
     state.wizard = { ...wizard(), current: catalog[0].name, steps: catalog }
     Object.assign(window, {
       __desktopNoProcesses: () => { processes.length = 0 },
+      __desktopShowBundledInput: () => {
+        const step = catalog.find((item) => item.name === 'UpdateHpMpTp')!
+        state.wizard = { ...wizard(), steps: catalog, current: step.name, status: 'input', fields: step.fields, inputToken: 1 }
+        changed(copy())
+      },
       __desktopConnecting: () => { state.connection = 'connecting'; changed(copy()) },
       __desktopEvents: events,
       __desktopFail: () => { state.connection='failed';state.forwarder.running=false;if(state.wizard)state.wizard.status='stopped';changed(copy());failed('PIPE_CLOSED') },
@@ -122,17 +127,18 @@ test('no automatic connection; page navigation does not stop independent service
   ).not.toContain('connect')
   await page.getByRole('button', { name: '连接' }).click()
   await page.getByRole('button', { name: '启用转发' }).click()
-  await page.getByRole('button', { name: 'Wizard', exact: true }).click()
+  await page.screenshot({ path: 'test-results/shadcn-capture.png', fullPage: true, animations: 'disabled' })
+  await page.getByRole('tab', { name: 'Wizard', exact: true }).click()
   await page.getByRole('button', { name: '顺序识别' }).click()
   await page.getByLabel('测试输入').fill('Synthetic UI input')
   await page.getByRole('button', { name: '提交并等待数据' }).click()
   await expect(page.getByRole('status')).toContainText('正在等待')
-  await page.getByRole('button', { name: '采集输出', exact: true }).click()
+  await page.getByRole('tab', { name: '采集输出', exact: true }).click()
   await expect(page.getByRole('button', { name: '停用转发' })).toBeEnabled()
   await page.getByRole('button', { name: '停用转发' }).click()
-  await page.getByRole('button', { name: 'Wizard', exact: true }).click()
+  await page.getByRole('tab', { name: 'Wizard', exact: true }).click()
   await expect(page.getByRole('status')).toContainText('正在等待')
-  await page.screenshot({ path: 'test-results/wizard.png', fullPage: true })
+  await page.screenshot({ path: 'test-results/wizard.png', fullPage: true, animations: 'disabled' })
 })
 
 test('switching process stops both and direct steps have a fresh form', async ({
@@ -141,10 +147,11 @@ test('switching process stops both and direct steps have a fresh form', async ({
   await page.goto('/')
   await page.getByRole('button', { name: '连接' }).click()
   await page.getByRole('button', { name: '启用转发' }).click()
-  await page.getByRole('combobox', { name: '游戏进程' }).selectOption('456:2')
+  await page.getByRole('combobox', { name: '游戏进程' }).click()
+  await page.getByRole('option', { name: /PID 456/ }).click()
   await page.getByRole('button', { name: '切换连接' }).click()
   await expect(page.getByRole('button', { name: '启用转发' })).toBeEnabled()
-  await page.getByRole('button', { name: 'Wizard', exact: true }).click()
+  await page.getByRole('tab', { name: 'Wizard', exact: true }).click()
   await page.getByRole('button', { name: /AnotherStep/ }).click()
   await page.getByRole('button', { name: '识别此步骤', exact: true }).click()
   await expect(
@@ -169,7 +176,7 @@ test('capture failure stops visible work and does not reconnect automatically', 
 
 test('bundled wizard steps are browsable before connecting, with recognition disabled', async ({ page }) => {
   await page.goto('/')
-  await page.getByRole('button', { name: 'Wizard', exact: true }).click()
+  await page.getByRole('tab', { name: 'Wizard', exact: true }).click()
   await expect(page.locator('.step-list button')).toHaveCount(manifest.steps.length)
   await expect(page.getByRole('button', { name: '顺序识别' })).toBeDisabled()
   await expect(page.getByRole('button', { name: '保存进度' })).toBeDisabled()
@@ -181,7 +188,7 @@ test('bundled wizard steps are browsable before connecting, with recognition dis
   await page.getByLabel('筛选步骤').fill('no-such-synthetic-step')
   await expect(page.getByText('未找到匹配步骤')).toBeVisible()
   await page.getByLabel('筛选步骤').clear()
-  await page.screenshot({ path: 'test-results/wizard-catalog.png', fullPage: true })
+  await page.screenshot({ path: 'test-results/shadcn-wizard-catalog.png', fullPage: true, animations: 'disabled' })
 })
 
 test('one connection action follows connect, switch, disconnect and cancel states', async ({ page }) => {
@@ -190,10 +197,12 @@ test('one connection action follows connect, switch, disconnect and cancel state
   await page.getByRole('button', { name: '连接', exact: true }).click()
   await expect(page.getByRole('button', { name: '连接', exact: true })).toHaveCount(0)
   await expect(page.getByRole('button', { name: '断开', exact: true })).toBeEnabled()
-  await page.getByRole('combobox', { name: '游戏进程' }).selectOption('456:2')
+  await page.getByRole('combobox', { name: '游戏进程' }).click()
+  await page.getByRole('option', { name: /PID 456/ }).click()
   await expect(page.getByRole('button', { name: '断开', exact: true })).toHaveCount(0)
   await expect(page.getByRole('button', { name: '切换连接', exact: true })).toBeEnabled()
-  await page.getByRole('combobox', { name: '游戏进程' }).selectOption('123:1')
+  await page.getByRole('combobox', { name: '游戏进程' }).click()
+  await page.getByRole('option', { name: /PID 123/ }).click()
   await page.getByRole('button', { name: '断开', exact: true }).click()
   await expect(page.getByRole('button', { name: '连接', exact: true })).toBeEnabled()
   await page.evaluate(() => (window as any).__desktopConnecting())
@@ -208,15 +217,70 @@ test('compact layout fits the minimum window and tabs have no hover background',
   await page.getByRole('button', { name: '刷新', exact: true }).click()
   await expect(page.getByRole('button', { name: '连接', exact: true })).toBeDisabled()
   await expect(page.getByRole('button', { name: '复制', exact: true })).toBeDisabled()
-  const tab = page.getByRole('button', { name: 'Wizard', exact: true })
+  const tab = page.getByRole('tab', { name: 'Wizard', exact: true })
   await tab.hover()
   await expect(tab).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
   expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   const status = page.locator('.connection-status')
   expect(await status.evaluate(el => getComputedStyle(el).paddingLeft === getComputedStyle(el).paddingRight)).toBe(true)
-  await page.screenshot({ path: 'test-results/capture-compact.png', fullPage: true })
+  await page.screenshot({ path: 'test-results/capture-compact.png', fullPage: true, animations: 'disabled' })
   await tab.click()
   await expect(page.locator('.step-list button')).toHaveCount(manifest.steps.length)
   expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-  await page.screenshot({ path: 'test-results/wizard-compact.png', fullPage: true })
+  await page.screenshot({ path: 'test-results/wizard-compact.png', fullPage: true, animations: 'disabled' })
+})
+
+
+test('shadcn selectors and tabs support keyboard navigation without stopping capture', async ({ page }) => {
+  await page.goto('/')
+  const process = page.getByRole('combobox', { name: '游戏进程' })
+  await process.focus()
+  await page.keyboard.press('Enter')
+  await expect(page.getByRole('listbox')).toBeVisible()
+  await expect(page.getByRole('option', { name: /PID 123/ })).toBeFocused()
+  await page.keyboard.press('End')
+  await expect(page.getByRole('option', { name: /PID 456/ })).toBeFocused()
+  await page.keyboard.press('Enter')
+  await expect(process).toContainText('PID 456')
+  await page.getByRole('button', { name: '连接', exact: true }).click()
+  await page.getByRole('combobox', { name: '输出方式' }).click()
+  await page.getByRole('option', { name: 'UDP 兼容输出' }).click()
+  await page.getByRole('button', { name: '启用转发' }).click()
+  await expect(page.getByRole('combobox', { name: '输出方式' })).toBeDisabled()
+  await page.getByRole('tab', { name: '采集输出', exact: true }).focus()
+  await page.keyboard.press('ArrowRight')
+  await expect(page.getByRole('tabpanel', { name: 'Wizard' })).toBeVisible()
+  await page.keyboard.press('ArrowLeft')
+  await expect(page.getByRole('tabpanel', { name: '采集输出' })).toBeVisible()
+  await expect(page.getByRole('button', { name: '停用转发' })).toBeEnabled()
+})
+
+
+test('shadcn scroll area hides its scrollbar and preserves wheel and keyboard scrolling', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: '连接', exact: true }).click()
+  await page.evaluate(() => (window as any).__desktopShowBundledInput())
+  await page.getByRole('tab', { name: 'Wizard', exact: true }).click()
+  await expect(page.locator('.input-form input')).toHaveCount(1)
+  const edges = await page.locator('.steps').evaluate(el => {
+    const right = (selector: string) => el.querySelector(selector)!.getBoundingClientRect().right
+    return [right('[data-slot="input"]'), right('.steps-top > span'), right('.step-list button')]
+  })
+  expect(Math.max(...edges) - Math.min(...edges)).toBeLessThanOrEqual(1)
+  await page.locator('.section-heading h2').click()
+  await page.screenshot({ path: 'test-results/shadcn-wizard.png', fullPage: true, animations: 'disabled' })
+  const list = page.locator('.step-list')
+  const scrollbar = list.locator('[data-slot="scroll-area-scrollbar"]')
+  const viewport = list.locator('[data-slot="scroll-area-viewport"]')
+  await expect(scrollbar).toBeHidden()
+  await list.hover()
+  await expect(scrollbar).toBeVisible()
+  await page.mouse.wheel(0, 500)
+  await expect.poll(() => viewport.evaluate(el => el.scrollTop)).toBeGreaterThan(0)
+  await page.getByRole('tab', { name: 'Wizard', exact: true }).hover()
+  await expect(scrollbar).toBeHidden()
+  await list.getByRole('button').first().focus()
+  const previous = await viewport.evaluate(el => el.scrollTop)
+  await page.keyboard.press('PageDown')
+  await expect.poll(() => viewport.evaluate(el => el.scrollTop)).toBeGreaterThan(previous)
 })

@@ -3,6 +3,29 @@ import { createRoot } from 'react-dom/client'
 import type { GameProcess } from '@ffxiv/contracts'
 import type { Action, Snapshot } from '../shared/protocol'
 import { bridge } from './bridge'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { XIcon } from 'lucide-react'
 import './style.css'
 
 const empty: Snapshot = {
@@ -189,30 +212,48 @@ function App() {
         item.name.toLowerCase().includes(query.toLowerCase()),
       ) ?? []
   return (
-    <div className="shell">
+    <Tabs
+      value={page}
+      onValueChange={(value) => setPage(value as 'forwarder' | 'wizard')}
+      className="shell"
+    >
       <section className="process-bar" aria-label="游戏进程">
-        <label htmlFor="process">游戏进程</label>
-        <select
-          id="process"
+        <Label htmlFor="process">游戏进程</Label>
+        <Select
           value={selected}
-          onChange={(e) => setSelected(e.target.value)}
-          disabled={disabled || connecting}
+          onValueChange={setSelected}
+          disabled={disabled || connecting || !processes.length}
         >
-          {!processes.length && <option value="">未发现游戏进程</option>}
-          {processes.map((p) => (
-            <option key={processKey(p)} value={processKey(p)}>
-              PID {p.pid} · {p.version} · {p.executable}
-            </option>
-          ))}
-        </select>
-        <button
+          <SelectTrigger
+            id="process"
+            className="process-trigger"
+            title={target?.executable}
+          >
+            <SelectValue placeholder="未发现游戏进程" />
+          </SelectTrigger>
+          <SelectContent
+            position="popper"
+            align="start"
+            className="max-w-[calc(100vw-48px)]"
+          >
+            {processes.map((p) => (
+              <SelectItem key={processKey(p)} value={processKey(p)}>
+                <span className="truncate">
+                  PID {p.pid} · {p.version} · {p.executable}
+                </span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button
+          variant="outline"
           onClick={() => void refresh()}
           disabled={disabled || connecting}
         >
           刷新
-        </button>
-        <button
-          className={disconnectAction ? undefined : 'primary'}
+        </Button>
+        <Button
+          variant={disconnectAction ? 'outline' : 'default'}
           disabled={
             connecting ? false : disabled || (!disconnectAction && !target)
           }
@@ -237,68 +278,83 @@ function App() {
               : connected
                 ? '切换连接'
                 : '连接'}
-        </button>
+        </Button>
       </section>
       {connected && state.target && !sameTarget && (
         <div className="connection-detail">
           当前连接：PID {state.target.pid} · {state.target.version}
         </div>
       )}
-      <nav aria-label="工作区">
-        <button
-          aria-current={page === 'forwarder' ? 'page' : undefined}
-          onClick={() => setPage('forwarder')}
+      <nav className="workspace-nav" aria-label="工作区">
+        <TabsList variant="line" aria-label="工作区">
+          <TabsTrigger value="forwarder" className="workspace-tab">
+            采集输出{' '}
+            <span
+              aria-hidden="true"
+              className={state.forwarder.running ? 'dot on' : 'dot'}
+            />
+          </TabsTrigger>
+          <TabsTrigger value="wizard" className="workspace-tab">
+            Wizard{' '}
+            <span
+              aria-hidden="true"
+              className={wizard?.status === 'running' ? 'dot on' : 'dot'}
+            />
+          </TabsTrigger>
+        </TabsList>
+        <Badge
+          variant="secondary"
+          className={`connection-status ${connected ? 'bg-emerald-50 text-emerald-800' : ''}`}
         >
-          采集输出{' '}
-          <span className={state.forwarder.running ? 'dot on' : 'dot'} />
-        </button>
-        <button
-          aria-current={page === 'wizard' ? 'page' : undefined}
-          onClick={() => setPage('wizard')}
-        >
-          Wizard{' '}
-          <span className={wizard?.status === 'running' ? 'dot on' : 'dot'} />
-        </button>
-        <span className={`pill connection-status ${connected ? 'live' : ''}`}>
           {labels[state.connection]}
-        </span>
+        </Badge>
       </nav>
-      {error && (
-        <div className="alert" role="alert">
-          {error}
-          <button aria-label="关闭提示" onClick={() => setError('')}>
-            ×
-          </button>
-        </div>
-      )}
-      {(state.error || state.forwarder.error || wizard?.error) && !error && (
-        <div className="alert" role="alert">
-          {errorText(state.error || state.forwarder.error || wizard?.error)}
-        </div>
+      {(error || state.error || state.forwarder.error || wizard?.error) && (
+        <Alert variant="destructive" className="service-message">
+          <AlertDescription>
+            {error ||
+              errorText(state.error || state.forwarder.error || wizard?.error)}
+          </AlertDescription>
+          {error && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="absolute right-2 top-1.5"
+              aria-label="关闭提示"
+              onClick={() => setError('')}
+            >
+              <XIcon />
+            </Button>
+          )}
+        </Alert>
       )}
       {notice && (
-        <div className="notice" role="status">
-          {notice}
-        </div>
+        <Alert role="status" className="service-message text-emerald-800">
+          <AlertDescription className="text-inherit">{notice}</AlertDescription>
+        </Alert>
       )}
       <main>
         {page === 'forwarder' ? (
-          <section className="forwarder-page">
+          <TabsContent value="forwarder" className="forwarder-page">
             <div className="output-controls">
-              <label htmlFor="output-mode">输出方式</label>
-              <select
-                id="output-mode"
+              <Label htmlFor="output-mode">输出方式</Label>
+              <Select
                 value={outputMode}
-                disabled={state.forwarder.running || disabled}
-                onChange={(e) =>
-                  setOutputMode(e.target.value as 'pipe' | 'udp')
+                onValueChange={(value) =>
+                  setOutputMode(value as 'pipe' | 'udp')
                 }
+                disabled={state.forwarder.running || disabled}
               >
-                <option value="pipe">Wireshark 命名管道</option>
-                <option value="udp">UDP 兼容输出</option>
-              </select>
-              <button
-                className={state.forwarder.running ? 'danger' : 'primary'}
+                <SelectTrigger id="output-mode" className="output-trigger">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent position="popper" align="start">
+                  <SelectItem value="pipe">Wireshark 命名管道</SelectItem>
+                  <SelectItem value="udp">UDP 兼容输出</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                variant={state.forwarder.running ? 'outline' : 'default'}
                 disabled={disabled || !connected}
                 onClick={() =>
                   void run('forwarder', {
@@ -308,8 +364,9 @@ function App() {
                 }
               >
                 {state.forwarder.running ? '停用转发' : '启用转发'}
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="outline"
                 disabled={
                   disabled ||
                   !state.forwarder.running ||
@@ -322,7 +379,7 @@ function App() {
                 }
               >
                 打开 Wireshark
-              </button>
+              </Button>
             </div>
             <div className="metrics">
               <div>
@@ -349,7 +406,8 @@ function App() {
                     : 'udp and host 127.0.0.11'}
                 </code>
               )}
-              <button
+              <Button
+                variant="outline"
                 disabled={outputMode === 'pipe' && !state.forwarder.pipe}
                 onClick={() =>
                   void navigator.clipboard
@@ -369,7 +427,7 @@ function App() {
                 }
               >
                 复制
-              </button>
+              </Button>
             </div>
             {outputMode === 'udp' && (
               <dl className="endpoints">
@@ -395,9 +453,9 @@ function App() {
                 </div>
               </dl>
             )}
-          </section>
+          </TabsContent>
         ) : (
-          <section className="wizard-page">
+          <TabsContent value="wizard" className="wizard-page">
             <aside className="steps">
               <div className="steps-top">
                 <h2>识别步骤</h2>
@@ -405,13 +463,17 @@ function App() {
                   {results.size} / {wizard?.steps.length ?? 0}
                 </span>
               </div>
-              <input
+              <Input
                 aria-label="筛选步骤"
                 placeholder="筛选包名…"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
-              <div className="step-list">
+              <ScrollArea
+                className="step-list"
+                type="hover"
+                scrollHideDelay={200}
+              >
                 {!wizard && (
                   <p className="empty">
                     {error ? '步骤加载失败' : '正在加载步骤…'}
@@ -421,7 +483,8 @@ function App() {
                   <p className="empty">未找到匹配步骤</p>
                 )}
                 {visibleSteps.map((s) => (
-                  <button
+                  <Button
+                    variant="ghost"
                     key={s.name}
                     aria-pressed={step?.name === s.name}
                     onClick={() => setViewStep(s.name)}
@@ -447,21 +510,22 @@ function App() {
                       ['input', 'running'].includes(wizard.status) && (
                         <span className="dot on" />
                       )}
-                  </button>
+                  </Button>
                 ))}
-              </div>
+              </ScrollArea>
             </aside>
             <div className="wizard-detail">
               <div className="section-heading">
                 <h2>{step?.name ?? '选择步骤'}</h2>
-                <span className="pill">{labels[wizard?.status ?? 'idle']}</span>
+                <Badge variant="secondary">
+                  {labels[wizard?.status ?? 'idle']}
+                </Badge>
               </div>
               <p className="instruction">
                 {step?.instruction || '从左侧选择要识别的包。'}
               </p>
               <div className="toolbar">
-                <button
-                  className="primary"
+                <Button
                   disabled={disabled || !connected}
                   onClick={() => {
                     setViewStep('')
@@ -469,8 +533,9 @@ function App() {
                   }}
                 >
                   顺序识别
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="outline"
                   disabled={disabled || !connected || !step}
                   onClick={() => {
                     if (step) {
@@ -482,8 +547,9 @@ function App() {
                   {step && results.has(step.name)
                     ? '重新识别此步骤'
                     : '识别此步骤'}
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="outline"
                   disabled={
                     disabled ||
                     !connected ||
@@ -496,8 +562,9 @@ function App() {
                   }}
                 >
                   跳过
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="outline"
                   disabled={
                     disabled ||
                     !connected ||
@@ -507,7 +574,7 @@ function App() {
                   onClick={() => void run('wizard.stop')}
                 >
                   停止
-                </button>
+                </Button>
               </div>
               {wizard?.status === 'input' && (
                 <form
@@ -530,9 +597,9 @@ function App() {
                 >
                   <h3>填写 {activeStep?.name} 所需信息</h3>
                   {wizard.fields.map((field) => (
-                    <label key={field.key}>
+                    <Label key={field.key}>
                       {field.label}
-                      <input
+                      <Input
                         required={field.required}
                         type={field.type}
                         min={field.type === 'number' ? 0 : undefined}
@@ -542,24 +609,28 @@ function App() {
                           setInputs({ ...inputs, [field.key]: e.target.value })
                         }
                       />
-                    </label>
+                    </Label>
                   ))}
-                  <button className="primary" disabled={disabled}>
+                  <Button type="submit" disabled={disabled}>
                     提交并等待数据
-                  </button>
+                  </Button>
                 </form>
               )}
               {wizard?.status === 'running' && (
-                <div className="waiting" role="status">
-                  <span className="dot on" />
-                  正在等待 {activeStep?.name} 对应的游戏操作
-                </div>
+                <Alert className="waiting" role="status">
+                  <AlertDescription className="flex items-center gap-2 text-inherit">
+                    <span aria-hidden="true" className="dot on" />
+                    正在等待 {activeStep?.name} 对应的游戏操作
+                  </AlertDescription>
+                </Alert>
               )}
               {wizard?.status === 'conflict' && (
-                <div className="alert" role="alert">
-                  候选 opcode 与 {wizard.conflict}{' '}
-                  冲突，未覆盖原结果。请选择相关步骤重新识别。
-                </div>
+                <Alert variant="destructive" className="my-6">
+                  <AlertDescription>
+                    候选 opcode 与 {wizard.conflict}{' '}
+                    冲突，未覆盖原结果。请选择相关步骤重新识别。
+                  </AlertDescription>
+                </Alert>
               )}
               {wizard?.unsaved && (
                 <p role="status">识别结果尚未保存，请重试保存或导出。</p>
@@ -569,48 +640,52 @@ function App() {
                   识别结果 <span>{results.size}</span>
                 </h3>
                 <div>
-                  <button
+                  <Button
+                    variant="outline"
                     disabled={disabled || !wizard || !state.target}
                     onClick={() => void run('wizard.save')}
                   >
                     保存进度
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="outline"
                     disabled={disabled || !results.size}
                     onClick={() => void exportResults()}
                   >
                     导出 JSON
-                  </button>
+                  </Button>
                 </div>
               </div>
               <div className="result-table">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>包名</th>
-                      <th>方向</th>
-                      <th>Opcode</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>包名</TableHead>
+                      <TableHead>方向</TableHead>
+                      <TableHead>Opcode</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {[...results].map(([name, r]) => (
-                      <tr key={name}>
-                        <td>{name}</td>
-                        <td>{r.source === 'S' ? '服务端' : '客户端'}</td>
-                        <td>
+                      <TableRow key={name}>
+                        <TableCell>{name}</TableCell>
+                        <TableCell>
+                          {r.source === 'S' ? '服务端' : '客户端'}
+                        </TableCell>
+                        <TableCell>
                           <code>0x{r.value.toString(16).padStart(4, '0')}</code>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
                 {!results.size && <p className="empty">尚无识别结果</p>}
               </div>
             </div>
-          </section>
+          </TabsContent>
         )}
       </main>
-    </div>
+    </Tabs>
   )
 }
 createRoot(document.getElementById('root')!).render(<App />)
