@@ -71,6 +71,7 @@ import { CN_7_55 } from './cn-7.55'
 import { CN_7_55a } from './cn-7.55a'
 import { CN_7_56 } from './cn-7.56'
 import { CN_7_56a } from './cn-7.56a'
+import { CN_7_57 } from './cn-7.57'
 
 export const CNOpcode = {
   '5.0': CN_5_0,
@@ -140,6 +141,7 @@ export const CNOpcode = {
   '7.55a': CN_7_55a,
   '7.56': CN_7_56,
   '7.56a': CN_7_56a,
+  '7.57': CN_7_57,
 }
 
 export const GlobalOpcode = {}
