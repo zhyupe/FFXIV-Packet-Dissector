@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import type { GameProcess } from '@ffxiv/contracts'
 import type { Action, Snapshot } from '../shared/protocol'
 import { bridge } from './bridge'
+import { CaptureSettings, loadHookSignatures } from './capture-settings'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
@@ -69,6 +70,24 @@ const errors: Record<string, string> = {
   BUILD_VERSION_UNKNOWN:
     '无法读取游戏版本，已停用识别以避免混用进度；采集输出仍可使用。',
   PROFILE_IN_USE: '另一个窗口正在使用这份识别进度。',
+  INVALID_RECV_SIGNATURE: '接收修复特征格式无效，请检查采集设置。',
+  INVALID_SEND_SIGNATURE: '发送修复特征格式无效，请检查采集设置。',
+  INVALID_SEND_LOBBY_SIGNATURE: '登录服发送修复特征格式无效，请检查采集设置。',
+  SEND_HOOK_UNAVAILABLE: '发送钩子未启用，可在设置中配置修复特征。',
+  SEND_LOBBY_HOOK_UNAVAILABLE: '登录服发送钩子未启用，可在设置中配置修复特征。',
+  CREATE_TARGET_HOOK_UNAVAILABLE: '解混淆钩子失效，无法运行时修复，请更新采集组件。',
+  SEND_REPAIR_FAILED: '发送钩子修复失败，请核对特征与游戏版本。',
+  SEND_LOBBY_REPAIR_FAILED: '登录服发送钩子修复失败，请核对特征与游戏版本。',
+  SEND_REPAIR_TIMEOUT: '未能确认发送修复结果，请在游戏内产生网络活动后重连。',
+  SEND_LOBBY_REPAIR_TIMEOUT: '未能确认登录服发送修复结果，请重启游戏并在登录期间重连。',
+  HOOK_STATUS_UNKNOWN: '无法识别采集组件的钩子状态，请检查组件版本。',
+  RECV_HOOK_UNAVAILABLE: '接收钩子未启用，可在设置中配置修复特征。',
+  HOOK_REPAIR_UNSUPPORTED: '当前采集组件版本不支持此自动修复，请更新组件。',
+  RECV_REPAIR_FAILED: '接收钩子修复失败，请核对特征与游戏版本；若曾修复过，请重启游戏后重试。',
+  RECV_REPAIR_TIMEOUT: '未能确认接收修复结果。请在游戏内产生网络活动后重连；仍失败时重启游戏。',
+  HANDSHAKE_FAILED: '采集握手失败，请重新连接。',
+  HANDSHAKE_TIMEOUT: '采集握手超时，请重新连接。',
+  HANDSHAKE_OVERFLOW: '连接期间数据积压过多，请重新连接。',
   PIPE_CLOSED: '游戏采集连接已关闭。',
   DLL_HASH_MISMATCH: '采集组件校验失败，请检查发行文件是否完整。',
   CONNECT_FAILED:
@@ -93,6 +112,7 @@ function errorText(code: unknown) {
 const processKey = (p: GameProcess) => `${p.pid}:${p.startedAt}`
 
 function App() {
+  const [hookSignatures, setHookSignatures] = useState(loadHookSignatures)
   const [state, setState] = useState(empty)
   const stateRef = useRef(state)
   const [processes, setProcesses] = useState<GameProcess[]>([])
@@ -268,6 +288,7 @@ function App() {
               void run('connect', {
                 pid: target.pid,
                 startedAt: target.startedAt,
+                ...hookSignatures,
               })
           }}
         >
@@ -279,6 +300,7 @@ function App() {
                 ? '切换连接'
                 : '连接'}
         </Button>
+        <CaptureSettings signatures={hookSignatures} onSave={setHookSignatures} />
       </section>
       {connected && state.target && !sameTarget && (
         <div className="connection-detail">

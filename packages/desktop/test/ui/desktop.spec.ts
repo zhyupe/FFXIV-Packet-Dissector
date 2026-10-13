@@ -78,6 +78,7 @@ test.beforeEach(async ({ page }) => {
           events.push(action)
           if (action === 'processes') return processes
           if (action === 'connect') {
+            ;(window as any).__desktopLastConnect = params
             state.sessionId++
             state.connection = 'connected'
             state.target = processes.find((p) => p.pid === params.pid)
@@ -283,4 +284,39 @@ test('shadcn scroll area hides its scrollbar and preserves wheel and keyboard sc
   const previous = await viewport.evaluate(el => el.scrollTop)
   await page.keyboard.press('PageDown')
   await expect.poll(() => viewport.evaluate(el => el.scrollTop)).toBeGreaterThan(previous)
+})
+
+
+test('capture repair settings validate, persist and reach the connection', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: '设置', exact: true }).click()
+  const input = page.getByLabel('接收钩子修复特征')
+  const defaultSignature = "E8 $ { ' } 4C 8B 4E 10 8B 46 1C 45"
+  await expect(input).toHaveValue(defaultSignature)
+  await page.screenshot({ path: 'test-results/capture-settings.png', animations: 'disabled' })
+  await input.fill('invalid')
+  await page.getByRole('button', { name: '保存', exact: true }).click()
+  await expect(page.getByRole('dialog')).toBeVisible()
+  await expect(page.getByRole('alert')).toContainText('格式无效')
+  const custom = "E8 $ { ' } 4C 8B 4F 10 8B 47 1C 45"
+  await input.fill(custom)
+  await page.getByLabel('发送钩子修复特征', { exact: true }).fill('40 53 56 48 83 EC 38 ??')
+  await page.getByLabel('登录服发送钩子修复特征', { exact: true }).fill('40 53 48 83 EC 20 ?? ??')
+  await page.getByRole('button', { name: '保存', exact: true }).click()
+  await page.reload()
+  await page.getByRole('button', { name: '设置', exact: true }).click()
+  await expect(input).toHaveValue(custom)
+  await expect(page.getByLabel('发送钩子修复特征', { exact: true })).toHaveValue('40 53 56 48 83 EC 38 ??')
+  await expect(page.getByLabel('登录服发送钩子修复特征', { exact: true })).toHaveValue('40 53 48 83 EC 20 ?? ??')
+  await page.getByRole('button', { name: '取消', exact: true }).click()
+  await page.getByRole('button', { name: '连接', exact: true }).click()
+  expect(await page.evaluate(() => (window as any).__desktopLastConnect.recvSignature)).toBe(custom)
+  expect(await page.evaluate(() => (window as any).__desktopLastConnect.sendSignature)).toBe('40 53 56 48 83 EC 38 ??')
+  expect(await page.evaluate(() => (window as any).__desktopLastConnect.sendLobbySignature)).toBe('40 53 48 83 EC 20 ?? ??')
+  await page.getByRole('button', { name: '设置', exact: true }).click()
+  await page.getByRole('button', { name: '恢复默认', exact: true }).click()
+  await expect(input).toHaveValue(defaultSignature)
+  await input.fill('')
+  await page.getByRole('button', { name: '保存', exact: true }).click()
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('capture.hookSignatures')!).recvSignature)).toBe('')
 })

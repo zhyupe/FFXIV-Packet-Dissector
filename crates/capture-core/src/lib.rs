@@ -1,3 +1,4 @@
+pub use ffxiv_deucalion_client::HookSignatures;
 use ffxiv_protocol::{GameProcess, Packet, Target};
 use std::path::PathBuf;
 #[cfg(windows)]
@@ -51,11 +52,18 @@ pub struct Capture {
 }
 impl Capture {
     pub fn start(target: Target, dll: PathBuf) -> (Self, mpsc::Receiver<Event>) {
+        Self::start_with_signatures(target, dll, HookSignatures::default())
+    }
+    pub fn start_with_signatures(
+        target: Target,
+        dll: PathBuf,
+        signature: HookSignatures,
+    ) -> (Self, mpsc::Receiver<Event>) {
         let (tx, rx) = mpsc::channel(256);
         let cancel = Cancellation::default();
         let stop = cancel.clone();
         let task = tokio::spawn(async move {
-            let result = tokio::select! { _ = stop.cancelled() => Ok(()), result = run(target, dll, tx.clone()) => result };
+            let result = tokio::select! { _ = stop.cancelled() => Ok(()), result = run(target, dll, signature, tx.clone()) => result };
             let _ = tx.try_send(Event::Closed(result.err().unwrap_or_default()));
         });
         (Self { cancel, task }, rx)
@@ -66,7 +74,12 @@ impl Capture {
     }
 }
 #[cfg(windows)]
-async fn run(target: Target, dll: PathBuf, tx: mpsc::Sender<Event>) -> ffxiv_protocol::Result<()> {
+async fn run(
+    target: Target,
+    dll: PathBuf,
+    signature: HookSignatures,
+    tx: mpsc::Sender<Event>,
+) -> ffxiv_protocol::Result<()> {
     use std::time::Duration;
     let query = target.clone();
     let process = tokio::task::spawn_blocking(move || ffxiv_game_process::inspect(&query))
@@ -100,10 +113,13 @@ async fn run(target: Target, dll: PathBuf, tx: mpsc::Sender<Event>) -> ffxiv_pro
     tokio::task::spawn_blocking(move || ffxiv_game_process::inspect(&t))
         .await
         .map_err(|_| "PROCESS_QUERY_FAILED")??;
-    tokio::time::timeout(Duration::from_secs(5), connection.handshake())
-        .await
-        .map_err(|_| "HANDSHAKE_TIMEOUT")?
-        .map_err(|_| "HANDSHAKE_FAILED")?;
+    tokio::time::timeout(
+        Duration::from_secs(15),
+        connection.handshake_with_signatures(&signature),
+    )
+    .await
+    .map_err(|_| "HANDSHAKE_TIMEOUT")?
+    .map_err(|e| e.0)?;
     tx.send(Event::Connected(process))
         .await
         .map_err(|_| "SESSION_CLOSED")?;
@@ -134,7 +150,12 @@ async fn run(target: Target, dll: PathBuf, tx: mpsc::Sender<Event>) -> ffxiv_pro
     }
 }
 #[cfg(not(windows))]
-async fn run(_: Target, _: PathBuf, _: mpsc::Sender<Event>) -> ffxiv_protocol::Result<()> {
+async fn run(
+    _: Target,
+    _: PathBuf,
+    _: HookSignatures,
+    _: mpsc::Sender<Event>,
+) -> ffxiv_protocol::Result<()> {
     Err("WINDOWS_REQUIRED".into())
 }
 #[cfg(test)]

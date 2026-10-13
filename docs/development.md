@@ -131,3 +131,36 @@ The Desktop Windows workflow attaches the ZIP and `SHA256SUMS` only after the
 Windows build succeeds. Branch and pull-request builds continue to upload Actions
 artifacts without creating releases. Update `docs/desktop-release.md` when the
 release contents or requirements change.
+
+### Runtime hook compatibility settings
+
+The desktop Settings dialog stores RECV, SEND and SEND_LOBBY signatures together
+in local storage. Each empty value disables that hook's repair. Changes apply on
+the next connection; the previous receive-only preference is migrated on save.
+The receive default is `E8 $ { ' } 4C 8B 4E 10 8B 46 1C 45`, statically checked
+against the CN 7.57 client. Send defaults come from Deucalion 1.5.0
+(`5cc714ad4cc66aced1519042660026edff68e850`) and still match that client.
+Receive patterns require a direct-call target prefix; send patterns accept only
+8–64 bytes/wildcards with at least six fixed bytes. Validation limits syntax,
+not binary compatibility.
+
+Only OFF hooks in a Deucalion 1.5.0 handshake trigger runtime initialization.
+All missing hooks are checked before changing the shared DLL state. CREATE_TARGET
+cannot be overridden by this protocol: upstream resolves registers and a parent
+function as well as an address. A missing CREATE_TARGET hook requires a compatible
+DLL and fails explicitly, without attempting other repairs.
+
+RECV uses opcode 3/context 0; SEND uses opcode 4/context 1; SEND_LOBBY uses opcode
+4/context 0. Responses must match the hook prefix and context. Each repair waits
+at most three seconds. Startup hook flags remain stale after successful repairs,
+so an already-initialized response also requires a valid packet: Zone receive for
+RECV, Zone send for SEND, Lobby send for SEND_LOBBY. Send filters are enabled before
+these checks. Idle sessions, especially an already logged-in Lobby session, may
+need a game restart and connection during login to verify the hook. Traffic during
+repair is retained within a bounded queue; overflow or failed checks stop connection.
+
+Hooks are shared with ACT subscribers in the same game process and last until game
+exit. No DLL or game file is patched. A changed signature cannot replace an installed
+hook; restart the game first. The extcap entry point uses default signatures;
+desktop preferences apply only to desktop connections. Tests use synthetic frames.
+Live injection and reception still require Windows/game verification.

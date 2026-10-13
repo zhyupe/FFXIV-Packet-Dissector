@@ -229,8 +229,38 @@ impl Core {
         }
         match command.action.as_str() {
             "connect" => {
+                let mut target_params = p.clone();
+                let mut signatures = ffxiv_capture_core::HookSignatures::default();
+                for (key, field, error) in [
+                    (
+                        "recvSignature",
+                        &mut signatures.recv,
+                        "INVALID_RECV_SIGNATURE",
+                    ),
+                    (
+                        "sendSignature",
+                        &mut signatures.send,
+                        "INVALID_SEND_SIGNATURE",
+                    ),
+                    (
+                        "sendLobbySignature",
+                        &mut signatures.send_lobby,
+                        "INVALID_SEND_LOBBY_SIGNATURE",
+                    ),
+                ] {
+                    match target_params
+                        .as_object_mut()
+                        .ok_or("INVALID_TARGET")?
+                        .remove(key)
+                    {
+                        None => {}
+                        Some(Value::String(s)) => *field = s.trim().to_owned(),
+                        _ => return Err(error.into()),
+                    }
+                }
+                signatures.validate().map_err(|e| e.0)?;
                 let target: Target =
-                    serde_json::from_value(p.clone()).map_err(|_| "INVALID_TARGET")?;
+                    serde_json::from_value(target_params).map_err(|_| "INVALID_TARGET")?;
                 if target.pid == 0 || target.started_at.parse::<u64>().is_err() {
                     return Err("INVALID_TARGET".into());
                 }
@@ -246,7 +276,8 @@ impl Core {
                     .ok_or("SESSION_LIMIT")?;
                 self.state.error.clear();
                 self.state.connection = "connecting".into();
-                let (capture, rx) = Capture::start(target, self.dll.clone());
+                let (capture, rx) =
+                    Capture::start_with_signatures(target, self.dll.clone(), signatures);
                 *self.cancel.lock().unwrap() = Some(capture.cancel.clone());
                 self.capture = Some(capture);
                 let (task, rx) = router::start(
@@ -576,5 +607,24 @@ mod tests {
         assert_eq!(w.snapshot().status, "stopped");
         drop(store);
         std::fs::remove_dir_all(dir).unwrap();
+    }
+    #[tokio::test]
+    async fn invalid_repair_settings_do_not_start_or_replace_a_session() {
+        let (app, _) = App::start(synthetic_manifest(), PathBuf::new(), PathBuf::new()).unwrap();
+        for (key, error) in [
+            ("recvSignature", "INVALID_RECV_SIGNATURE"),
+            ("sendSignature", "INVALID_SEND_SIGNATURE"),
+            ("sendLobbySignature", "INVALID_SEND_LOBBY_SIGNATURE"),
+        ] {
+            for signature in [json!("invalid"), json!(123), Value::Null] {
+                let mut params = json!({"pid":1,"startedAt":"1"});
+                params[key] = signature;
+                let result = app.request("connect", params, 0).await;
+                assert_eq!(result.unwrap_err(), error);
+                assert_eq!(app.snapshots.borrow().session_id, 0);
+                assert_eq!(app.snapshots.borrow().connection, "disconnected");
+            }
+        }
+        app.request("shutdown", json!({}), 0).await.unwrap();
     }
 }
