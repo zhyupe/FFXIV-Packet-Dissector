@@ -26,6 +26,12 @@ jobs:
         with:
           ref: ${{ github.ref_name }}
 
+      - name: Test segment bounds
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.4
+          lua5.4 packages/network/test/segments.lua
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v6
         with:

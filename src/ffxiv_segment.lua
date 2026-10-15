@@ -29,7 +29,7 @@ ffxiv_segment.fields = segment_hdr_fields
 local FFXIV_SEGMENT_HDR_LEN = 16
 
 -- some forward "declarations" of helper functions we use in the dissector
-local dissectSegment, checkSegmentLength
+local dissectSegment
 
 -- this holds the plain "data" Dissector, in case we can't dissect it as Netlink
 local data = Dissector.get("data")
@@ -60,13 +60,28 @@ function ffxiv_segment.dissector(tvbuf, pktinfo, root)
 end
 
 dissectSegment = function (tvbuf, pktinfo, root, offset)
-  -- length_val is the total length of the bundle
+  local remaining = tvbuf:len() - offset
+  if remaining < FFXIV_SEGMENT_HDR_LEN then
+    local tree = root:add(ffxiv_segment, tvbuf:range(offset, remaining))
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated segment header")
+    -- No complete header remains from which to locate another segment.
+    return remaining
+  end
   local tree = root:add(ffxiv_segment, tvbuf:range(offset, FFXIV_SEGMENT_HDR_LEN))
 
   -- dissect the size field
   local size_tvbr = tvbuf:range(offset, 4)
   local size_val  = size_tvbr:le_uint()
   tree:add_le(segment_hdr_fields.size, size_tvbr)
+
+  if size_val < FFXIV_SEGMENT_HDR_LEN then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Segment size is smaller than its header")
+    return remaining
+  end
+  if size_val > remaining then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Segment size exceeds available data")
+    return remaining
+  end
 
   -- dissect the source field
   local source_tvbr = tvbuf:range(offset + 4, 4)
@@ -93,7 +108,18 @@ dissectSegment = function (tvbuf, pktinfo, root, offset)
 
   local data_tvbr = tvbuf:range(offset + FFXIV_SEGMENT_HDR_LEN, size_val - FFXIV_SEGMENT_HDR_LEN)
 
-  local header_length = 16;
+  local payload_length = size_val - FFXIV_SEGMENT_HDR_LEN
+  local minimum_payload = 0
+  if type_val == segment_type.IPC then
+    minimum_payload = 16
+  elseif type_val == segment_type.ClientKeepAlive or type_val == segment_type.ServerKeepAlive then
+    minimum_payload = 8
+  end
+  if payload_length < minimum_payload then
+    tree:add_expert_info(PI_MALFORMED, PI_ERROR, "Truncated segment payload")
+    -- Its outer boundary is valid; subsequent segments can still be decoded.
+    return size_val
+  end
 
   -- set the protocol column to show our protocol name
   pktinfo.cols.protocol:set("FFXIV")
