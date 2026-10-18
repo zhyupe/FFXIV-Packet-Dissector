@@ -550,8 +550,7 @@ function App() {
                 <Button
                   disabled={disabled || !connected}
                   onClick={() => {
-                    setViewStep('')
-                    void run('wizard.start')
+                    void run('wizard.start', step ? { name: step.name } : {})
                   }}
                 >
                   顺序识别
@@ -561,7 +560,6 @@ function App() {
                   disabled={disabled || !connected || !step}
                   onClick={() => {
                     if (step) {
-                      setViewStep('')
                       void run('wizard.select', { name: step.name })
                     }
                   }}
@@ -579,7 +577,6 @@ function App() {
                     ['idle', 'stopped', 'completed'].includes(wizard.status)
                   }
                   onClick={() => {
-                    setViewStep('')
                     void run('wizard.skip')
                   }}
                 >

@@ -56,6 +56,10 @@ test.beforeEach(async ({ page }) => {
     state.wizard = { ...wizard(), current: catalog[0].name, steps: catalog }
     Object.assign(window, {
       __desktopNoProcesses: () => { processes.length = 0 },
+      __desktopUseBundledCatalog: () => {
+        state.wizard = { ...wizard(), current: catalog[0].name, steps: catalog }
+        changed(copy())
+      },
       __desktopShowBundledInput: () => {
         const step = catalog.find((item) => item.name === 'UpdateHpMpTp')!
         state.wizard = { ...wizard(), steps: catalog, current: step.name, status: 'input', fields: step.fields, inputToken: 1 }
@@ -99,7 +103,9 @@ test.beforeEach(async ({ page }) => {
           }
           if (action === 'wizard.start' || action === 'wizard.select') {
             state.wizard.status = 'input'
-            state.wizard.current = params.name ?? 'SyntheticStep'
+            const name = params.name ?? state.wizard.current
+            const step = state.wizard.steps.find((step: any) => step.name === name)
+            state.wizard.current = step?.requires?.[0] ?? name
             state.wizard.inputToken++
             state.wizard.fields = [
               { key: 'test', type: 'text', required: true, label: '测试输入' },
@@ -160,6 +166,28 @@ test('switching process stops both and direct steps have a fresh form', async ({
   ).toBeVisible()
   await expect(page.getByLabel('测试输入')).toHaveValue('')
 })
+
+for (const action of ['顺序识别', '识别此步骤']) {
+  test(`stopping NpcSpawn prerequisites then selecting PlayerSetup starts ${action} there`, async ({ page }) => {
+    await page.goto('/')
+    await page.getByRole('button', { name: '连接', exact: true }).click()
+    await page.evaluate(() => (window as any).__desktopUseBundledCatalog())
+    await page.getByRole('tab', { name: 'Wizard', exact: true }).click()
+    await page.getByLabel('筛选步骤').fill('NpcSpawn')
+    await page.locator('.step-list button').filter({ hasText: 'NpcSpawn' }).click()
+    await page.getByRole('button', { name: '识别此步骤', exact: true }).click()
+    await expect(page.locator('.wizard-detail h2')).toHaveText('RetainerInformation')
+    await page.getByLabel('测试输入').fill('Synthetic input')
+    await page.getByRole('button', { name: '停止', exact: true }).click()
+    await page.getByLabel('筛选步骤').fill('PlayerSetup')
+    await page.locator('.step-list button').filter({ hasText: 'PlayerSetup' }).click()
+    await expect(page.locator('.wizard-detail h2')).toHaveText('PlayerSetup')
+    await page.getByRole('button', { name: action, exact: true }).click()
+    await expect(page.locator('.wizard-detail h2')).toHaveText('PlayerSetup')
+    await expect(page.getByRole('heading', { name: '填写 PlayerSetup 所需信息' })).toBeVisible()
+    await expect(page.getByLabel('测试输入')).toHaveValue('')
+  })
+}
 
 test('capture failure stops visible work and does not reconnect automatically', async ({
   page,

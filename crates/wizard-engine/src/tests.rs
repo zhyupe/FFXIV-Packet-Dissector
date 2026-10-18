@@ -58,6 +58,66 @@ fn sequence_and_direct_selection_resolve_prerequisites() {
     assert_eq!(e.snapshot().results.len(), 2);
 }
 #[test]
+fn sequence_restarts_at_selected_step_after_stopping_a_prerequisite() {
+    let mut npc = step("NpcSpawn");
+    npc.requires.push("RetainerInformation".into());
+    let mut e = engine(vec![step("PlayerSetup"), step("RetainerInformation"), npc]);
+    e.start(Some("NpcSpawn")).unwrap();
+    assert_eq!(e.snapshot().current.as_deref(), Some("RetainerInformation"));
+    let stale = e.observe(&packet(9), 1).unwrap();
+    e.stop(false);
+    e.start_sequence(Some("PlayerSetup")).unwrap();
+    assert_eq!(e.snapshot().mode, "sequence");
+    let current = e.observe(&packet(1), 1).unwrap();
+    assert_eq!(current.rule_id, "PlayerSetup");
+    assert!(!e.accept(reply(stale)));
+    assert!(e.accept(reply(current)));
+    assert_eq!(e.snapshot().current.as_deref(), Some("RetainerInformation"));
+    let t = e.observe(&packet(2), 1).unwrap();
+    assert!(e.accept(reply(t)));
+    assert_eq!(e.snapshot().current.as_deref(), Some("NpcSpawn"));
+    let t = e.observe(&packet(3), 1).unwrap();
+    assert!(e.accept(reply(t)));
+    assert_eq!(e.snapshot().status, "completed");
+    assert_eq!(e.snapshot().results.len(), 3);
+}
+#[test]
+fn sequence_start_keeps_prerequisites_and_legacy_resume_behavior() {
+    let mut npc = step("NpcSpawn");
+    npc.requires.push("RetainerInformation".into());
+    let mut e = engine(vec![step("PlayerSetup"), step("RetainerInformation"), npc]);
+    e.start_sequence(Some("NpcSpawn")).unwrap();
+    assert_eq!(e.snapshot().current.as_deref(), Some("RetainerInformation"));
+    e.stop(false);
+    e.start_sequence(None).unwrap();
+    assert_eq!(e.snapshot().current.as_deref(), Some("RetainerInformation"));
+    let t = e.observe(&packet(2), 1).unwrap();
+    e.accept(reply(t));
+    assert_eq!(e.snapshot().current.as_deref(), Some("NpcSpawn"));
+    let t = e.observe(&packet(3), 1).unwrap();
+    e.accept(reply(t));
+    assert_eq!(e.snapshot().status, "completed");
+    e.start_sequence(Some("PlayerSetup")).unwrap();
+    let t = e.observe(&packet(1), 1).unwrap();
+    e.accept(reply(t));
+    assert_eq!(e.snapshot().status, "completed");
+    assert_eq!(e.snapshot().results.len(), 3);
+}
+#[test]
+fn invalid_sequence_origin_preserves_the_active_run() {
+    let mut e = engine(vec![step("First"), step("Second")]);
+    e.start(None).unwrap();
+    let t = e.observe(&packet(1), 1).unwrap();
+    let token = e.token();
+    assert_eq!(
+        e.start_sequence(Some("Missing")).unwrap_err(),
+        "UNKNOWN_STEP"
+    );
+    assert_eq!(e.token(), token);
+    assert!(e.accept(reply(t)));
+    assert_eq!(e.snapshot().current.as_deref(), Some("Second"));
+}
+#[test]
 fn dependency_cycle_or_forward_reference_is_rejected() {
     let mut a = step("First");
     a.requires.push("Second".into());

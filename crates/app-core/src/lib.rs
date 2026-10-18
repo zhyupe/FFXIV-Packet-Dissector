@@ -362,7 +362,11 @@ impl Core {
                 self.new_window();
                 let w = self.wizard.as_mut().ok_or("NOT_CONNECTED")?;
                 match action {
-                    "wizard.start" => w.start(None)?,
+                    "wizard.start" => w.start_sequence(
+                        p.get("name")
+                            .map(|name| name.as_str().ok_or("INVALID_STEP"))
+                            .transpose()?,
+                    )?,
                     "wizard.select" => w.start(Some(p["name"].as_str().ok_or("INVALID_STEP")?))?,
                     "wizard.inputs" => w.inputs(
                         u32::try_from(p["token"].as_u64().ok_or("INVALID_INPUT")?)

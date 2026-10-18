@@ -208,23 +208,33 @@ impl Engine {
         }
     }
     pub fn start(&mut self, name: Option<&str>) -> Result<()> {
-        self.run = self.run.wrapping_add(1);
-        self.pending = None;
-        self.plan.clear();
-        let mut plan = VecDeque::new();
-        if let Some(name) = name {
-            let i = self
+        self.start_plan(name, name.is_some())
+    }
+    pub fn start_sequence(&mut self, name: Option<&str>) -> Result<()> {
+        self.start_plan(name, false)
+    }
+    fn start_plan(&mut self, name: Option<&str>, single: bool) -> Result<()> {
+        // Resolve the selected origin before replacing an active run.
+        let index = match name {
+            Some(name) => self
                 .manifest
                 .steps
                 .iter()
                 .position(|s| s.name == name)
-                .ok_or("UNKNOWN_STEP")?;
+                .ok_or("UNKNOWN_STEP")?,
+            None => self.index,
+        };
+        self.run = self.run.wrapping_add(1);
+        self.pending = None;
+        self.plan.clear();
+        let mut plan = VecDeque::new();
+        if single {
             self.mode = "single".into();
-            self.add_dependencies(i, &mut plan);
-            plan.push_back(i);
+            self.add_dependencies(index, &mut plan);
+            plan.push_back(index);
         } else {
             self.mode = "sequence".into();
-            for i in self.index..self.manifest.steps.len() {
+            for i in index..self.manifest.steps.len() {
                 if !self.results.contains_key(&self.manifest.steps[i].name) {
                     self.add_dependencies(i, &mut plan);
                     if !plan.contains(&i) {
