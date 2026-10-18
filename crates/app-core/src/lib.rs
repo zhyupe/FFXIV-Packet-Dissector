@@ -6,7 +6,6 @@ use ffxiv_protocol::*;
 use ffxiv_wizard_engine::Engine;
 use router::Routed as Event;
 use serde_json::{json, Value};
-use sha2::{Digest, Sha256};
 use std::{
     collections::VecDeque,
     path::PathBuf,
@@ -447,23 +446,12 @@ impl Core {
     async fn event(&mut self, event: Event) {
         match event {
             Event::Connected(process) => {
-                let key = format!(
-                    "{:x}",
-                    Sha256::digest(format!(
-                        "{}\0{}\0{}",
-                        process.executable.to_lowercase(),
-                        process.version,
-                        self.manifest.hash
-                    ))
-                );
                 let manifest = self.manifest.clone();
-                let path = self.data_dir.join("wizard").join(key).join("state.json");
-                let known_version = process.version != "unknown";
+                let data_dir = self.data_dir.clone();
+                let build = process.version.clone();
                 let setup =
                     tokio::task::spawn_blocking(move || -> Result<(Engine, storage::Store)> {
-                        if !known_version {
-                            return Err("BUILD_VERSION_UNKNOWN".into());
-                        }
+                        let path = storage::wizard_state_path(&data_dir, &build)?;
                         let mut w = Engine::new(manifest)?;
                         let store = storage::Store::open(path)?;
                         if let Some(value) = store.read()? {

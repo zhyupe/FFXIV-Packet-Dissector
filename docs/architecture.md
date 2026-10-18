@@ -50,8 +50,15 @@ conflicts use category + opcode, rather than opcode alone.
 
 ## Storage and resources
 
-Profiles are isolated by SHA-256 of executable path, build version and rule-pack
-hash. One writer locks each profile. Temporary writes are flushed and atomically
+Profiles are stored at `wizard/<yyyy.mm.dd.xxxx.xxxx>/state.json` under the
+application data directory. The game build version alone selects the directory;
+installations of the same build share progress. Invalid or unknown build strings
+disable progress storage. The saved state still validates its format version and
+rule-pack hash before restoring results. Existing hash-named directories are not
+automatically migrated; a compatible `state.json` can be copied into the build
+directory while the application is closed.
+
+One writer locks each profile. Temporary writes are flushed and atomically
 replaced (MoveFileEx on Windows). A failed save retains results in memory, marks
 them unsaved and stops recognition. Explicit save can retry. Closing a window
 with a save failure leaves it open so results can be exported or saved.

@@ -8,6 +8,19 @@ pub struct Store {
     path: PathBuf,
     _lock: File,
 }
+pub fn wizard_state_path(data_dir: &Path, build: &str) -> Result<PathBuf> {
+    let parts: Vec<_> = build.split('.').collect();
+    let widths = [4, 2, 2, 4, 4];
+    if parts.len() != widths.len()
+        || parts
+            .iter()
+            .zip(widths)
+            .any(|(part, width)| part.len() != width || !part.bytes().all(|b| b.is_ascii_digit()))
+    {
+        return Err("BUILD_VERSION_UNKNOWN".into());
+    }
+    Ok(data_dir.join("wizard").join(build).join("state.json"))
+}
 impl Store {
     pub fn open(path: PathBuf) -> Result<Self> {
         fs::create_dir_all(path.parent().ok_or("SAVE_FAILED")?).map_err(|_| "SAVE_FAILED")?;
@@ -90,6 +103,37 @@ fn replace(from: &Path, to: &Path) -> std::io::Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn wizard_profile_uses_the_build_version_as_a_single_directory() {
+        let root = Path::new("application-data");
+        let path = wizard_state_path(root, "2026.09.15.0000.0000").unwrap();
+        assert_eq!(
+            path,
+            root.join("wizard")
+                .join("2026.09.15.0000.0000")
+                .join("state.json")
+        );
+        assert_ne!(
+            path,
+            wizard_state_path(root, "2026.09.16.0000.0000").unwrap()
+        );
+        for invalid in [
+            "unknown",
+            "",
+            "../2026.09.15.0000.0000",
+            "2026.09.15.0000.0000/other",
+            "C:\\2026.09.15.0000.0000",
+            "2026.9.15.0000.0000",
+            "2026.09.15.0000",
+            "2026.09.15.0000.0000.extra",
+            "2026.09.15.0000.abcd",
+        ] {
+            assert_eq!(
+                wizard_state_path(root, invalid).unwrap_err(),
+                "BUILD_VERSION_UNKNOWN"
+            );
+        }
+    }
     #[test]
     fn lock_and_replace() {
         let dir = std::env::temp_dir().join(format!("ffxiv-store-test-{}", std::process::id()));
