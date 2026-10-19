@@ -71,7 +71,11 @@ pnpm --filter desktop test:ui
 Update `resources/metadata/packets.yaml` from the opcode-worker repository in an
 explicit source update, record its revision/hash in `resources/metadata/source.json`,
 and rebuild rules. Do not fetch mutable upstream content during application startup.
-Updating Lua packet definitions and version maps still uses `packages/network`.
+Update Lua packet definitions and version maps by upgrading the exact npm versions of
+`@ffcafe/elpis-network` and `@ffcafe/elpis-struct` in `packages/wireshark-generator`,
+then run its `generate`, `typecheck` and `test` scripts and the Lua tests in README.
+Do not copy protocol definitions back into this repository. CI verifies generated
+files against the locked dependency versions without fetching mutable opcode sources.
 
 Real-machine checks, kept outside automated fixtures:
 

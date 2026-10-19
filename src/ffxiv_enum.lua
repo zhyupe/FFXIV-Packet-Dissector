@@ -217,11 +217,9 @@ M.reverse.action_effect_display_type = makeValString(M.forward.action_effect_dis
 
 M.forward.action_hit_severity_type = {
   NormalDamage = 0,
-  CritHeal = 0,
-  CritDamage = 1,
-  NormalHeal = 1,
-  DirectHitDamage = 2,
-  CritDirectHitDamage = 3,
+  CritDamage = 32,
+  DirectHitDamage = 64,
+  CritDirectHitDamage = 96,
 }
 M.reverse.action_hit_severity_type = makeValString(M.forward.action_hit_severity_type)
 

@@ -385,6 +385,10 @@ local M = {
     name = "ffxiv_ipc_fellowship_message_board_item",
     length = 152,
   },
+  ["FellowshipMessageBoardItem$1"] = {
+    name = "ffxiv_ipc_fellowship_message_board_item_1",
+    length = 172,
+  },
   FellowshipMessageBoardQuery = {
     name = "ffxiv_ipc_fellowship_message_board_query",
     length = 16,

@@ -57,6 +57,7 @@ try {
     Invoke-Checked 'cargo' @('run', '-p', 'xtask', '--locked')
     Invoke-Checked 'pnpm' @('--filter', '@ffxiv/contracts', 'generate')
     Invoke-Checked 'pnpm' @('--filter', 'wizard', 'build')
+    Invoke-Checked 'pnpm' @('--filter', 'wireshark-generator', 'generate')
     Invoke-Checked 'git' @('diff', '--exit-code', '--', 'packages/contracts/generated', 'packages/wizard/generated')
     Invoke-Checked 'pnpm' @('--filter', 'wizard', '--filter', 'desktop', 'typecheck')
 
@@ -67,6 +68,7 @@ try {
     if ($RunTests) {
         Invoke-Checked 'cargo' @('test', '--workspace', '--locked', '--target', $target)
         Invoke-Checked 'pnpm' @('--filter', 'wizard', 'test')
+        Invoke-Checked 'pnpm' @('--filter', 'wireshark-generator', 'test')
         Invoke-Checked 'pnpm' @('--filter', 'desktop', 'exec', 'playwright', 'install', 'chromium')
         Invoke-Checked 'pnpm' @('--filter', 'desktop', 'test:ui')
     }

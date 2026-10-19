@@ -34,7 +34,7 @@ function ffxiv_ipc_fellowship_list.dissector(tvbuf, pktinfo, root)
   tree:add_le(fellowship_list_fields.join_time, join_time_tvbr, join_time_val)
 
   -- dissect fellowship_message_board_item
-  local fellowship_message_board_item_dissector = Dissector.get('ffxiv_ipc_fellowship_message_board_item')
+  local fellowship_message_board_item_dissector = Dissector.get('ffxiv_ipc_fellowship_message_board_item_1')
   local fellowship_message_board_item_pos = 16
   local fellowship_message_board_item_len = 172
   local fellowship_message_board_item_count = 10

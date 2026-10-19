@@ -1,0 +1,23 @@
+{
+  "name": "wireshark-generator",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "generate": "node --import tsx src/index.ts",
+    "test": "node --import tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ffcafe/elpis-network": "0.1.0",
+    "@ffcafe/elpis-struct": "0.1.0",
+    "change-case": "^5.4.4"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

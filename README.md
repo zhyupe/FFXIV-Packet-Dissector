@@ -48,43 +48,46 @@ that the dissectors would work in the international server.
 
 ## IPC Protocol Schema
 
-Packet structures live in `packages/network/src/definitions/ipc`. Their field metadata
-generates the Wireshark Lua dissectors in `src/` and also drives the TypeScript reader.
+Packet structures, opcode tables and field metadata come from the pinned npm packages
+[`@ffcafe/elpis-network`](https://www.npmjs.com/package/@ffcafe/elpis-network) and
+[`@ffcafe/elpis-struct`](https://www.npmjs.com/package/@ffcafe/elpis-struct).
+This repository maintains the Wireshark Lua generator in `packages/wireshark-generator`.
+Protocol definitions and opcode synchronization are maintained in
+[elpis](https://github.com/thewakingsands/elpis).
+
+With Node.js 22 or newer:
 
 ```sh
-pnpm install
-pnpm --filter network sync
-pnpm --filter network generate
-pnpm --filter network typecheck
-pnpm --filter network test
+pnpm install --frozen-lockfile
+pnpm --filter wireshark-generator typecheck
+pnpm --filter wireshark-generator test
+pnpm --filter wireshark-generator generate
 # From the repository root, with Lua 5.3 or newer:
-lua packages/network/test/dissectors.lua src/*_gen.lua
+lua packages/wireshark-generator/test/dissectors.lua src/*_gen.lua
+lua packages/wireshark-generator/test/segments.lua
 ```
 
-`sync` reads the `FFXIVOpcodes` aliases from
-[opcode-worker's packets.yaml](https://github.com/zhyupe/ffxiv-opcode-worker/blob/master/packets.yaml)
-and caches the validated file for one hour. ACT and OverlayPlugin mappings are not
-applied to this opcode source. To use a local checkout, run
-`pnpm --filter network sync --packets /path/to/ffxiv-opcode-worker/packets.yaml`.
-Packet categories and directions are read from the same catalog. Top-level IPC
-categories contain `direction` and `packets`; FFXIVOpcodes, ACT, and OverlayPlugin aliases
-remain attached to each project packet name. Direction is read directly from YAML
-and validated as `server-to-client` or `client-to-server`. Category names come
-from YAML without a built-in list; duplicate packet names across categories
-are rejected.
+Generation uses only installed packages; it does not fetch opcode data. To update
+protocol data, upgrade both elpis dependencies to the same exact released version,
+update `pnpm-lock.yaml`, regenerate Lua, review the differences and run the tests.
+The `@ffcafe` scope uses the official npm registry because mirrors may lag behind releases.
+Load network and struct through ESM together: mixing ESM and CommonJS breaks the
+Symbol-based field metadata. No npm packages or Node.js runtime are needed by Wireshark
+or the portable desktop application.
 
-`sync` refreshes the latest opcode table, including newly added upstream names;
-historical TypeScript opcode tables are retained. `generate` regenerates all Lua
-tables from the shared definitions. `src/ffxiv_ipc_map.lua` stores shared dissector
-names and minimum payload lengths, keyed by packet type. Version tables contain
-only opcode-to-type mappings, directions, and any explicit title or length
-overrides. The resolver looks up shared metadata at runtime, so changing a
-structure's length or adding a dissector does not change every version table.
+`generate` writes to this repository's `src/`, independent of the working directory.
+Use `generate --output /path/to/output` to override it; the destination must already
+contain `ffxiv.lua`. Dependency license notices are copied into `src/licenses/`,
+which is also included in the portable Wireshark files.
+
+`src/ffxiv_ipc_map.lua` stores shared dissector names and minimum payload lengths.
+Version tables contain only opcode-to-type mappings, directions and explicit title
+or length overrides. Changing a structure length does not rewrite every version table.
 An opcode entry's explicit `size` takes precedence over the shared length.
 
-For offline tests, the requested 7.56a JSON is
-pinned in `packages/network/test/fixtures/7.56a.json`, alongside a `packets.yaml`
-snapshot for reproducible offline name normalization.
+The wizard's pinned `resources/metadata/packets.yaml` catalog and its scanner rules
+remain independent of this generator. Update that catalog explicitly as described
+in [development.md](docs/development.md).
 
 ## LICENSE
 

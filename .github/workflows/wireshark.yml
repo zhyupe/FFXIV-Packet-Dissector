@@ -1,0 +1,39 @@
+name: Generate and verify Wireshark dissectors
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11.6.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22.22.2'
+          cache: pnpm
+      - run: pnpm --filter . --filter wireshark-generator install --frozen-lockfile --ignore-scripts
+      - run: pnpm --filter wireshark-generator typecheck
+      - run: pnpm --filter wireshark-generator test
+      - run: pnpm --filter wireshark-generator generate
+      - name: Verify committed generated files
+        run: |
+          git diff --exit-code -- src
+          test -z "$(git ls-files --others --exclude-standard -- src)"
+      - name: Verify Lua dissectors and segment bounds
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.4
+          lua5.4 packages/wireshark-generator/test/dissectors.lua src/*_gen.lua
+          lua5.4 packages/wireshark-generator/test/segments.lua
