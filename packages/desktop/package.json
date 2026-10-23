@@ -37,6 +37,6 @@
     "tailwindcss": "^4.3.3",
     "tsx": "catalog:",
     "typescript": "catalog:",
-    "vite": "^7.0.0"
+    "vite": "^7.3.7"
   }
 }
