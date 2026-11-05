@@ -96,7 +96,7 @@ function lua(directory: string, source: string) {
   assert.equal(run.status, 0, `${run.error ?? ''}${run.stderr}`)
 }
 
-test('converts aliases, helpers, direction collisions, unknowns and same-direction candidates', () => {
+test('converts aliases, direction collisions and unknowns while excluding field offsets', () => {
   const catalog = parseCatalog(catalogYaml)
   const result = buildOpcodeEntries(
     {
@@ -120,10 +120,57 @@ test('converts aliases, helpers, direction collisions, unknowns and same-directi
   ])
   assert.equal(result.opcodes[18], undefined)
   assert.deepEqual(result.diagnostics, ['Missing direction for Uncatalogued'])
-  assert.throws(
-    () => buildOpcodeEntries({ InventoryHandlerOffset: '0x12' }, catalog),
-    /InventoryModifyHandler/,
+  assert.deepEqual(
+    buildOpcodeEntries({ InventoryHandlerOffset: '0x12' }, catalog).opcodes,
+    {},
   )
+})
+
+test('excludes field offsets with or without a real handler, for equal and different values', () => {
+  const catalog = parseCatalog(catalogYaml)
+  const cases: Record<string, string>[] = [
+    { InventoryHandlerOffset: '0x10' },
+    { InventoryHandlerOffset: '0x10', InventoryModifyHandler: '0x10' },
+    { InventoryHandlerOffset: '0x11', InventoryModifyHandler: '0x10' },
+    { InventoryModifyHandler: '0x10' },
+  ]
+  for (const table of cases) {
+    const result = buildOpcodeEntries(table, catalog)
+    assert.deepEqual(
+      result.opcodes,
+      table.InventoryModifyHandler
+        ? { 16: [{ type: 'InventoryModifyHandler', outgoing: true }] }
+        : {},
+    )
+    assert.deepEqual(result.diagnostics, [])
+  }
+})
+
+test('a selected offset-only version emits no IPC candidates in Lua', () => {
+  const root = scratch()
+  try {
+    const source = input(root, { InventoryHandlerOffset: '0x10' })
+    const target = output(root)
+    generateFromDefinitions(target, source)
+    const module = readFileSync(
+      join(target, 'ffxiv_ipc_type_9_10a_cn.lua'),
+      'utf8',
+    )
+    assert(!module.includes('InventoryHandlerOffset'))
+    assert(!module.includes('InventoryModifyHandler'))
+    lua(
+      target,
+      `package.path = './?.lua;' .. package.path
+Dissector = { get = function(name) return { name = name } end }
+local registry = require('ffxiv_ipc_type_latest')
+assert(next(registry.types) == nil)
+local parser, title = registry.getDissector(16, 32, 'C')
+assert(parser == nil and title == nil)
+`,
+    )
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
 })
 
 test('reads only the selected files and identifies malformed input by version/path/name', () => {

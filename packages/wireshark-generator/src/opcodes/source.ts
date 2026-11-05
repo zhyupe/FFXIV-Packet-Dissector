@@ -45,17 +45,10 @@ export function buildOpcodeEntries(
   catalog: PacketCatalog,
 ) {
   const entries = normalizeTable(table, catalog)
-  const hasInventoryHandler = entries.some(
-    (e) => e.type === 'InventoryModifyHandler',
-  )
   const opcodes: Record<number, LuaOpcodeEntry[]> = {}
   const diagnostics: string[] = []
   for (const { type, opcode, outgoing } of entries) {
-    if (type === 'InventoryHandlerOffset') {
-      if (!hasInventoryHandler)
-        throw new Error('InventoryHandlerOffset has no InventoryModifyHandler')
-      continue
-    }
+    if (type === 'InventoryHandlerOffset') continue
     if (outgoing === undefined)
       diagnostics.push(`Missing direction for ${type}`)
     const items = opcodes[opcode] ?? []
