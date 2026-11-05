@@ -71,11 +71,14 @@ pnpm --filter desktop test:ui
 Update `resources/metadata/packets.yaml` from the opcode-worker repository in an
 explicit source update, record its revision/hash in `resources/metadata/source.json`,
 and rebuild rules. Do not fetch mutable upstream content during application startup.
-Update Lua packet definitions and version maps by upgrading the exact npm versions of
-`@ffcafe/elpis-network` and `@ffcafe/elpis-struct` in `packages/wireshark-generator`,
-then run its `generate`, `typecheck` and `test` scripts and the Lua tests in README.
-Do not copy protocol definitions back into this repository. CI verifies generated
-files against the locked dependency versions without fetching mutable opcode sources.
+Update Lua packet definitions by upgrading the exact structure dependency versions
+and regenerating. Update opcode values independently with the generator's
+`sync:opcodes --revision <full-worker-sha> --version <version>` command. Source metadata
+records only repository/SHA; the explicit selection controls which version modules
+are written. Historical modules outside that selection remain as committed.
+Run `generate`, `typecheck`, `test`, and the Lua regressions documented in README.
+CI regenerates offline and checks git diffs and untracked outputs. Preserve existing
+local modifications when inspecting or fixing a failed direct-write generation.
 
 Real-machine checks, kept outside automated fixtures:
 
