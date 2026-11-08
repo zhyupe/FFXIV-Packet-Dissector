@@ -1,12 +1,9 @@
 import { existsSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import {
-  CNOpcode,
-  type OpcodeMap,
-  type OpcodeItem,
-} from '@ffcafe/elpis-network'
-import {
   Base,
+  type ChildMetadata,
+  type FieldMetadata,
   FieldType,
   fieldLength,
   getChildren,
@@ -15,8 +12,6 @@ import {
   getStructIf,
   type Struct,
   type StructConstructor,
-  type ChildMetadata,
-  type FieldMetadata,
 } from '@ffcafe/elpis-struct'
 import type { IPCEnum, IPCField, IPCFieldFormat, IPCSchema } from '../interface'
 import { snakeCase } from '../utils'
@@ -605,6 +600,18 @@ ${indent}tree:append_text(${snakeName}_display)`
   }
 }
 
+export interface LuaOpcodeEntry {
+  type: string
+  outgoing?: boolean
+  title?: string
+  size?: number
+}
+
+export interface LuaOpcodeVersion {
+  version: string
+  opcodes: Readonly<Record<number, readonly LuaOpcodeEntry[]>>
+}
+
 export class DissectorRenderer {
   enums: Record<string, Pair<number | string>[]> = {}
   ipcLength: Record<string, number> = {}
@@ -695,7 +702,13 @@ return M
     }
   }
 
-  commitOpcodes() {
+  commitOpcodes({
+    versions,
+    latestVersion,
+  }: {
+    versions: readonly LuaOpcodeVersion[]
+    latestVersion?: string
+  }) {
     const packetMap = Object.fromEntries(
       Object.entries(this.ipcLength)
         .sort(([a], [b]) => a.localeCompare(b))
@@ -706,19 +719,17 @@ return M
     )
     this.commit('ffxiv_ipc_map.lua', `local ${table('M', packetMap)}\nreturn M`)
     this.commit('ffxiv_ipc_resolver.lua', opcodeResolver)
-    const entries = Object.entries(CNOpcode)
-    for (const [version, opcodes] of entries) {
+    for (const { version, opcodes } of versions) {
       this.commit(
         `ffxiv_ipc_type_${version.replace(/\./g, '_')}_cn.lua`,
         this.#renderOpcodes(opcodes),
       )
     }
 
-    const latestVersion = entries.at(-1)?.[0].replace(/\./g, '_')
     if (latestVersion) {
       this.commit(
         'ffxiv_ipc_type_latest.lua',
-        `local M = require("ffxiv_ipc_type_${latestVersion}_cn")\nreturn M`,
+        `local M = require("ffxiv_ipc_type_${latestVersion.replace(/\./g, '_')}_cn")\nreturn M`,
       )
     }
   }
@@ -731,16 +742,9 @@ return M
     )
   }
 
-  #getOpcodeItemType(item: OpcodeItem | string) {
-    return typeof item === 'string' ? item : item.type
-  }
-
-  #getOpcodeItemTitle(item: OpcodeItem | string) {
-    const type = this.#getOpcodeItemType(item)
-    return typeof item === 'string' || !item.title ? type : item.title
-  }
-
-  #renderOpcodes(opcodeMap: OpcodeMap) {
+  #renderOpcodes(
+    opcodeMap: Readonly<Record<number, readonly LuaOpcodeEntry[]>>,
+  ) {
     const typesObject: Record<
       string,
       Array<{
@@ -751,10 +755,8 @@ return M
       }>
     > = {}
     for (const [opcode, config] of Object.entries(opcodeMap)) {
-      if (!config) continue
-
-      const types = (Array.isArray(config) ? config : [config]).map((item) => {
-        const type = this.#getOpcodeItemType(item)
+      const types = config.map((item) => {
+        const type = item.type
         const entry: {
           type: string
           length?: number
@@ -763,13 +765,13 @@ return M
         } = {
           type,
         }
-        const title = this.#getOpcodeItemTitle(item)
+        const title = item.title ?? type
         if (title !== type) entry.title = title
-        if (typeof item !== 'string' && typeof item.outgoing === 'boolean') {
+        if (typeof item.outgoing === 'boolean') {
           entry.outgoing = item.outgoing
         }
 
-        if (typeof item !== 'string' && typeof item.size === 'number') {
+        if (typeof item.size === 'number') {
           entry.length = item.size
         }
 

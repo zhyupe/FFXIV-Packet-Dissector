@@ -1,5 +1,6 @@
-import type { IPCFieldFormat, IPCFieldCondition } from '@ffcafe/elpis-struct'
-export type { IPCFieldFormat, IPCFieldCondition } from '@ffcafe/elpis-struct'
+import type { IPCFieldCondition, IPCFieldFormat } from '@ffcafe/elpis-struct'
+
+export type { IPCFieldCondition, IPCFieldFormat } from '@ffcafe/elpis-struct'
 export interface IPCEnum {
   /**
    * Enum name

@@ -48,14 +48,15 @@ that the dissectors would work in the international server.
 
 ## IPC Protocol Schema
 
-Packet structures, opcode tables and field metadata come from the pinned npm packages
+Packet structures and field metadata come from the pinned npm packages
 [`@ffcafe/elpis-network`](https://www.npmjs.com/package/@ffcafe/elpis-network) and
 [`@ffcafe/elpis-struct`](https://www.npmjs.com/package/@ffcafe/elpis-struct).
 This repository maintains the Wireshark Lua generator in `packages/wireshark-generator`.
-Protocol definitions and opcode synchronization are maintained in
-[elpis](https://github.com/thewakingsands/elpis).
+The separate `@ffcafe/elpis-opcode-worker` package reads opcode names, directions and
+values from [opcode-worker](https://github.com/zhyupe/ffxiv-opcode-worker).
 
-With Node.js 22 or newer:
+With Node.js 22 or newer and Lua 5.3 or newer (`LUA` selects the test executable;
+the default is `lua5.4`):
 
 ```sh
 pnpm install --frozen-lockfile
@@ -67,9 +68,27 @@ lua packages/wireshark-generator/test/dissectors.lua src/*_gen.lua
 lua packages/wireshark-generator/test/segments.lua
 ```
 
-Generation uses only installed packages; it does not fetch opcode data. To update
-protocol data, upgrade both elpis dependencies to the same exact released version,
-update `pnpm-lock.yaml`, regenerate Lua, review the differences and run the tests.
+Generation is offline. Its input in `packages/wireshark-generator/resources/opcodes/`
+records the worker repository and full commit SHA in `source.json`, the explicit
+selection in `selected-versions.json`, and the raw YAML/version JSON files.
+The initial selection is empty, preserving the 68 existing version modules and
+latest 7.57. To add or update a version, fetch it explicitly:
+
+```sh
+pnpm --filter wireshark-generator sync:opcodes --revision <40-character-worker-sha> --version 7.57
+pnpm --filter wireshark-generator generate
+```
+
+`--version` may be repeated. Switching commits refreshes every selected version.
+Only selected version modules are written; all other historical modules are left
+untouched. Latest follows the worker version list without moving behind the existing
+pointer. Review input and Lua differences in git. Errors return a nonzero status and
+identify the source file/version/name; review only this command's changes when fixing
+an unsuccessful run, preserving any pre-existing work.
+
+Upgrade the two exact elpis structure dependencies together only when updating
+protocol layouts, then regenerate and run the tests. Opcode updates do not require
+upgrading those packages or the reader.
 The `@ffcafe` scope uses the official npm registry because mirrors may lag behind releases.
 Load network and struct through ESM together: mixing ESM and CommonJS breaks the
 Symbol-based field metadata. No npm packages or Node.js runtime are needed by Wireshark
@@ -77,7 +96,9 @@ or the portable desktop application.
 
 `generate` writes to this repository's `src/`, independent of the working directory.
 Use `generate --output /path/to/output` to override it; the destination must already
-contain `ffxiv.lua`. Dependency license notices are copied into `src/licenses/`,
+contain `ffxiv.lua`; it does not receive unselected historical modules.
+Use `--opcode-source /path/to/input` with either command to select another input
+directory. Dependency and data source license notices are copied into `src/licenses/`,
 which is also included in the portable Wireshark files.
 
 `src/ffxiv_ipc_map.lua` stores shared dissector names and minimum payload lengths.

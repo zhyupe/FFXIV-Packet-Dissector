@@ -8,10 +8,12 @@
   "scripts": {
     "generate": "node --import tsx src/index.ts",
     "test": "node --import tsx --test test/*.test.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "sync:opcodes": "node --import tsx src/opcodes/sync.ts"
   },
   "dependencies": {
     "@ffcafe/elpis-network": "0.1.0",
+    "@ffcafe/elpis-opcode-worker": "0.1.1",
     "@ffcafe/elpis-struct": "0.1.0",
     "change-case": "^5.4.4"
   },

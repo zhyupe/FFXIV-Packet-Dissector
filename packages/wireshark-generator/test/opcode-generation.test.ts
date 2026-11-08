@@ -4,7 +4,9 @@ import { test } from 'node:test'
 import { DissectorRenderer } from '../src/lua/dissector'
 
 class MemoryRenderer extends DissectorRenderer {
-  constructor() { super(fileURLToPath(new URL('../../../src/', import.meta.url))) }
+  constructor() {
+    super(fileURLToPath(new URL('../../../src/', import.meta.url)))
+  }
   files = new Map<string, string>()
 
   override commit(name: string, content: string) {
@@ -15,18 +17,50 @@ class MemoryRenderer extends DissectorRenderer {
 test('changing lengths and adding parsers leave every version table unchanged', () => {
   const renderer = new MemoryRenderer()
   renderer.registerLength('ActorCast', 32)
-  renderer.commitOpcodes()
+  renderer.commitOpcodes({
+    versions: [
+      {
+        version: '9.10',
+        opcodes: { 16: [{ type: 'ActorCast', outgoing: false }] },
+      },
+      {
+        version: '9.10a',
+        opcodes: { 17: [{ type: 'ActorCast', outgoing: false }] },
+      },
+    ],
+    latestVersion: '9.10a',
+  })
   const original = new Map(renderer.files)
-  const versions = [...original.keys()].filter(name => name.startsWith('ffxiv_ipc_type_'))
+  const versions = [...original.keys()].filter((name) =>
+    name.startsWith('ffxiv_ipc_type_'),
+  )
   assert(versions.length > 1)
 
   renderer.registerLength('ActorCast', 40)
   renderer.registerLength('ItemInfo', 64)
-  renderer.commitOpcodes()
+  renderer.commitOpcodes({
+    versions: [
+      {
+        version: '9.10',
+        opcodes: { 16: [{ type: 'ActorCast', outgoing: false }] },
+      },
+      {
+        version: '9.10a',
+        opcodes: { 17: [{ type: 'ActorCast', outgoing: false }] },
+      },
+    ],
+    latestVersion: '9.10a',
+  })
 
   for (const name of versions) {
     assert.equal(renderer.files.get(name), original.get(name), name)
   }
-  assert.notEqual(renderer.files.get('ffxiv_ipc_map.lua'), original.get('ffxiv_ipc_map.lua'))
-  assert.equal(renderer.files.get('ffxiv_ipc_resolver.lua'), original.get('ffxiv_ipc_resolver.lua'))
+  assert.notEqual(
+    renderer.files.get('ffxiv_ipc_map.lua'),
+    original.get('ffxiv_ipc_map.lua'),
+  )
+  assert.equal(
+    renderer.files.get('ffxiv_ipc_resolver.lua'),
+    original.get('ffxiv_ipc_resolver.lua'),
+  )
 })
