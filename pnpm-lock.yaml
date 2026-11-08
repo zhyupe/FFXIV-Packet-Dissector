@@ -101,6 +101,9 @@ importers:
       '@ffcafe/elpis-network':
         specifier: 0.1.0
         version: 0.1.0
+      '@ffcafe/elpis-opcode-worker':
+        specifier: 0.1.1
+        version: 0.1.1
       '@ffcafe/elpis-struct':
         specifier: 0.1.0
         version: 0.1.0
@@ -490,6 +493,10 @@ packages:
 
   '@ffcafe/elpis-network@0.1.0':
     resolution: {integrity: sha512-h5B6cVd3/ij3CeeQ+tKCQzGdsCn+jyXfoeC+fw/3/UJf3WzuSdNi4+Xp419R5Onh4sQ/dTbnLbd9WgqBDXOAhA==}
+    engines: {node: '>=22'}
+
+  '@ffcafe/elpis-opcode-worker@0.1.1':
+    resolution: {integrity: sha512-Jvm2UnQyfZqHVEN8NfH+0ArQArBUn/YbjwDLwDqv3t5SbLcS9k8XxRal8ZArLVzqjuxVZTTjYWI9bWH3gZOypQ==}
     engines: {node: '>=22'}
 
   '@ffcafe/elpis-struct@0.1.0':
@@ -3288,6 +3295,10 @@ snapshots:
   '@ffcafe/elpis-network@0.1.0':
     dependencies:
       '@ffcafe/elpis-struct': 0.1.0
+
+  '@ffcafe/elpis-opcode-worker@0.1.1':
+    dependencies:
+      yaml: 2.9.1
 
   '@ffcafe/elpis-struct@0.1.0':
     dependencies:
